@@ -1,0 +1,100 @@
+@extends('layout.app', ['title' => __('Dashboard')])
+@section('content')
+    <div class="min-h-screen h-full flex flex-col after:flex-1">
+
+
+        <!-- Header -->
+
+        <!-- Progress bar -->
+        <div class="px-4 pt-12 pb-8">
+            <div class="max-w-md mx-auto w-full">
+                <div class="relative">
+                    <div class="absolute left-0 top-1/2 -mt-px w-full h-0.5 bg-slate-200" aria-hidden="true"></div>
+                    <ul class="relative flex justify-between w-full">
+                        <li>
+                            <a class="flex items-center justify-center w-6 h-6 rounded-full text-xs font-semibold bg-indigo-500 text-white"
+                               >1</a>
+                        </li>
+                        <li>
+                            <a class="flex items-center justify-center w-6 h-6 rounded-full text-xs font-semibold bg-slate-100 text-slate-500"
+                               >2</a>
+                        </li>
+                        <li>
+                            <a class="flex items-center justify-center w-6 h-6 rounded-full text-xs font-semibold bg-slate-100 text-slate-500"
+                               >3</a>
+                        </li>
+                        <li>
+                            <a class="flex items-center justify-center w-6 h-6 rounded-full text-xs font-semibold bg-slate-100 text-slate-500"
+                               >4</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="px-4 py-8">
+            <div class="max-w-md mx-auto">
+
+                <h1 class="text-3xl text-slate-800 font-bold mb-6">Let's set up your first chatbot, for free 🔥</h1>
+                <p style="margin-bottom: 2rem">And here how we are going to do it:</p>
+                <!-- Form -->
+                <form>
+                    <div class="space-y-3 mb-8">
+                        <ul class="-my-2">
+                            <!-- List item -->
+                            <li class="relative py-2">
+                                <div class="flex items-center mb-1">
+                                    <div class="absolute left-0 h-full w-0.5 bg-slate-200 self-start ml-2.5 -translate-x-1/2 translate-y-3" aria-hidden="true"></div>
+                                    <div class="absolute left-0 rounded-full bg-indigo-500" aria-hidden="true">
+                                        <svg class="w-5 h-5 fill-current text-white" viewBox="0 0 20 20">
+                                            <path d="M14.4 8.4L13 7l-4 4-2-2-1.4 1.4L9 13.8z"></path>
+                                        </svg>
+                                    </div>
+                                    <h3 class="text-lg font-bold text-slate-800 pl-9">You provide the system with data</h3>
+                                </div>
+                                <div class="pl-9">It could be a website, pdf files, and soon you will have the option to integrate with many more</div>
+                            </li>
+                            <!-- List item -->
+                            <li class="relative py-2">
+                                <div class="flex items-center mb-1">
+                                    <div class="absolute left-0 h-full w-0.5 bg-slate-200 self-start ml-2.5 -translate-x-1/2 translate-y-3" aria-hidden="true"></div>
+                                    <div class="absolute left-0 rounded-full bg-indigo-500" aria-hidden="true">
+                                        <svg class="w-5 h-5 fill-current text-white" viewBox="0 0 20 20">
+                                            <path d="M14.4 8.4L13 7l-4 4-2-2-1.4 1.4L9 13.8z"></path>
+                                        </svg>
+                                    </div>
+                                    <h3 class="text-lg font-bold text-slate-800 pl-9">We train our AI on this knowledge</h3>
+                                </div>
+                                <div class="pl-9">It might take minutes or hours, depend on how large is your data.</div>
+                            </li>
+                            <!-- List item -->
+                            <li class="relative py-2">
+                                <div class="flex items-center mb-1">
+                                    <div class="absolute left-0 h-full w-0.5 bg-slate-200 self-start ml-2.5 -translate-x-1/2 translate-y-3" aria-hidden="true"></div>
+                                    <div class="absolute left-0 rounded-full bg-indigo-500" aria-hidden="true">
+                                        <svg class="w-5 h-5 fill-current text-white" viewBox="0 0 20 20">
+                                            <path d="M14.4 8.4L13 7l-4 4-2-2-1.4 1.4L9 13.8z"></path>
+                                        </svg>
+                                    </div>
+                                    <h3 class="text-lg font-bold text-slate-800 pl-9">You integrate the chatbot on your website</h3>
+                                </div>
+                                <div class="pl-9">That is it! we will provide you with a Javascript code to put it on your website.</div>
+                            </li>
+                            <!-- List item -->
+                        </ul>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <a class="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-auto" href="{{route('onboarding.data-source')}}">Let's do it! -&gt;</a>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+
+@endsection
+
+@section('scripts')
+
+@endsection

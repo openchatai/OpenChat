@@ -1,0 +1,34 @@
+name: Backend server tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+
+      - name: Install dependencies
+        run: cd backend-server && composer install --prefer-dist --no-progress --no-interaction
+
+      - name: Copy .env
+        run: cd backend-server && cp .env.example .env
+
+      - name: Generate key
+        run: cd backend-server && php artisan key:generate
+
+      - name: Run tests
+        run: cd backend-server && vendor/bin/phpunit

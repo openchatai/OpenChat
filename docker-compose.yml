@@ -1,0 +1,67 @@
+version: '3'
+services:
+  backend-server:
+    restart: unless-stopped
+    build:
+      context: ./backend-server
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    depends_on:
+      - llm-server
+      - mysql
+      - redis
+    environment:
+      - REDIS_HOST=redis
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_DATABASE=openchat
+      - DB_USERNAME=dbuser
+      - DB_PASSWORD=dbpass
+    volumes:
+      - shared_data:/app/shared_data
+    networks:
+      - openchat_network
+
+  llm-server:
+    restart: unless-stopped
+    build:
+      context: ./llm-server
+      dockerfile: Dockerfile
+    volumes:
+      - shared_data:/app/shared_data
+    networks:
+      - openchat_network
+
+  mysql:
+    restart: unless-stopped
+    platform: linux/x86_64
+    image: "mysql:5.7"
+    ports:
+      - "3307:3306"
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: openchat
+      MYSQL_USER: dbuser
+      MYSQL_PASSWORD: dbpass
+    volumes:
+      - database:/var/lib/mysql
+    networks:
+      - openchat_network
+
+  redis:
+    restart: unless-stopped
+    image: "redis:3.2"
+    ports:
+      - "6379:6379"
+    networks:
+      - openchat_network
+
+
+networks:
+  openchat_network:
+
+volumes:
+  shared_data:
+  database:
