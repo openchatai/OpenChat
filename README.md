@@ -1,4 +1,7 @@
 
+
+
+
 [![](https://dcbadge.vercel.app/api/server/Q4DxvXGw?style=flat&compact=True)](https://discord.gg/Q4DxvXGw)
 <a href="http://www.repostatus.org/#active"><img src="http://www.repostatus.org/badges/latest/active.svg" /></a>
 ![Tests](https://github.com/openchatai/OpenChat/actions/workflows/tests.yml/badge.svg)
@@ -19,7 +22,8 @@ OpenChat is an everyday user chatbot console that simplifies the utilization of 
 
 
 
-https://github.com/gharbat/OpenChat/assets/32633162/2f0c4587-cd93-496c-8b1b-1ed8d8c162b4
+https://github.com/openchatai/OpenChat/assets/32633162/ba0a6f52-a4ed-4bfd-9f72-387d52402662
+
 
 ## Try it out:
 You can try it out on OpenChat.so (we use our own OpenAI/pinecone token for the demo, please be mindful on the usage, we will clear out bots every 3 hours)
