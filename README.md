@@ -22,11 +22,12 @@ OpenChat is an everyday user chatbot console that simplifies the utilization of 
 
 
 
-https://github.com/openchatai/OpenChat/assets/32633162/ba0a6f52-a4ed-4bfd-9f72-387d52402662
-
 
 ## Try it out:
-You can try it out on OpenChat.so (we use our own OpenAI/pinecone token for the demo, please be mindful on the usage, we will clear out bots every 3 hours)
+**You can try it out on [openchat.so](http://openchat.so/) (we use our own OpenAI/pinecone token for the demo, please be mindful on the usage, we will clear out bots every 3 hours)**
+
+https://github.com/openchatai/OpenChat/assets/32633162/ba0a6f52-a4ed-4bfd-9f72-387d52402662
+
 
 ## 🏁 Current Features
 
@@ -83,7 +84,7 @@ Once the installation is complete, you can access the OpenChat console at: http:
 
 
 ## ❤️ Thanks:
-- To ![@mayooear](https://github.com/mayooear) for his work and tutorial on chatting with PDF files, we utilized a lot of his code in the LLM server.
+- To [@mayooear](https://github.com/mayooear) for his work and tutorial on chatting with PDF files, we utilized a lot of his code in the LLM server.
 
 
 
