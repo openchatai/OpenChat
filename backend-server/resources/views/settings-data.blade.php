@@ -227,8 +227,9 @@
                                                                 <!-- Row -->
                                                                 @php
                                                                     /** @var \App\Models\CrawledPages $page */
+                                                                    $pages = $source->getCrawledPages()->get();
                                                                 @endphp
-                                                                @foreach($source->getCrawledPages()->get() as $page)
+                                                                @foreach($pages as $page)
                                                                     <tr>
                                                                         <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap md:w-1/2">
                                                                             <div class="flex items-center">
