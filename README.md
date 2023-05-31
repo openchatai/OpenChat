@@ -74,6 +74,8 @@ PINECONE_ENVIRONMENT=# you can get it after creating your index in pinecone
 PINECONE_INDEX_NAME=# you can get it after creating your index in pinecone
 ```
 
+> Note: for pincone db, make sure that the dimension is equal to 1536 
+
 - Navigate to the repository folder and run the following command:
 ```
 make install
