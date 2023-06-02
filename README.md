@@ -2,7 +2,7 @@
 
 
 
-[![](https://dcbadge.vercel.app/api/server/Q4DxvXGw?style=flat&compact=True)](https://discord.gg/Q4DxvXGw)
+[![](https://dcbadge.vercel.app/api/server/yjEgCgvefr?style=flat&compact=True)](https://discord.gg/yjEgCgvefr)
 <a href="http://www.repostatus.org/#active"><img src="http://www.repostatus.org/badges/latest/active.svg" /></a>
 ![Tests](https://github.com/openchatai/OpenChat/actions/workflows/tests.yml/badge.svg)
 
