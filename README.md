@@ -35,6 +35,7 @@ https://github.com/openchatai/OpenChat/assets/32633162/c1e0cea1-6627-47c3-becc-c
 - Customize your chatbots by providing PDF files, websites, and soon, integrations with platforms like Notion, Confluence, and Office 365.
 - Each chatbot has unlimited memory capacity, enabling seamless interaction with large files such as a 400-page PDF.
 - Embed chatbots as widgets on your website or internal company tools.
+- Use your entire codebase as a data source for your chatbots (pair programming mode).
 - And much more!
 
 ## 🛣️ Roadmap:
@@ -46,6 +47,7 @@ https://github.com/openchatai/OpenChat/assets/32633162/c1e0cea1-6627-47c3-becc-c
 - [x] Accept websites as a data source
 - [x] Accept PDF files as a data source
 - [x] Support multiple data sources per chatbot
+- [x] Support ingesting an entire codebase using GitHub API and use it as a data source with pair programming mode
 - [ ] Support Slack integration (allow users to connect chatbots with their Slack workspaces)
 - [ ] Support Intercom integration (enable users to sync chat conversations with Intercom)
 - [ ] Support offline open-source models (e.g., Alpaca, LLM drivers)
