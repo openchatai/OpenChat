@@ -123,4 +123,9 @@ class Chatbot extends Model
     {
         return $this->hasMany(PdfDataSource::class);
     }
+
+    public function getCodebaseDataSources()
+    {
+        return $this->hasMany(CodebaseDataSource::class);
+    }
 }

@@ -6,10 +6,12 @@ use App\Http\Events\ChatbotWasCreated;
 use App\Http\Events\PdfDataSourceWasAdded;
 use App\Http\Events\WebsiteDataSourceCrawlingWasCompleted;
 use App\Http\Events\WebsiteDataSourceWasAdded;
+use App\Http\Events\CodebaseDataSourceWasAdded;
 use App\Http\Listeners\CreateWebsiteDataSourceIfNeeded;
 use App\Http\Listeners\IngestPdfDataSource;
 use App\Http\Listeners\IngestWebsiteDataSource;
 use App\Http\Listeners\StartRecursiveCrawler;
+use App\Http\Listeners\IngestCodebaseDataSource;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -37,7 +39,10 @@ class EventServiceProvider extends ServiceProvider
         ],
         WebsiteDataSourceCrawlingWasCompleted::class => [
             IngestWebsiteDataSource::class
-        ]
+        ],
+        CodebaseDataSourceWasAdded::class => [
+            IngestCodebaseDataSource::class
+        ],
     ];
 
     /**

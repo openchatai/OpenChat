@@ -76,17 +76,33 @@
                                             <div class="relative ml-2" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
                                                 <button class="block" aria-haspopup="true" :aria-expanded="open" @focus="open = true" @focusout="open = false" @click.prevent="" aria-expanded="false">
                                                     <svg class="w-4 h-4 fill-current text-slate-400" viewBox="0 0 16 16">
-                                                        <path d="M8 0C3.6 0 0 3.6 0 8s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8zm0 12c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1zm1-3H7V4h2v5z"></path>
+                                                        <path
+                                                            d="M8 0C3.6 0 0 3.6 0 8s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8zm0 12c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1zm1-3H7V4h2v5z"></path>
                                                     </svg>
                                                 </button>
                                                 <div class="z-10 absolute bottom-full left-1/2 -translate-x-1/2">
-                                                    <div class="min-w-60 bg-slate-800 text-slate-200 px-2 py-1 rounded overflow-hidden mb-2" x-show="open" x-transition:enter="transition ease-out duration-200 transform" x-transition:enter-start="opacity-0 translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-out duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" style="display: none;">
-                                                        <div class="text-sm">Anyone with this link will be able to interact with your chatbot</div>
+                                                    <div
+                                                        class="min-w-60 bg-slate-800 text-slate-200 px-2 py-1 rounded overflow-hidden mb-2"
+                                                        x-show="open"
+                                                        x-transition:enter="transition ease-out duration-200 transform"
+                                                        x-transition:enter-start="opacity-0 translate-y-2"
+                                                        x-transition:enter-end="opacity-100 translate-y-0"
+                                                        x-transition:leave="transition ease-out duration-200"
+                                                        x-transition:leave-start="opacity-100"
+                                                        x-transition:leave-end="opacity-0" style="display: none;">
+                                                        <div class="text-sm">Anyone with this link will be able to
+                                                            interact with your chatbot
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <input id="tooltip" class="form-input w-full" type="text" value="{{route('chat', ['token' => $bot->getToken()])}}" disabled >
+                                        <a href="{{route('chat', ['token' => $bot->getToken()])}}" target="_blank"
+                                           style="cursor: pointer!important;">
+                                            <input style="cursor: pointer!important;" id="tooltip"
+                                                   class="form-input w-full" type="text"
+                                                   value="{{route('chat', ['token' => $bot->getToken()])}}" disabled>
+                                        </a>
                                     </div>
                                     <!-- End -->
                                 </div>
@@ -95,8 +111,10 @@
                                     <!-- Start -->
                                     <div>
                                         <div class="flex items-center justify-between">
-                                            <label class="block text-sm font-medium mb-1" for="tooltip">💻 Embed on your web app</label>
-                                            <div class="relative ml-2" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
+                                            <label class="block text-sm font-medium mb-1" for="tooltip">💻 Embed on your
+                                                web app</label>
+                                            <div class="relative ml-2" x-data="{ open: false }"
+                                                 @mouseenter="open = true" @mouseleave="open = false">
                                                 <button class="block" aria-haspopup="true" :aria-expanded="open" @focus="open = true" @focusout="open = false" @click.prevent="" aria-expanded="false">
                                                     <svg class="w-4 h-4 fill-current text-slate-400" viewBox="0 0 16 16">
                                                         <path d="M8 0C3.6 0 0 3.6 0 8s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8zm0 12c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1zm1-3H7V4h2v5z"></path>

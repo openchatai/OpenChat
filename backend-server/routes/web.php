@@ -50,6 +50,7 @@ Route::middleware([])->group(function () {
     Route::get('/onboarding/data-source', [OnboardingController::class, 'dataSources'])->name('onboarding.data-source');
     Route::get('/onboarding/website', [OnboardingController::class, 'dataSourcesWebsite'])->name('onboarding.website');
     Route::get('/onboarding/pdf', [OnboardingController::class, 'dataSourcesPdf'])->name('onboarding.pdf');
+    Route::get('/onboarding/codebase', [OnboardingController::class, 'dataSourcesCodebase'])->name('onboarding.codebase');
 
 
     /**
@@ -57,6 +58,7 @@ Route::middleware([])->group(function () {
      */
     Route::post('/onboarding/website', [ChatbotController::class, 'createViaWebsiteFlow'])->name('onboarding.website.create');
     Route::post('/onboarding/pdf', [ChatbotController::class, 'createViaPdfFlow'])->name('onboarding.pdf.create');
+    Route::post('/onboarding/codebase', [ChatbotController::class, 'createViaCodebaseFlow'])->name('onboarding.codebase.create');
     Route::post('/onboarding/{id}/config', [ChatbotController::class, 'updateCharacterSettings'])->name('onboarding.config.create');
     Route::get('/onboarding/{id}/config', [OnboardingController::class, 'config'])->name('onboarding.config');
 

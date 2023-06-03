@@ -15,6 +15,6 @@ class ChatbotResponse
 
     public function getSourceDocuments(): array
     {
-        return $this->response['sourceDocuments'];
+        return $this->response['sourceDocuments'] ?? [];
     }
 }

@@ -12,6 +12,7 @@ class SendChatMessageRequest extends FormRequest
     {
         return [
             'message' => 'required|string',
+            'mode' => 'sometimes|string|in:assistant,pair_programmer',
         ];
     }
 
@@ -23,5 +24,10 @@ class SendChatMessageRequest extends FormRequest
     public function getHistory(): array
     {
         return $this->get('history');
+    }
+
+    public function getMode(): string
+    {
+        return $this->get('mode');
     }
 }
