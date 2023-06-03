@@ -22,6 +22,7 @@
     "axios": "^1.4.0",
     "clsx": "^1.2.1",
     "dotenv": "^16.0.3",
+    "ignore": "^5.2.4",
     "langchain": "0.0.55",
     "lucide-react": "^0.125.0",
     "next": "13.2.3",
