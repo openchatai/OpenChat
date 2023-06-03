@@ -73,7 +73,9 @@
                         </div>
 
                         <div id="token-block" style="display: none;">
-                            <p>In this demo website we only support public repo, and we handle the first level of the repos. you can use the open source self-hosted version to handle private repos and do full scans </p>
+                            <p>
+                                You can set the GITHUB_ACCESS_TOKEN environment variable to a GitHub access token to increase the rate limit and access private repositories. We will ignore binary files like images.
+                            </p>
                         </div>
 
                         <div class="flex items-center justify-between space-x-6 mb-8">

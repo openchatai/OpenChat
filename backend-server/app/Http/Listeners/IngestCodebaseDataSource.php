@@ -41,7 +41,7 @@ class IngestCodebaseDataSource implements ShouldQueue
 
         // Call to ingest service endpoint
         $client = new Client();
-        $response = $client->request('POST', 'http://localhost:3000/api/ingest', [
+        $response = $client->request('POST', 'http://llm-server:3000/api/ingest', [
             'json' => $requestBody,
         ]);
 
