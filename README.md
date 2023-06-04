@@ -83,6 +83,9 @@ PINECONE_INDEX_NAME=# you can get it after creating your index in pinecone
 make install
 ```
 
+> :warning: **Windows users might not be able to install OpenChat easily and we are working on fixing that.**
+
+
 Once the installation is complete, you can access the OpenChat console at: http://localhost:8000
 
 
