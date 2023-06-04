@@ -67,7 +67,7 @@
                     <div class="space-y-4 mb-8">
                         <!-- Company Name -->
                         <div>
-                            <label class="block text-sm font-medium mb-1" for="website-name">Repository url <span
+                            <label class="block text-sm font-medium mb-1" for="website-name">Repository url (must have <pre style="display: inline">main</pre> branch) <span
                                     class="text-rose-500">*</span></label>
                             <input id="repo-url" class="form-input w-full" type="text" name="repo" required autocomplete="off">
                         </div>
