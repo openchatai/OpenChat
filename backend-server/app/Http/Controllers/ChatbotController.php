@@ -3,14 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Http\Events\ChatbotWasCreated;
+use App\Http\Events\CodebaseDataSourceWasAdded;
 use App\Http\Events\PdfDataSourceWasAdded;
 use App\Http\Requests\CreateChatbotRequest;
+use App\Http\Requests\CreateChatbotViaCodebaseRequest;
 use App\Http\Requests\CreateChatbotViaPdfFlowRequest;
 use App\Http\Requests\SendChatMessageRequest;
 use App\Http\Requests\UpdateCharacterSettingsRequest;
 use App\Http\Responses\ChatbotResponse;
 use App\Http\Services\HandlePdfDataSource;
 use App\Models\Chatbot;
+use App\Models\CodebaseDataSource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Http;
@@ -133,6 +136,7 @@ class ChatbotController extends Controller
         // Get the question and history from the request
         $question = $request->getMessage();
         $history = $request->getHistory();
+        $mode = $request->getMode();
 
         // Remove null and empty values and empty arrays or objects from the history
         $history = array_filter($history, function ($value) {
@@ -140,10 +144,11 @@ class ChatbotController extends Controller
         });
 
         // Call the API to send the message to the chatbot with a timeout of 5 seconds
-        $response = Http::connectTimeout(60)->post("http://llm-server:3000/api/chat", [
+        $response = Http::timeout(200)->post("http://llm-server:3000/api/chat", [
             'question' => $question,
             'history' => $history,
             'namespace' => $bot->getId()->toString(),
+            'mode' =>  $mode,
         ]);
 
         if ($response->failed()) {
@@ -177,5 +182,29 @@ class ChatbotController extends Controller
         return view('chat', [
             'bot' => $bot,
         ]);
+    }
+
+    public function createViaCodebaseFlow(CreateChatbotViaCodebaseRequest $request): RedirectResponse
+    {
+        $chatbot = new Chatbot();
+        $chatbot->setId(Uuid::uuid4());
+        $chatbot->setName($request->getName());
+        $chatbot->setToken(Str::random(20));
+        $chatbot->setPromptMessage($request->getPromptMessage());
+        $chatbot->save();
+
+        $datasource = new CodebaseDataSource();
+        $datasource->setId(Uuid::uuid4());
+        $datasource->setChatbotId($chatbot->getId());
+        $datasource->setRepository($request->getRepoUrl());
+        $datasource->save();
+
+
+        event(new CodebaseDataSourceWasAdded(
+                $chatbot->getId(),
+                $datasource->getId())
+        );
+
+        return redirect()->route('onboarding.config', ['id' => $chatbot->getId()->toString()]);
     }
 }

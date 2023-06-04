@@ -476,6 +476,97 @@
                                     <!-- End -->
                                 </div>
                             @endforeach
+
+
+                            <hr style="margin-top: 2rem; margin-bottom: 2rem">
+                            @php
+                                /** @var \App\Models\CodebaseDataSource[] $codebaseDataSources */
+                            @endphp
+                            @foreach($codebaseDataSources as $source)
+                                <div style="margin-top: 1.5rem; margin-bottom: 1.5rem">
+                                    <!-- Start -->
+                                    <div class="rounded-sm border border-slate-200">
+                                        <div class="overflow-x-auto">
+                                            <table class="table-auto w-full divide-y divide-slate-200">
+                                                <!-- Table body -->
+                                                <tbody class="text-sm" x-data="{ open: false }">
+                                                <!-- Row -->
+                                                <tr>
+                                                    <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                                                        <div class="flex items-center text-slate-800">
+                                                            <div
+                                                                class="w-10 h-10 shrink-0 flex items-center justify-center bg-slate-100 rounded-full mr-2 sm:mr-3">
+                                                                <img class="rounded-full ml-1"
+                                                                     src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+                                                                     width="40"
+                                                                     height="40" alt="User 01">
+                                                            </div>
+                                                            <div class="font-medium text-slate-800">
+                                                                <strong>Codebase ({{$source->getRepository()}})</strong>
+
+                                                            </div>
+                                                        </div>
+                                                    </td>
+
+                                                    <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                                                        @if($source->getCreatedAt()->diffInMinutes(now()) <= 3)
+                                                            <div
+                                                                class="inline-flex font-medium bg-blue-100 text-blue-600 rounded-full text-center px-2.5 py-0.5">
+                                                                In progress (eta: {{$source->getCreatedAt()->addMinutes(3)->diffForHumans()}})
+                                                            </div>
+                                                        @else
+                                                            <div
+                                                                class="inline-flex font-medium bg-emerald-100 text-emerald-600 rounded-full text-center px-2.5 py-0.5">
+                                                                Completed
+                                                            </div>
+                                                        @endif
+                                                    </td>
+
+                                                    <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                                                        <div class="flex items-center">
+                                                            <svg
+                                                                class="w-4 h-4 fill-current text-slate-400 shrink-0 mr-2"
+                                                                viewBox="0 0 16 16">
+                                                                <path
+                                                                    d="M4.3 4.5c1.9-1.9 5.1-1.9 7 0 .7.7 1.2 1.7 1.4 2.7l2-.3c-.2-1.5-.9-2.8-1.9-3.8C10.1.4 5.7.4 2.9 3.1L.7.9 0 7.3l6.4-.7-2.1-2.1zM15.6 8.7l-6.4.7 2.1 2.1c-1.9 1.9-5.1 1.9-7 0-.7-.7-1.2-1.7-1.4-2.7l-2 .3c.2 1.5.9 2.8 1.9 3.8 1.4 1.4 3.1 2 4.9 2 1.8 0 3.6-.7 4.9-2l2.2 2.2.8-6.4z"></path>
+                                                            </svg>
+                                                            <div class="cursor-not-allowed">Re-sync
+                                                                <div
+                                                                    class="inline-flex items-center text-xs font-medium text-slate-100 bg-slate-700 rounded-full text-center px-2 py-0.5"
+                                                                    style="margin-left: 0.3rem">
+                                                                    <svg
+                                                                        class="w-3 h-3 shrink-0 fill-current text-amber-500 mr-1"
+                                                                        viewBox="0 0 12 12">
+                                                                        <path
+                                                                            d="M11.953 4.29a.5.5 0 00-.454-.292H6.14L6.984.62A.5.5 0 006.12.173l-6 7a.5.5 0 00.379.825h5.359l-.844 3.38a.5.5 0 00.864.445l6-7a.5.5 0 00.075-.534z"></path>
+                                                                    </svg>
+                                                                    <span>soon </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                                                        <button
+                                                            class="text-rose-500 hover:text-rose-600 rounded-full cursor-not-allowed"
+                                                            disabled>
+                                                            <span class="sr-only">Delete</span>
+                                                            <svg class="w-8 h-8 fill-current" viewBox="0 0 32 32">
+                                                                <path d="M13 15h2v6h-2zM17 15h2v6h-2z"></path>
+                                                                <path
+                                                                    d="M20 9c0-.6-.4-1-1-1h-6c-.6 0-1 .4-1 1v2H8v2h1v10c0 .6.4 1 1 1h12c.6 0 1-.4 1-1V13h1v-2h-4V9zm-6 1h4v1h-4v-1zm7 3v9H11v-9h10z"></path>
+                                                            </svg>
+                                                        </button>
+                                                    </td>
+
+
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <!-- End -->
+                                </div>
+                            @endforeach
                             <section>
                                 <div
                                     class="px-5 py-3 bg-indigo-50 border border-indigo-100 rounded-sm text-center xl:text-left xl:flex xl:flex-wrap xl:justify-between xl:items-center">

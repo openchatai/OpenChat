@@ -6,13 +6,13 @@ import { pinecone } from '@/utils/pinecone-client';
 import { PINECONE_INDEX_NAME, PINECONE_NAME_SPACE } from '@/config/pinecone';
 
 export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse,
+    req: NextApiRequest,
+    res: NextApiResponse,
 ) {
-  const { question, history, namespace } = req.body;
+  const { question, history, namespace, mode } = req.body;
 
-  console.log('question', question);
-
+  console.log('req.body', req.body);
+  console.log({ question, history, namespace, mode });
   //only accept post requests
   if (req.method !== 'POST') {
     res.status(405).json({ error: 'Method not allowed' });
@@ -30,16 +30,16 @@ export default async function handler(
 
     /* create vectorstore*/
     const vectorStore = await PineconeStore.fromExistingIndex(
-      new OpenAIEmbeddings({}),
-      {
-        pineconeIndex: index,
-        textKey: 'text',
-        namespace: namespace, //namespace comes from your config folder
-      },
+        new OpenAIEmbeddings({}),
+        {
+          pineconeIndex: index,
+          textKey: 'text',
+          namespace: namespace, //namespace comes from your config folder
+        },
     );
 
     //create chain
-    const chain = makeChain(vectorStore);
+    const chain = makeChain(vectorStore, mode);
     //Ask a question using chat history
     const response = await chain.call({
       question: sanitizedQuestion,

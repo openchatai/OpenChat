@@ -35,4 +35,9 @@ class OnboardingController extends Controller
     {
         return view('onboarding.step-4');
     }
+
+    public function dataSourcesCodebase()
+    {
+        return view('onboarding.step-2-codebase');
+    }
 }
