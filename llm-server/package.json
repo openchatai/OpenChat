@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "license": "MIT",
-  "author": "First verison written by Mayooear<twitter:@mayowaoshin> & modifed by Openchat Team",
+  "author": "First version written by Mayooear<twitter:@mayowaoshin> & modifed by Openchat Team",
   "type": "module",
   "scripts": {
     "dev": "next dev",
