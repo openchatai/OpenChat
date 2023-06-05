@@ -19,7 +19,8 @@ DB_PASSWORD=dbpass
 * `php artisan config:cache`
 * `php artisan migrate --seed`
 * `php artisan storage:link`
-
+#### php server run:
+`php artisan serve --host=0.0.0.0 --port=8000`
 #### php server queue listen:
 `php artisan queue:work --timeout=200`
 
