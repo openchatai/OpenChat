@@ -1,33 +1,26 @@
-
-
-
-
 [![](https://dcbadge.vercel.app/api/server/yjEgCgvefr?style=flat&compact=True)](https://discord.gg/yjEgCgvefr)
 <a href="http://www.repostatus.org/#active"><img src="http://www.repostatus.org/badges/latest/active.svg" /></a>
 ![Tests](https://github.com/openchatai/OpenChat/actions/workflows/tests.yml/badge.svg)
 
-
-
 ![](https://gcdnb.pbrd.co/images/gjX4atjx9uKT.png?o=1)
 
-------
+---
+
 # 🔥 OpenChat
 
 **Important disclaimer:** This is an undergoing efforts to create a free & open source chatbot console that allows you to easily create unlimited chatbots using different models for your daily use. Our main goal is to make the interface simple and user-friendly for everyone. If you find this interesting, we would greatly appreciate your support in contributing to this project. We have a highly ambitious plan that we are determined to implement!
 
----- 
+---
+
 OpenChat is an everyday user chatbot console that simplifies the utilization of large language models. With the advancements in AI, the installation and usage of these models have become overwhelming. OpenChat aims to address this challenge by providing a two-step setup process to create a comprehensive chatbot console. It serves as a central hub for managing multiple customized chatbots.
 
 > Currently, OpenChat supports GPT models, and we are actively working on incorporating various open-source drivers that can be activated with a single click.
 
-
-
-
 ## Try it out:
+
 **You can try it out on [openchat.so](http://openchat.so/) (we use our own OpenAI/pinecone token for the demo, please be mindful on the usage, we will clear out bots every 3 hours)**
 
 https://github.com/openchatai/OpenChat/assets/32633162/c1e0cea1-6627-47c3-becc-c7ab6f8c5b2d
-
 
 ## 🏁 Current Features
 
@@ -39,6 +32,7 @@ https://github.com/openchatai/OpenChat/assets/32633162/c1e0cea1-6627-47c3-becc-c
 - And much more!
 
 ## 🛣️ Roadmap:
+
 - [x] Create unlimited chatbots
 - [x] Share chatbots via URL
 - [x] Integrate chatbots on any website using JS (as a widget on the bottom right corner)
@@ -57,8 +51,7 @@ https://github.com/openchatai/OpenChat/assets/32633162/c1e0cea1-6627-47c3-becc-c
 - [ ] Support custom input fields for chatbots
 - [ ] Support pre-defined messages with a single click
 
-We love hearing from you! Got any cool ideas or requests? We're all ears! So, if you have something in mind, give us a shout! 
-
+We love hearing from you! Got any cool ideas or requests? We're all ears! So, if you have something in mind, give us a shout!
 
 ## 🚀 Getting Started
 
@@ -69,6 +62,7 @@ git clone git@github.com:openchatai/OpenChat.git
 ```
 
 - Update common.env with your keys:
+
 ```
 OPENAI_API_KEY=# you can get it from your account in openai.com
 PINECONE_API_KEY=# you can get from "API Keys" tab in pinecone
@@ -76,30 +70,28 @@ PINECONE_ENVIRONMENT=# you can get it after creating your index in pinecone
 PINECONE_INDEX_NAME=# you can get it after creating your index in pinecone
 ```
 
-> Note: for pincone db, make sure that the dimension is equal to 1536 
+> Note: for pincone db, make sure that the dimension is equal to 1536
+
+- Ensure Docker is running on your machine.
 
 - Navigate to the repository folder and run the following command:
+
 ```
 make install
 ```
 
 > :warning: **Windows users might not be able to install OpenChat easily and we are working on fixing that.**
 
-
 Once the installation is complete, you can access the OpenChat console at: http://localhost:8000
 
-
-
 ## ❤️ Thanks:
+
 - To [@mayooear](https://github.com/mayooear) for his work and tutorial on chatting with PDF files, we utilized a lot of his code in the LLM server.
 
-
-
 ## Disclaimer:
+
 We quickly built this project to validate the idea, so please excuse any shortcomings in the code. You may come across several areas that require enhancements, and we truly appreciate your support by opening issues, submitting pull requests, and providing suggestions.
 
-
 ## License
+
 This project is licensed under the MIT License.
-
-
