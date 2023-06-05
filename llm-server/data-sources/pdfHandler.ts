@@ -24,34 +24,11 @@ function generateRandomFolderName() {
 }
 export default async function pdfHandler(req: NextApiRequest, res: NextApiResponse) {
     try {
-        const { pdf_files, namespace } = req.body;
+        const {shared_folder} = req.body;
+        const namespace = req.body.namespace;
 
-        const folderName = generateRandomFolderName();
-        const folderPath = path.join(tmpdir(), folderName);
-
-        // Create the folder
-        fs.mkdirSync(folderPath);
-
-        // Download each PDF file
-        for (let i = 0; i < pdf_files.length; i++) {
-            const url = pdf_files[i];
-            const fileName = `file${i + 1}.pdf`;
-            const filePath = path.join(folderPath, fileName);
-
-            // Download the file using axios
-            const response = await axios.get(url, { responseType: 'stream' });
-            const writer = fs.createWriteStream(filePath);
-            response.data.pipe(writer);
-
-            // Wait for the file to finish downloading
-            await new Promise((resolve, reject) => {
-                writer.on('finish', resolve);
-                writer.on('error', reject);
-            });
-        }
-
-        const directoryLoader = new DirectoryLoader(folderPath, {
-            '.pdf': (path) => new CustomPDFLoader(path),
+        const  directoryLoader = new DirectoryLoader("/app/shared_data/" + shared_folder, {
+            '.pdf': (path: string | Blob) => new CustomPDFLoader(path),
         });
 
         const rawDocs = await directoryLoader.load();
@@ -72,7 +49,6 @@ export default async function pdfHandler(req: NextApiRequest, res: NextApiRespon
             textKey: 'text',
         });
 
-        fs.rmdirSync(folderPath, { recursive: true });
         console.log('All is done, folder deleted');
         return res.status(200).json({ message: 'Success' });
     } catch (e) {

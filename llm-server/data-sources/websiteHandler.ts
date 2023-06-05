@@ -10,6 +10,7 @@ import { TextLoader } from 'langchain/document_loaders';
 import { OpenAIEmbeddings } from 'langchain/embeddings/openai';
 import { PineconeStore } from 'langchain/vectorstores/pinecone';
 import { pinecone } from '@/utils/pinecone-client';
+import {CustomPDFLoader} from "@/utils/customPDFLoader";
 
 function generateRandomFolderName() {
     const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
@@ -22,33 +23,10 @@ function generateRandomFolderName() {
 }
 export default async function websiteHandler(req: NextApiRequest, res: NextApiResponse) {
     try {
-        const { html_files, namespace } = req.body;
+        const {shared_folder} = req.body;
+        const namespace = req.body.namespace;
 
-        const folderName = generateRandomFolderName();
-        const folderPath = path.join(tmpdir(), folderName);
-
-        // Create the folder
-        fs.mkdirSync(folderPath);
-
-        // Download each HTML file
-        for (let i = 0; i < html_files.length; i++) {
-            const url = html_files[i];
-            const fileName = `file${i + 1}.txt`;
-            const filePath = path.join(folderPath, fileName);
-
-            // Download the file using axios
-            const response = await axios.get(url, { responseType: 'stream' });
-            const writer = fs.createWriteStream(filePath);
-            response.data.pipe(writer);
-
-            // Wait for the file to finish downloading
-            await new Promise((resolve, reject) => {
-                writer.on('finish', resolve);
-                writer.on('error', reject);
-            });
-        }
-
-        const directoryLoader = new DirectoryLoader(folderPath, {
+        const  directoryLoader = new DirectoryLoader("/app/shared_data/" + shared_folder, {
             '.txt': (path) => new TextLoader(path),
         });
 
@@ -69,8 +47,6 @@ export default async function websiteHandler(req: NextApiRequest, res: NextApiRe
             namespace: namespace,
             textKey: 'text',
         });
-
-        fs.rmdirSync(folderPath, { recursive: true });
         console.log('All is done, folder deleted');
         return res.status(200).json({ message: 'Success' });
     } catch (e) {
