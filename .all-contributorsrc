@@ -16,6 +16,15 @@
         "ideas",
         "code"
       ]
+    },
+    {
+      "login": "jsindy",
+      "name": "Joshua Sindy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4966007?v=4",
+      "profile": "https://github.com/jsindy",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
