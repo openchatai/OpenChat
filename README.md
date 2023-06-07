@@ -54,11 +54,13 @@ https://github.com/openchatai/OpenChat/assets/32633162/c1e0cea1-6627-47c3-becc-c
 - [ ] Support Slack integration (allow users to connect chatbots with their Slack workspaces)
 - [ ] Support Intercom integration (enable users to sync chat conversations with Intercom)
 - [ ] Support offline open-source models (e.g., Alpaca, LLM drivers)
+- [ ] Support Vertex AI and Palm as LLMs
 - [ ] Support Confluence, Notion, Office 365, and Google Workspace
 - [ ] Refactor the codebase to be API ready
 - [ ] Create a new UI designer for website-embedded chatbots
 - [ ] Support custom input fields for chatbots
 - [ ] Support pre-defined messages with a single click
+- [ ] Support offline usage: this is a major feature, OpenChat will operate fully offline with no internet connection at this stage (offline LLMs, offline Vector DBs)
 
 We love hearing from you! Got any cool ideas or requests? We're all ears! So, if you have something in mind, give us a shout! 
 
