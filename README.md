@@ -16,7 +16,8 @@
 ------
 # 🔥 OpenChat
 
-**Important disclaimer:** This is an undergoing efforts to create a free & open source chatbot console that allows you to easily create unlimited chatbots using different models for your daily use. Our main goal is to make the interface simple and user-friendly for everyone. If you find this interesting, we would greatly appreciate your support in contributing to this project. We have a highly ambitious plan that we are determined to implement!
+**Important disclaimer:**
+> :warning: **This project is not production ready, meant for local envs, We quickly built this project to validate the idea, so please excuse any shortcomings in the code. You may come across several areas that require enhancements, and we truly appreciate your support by opening issues, submitting pull requests, and providing suggestions.**
 
 ---- 
 OpenChat is an everyday user chatbot console that simplifies the utilization of large language models. With the advancements in AI, the installation and usage of these models have become overwhelming. OpenChat aims to address this challenge by providing a two-step setup process to create a comprehensive chatbot console. It serves as a central hub for managing multiple customized chatbots.
@@ -97,11 +98,6 @@ Once the installation is complete, you can access the OpenChat console at: http:
 
 ## ❤️ Thanks:
 - To [@mayooear](https://github.com/mayooear) for his work and tutorial on chatting with PDF files, we utilized a lot of his code in the LLM server.
-
-
-
-## Disclaimer:
-We quickly built this project to validate the idea, so please excuse any shortcomings in the code. You may come across several areas that require enhancements, and we truly appreciate your support by opening issues, submitting pull requests, and providing suggestions.
 
 
 ## License
