@@ -28,7 +28,7 @@
                                 <rect width="32" height="32" rx="16" fill="url(#header-logo)"
                                       fill-rule="nonzero"></rect>
                             </svg>
-
+                                <span class="ml-2" style="margin-left: 8px;">{{$bot->getName()}}</span> 
                         </div>
                     </div>
                     <!-- Buttons on the right side -->
