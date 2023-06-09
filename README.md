@@ -17,7 +17,7 @@
 # 🔥 OpenChat
 
 **Important disclaimer:**
-> :warning: **This project is not production ready, meant for local enviroment at this early stage, We quickly built this project to validate the idea, so please excuse any shortcomings in the code. You may come across several areas that require enhancements, and we truly appreciate your support by opening issues, submitting pull requests, and providing suggestions.**
+> :warning: **This project is not production ready, meant for local environment at this early stage, We quickly built this project to validate the idea, so please excuse any shortcomings in the code. You may come across several areas that require enhancements, and we truly appreciate your support by opening issues, submitting pull requests, and providing suggestions.**
 
 ---- 
 OpenChat is an everyday user chatbot console that simplifies the utilization of large language models. With the advancements in AI, the installation and usage of these models have become overwhelming. OpenChat aims to address this challenge by providing a two-step setup process to create a comprehensive chatbot console. It serves as a central hub for managing multiple customized chatbots.
