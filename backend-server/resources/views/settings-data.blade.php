@@ -67,7 +67,7 @@
             </ul>
         </div>
 
-        <div class="bg-white shadow-lg rounded-sm mb-8">
+        <div class="bg-white inline-flex shadow-lg rounded-sm mb-8">
             <div class="flex flex-col md:flex-row md:-mr-px">
 
                 <!-- Sidebar -->
