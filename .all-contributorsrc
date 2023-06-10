@@ -34,6 +34,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "Woahai321",
+      "name": "WoahAI",
+      "avatar_url": "https://avatars.githubusercontent.com/u/115117306?v=4",
+      "profile": "https://woahai.com/",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
