@@ -175,7 +175,7 @@
                     <div>
                         <div
                             class="text-sm bg-indigo-500 text-white p-3 rounded-lg rounded-tl-none border border-transparent shadow-md mb-1">
-                            Hello, I'm here to help. What can I do for you today?
+                            Hello, I'm {{$bot->getName()}}, and here to help! What can I do for you today?
                         </div>
                         <div class="flex items-center justify-between">
 
