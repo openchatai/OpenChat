@@ -1,6 +1,6 @@
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 
@@ -118,6 +118,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/eltociear"><img src="https://avatars.githubusercontent.com/u/22633385?v=4?s=100" width="100px;" alt="Ikko Eltociear Ashimine"/><br /><sub><b>Ikko Eltociear Ashimine</b></sub></a><br /><a href="#ideas-eltociear" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/openchatai/OpenChat/commits?author=eltociear" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/jsindy"><img src="https://avatars.githubusercontent.com/u/4966007?v=4?s=100" width="100px;" alt="Joshua Sindy"/><br /><sub><b>Joshua Sindy</b></sub></a><br /><a href="https://github.com/openchatai/OpenChat/issues?q=author%3Ajsindy" title="Bug reports">🐛</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/erjanmx"><img src="https://avatars.githubusercontent.com/u/4899432?v=4?s=100" width="100px;" alt="Erjan Kalybek"/><br /><sub><b>Erjan Kalybek</b></sub></a><br /><a href="https://github.com/openchatai/OpenChat/commits?author=erjanmx" title="Documentation">📖</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://woahai.com/"><img src="https://avatars.githubusercontent.com/u/115117306?v=4?s=100" width="100px;" alt="WoahAI"/><br /><sub><b>WoahAI</b></sub></a><br /><a href="https://github.com/openchatai/OpenChat/issues?q=author%3AWoahai321" title="Bug reports">🐛</a></td>
     </tr>
   </tbody>
 </table>
