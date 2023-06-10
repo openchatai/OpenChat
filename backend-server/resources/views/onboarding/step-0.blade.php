@@ -84,6 +84,7 @@
                         </ul>
                     </div>
                     <div class="flex items-center justify-between">
+                        <a class="btn bg-rose-500 hover:bg-rose-600 text-white mr-auto" href="{{route('index')}}">Cancel</a>
                         <a class="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-auto" href="{{route('onboarding.data-source')}}">Let's do it! -&gt;</a>
                     </div>
                 </form>
