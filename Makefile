@@ -19,7 +19,7 @@ install:
 	@sleep 5
 	@echo "$(COLOR_BOLD)=== Copying .env files ===$(COLOR_RESET)"
 	cp -n backend-server/.env.example backend-server/.env 2>/dev/null || true
-	cp -n common.env llm-server/.env 2>/dev/null || true
+	cp common.env llm-server/.env 2>/dev/null || true
 	$(DOCKER_COMPOSE) build #--no-cache
 	$(DOCKER_COMPOSE) up -d #--force-recreate
 	@echo "$(COLOR_BOLD)=== Waiting for services to start (~20 seconds) ===$(COLOR_RESET)"
