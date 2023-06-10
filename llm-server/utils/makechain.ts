@@ -36,8 +36,7 @@ If the question is not related to the context, politely respond that you are tun
 {context}
 
 Question: {question}
-(Answer in the same language as the {question})
-Helpful answer in markdown:`
+Helpful answer in same language as the question and in markdown:`
             };
         case 'pair_programmer':
             return {
