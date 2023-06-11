@@ -193,6 +193,11 @@
 
                 </div>
 
+				<div class="flex items-center justify-between">
+                        <a class="text-sm underline hover:no-underline" href="{{route('onboarding.welcome')}}">&lt;-
+                            Back</a>
+                    </div>
+
             </div>
         </div>
 
