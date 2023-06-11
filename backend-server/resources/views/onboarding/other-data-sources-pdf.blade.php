@@ -100,7 +100,7 @@
                         </div>
                     </div>
                     <div class="flex items-center justify-between">
-                        <a class="text-sm underline hover:no-underline" href="{{route('onboarding.welcome')}}">&lt;-
+                        <a class="text-sm underline hover:no-underline" href="../data">&lt;-
                             Back</a>
                         <button type="submit" class="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-auto">Next Step
                             -&gt;
