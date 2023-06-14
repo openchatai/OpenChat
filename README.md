@@ -1,15 +1,13 @@
 
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors-)
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
-
-
-
-[![](https://dcbadge.vercel.app/api/server/yjEgCgvefr?style=flat&compact=True)](https://discord.gg/yjEgCgvefr)
-<a href="http://www.repostatus.org/#active"><img src="http://www.repostatus.org/badges/latest/active.svg" /></a>
-![Tests](https://github.com/openchatai/OpenChat/actions/workflows/tests.yml/badge.svg)
-
-
+<p>
+<img alt="GitHub Contributors" src="https://img.shields.io/github/contributors/openchatai/openchat" />
+<img alt="GitHub Last Commit" src="https://img.shields.io/github/last-commit/openchatai/openchat" />
+<img alt="" src="https://img.shields.io/github/repo-size/openchatai/openchat" />
+<img alt="GitHub Issues" src="https://img.shields.io/github/issues/openchatai/openchat" />
+<img alt="GitHub Pull Requests" src="https://img.shields.io/github/issues-pr/openchatai/openchat" />
+<img alt="Github License" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
+<img alt="Discord" src="https://img.shields.io/discord/1110910277110743103?label=Discord&logo=discord&logoColor=white&style=plastic&color=d7b023)](https://discord.gg/Q8hHfdav" />
+</p>
 
 ![](https://gcdnb.pbrd.co/images/gjX4atjx9uKT.png?o=1)
 
