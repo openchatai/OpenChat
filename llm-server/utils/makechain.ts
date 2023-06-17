@@ -2,9 +2,10 @@ import {OpenAI} from 'langchain/llms/openai';
 import {PineconeStore} from 'langchain/vectorstores/pinecone';
 import {ConversationalRetrievalQAChain} from 'langchain/chains';
 
-export const makeChain = (vectorstore: PineconeStore, mode: string) => {
+export const makeChain = (vectorstore: PineconeStore, mode: string, initial_prompt: string) => {
 
-    const prompts = getInitalPrmoptByMode(mode);
+    const prompts = getInitialPromptByMode(mode, initial_prompt);
+
     const model = new OpenAI({
         temperature: 0, // increase temepreature to get more creative answers
         modelName: 'gpt-3.5-turbo', //change this to gpt-4 if you have access
@@ -20,7 +21,8 @@ export const makeChain = (vectorstore: PineconeStore, mode: string) => {
     },);
 };
 
-function getInitalPrmoptByMode(mode: string) {
+function getInitialPromptByMode(mode: string, initial_prompt: string) {
+    // @todo we need to make this 100% dynamic, but there is a tradeoff between dynamic and easy to understand by end users. so will keep like this for now
     switch (mode) {
         case 'assistant':
             return {
@@ -29,14 +31,7 @@ function getInitalPrmoptByMode(mode: string) {
 Chat History:
 {chat_history}
 Follow Up Input: {question}
-Standalone question:`, qa_prompt: `You are a helpful AI customer support agent. Use the following pieces of context to answer the question at the end.
-If you don't know the answer, just say you don't know. DO NOT try to make up an answer.
-If the question is not related to the context, politely respond that you are tuned to only answer questions that are related to the context.
-
-{context}
-
-Question: {question}
-Helpful answer in markdown:`
+Standalone question:`, qa_prompt: initial_prompt
             };
         case 'pair_programmer':
             return {
@@ -60,13 +55,7 @@ Helpful answer in markdown:`
 Chat History:
 {chat_history}
 Follow Up Input: {question}
-Standalone question:`, qa_prompt: `You are a helpful AI pair programmer. You are helping a human programmer with their code. You are answering questions about the given code.
-only answer questions that are about the code in the given context. If the question is not about the code in the context, answer with "I only answer questions about the code in the given context".
-
-{context}
-
-Question: {question}
-Helpful answer in markdown:`
+Standalone question:`, qa_prompt: initial_prompt
             };
     }
 }

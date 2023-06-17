@@ -9,10 +9,10 @@ export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse,
 ) {
-  const { question, history, namespace, mode } = req.body;
+  const { question, history, namespace, mode, initial_prompt } = req.body;
 
   console.log('req.body', req.body);
-  console.log({ question, history, namespace, mode });
+  console.log({ question, history, namespace, mode, initial_prompt });
   //only accept post requests
   if (req.method !== 'POST') {
     res.status(405).json({ error: 'Method not allowed' });
@@ -39,7 +39,7 @@ export default async function handler(
     );
 
     //create chain
-    const chain = makeChain(vectorStore, mode);
+    const chain = makeChain(vectorStore, mode, initial_prompt);
     //Ask a question using chat history
     const response = await chain.call({
       question: sanitizedQuestion,
