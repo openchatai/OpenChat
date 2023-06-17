@@ -29,6 +29,7 @@
                                       fill-rule="nonzero"></rect>
                             </svg>
 
+                            <span class="ml-2" style="margin-left: 8px; font-weight: bold">{{$bot->getName()}}</span>
                         </div>
                     </div>
                     <!-- Buttons on the right side -->
@@ -215,7 +216,6 @@
 @endsection
 
 @section('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
 
         var currentMode = 'assistant';
@@ -403,7 +403,7 @@
         <div>
             <div
                 class="text-sm bg-indigo-500 text-white p-3 rounded-lg rounded-tl-none border border-transparent shadow-md mb-1">
-                ${marked.parse(message)}
+                ${message}
             </div>
             <div class="flex items-center">
                 ${sourcesHTML}

@@ -2,6 +2,7 @@
 
 namespace App\Http\Listeners;
 
+use App\Http\Enums\IngestStatusType;
 use App\Http\Events\PdfDataSourceWasAdded;
 use App\Models\PdfDataSource;
 use Exception;
@@ -25,24 +26,36 @@ class IngestPdfDataSource implements ShouldQueue
         $botId = $event->getChatbotId();
         $pdfDataSourceId = $event->getPdfDataSourceId();
 
-        /** @var PdfDataSource $pdfDataSource */
-        $pdfDataSource = PdfDataSource::where('id', $pdfDataSourceId)->firstOrFail();
-        $files = $pdfDataSource->getFiles();
+        try {
+            /** @var PdfDataSource $pdfDataSource */
+            $pdfDataSource = PdfDataSource::where('id', $pdfDataSourceId)->firstOrFail();
 
-        $requestBody = [
-            'type' => 'pdf',
-            'shared_folder' => $pdfDataSource->getFolderName(),
-            'namespace' => $botId,
-        ];
+            $requestBody = [
+                'type' => 'pdf',
+                'shared_folder' => $pdfDataSource->getFolderName(),
+                'namespace' => $botId,
+            ];
 
-        // Call to ingest service endpoint
-        $client = new Client();
-        $response = $client->request('POST', "http://llm-server:3000/api/ingest", [
-            'json' => $requestBody,
-        ]);
+            // Call to ingest service endpoint
+            $client = new Client();
+            $response = $client->request('POST', "http://llm-server:3000/api/ingest", [
+                'json' => $requestBody,
+                'timeout' => 200,
+            ]);
 
-        if ($response->getStatusCode() !== 200) {
-            throw new Exception('Ingest service returned an error: ' . $response->getBody()->getContents());
+            if ($response->getStatusCode() !== 200) {
+                $pdfDataSource->setStatus(IngestStatusType::FAILED);
+                $pdfDataSource->save();
+                return;
+            }
+
+            $pdfDataSource->setStatus(IngestStatusType::SUCCESS);
+            $pdfDataSource->save();
+
+        } catch (Exception $e) {
+            $pdfDataSource->setStatus(IngestStatusType::FAILED);
+            $pdfDataSource->save();
+            return;
         }
     }
 }

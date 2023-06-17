@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 
+use App\Http\Enums\ChatBotInitialPromptEnum;
 use App\Http\Rules\GithubRepoUrlRule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -32,6 +33,6 @@ class CreateChatbotViaCodebaseRequest extends FormRequest
 
     public function getPromptMessage(): string
     {
-        return $this->get('prompt_message', "");
+        return $this->get('prompt_message', ChatBotInitialPromptEnum::AI_ASSISTANT_INITIAL_PROMPT);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Enums\IngestStatusType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Ramsey\Uuid\Uuid;
@@ -62,5 +63,15 @@ class PdfDataSource extends Model
     public function getCreatedAt(): \DateTimeInterface
     {
         return $this->created_at;
+    }
+
+    public function setStatus(string $status): void
+    {
+        $this->ingest_status = $status;
+    }
+
+    public function getStatus(): IngestStatusType
+    {
+        return new IngestStatusType($this->ingest_status);
     }
 }

@@ -35,12 +35,15 @@ Route::middleware([])->group(function () {
      * Chatbot Settings
      */
     Route::get('/app/{id}', [ChatbotSettingController::class, 'generalSettings'])->name('chatbot.settings');
+    Route::get('/app/{id}/delete', [ChatbotSettingController::class, 'deleteBot'])->name('chatbot.settings.delete');
     Route::post('/app/{id}', [ChatbotSettingController::class, 'generalSettingsUpdate'])->name('chatbot.settings.update');
     Route::get('/app/{id}/try-and-share', [ChatbotSettingController::class, 'themeSettings'])->name('chatbot.settings-theme');
     Route::get('/app/{id}/data', [ChatbotSettingController::class, 'dataSettings'])->name('chatbot.settings-data');
     Route::get('/app/{id}/analytics', [ChatbotSettingController::class, 'analyticsSettings'])->name('chatbot.settings-analytics');
     Route::get('/app/{id}/integrations', [ChatbotSettingController::class, 'integrationsSettings'])->name('chatbot.settings-integrations');
+    Route::get('/app/{id}/history', [ChatbotSettingController::class, 'historySettings'])->name('chatbot.settings-history');
     Route::get('widget/data-sources-updates/{id}', [ChatbotSettingController::class, 'dataSourcesUpdates'])->name('widget.data-sources-updates');
+    Route::get('widget/chat-history/{id}/{session_id}', [ChatbotSettingController::class, 'getHistoryBySessionId'])->name('widget.chat-history');
 
 
     /**

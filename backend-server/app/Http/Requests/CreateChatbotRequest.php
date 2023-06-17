@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 
 
+use App\Http\Enums\ChatBotInitialPromptEnum;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreateChatbotRequest extends FormRequest
@@ -27,6 +28,6 @@ class CreateChatbotRequest extends FormRequest
 
     public function getPromptMessage(): string
     {
-        return $this->get('prompt_message', "");
+        return $this->get('prompt_message', ChatBotInitialPromptEnum::AI_ASSISTANT_INITIAL_PROMPT);
     }
 }

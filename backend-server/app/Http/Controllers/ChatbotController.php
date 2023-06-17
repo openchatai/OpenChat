@@ -13,9 +13,11 @@ use App\Http\Requests\UpdateCharacterSettingsRequest;
 use App\Http\Responses\ChatbotResponse;
 use App\Http\Services\HandlePdfDataSource;
 use App\Models\Chatbot;
+use App\Models\ChatHistory;
 use App\Models\CodebaseDataSource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use Ramsey\Uuid\Uuid;
@@ -137,6 +139,7 @@ class ChatbotController extends Controller
         $question = $request->getMessage();
         $history = $request->getHistory();
         $mode = $request->getMode();
+        $initialPrompt = $bot->getPromptMessage();
 
         // Remove null and empty values and empty arrays or objects from the history
         $history = array_filter($history, function ($value) {
@@ -148,7 +151,8 @@ class ChatbotController extends Controller
             'question' => $question,
             'history' => $history,
             'namespace' => $bot->getId()->toString(),
-            'mode' =>  $mode,
+            'mode' => $mode,
+            'initial_prompt' => $initialPrompt,
         ]);
 
         if ($response->failed()) {
@@ -159,6 +163,28 @@ class ChatbotController extends Controller
 
         // Create a ChatbotResponse instance from the API response
         $botResponse = new ChatbotResponse($response->json());
+
+
+        $sessionId = Cookie::get('chatbot_' . $bot->getId()->toString());
+
+        if (!is_null($sessionId)) {
+            $history = new ChatHistory();
+            $history->setId(Uuid::uuid4());
+            $history->setChatbotId($bot->getId());
+            $history->setFromUser();
+            $history->setMessage($question);
+            $history->setSessionId($sessionId);
+            $history->save();
+
+            $history = new ChatHistory();
+            $history->setId(Uuid::uuid4());
+            $history->setChatbotId($bot->getId());
+            $history->setFromBot();
+            $history->setMessage($botResponse->getBotReply());
+            $history->setSessionId($sessionId);
+            $history->save();
+        }
+
 
         // Return the response from the chatbot
         return response()->json([
@@ -178,7 +204,13 @@ class ChatbotController extends Controller
         // Find the chatbot by token
         $bot = Chatbot::where('token', $token)->firstOrFail();
 
-        // Render the chat view with the chatbot data
+        // initiate a cookie if it doesn't exist
+        $cookieName = 'chatbot_' . $bot->getId()->toString();
+        if (!Cookie::has($cookieName)) {
+            $cookieValue = Str::random(20);
+            Cookie::queue($cookieName, $cookieValue, 60 * 24 * 365);
+        }
+
         return view('chat', [
             'bot' => $bot,
         ]);
@@ -198,7 +230,6 @@ class ChatbotController extends Controller
         $datasource->setChatbotId($chatbot->getId());
         $datasource->setRepository($request->getRepoUrl());
         $datasource->save();
-
 
         event(new CodebaseDataSourceWasAdded(
                 $chatbot->getId(),

@@ -20,13 +20,14 @@ install:
 	@echo "$(COLOR_BOLD)=== Copying .env files ===$(COLOR_RESET)"
 	cp -n backend-server/.env.example backend-server/.env 2>/dev/null || true
 	cp common.env llm-server/.env 2>/dev/null || true
-	$(DOCKER_COMPOSE) build #--no-cache
-	$(DOCKER_COMPOSE) up -d #--force-recreate
+	$(DOCKER_COMPOSE) build --no-cache
+	$(DOCKER_COMPOSE) up -d --force-recreate
 	@echo "$(COLOR_BOLD)=== Waiting for services to start (~20 seconds) ===$(COLOR_RESET)"
 	@sleep 20
 
 	@echo "$(COLOR_BOLD)=== Clearing backend server config cache ===$(COLOR_RESET)"
-	$(DOCKER_COMPOSE) exec backend-server php artisan config:cache
+	$(DOCKER_COMPOSE) exec backend-server php artisan cache:clear
+
 
 	@echo "$(COLOR_BOLD)=== Run backend server server migrations ===$(COLOR_RESET)"
 	$(DOCKER_COMPOSE) exec backend-server php artisan migrate --seed
