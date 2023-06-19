@@ -81,10 +81,12 @@
                                     </div>
                                     <!-- End -->
                                 </div>
-                                <div class="px-5 py-4 rounded-sm border border-slate-200 mt-5"  x-data="{ open: false }">
+                                <div class="px-5 py-4 rounded-sm border border-slate-200 mt-5" x-data="{ open: false }">
                                     <button class="flex items-center justify-between w-full group mb-1"
                                             @click.prevent="open = !open" :aria-expanded="open" aria-expanded="false">
-                                        <div class="text-sm text-slate-800 font-medium">🌎 Embed on your web app as widget</div>
+                                        <div class="text-sm text-slate-800 font-medium">🌎 Embed on your web app as a
+                                            chat bubble
+                                        </div>
                                         <svg
                                             class="w-8 h-8 shrink-0 fill-current text-slate-400 group-hover:text-slate-500 ml-3"
                                             :class="{ 'rotate-180': open }" viewBox="0 0 32 32">
@@ -121,19 +123,58 @@ document.addEventListener('DOMContentLoaded', function() {
                                     </div>
                                 </div>
 
+                                <div class="px-5 py-4 rounded-sm border border-slate-200 mt-5" x-data="{ open: false }">
+                                    <button class="flex items-center justify-between w-full group mb-1"
+                                            @click.prevent="open = !open" :aria-expanded="open" aria-expanded="false">
+                                        <div class="text-sm text-slate-800 font-medium">🔍 Embed on your web app as a
+                                            search box
+                                        </div>
+                                        <svg
+                                            class="w-8 h-8 shrink-0 fill-current text-slate-400 group-hover:text-slate-500 ml-3"
+                                            :class="{ 'rotate-180': open }" viewBox="0 0 32 32">
+                                            <path d="M16 20l-5.4-5.4 1.4-1.4 4 4 4-4 1.4 1.4z"></path>
+                                        </svg>
+                                    </button>
 
+                                    <div class="text-sm" x-show="open" style="display: none;">
+                                        <div class="img-container" style=" max-width: 520px">
+                                            <img src="/dashboard/images/search-widget-info.gif" alt="">
+                                        </div>
+                                        <div>
+                                            <!-- Start -->
+                                            <div>
+                                                <div class="flex items-center justify-between"
+                                                     style="margin-top: 1rem; margin-bottom: 1rem;">
+                                                    <strong>1. Copy the following code into your website head
+                                                        script </strong>
+                                                </div>
+                                                <textarea id="tooltip" class="form-input w-full" style="height: 250px"
+                                                          type="text" disabled><script src="{{asset('search.js')}}"></script>
+<script>
+    window.onload = () => {
+        initilizeChatBot({
+            initialFirstMessage: "Hello, Search OpenChat resources here.",
+            token: "{{$bot->getToken()}}",
+            //initiatorId: "search-openchat" // provide a unique id for the search widget if you want to have custom button
+        });
+    };
+</script>
+                                            </textarea>
+                                                <div class="flex items-center justify-between"
+                                                     style="margin-top: 1rem; margin-bottom: 1rem;">
+                                                    <strong>2. Please read this documentation to see all the options for
+                                                        the search widget</strong>
+                                                </div>
+                                            </div>
+                                            <!-- End -->
+                                        </div>
+                                    </div>
+                                </div>
                             </section>
 
 
                         </div>
 
-
-
-                        <!-- iFrame Section -->
-                        <section class="sm:w-1/2" style="height: 100%; width: 45%; overflow: auto; text-align: right; border-radius: 20px;box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;">
-                            <iframe src="{{route('chat', ['token' => $bot->getToken()])}}" class="w-full h-96" style="height: 60vh;"
-                                    frameborder="0"></iframe>
-                        </section>
                     </div>
                 </div>
 
