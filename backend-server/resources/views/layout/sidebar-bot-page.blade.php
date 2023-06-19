@@ -40,27 +40,18 @@
                 </a>
             </li>
             <li class="mr-0.5 md:mr-0 md:mb-0.5">
-                <a class="flex items-center px-2.5 py-2 rounded whitespace-nowrap {{request()->routeIs('chatbot.settings-analytics' ) ? 'bg-indigo-50' : ''}}"
-                   href="{{route('chatbot.settings-analytics',  ['id' => request()->route('id')])}}">
-                    <svg class="w-4 h-4 shrink-0 fill-current mr-2 text-slate-400 {{request()->routeIs('chatbot.settings-analytics' ) ? 'text-indigo-400' : ''}}" viewBox="0 0 16 16">
+                <a class="flex items-center px-2.5 py-2 rounded whitespace-nowrap {{request()->routeIs('chatbot.settings-history' ) ? 'bg-indigo-50' : ''}}"
+                   href="{{route('chatbot.settings-history',  ['id' => request()->route('id')])}}">
+                    <svg
+                        class="w-4 h-4 shrink-0 fill-current mr-2 text-slate-400 {{request()->routeIs('chatbot.settings-history' ) ? 'text-indigo-400' : ''}}"
+                        viewBox="0 0 16 16">
                         <path
                             d="M14.3.3c.4-.4 1-.4 1.4 0 .4.4.4 1 0 1.4l-8 8c-.2.2-.4.3-.7.3-.3 0-.5-.1-.7-.3-.4-.4-.4-1 0-1.4l8-8zM15 7c.6 0 1 .4 1 1 0 4.4-3.6 8-8 8s-8-3.6-8-8 3.6-8 8-8c.6 0 1 .4 1 1s-.4 1-1 1C4.7 2 2 4.7 2 8s2.7 6 6 6 6-2.7 6-6c0-.6.4-1 1-1z"></path>
                     </svg>
                     <span
-                        class="text-sm font-medium {{request()->routeIs('chatbot.settings-analytics' ) ? 'text-slate-600 hover:text-slate-700 text-indigo-500' : ''}}">Analytics</span>
+                        class="text-sm font-medium {{request()->routeIs('chatbot.settings-history' ) ? 'text-slate-600 hover:text-slate-700 text-indigo-500' : ''}}">History</span>
                 </a>
             </li>
-{{--            <li class="mr-0.5 md:mr-0 md:mb-0.5">--}}
-{{--                <a class="flex items-center px-2.5 py-2 rounded whitespace-nowrap {{request()->routeIs('chatbot.settings-integrations' ) ? 'bg-indigo-50' : ''}}"--}}
-{{--                   href="{{route('chatbot.settings-integrations',  ['id' => request()->route('id')])}}">--}}
-{{--                    <svg class="w-4 h-4 shrink-0 fill-current mr-2 text-slate-400 {{request()->routeIs('chatbot.settings-integrations' ) ? 'text-indigo-400' : ''}}" viewBox="0 0 16 16">--}}
-{{--                        <path--}}
-{{--                            d="M14.3.3c.4-.4 1-.4 1.4 0 .4.4.4 1 0 1.4l-8 8c-.2.2-.4.3-.7.3-.3 0-.5-.1-.7-.3-.4-.4-.4-1 0-1.4l8-8zM15 7c.6 0 1 .4 1 1 0 4.4-3.6 8-8 8s-8-3.6-8-8 3.6-8 8-8c.6 0 1 .4 1 1s-.4 1-1 1C4.7 2 2 4.7 2 8s2.7 6 6 6 6-2.7 6-6c0-.6.4-1 1-1z"></path>--}}
-{{--                    </svg>--}}
-{{--                    <span--}}
-{{--                        class="text-sm font-medium {{request()->routeIs('chatbot.settings-integrations' ) ? 'text-slate-600 hover:text-slate-700 text-indigo-500' : ''}}">Integrations</span>--}}
-{{--                </a>--}}
-{{--            </li>--}}
 
         </ul>
     </div>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Chat modal</title>
+</head>
+<body>
+<div>
+    <h2>This is the original Content of the page</h2>
+    <button id="intiator">open the modal</button>
+</div>
+<script type="module" src="/src/main.tsx"></script>
+<script>
+    window.onload = () => {
+        initilizeChatBot({
+            initialFirstMessage:"Hello, how can i help",
+            token:"",
+            initiatorId:"search-openchat"
+        });
+    };
+</script>
+</body>
+</html>

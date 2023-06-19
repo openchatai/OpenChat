@@ -26,7 +26,12 @@ install:
 	@sleep 20
 
 	@echo "$(COLOR_BOLD)=== Clearing backend server config cache ===$(COLOR_RESET)"
+	$(DOCKER_COMPOSE) exec backend-server php artisan cache:clear
 	$(DOCKER_COMPOSE) exec backend-server php artisan config:cache
+
+	@echo "$(COLOR_BOLD)=== Running backward compatibility scripts ===$(COLOR_RESET)"
+	$(DOCKER_COMPOSE) exec backend-server php artisan prompt:fill
+
 
 	@echo "$(COLOR_BOLD)=== Run backend server server migrations ===$(COLOR_RESET)"
 	$(DOCKER_COMPOSE) exec backend-server php artisan migrate --seed

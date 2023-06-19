@@ -1,50 +1,5 @@
 @extends('layout.app', ['title' => __('Dashboard')])
 @section('content')
-    <style>
-        .heart {
-            animation: heartbeat 1.5s infinite;
-        }
-
-        @keyframes heartbeat {
-            0% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.4);
-            }
-            100% {
-                transform: scale(1);
-            }
-        }
-
-        .not-ready-overlay {
-            position: relative;
-        }
-
-        .not-ready-overlay::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #d9d9d9bd;
-            filter: blur(19px);
-            z-index: 1;
-        }
-
-        .not-ready-overlay-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: #606060; /* Adjust the text color as desired */
-            font-size: 24px; /* Adjust the font size as desired */
-            z-index: 2;
-            text-align: center;
-        }
-
-    </style>
 
     <div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
 
@@ -132,8 +87,7 @@
                                                             </div>
                                                         @elseif($source->getCrawlingStatus()->isFailed())
                                                             <div
-                                                                class="inline-flex font-medium bg-red-100 text-red-600 rounded-full text-center px-2.5 py-0.5">
-                                                                {{$source->getCrawlingStatus()->getLabel()}}
+                                                                class="inline-flex font-medium bg-amber-100 text-amber-600 rounded-full text-center px-2.5 py-0.5">{{ $source->getCrawlingStatus()->getLabel() }}
                                                             </div>
                                                         @endif
 
@@ -227,7 +181,7 @@
                                                                 <!-- Row -->
                                                                 @php
                                                                     /** @var \App\Models\CrawledPages $page */
-                                                                    $pages = $source->getCrawledPages()->get();
+                                                                $pages =$source->getCrawledPages()->get();
                                                                 @endphp
                                                                 @foreach($pages as $page)
                                                                     <tr>
@@ -325,15 +279,20 @@
                                                         </div>
                                                     </td>
                                                     <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-                                                        @if($source->getCreatedAt()->diffInMinutes(now()) <= 3)
+                                                        @if($source->getStatus()->isPending())
                                                             <div
                                                                 class="inline-flex font-medium bg-blue-100 text-blue-600 rounded-full text-center px-2.5 py-0.5">
-                                                                In progress (eta: {{$source->getCreatedAt()->addMinutes(3)->diffForHumans()}})
+                                                                {{$source->getStatus()->getLabel()}}
                                                             </div>
-                                                        @else
+                                                        @elseif($source->getStatus()->isSuccessful())
                                                             <div
                                                                 class="inline-flex font-medium bg-emerald-100 text-emerald-600 rounded-full text-center px-2.5 py-0.5">
-                                                                Completed
+                                                                {{ $source->getStatus()->getLabel() }}
+                                                            </div>
+
+                                                        @elseif($source->getStatus()->isFailed())
+                                                            <div
+                                                                class="inline-flex font-medium bg-amber-100 text-amber-600 rounded-full text-center px-2.5 py-0.5">{{ $source->getStatus()->getLabel() }}
                                                             </div>
                                                         @endif
                                                     </td>
@@ -655,7 +614,6 @@
                                         </div>
                                         <!-- End -->
                                     </div>
-
                                 </div>
                             </section>
 
