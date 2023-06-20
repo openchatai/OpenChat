@@ -28,7 +28,7 @@ OpenChat is an everyday user chatbot console that simplifies the utilization of 
 
 
 ## Try it out:
-**You can try it out on [openchat.so](http://openchat.so/) (we use our own OpenAI/pinecone token for the demo, please be mindful on the usage)**
+**You can try it out on [openchat.so](http://openchat.so/)**
 
 https://github.com/openchatai/OpenChat/assets/32633162/112a72a7-4314-474b-b7b5-91228558370c
 
