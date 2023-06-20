@@ -68,6 +68,8 @@ We love hearing from you! Got any cool ideas or requests? We're all ears! So, if
 
 ## 🚀 Getting Started
 
+- Make sure you have docker installed. 
+
 - To begin, clone this Git repository:
 
 ```bash
@@ -89,12 +91,11 @@ PINECONE_INDEX_NAME=# you can get it after creating your index in pinecone
 make install
 ```
 
-> :warning: **Windows users might not be able to install OpenChat easily and we are working on fixing that.**
-
-
 Once the installation is complete, you can access the OpenChat console at: http://localhost:8000
 
+## 🚀 Upgrade guide:
 
+We do our best to not introduce breaking changes, so far, you only need to git pull and run `make install` whenever there is a new update.
 
 ## ❤️ Thanks:
 - To [@mayooear](https://github.com/mayooear) for his work and tutorial on chatting with PDF files, we utilized a lot of his code in the LLM server.
