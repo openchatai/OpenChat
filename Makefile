@@ -29,13 +29,13 @@ install:
 	$(DOCKER_COMPOSE) exec backend-server php artisan cache:clear
 	$(DOCKER_COMPOSE) exec backend-server php artisan config:cache
 
-	@echo "$(COLOR_BOLD)=== Running backward compatibility scripts ===$(COLOR_RESET)"
-	$(DOCKER_COMPOSE) exec backend-server php artisan prompt:fill
-
-
 	@echo "$(COLOR_BOLD)=== Run backend server server migrations ===$(COLOR_RESET)"
 	$(DOCKER_COMPOSE) exec backend-server php artisan migrate --seed
 	$(DOCKER_COMPOSE) exec backend-server php artisan storage:link
+
+	@echo "$(COLOR_BOLD)=== Running backward compatibility scripts ===$(COLOR_RESET)"
+	$(DOCKER_COMPOSE) exec backend-server php artisan prompt:fill
+
 	$(DOCKER_COMPOSE) run -d backend-server php artisan queue:work --timeout=200
 
 	@echo "$(COLOR_BOLD)=== Installation completed ===$(COLOR_RESET)"
