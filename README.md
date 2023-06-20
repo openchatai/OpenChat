@@ -52,6 +52,7 @@ https://github.com/openchatai/OpenChat/assets/32633162/112a72a7-4314-474b-b7b5-9
 - [x] Accept PDF files as a data source
 - [x] Support multiple data sources per chatbot
 - [x] Support ingesting an entire codebase using GitHub API and use it as a data source with pair programming mode
+- [x] Support pre-defined messages with a single click
 - [ ] Support Slack integration (allow users to connect chatbots with their Slack workspaces)
 - [ ] Support Intercom integration (enable users to sync chat conversations with Intercom)
 - [ ] Support offline open-source models (e.g., Alpaca, LLM drivers)
@@ -60,7 +61,6 @@ https://github.com/openchatai/OpenChat/assets/32633162/112a72a7-4314-474b-b7b5-9
 - [ ] Refactor the codebase to be API ready
 - [ ] Create a new UI designer for website-embedded chatbots
 - [ ] Support custom input fields for chatbots
-- [ ] Support pre-defined messages with a single click
 - [ ] Support offline usage: this is a major feature, OpenChat will operate fully offline with no internet connection at this stage (offline LLMs, offline Vector DBs)
 
 We love hearing from you! Got any cool ideas or requests? We're all ears! So, if you have something in mind, give us a shout! 
