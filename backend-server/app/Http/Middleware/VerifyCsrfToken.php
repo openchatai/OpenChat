@@ -12,6 +12,7 @@ class VerifyCsrfToken extends Middleware
      * @var array<int, string>
      */
     protected $except = [
-        '/chat/{token}/send-message'
+        '/chat/{token}/send-message',
+        '/chat/search'
     ];
 }
