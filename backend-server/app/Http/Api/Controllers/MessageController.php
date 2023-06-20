@@ -33,7 +33,7 @@ class MessageController extends Controller
 
             $message = $request->input('message');
 
-            $response = Http::timeout(200)->post(env('CHAT_BOT_BACKEND'), [
+            $response = Http::timeout(200)->post('http://llm-server:3000/api/chat', [
                 'question' => $message,
                 'namespace' => $bot->getId()->toString(),
                 'mode' => "assistant",
