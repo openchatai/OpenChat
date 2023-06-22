@@ -93,6 +93,9 @@ make install
 
 Once the installation is complete, you can access the OpenChat console at: http://localhost:8000
 
+
+Documentation [available here](https://docs.openchat.so/introduction)
+
 ## 🚀 Upgrade guide:
 
 We do our best to not introduce breaking changes, so far, you only need to git pull and run `make install` whenever there is a new update.
