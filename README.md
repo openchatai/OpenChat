@@ -86,10 +86,17 @@ PINECONE_INDEX_NAME=# you can get it after creating your index in pinecone
 
 > Note: for pincone db, make sure that the dimension is equal to 1536 
 
-- Navigate to the repository folder and run the following command:
+- Navigate to the repository folder and run the following command (for MacOS or Linux):
 ```
 make install
 ```
+
+
+**or in case you are using Wikndows**
+```
+make.bat
+```
+
 
 Once the installation is complete, you can access the OpenChat console at: http://localhost:8000
 
