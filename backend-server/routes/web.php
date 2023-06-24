@@ -1,9 +1,7 @@
 <?php
 
-use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\ChatbotSettingController;
-use App\Http\Controllers\MarketingWebsiteController;
 use App\Http\Controllers\OnboardingController;
 use App\Http\Controllers\PdfDataSourceController;
 use App\Http\Controllers\WebsiteDataSourceController;
