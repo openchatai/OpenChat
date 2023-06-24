@@ -29,10 +29,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         } else {
             return res.status(400).json({message: 'Not supported type'});
         }
+
     } catch (e) {
         console.error(e);
         // Return error message and line number
         // @ts-ignore
-        res.status(500).json({error: e.message, line: e.lineNumber});
+        return res.status(500).json({error: e.message, line: e.lineNumber});
     }
 }

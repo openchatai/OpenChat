@@ -13,11 +13,13 @@ export const makeChain = (vectorstore: PineconeStore, mode: string, initial_prom
 
     let enableSourceDocuments = false;
 
-    if(mode === 'pair_programmer') {
+    if (mode === 'pair_programmer') {
         enableSourceDocuments = true;
     }
     return ConversationalRetrievalQAChain.fromLLM(model, vectorstore.asRetriever(), {
-        qaTemplate: prompts.qa_prompt, questionGeneratorTemplate: prompts.condense_prompt, returnSourceDocuments: enableSourceDocuments, //The number of source documents returned is 4 by default
+        qaTemplate: prompts.qa_prompt,
+        questionGeneratorTemplate: prompts.condense_prompt,
+        returnSourceDocuments: enableSourceDocuments, //The number of source documents returned is 4 by default
     },);
 };
 

@@ -1,8 +1,5 @@
-import { Document } from 'langchain/document';
+import {Document} from 'langchain/document';
 
 export type Message = {
-  type: 'apiMessage' | 'userMessage';
-  message: string;
-  isStreaming?: boolean;
-  sourceDocs?: Document[];
+    type: 'apiMessage' | 'userMessage'; message: string; isStreaming?: boolean; sourceDocs?: Document[];
 };
