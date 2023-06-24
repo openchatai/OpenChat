@@ -92,7 +92,7 @@ make install
 ```
 
 
-**or in case you are using Wikndows**
+**or in case you are using Windows**
 ```
 make.bat
 ```
