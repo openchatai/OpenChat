@@ -30,7 +30,6 @@ class MessageController extends Controller
                 ]);
             }
 
-
             $message = $request->input('message');
 
             $response = Http::timeout(200)->post('http://llm-server:3000/api/chat', [
