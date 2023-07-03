@@ -66,12 +66,14 @@ class ChatbotSettingController extends Controller
         $websiteDataSources = $bot->getWebsiteDataSources()->get();
         $pdfDataSources = $bot->getPdfFilesDataSources()->get();
         $codebaseDataSources = $bot->getCodebaseDataSources()->get();
+        $jsonDataSources = $bot->getJsonFilesDataSources()->get();
 
         return view('settings-data', [
             'bot' => $bot,
             'websiteDataSources' => $websiteDataSources,
             'pdfDataSources' => $pdfDataSources,
             'codebaseDataSources' => $codebaseDataSources,
+            'jsonDataSources' => $jsonDataSources,
         ]);
     }
 

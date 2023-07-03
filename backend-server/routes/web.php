@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\ChatbotSettingController;
+use App\Http\Controllers\JsonDataSourceController;
 use App\Http\Controllers\MarketingWebsiteController;
 use App\Http\Controllers\OnboardingController;
 use App\Http\Controllers\PdfDataSourceController;
@@ -50,6 +51,7 @@ Route::middleware([])->group(function () {
     Route::get('/onboarding/data-source', [OnboardingController::class, 'dataSources'])->name('onboarding.data-source');
     Route::get('/onboarding/website', [OnboardingController::class, 'dataSourcesWebsite'])->name('onboarding.website');
     Route::get('/onboarding/pdf', [OnboardingController::class, 'dataSourcesPdf'])->name('onboarding.pdf');
+    Route::get('/onboarding/json', [OnboardingController::class, 'dataSourcesJson'])->name('onboarding.json');
     Route::get('/onboarding/codebase', [OnboardingController::class, 'dataSourcesCodebase'])->name('onboarding.codebase');
 
 
@@ -58,12 +60,16 @@ Route::middleware([])->group(function () {
      */
     Route::post('/onboarding/website', [ChatbotController::class, 'createViaWebsiteFlow'])->name('onboarding.website.create');
     Route::post('/onboarding/pdf', [ChatbotController::class, 'createViaPdfFlow'])->name('onboarding.pdf.create');
+    Route::post('/onboarding/json', [ChatbotController::class, 'createViaJsonFlow'])->name('onboarding.json.create');
     Route::post('/onboarding/codebase', [ChatbotController::class, 'createViaCodebaseFlow'])->name('onboarding.codebase.create');
     Route::post('/onboarding/{id}/config', [ChatbotController::class, 'updateCharacterSettings'])->name('onboarding.config.create');
     Route::get('/onboarding/{id}/config', [OnboardingController::class, 'config'])->name('onboarding.config');
 
     Route::get('/app/{id}/data/pdf', [PdfDataSourceController::class, 'show'])->name('onboarding.other-data-sources-pdf');
     Route::post('/app/{id}/data/pdf', [PdfDataSourceController::class, 'create'])->name('onboarding.other-data-sources-pdf.create');
+
+    Route::get('/app/{id}/data/json', [JsonDataSourceController::class, 'show'])->name('onboarding.other-data-sources-json');
+    Route::post('/app/{id}/data/json', [JsonDataSourceController::class, 'create'])->name('onboarding.other-data-sources-json.create');
 
     Route::get('/app/{id}/data/web', [WebsiteDataSourceController::class, 'show'])->name('onboarding.other-data-sources-web');
     Route::post('/app/{id}/data/web', [WebsiteDataSourceController::class, 'create'])->name('onboarding.other-data-sources-web.create');
