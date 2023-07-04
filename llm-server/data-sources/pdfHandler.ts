@@ -28,9 +28,7 @@ export default async function pdfHandler(req: NextApiRequest, res: NextApiRespon
         const index = pinecone.Index(PINECONE_INDEX_NAME);
 
         await PineconeStore.fromDocuments(docs, embeddings, {
-            pineconeIndex: index,
-            namespace: namespace,
-            textKey: 'text',
+            pineconeIndex: index, namespace: namespace, textKey: 'text',
         });
 
         console.log('All is done, folder deleted');
@@ -38,6 +36,6 @@ export default async function pdfHandler(req: NextApiRequest, res: NextApiRespon
     } catch (e) {
         console.error(e);
         // @ts-ignore
-        res.status(500).json({error: e.message, line: e.lineNumber});
+        return res.status(500).json({error: e.message, line: e.lineNumber});
     }
 }

@@ -6,6 +6,7 @@ class IngestStatusType
 {
     public const SUCCESS= 'success';
     public const FAILED = 'failed';
+    public const PENDING = 'pending';
 
 
     public function __construct(private readonly string $status)
@@ -20,6 +21,7 @@ class IngestStatusType
         return [
             self::SUCCESS,
             self::FAILED,
+            self::PENDING,
         ];
     }
 
@@ -28,6 +30,7 @@ class IngestStatusType
         return [
             self::SUCCESS => 'Success',
             self::FAILED => 'Failed',
+            self::PENDING => 'Pending',
         ];
     }
 
@@ -54,6 +57,11 @@ class IngestStatusType
     public function isFailed(): bool
     {
         return $this->getStatus() === self::FAILED;
+    }
+
+    public function isPending(): bool
+    {
+        return $this->getStatus() === self::PENDING;
     }
 
     public function getStatus(): string

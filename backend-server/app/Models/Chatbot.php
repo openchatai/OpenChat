@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Enums\ChatBotInitialPromptEnum;
 use App\Http\Enums\ChatbotStatusType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -64,9 +65,9 @@ class Chatbot extends Model
         $this->status = $status->getStatus();
     }
 
-    public function getPromptMessage(): string
+    public function getPromptMessage(): ?string
     {
-        return $this->prompt_message;
+        return $this->prompt_message ?? ChatBotInitialPromptEnum::AI_ASSISTANT_INITIAL_PROMPT;
     }
 
     public function setPromptMessage(string $promptMessage): void
@@ -132,5 +133,15 @@ class Chatbot extends Model
     public function getJsonFilesDataSources()
     {
         return $this->hasMany(JsonDataSource::class);
+    }
+    
+    public function getCreatedAt(): \DateTimeInterface
+    {
+        return $this->created_at;
+    }
+
+    public function messages(): HasMany
+    {
+        return $this->hasMany(ChatHistory::class);
     }
 }

@@ -29,12 +29,11 @@
                                     class="text-3xl font-bold text-emerald-500">{{$source->getCrawlingProgress()}}
                                     % ⌛
                                 </div>
-                                <div class="mb-2">We are <strong
-                                        class="font-medium text-slate-800"> still crawling your
-                                        website </strong> and your chatbot will be ready once we
-                                    are done (and we will email you too), <a
+                                <div class="mb-2">We are currently in the process of crawling your website to prepare
+                                    your chatbot. Once the crawling is complete, your chatbot will be ready. To access all data sources, please <a
+                                        class="underline"
                                         href="{{route('chatbot.settings-data', ['id' => request()->route('id')])}}">click
-                                        here to open all data sources</a>.
+                                        here</a>.
                                 </div>
                             </div>
                         @endif
@@ -42,10 +41,10 @@
                         @if($source->getCrawlingStatus()->isFailed())
                             <div>
                                 <div class="text-3xl font-bold text-red-500">❌</div>
-                                <div class="mb-2">We are <strong
-                                        class="font-medium text-slate-800"> unable to crawl your
-                                        website </strong> please make sure that your website is
-                                    online and accessible.
+                                <div class="mb-2">
+                                    We're sorry, <strong>but we're having trouble crawling your website
+                                        ({{$source->getRootUrl()}}). </strong> Please double-check that your website is
+                                    up and running.
                                 </div>
                             </div>
                         @endif
@@ -84,19 +83,63 @@
 
                             </a>
 
-                            <button class="opacity-70 hover:opacity-80 ml-3 mt-[3px]"
-                                    @click="open = false">
-                                <div class="sr-only">Close</div>
-                                <svg class="w-4 h-4 fill-current">
-                                    <path
-                                        d="M7.95 6.536l4.242-4.243a1 1 0 111.415 1.414L9.364 7.95l4.243 4.242a1 1 0 11-1.415 1.415L7.95 9.364l-4.243 4.243a1 1 0 01-1.414-1.415L6.536 7.95 2.293 3.707a1 1 0 011.414-1.414L7.95 6.536z"></path>
-                                </svg>
-                            </button>
                         </div>
                     </div>
                     </div>
             </div>
         </div>
     @endif
+
+@endforeach
+
+@foreach($pdfDataSources as $source)
+    @if(!$source->getStatus()->isSuccessful())
+        <div
+            class="flex flex-col col-span-full bg-white shadow-lg rounded-sm border border-slate-200">
+            <div class="px-5 py-6">
+
+                <div class="md:flex md:justify-between md:items-center">
+                    <!-- Left side -->
+                    <div class="flex items-center mb-4 md:mb-0">
+                        <!-- Avatar -->
+                        <div class="mr-4">
+                            <div class="shrink-0 rounded-full mr-2 sm:mr-3 bg-rose-500 heart">
+                                <svg class="w-9 h-9 fill-current text-rose-50" viewBox="0 0 36 36">
+                                    <path
+                                        d="M18 21a3 3 0 1 1 0-6 3 3 0 0 1 0 6Zm-4.95 3.363-.707-.707a8 8 0 0 1 0-11.312l.707-.707 1.414 1.414-.707.707a6 6 0 0 0 0 8.484l.707.707-1.414 1.414Zm9.9 0-1.414-1.414.707-.707a6 6 0 0 0 0-8.484l-.707-.707 1.414-1.414.707.707a8 8 0 0 1 0 11.312l-.707.707Z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <!-- User info -->
+                        @if($source->getStatus()->isPending())
+                            <div>
+                                <div class="text-3xl font-bold text-emerald-500"> ⌛
+                                </div>
+                                <div class="mb-2">We are currently in the process of processing your PDF files. It may
+                                    take some time for the bot to ingest all the data. You can <a class="underline"
+                                                                                                  href="{{route('chatbot.settings-data', ['id' => request()->route('id')])}}">click
+                                        here</a> to open all data sources.
+                                </div>
+                            </div>
+                        @endif
+
+                        @if($source->getStatus()->isFailed())
+                            <div>
+                                <div class="text-3xl font-bold text-red-500">❌</div>
+                                <div class="mb-2">We encountered a problem while training the bot on your PDF files. Our
+                                    team has been alerted, and we will investigate the issue.
+                                </div>
+                            </div>
+                        @endif
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    @endif
+
+
 
 @endforeach

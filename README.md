@@ -1,15 +1,15 @@
 
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors-)
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 
-
-[![](https://dcbadge.vercel.app/api/server/yjEgCgvefr?style=flat&compact=True)](https://discord.gg/yjEgCgvefr)
-<a href="http://www.repostatus.org/#active"><img src="http://www.repostatus.org/badges/latest/active.svg" /></a>
-![Tests](https://github.com/openchatai/OpenChat/actions/workflows/tests.yml/badge.svg)
-
-
+<p>
+<img alt="GitHub Contributors" src="https://img.shields.io/github/contributors/openchatai/openchat" />
+<img alt="GitHub Last Commit" src="https://img.shields.io/github/last-commit/openchatai/openchat" />
+<img alt="" src="https://img.shields.io/github/repo-size/openchatai/openchat" />
+<img alt="GitHub Issues" src="https://img.shields.io/github/issues/openchatai/openchat" />
+<img alt="GitHub Pull Requests" src="https://img.shields.io/github/issues-pr/openchatai/openchat" />
+<img alt="Github License" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
+<img alt="Discord" src="https://img.shields.io/discord/1110910277110743103?label=Discord&logo=discord&logoColor=white&style=plastic&color=d7b023)](https://discord.gg/Q8hHfdav" />
+</p>
 
 ![](https://gcdnb.pbrd.co/images/gjX4atjx9uKT.png?o=1)
 
@@ -28,9 +28,9 @@ OpenChat is an everyday user chatbot console that simplifies the utilization of 
 
 
 ## Try it out:
-**You can try it out on [openchat.so](http://openchat.so/) (we use our own OpenAI/pinecone token for the demo, please be mindful on the usage)**
+**You can try it out on [openchat.so](http://openchat.so/)**
 
-https://github.com/openchatai/OpenChat/assets/32633162/c1e0cea1-6627-47c3-becc-c7ab6f8c5b2d
+https://github.com/openchatai/OpenChat/assets/32633162/112a72a7-4314-474b-b7b5-91228558370c
 
 
 ## 🏁 Current Features
@@ -52,6 +52,7 @@ https://github.com/openchatai/OpenChat/assets/32633162/c1e0cea1-6627-47c3-becc-c
 - [x] Accept PDF files as a data source
 - [x] Support multiple data sources per chatbot
 - [x] Support ingesting an entire codebase using GitHub API and use it as a data source with pair programming mode
+- [x] Support pre-defined messages with a single click
 - [ ] Support Slack integration (allow users to connect chatbots with their Slack workspaces)
 - [ ] Support Intercom integration (enable users to sync chat conversations with Intercom)
 - [ ] Support offline open-source models (e.g., Alpaca, LLM drivers)
@@ -60,13 +61,14 @@ https://github.com/openchatai/OpenChat/assets/32633162/c1e0cea1-6627-47c3-becc-c
 - [ ] Refactor the codebase to be API ready
 - [ ] Create a new UI designer for website-embedded chatbots
 - [ ] Support custom input fields for chatbots
-- [ ] Support pre-defined messages with a single click
 - [ ] Support offline usage: this is a major feature, OpenChat will operate fully offline with no internet connection at this stage (offline LLMs, offline Vector DBs)
 
 We love hearing from you! Got any cool ideas or requests? We're all ears! So, if you have something in mind, give us a shout! 
 
 
 ## 🚀 Getting Started
+
+- Make sure you have docker installed. 
 
 - To begin, clone this Git repository:
 
@@ -84,17 +86,26 @@ PINECONE_INDEX_NAME=# you can get it after creating your index in pinecone
 
 > Note: for pincone db, make sure that the dimension is equal to 1536 
 
-- Navigate to the repository folder and run the following command:
+- Navigate to the repository folder and run the following command (for MacOS or Linux):
 ```
 make install
 ```
 
-> :warning: **Windows users might not be able to install OpenChat easily and we are working on fixing that.**
+
+**or in case you are using Windows**
+```
+make.bat
+```
 
 
 Once the installation is complete, you can access the OpenChat console at: http://localhost:8000
 
 
+Documentation [available here](https://docs.openchat.so/introduction)
+
+## 🚀 Upgrade guide:
+
+We do our best to not introduce breaking changes, so far, you only need to git pull and run `make install` whenever there is a new update.
 
 ## ❤️ Thanks:
 - To [@mayooear](https://github.com/mayooear) for his work and tutorial on chatting with PDF files, we utilized a lot of his code in the LLM server.

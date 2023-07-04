@@ -19,8 +19,7 @@ export default async function websiteHandler(req: NextApiRequest, res: NextApiRe
         const rawDocs = await directoryLoader.load();
 
         const textSplitter = new RecursiveCharacterTextSplitter({
-            chunkSize: 1000,
-            chunkOverlap: 200,
+            chunkSize: 1000, chunkOverlap: 200,
         });
 
         const docs = await textSplitter.splitDocuments(rawDocs);
@@ -29,15 +28,13 @@ export default async function websiteHandler(req: NextApiRequest, res: NextApiRe
         const index = pinecone.Index(PINECONE_INDEX_NAME);
 
         await PineconeStore.fromDocuments(docs, embeddings, {
-            pineconeIndex: index,
-            namespace: namespace,
-            textKey: 'text',
+            pineconeIndex: index, namespace: namespace, textKey: 'text',
         });
         console.log('All is done, folder deleted');
         return res.status(200).json({message: 'Success'});
     } catch (e) {
         console.error(e);
         // @ts-ignore
-        res.status(500).json({error: e.message, line: e.lineNumber});
+        return res.status(500).json({error: e.message, line: e.lineNumber});
     }
 }

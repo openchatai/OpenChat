@@ -17,6 +17,7 @@ use Illuminate\Support\Str;
 use Psr\Http\Message\ResponseInterface;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Throwable;
 
 class StartRecursiveCrawler implements ShouldQueue
 {
@@ -30,26 +31,29 @@ class StartRecursiveCrawler implements ShouldQueue
         $dataSource = WebsiteDataSource::find($event->getWebsiteDataSourceId());
         $chatbotId = $event->getChatbotId();
 
-        if($dataSource->getCrawlingStatus()->isCompleted()) {
+        if ($dataSource->getCrawlingStatus()->isCompleted()) {
             return;
         }
 
-        $rootUrl = $dataSource->getRootUrl();
-        $url = $rootUrl;
+        try {
+            $rootUrl = $dataSource->getRootUrl();
+            $url = $rootUrl;
 
-        // Initialize an empty array to store the crawled URLs
-        $crawledUrls = [];
+            // Initialize an empty array to store the crawled URLs
+            $crawledUrls = [];
 
-        // Set the crawling status to "in progress"
-        $dataSource->setCrawlingStatus(WebsiteDataSourceStatusType::IN_PROGRESS);
-        $dataSource->save();
+            // Set the crawling status to "in progress"
+            $dataSource->setCrawlingStatus(WebsiteDataSourceStatusType::IN_PROGRESS);
+            $dataSource->save();
 
-        // Start crawling from the root URL
-        $this->crawl($url, $crawledUrls, 15, $rootUrl, $chatbotId, $dataSource->getId());
+            // Start crawling from the root URL
+            $this->crawl($url, $crawledUrls, 15, $rootUrl, $chatbotId, $dataSource->getId());
 
-        // Set the crawling status to "completed"
-        $dataSource->setCrawlingStatus(WebsiteDataSourceStatusType::COMPLETED);
-        $dataSource->save();
+            event(new WebsiteDataSourceCrawlingWasCompleted($chatbotId, $dataSource->getId()));
+        } catch (Exception|Throwable $exception) {
+            $dataSource->setCrawlingStatus(WebsiteDataSourceStatusType::FAILED);
+            $dataSource->save();
+        }
 
         event(new WebsiteDataSourceCrawlingWasCompleted($chatbotId, $dataSource->getId()));
     }
@@ -98,8 +102,9 @@ class StartRecursiveCrawler implements ShouldQueue
                 $progress = $this->calculateCrawlingProgress(count($crawledUrls), $maxPages);
                 $this->updateCrawlingProgress($chatbotId, $dataSourceId, $progress);
             }
-        } catch (Exception|GuzzleException $e) {
-
+        } catch (Exception|GuzzleException|Throwable $e) {
+            return;
+            // Ignore the exception and continue crawling other links
         }
     }
 
@@ -111,9 +116,7 @@ class StartRecursiveCrawler implements ShouldQueue
 
         $page = new CrawledPages();
         $page->setUrl($url);
-        $page->setContent($response->getBody());
         $page->setStatusCode($response->getStatusCode());
-        $page->setNormalizedContent($this->getNormalizedContent($response->getBody()));
         $page->setChatbotId($chatbotId);
         $page->setTitle($this->getCrawledPageTitle($response->getBody()));
         $page->setId(Uuid::uuid4());
@@ -145,7 +148,7 @@ class StartRecursiveCrawler implements ShouldQueue
     {
         $dom = new DOMDocument();
         libxml_use_internal_errors(true); // Disable error reporting for invalid HTML
-        $dom->loadHTML($html);
+        @$dom->loadHTML($html);
         libxml_clear_errors();
 
         $titleElements = $dom->getElementsByTagName('title');

@@ -39,6 +39,6 @@ export default async function handler(
     console.error(e);
     // Return error message and line number
     // @ts-ignore
-    res.status(500).json({ error: e.message, line: e.lineNumber });
+    return res.status(500).json({ error: e.message, line: e.lineNumber });
   }
 }
