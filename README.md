@@ -53,6 +53,8 @@ https://github.com/openchatai/OpenChat/assets/32633162/112a72a7-4314-474b-b7b5-9
 - [x] Support multiple data sources per chatbot
 - [x] Support ingesting an entire codebase using GitHub API and use it as a data source with pair programming mode
 - [x] Support pre-defined messages with a single click
+- [ ] **In progress: re write the backend in Python Django**
+- [ ] **In progress: re-write the frontend in Next.js & TS**
 - [ ] Support Slack integration (allow users to connect chatbots with their Slack workspaces)
 - [ ] Support Intercom integration (enable users to sync chat conversations with Intercom)
 - [ ] Support offline open-source models (e.g., Alpaca, LLM drivers)
