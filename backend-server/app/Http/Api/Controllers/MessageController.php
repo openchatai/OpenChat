@@ -69,32 +69,12 @@ class MessageController extends Controller
             );
         }
 
-        if ($botToken == '1RuzS7w5ceGaN6CiK0J7'){
-            $initialQuestions = [
-                'What is OpenChat?',
-                'How I can start with OpenChat?',
-                'Can I embed my chatbot on my website?',
-                'Is OpenChat open source?'
-            ];
-        }
-
-        if ($botToken == '1RuzS7w5ceGaN6CiK0J7') {
-            $faq =
-                [
-                    [
-                        "id" => 1,
-                        "content" => "This is an example on article you can add in your chat bubble, it support **markdown** and more!",
-                        "title" => "Example on article"
-                    ]
-                ];
-        }
-
         return response()->json(
             [
                 "bot_name" => $bot->getName(),
                 "logo" => "logo",
-                "faq" => $faq?? [],
-                "inital_questions" => $initialQuestions ?? []
+                "faq" =>  [],
+                "inital_questions" => []
             ]
         );
     }
