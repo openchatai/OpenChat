@@ -15,3 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('chat/search', [MessageController::class, 'sendSearchRequest']);
+
+
+Route::get('chat/init', [MessageController::class, 'initChat']);
+Route::post('chat/send', [MessageController::class, 'sendChat']);
