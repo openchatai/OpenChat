@@ -1,6 +1,7 @@
 DOCKER_COMPOSE = docker-compose
 BUILD_OPTS =
 
+## update
 
 install:
 	@echo "=== Putting the services down (if already running) ==="
