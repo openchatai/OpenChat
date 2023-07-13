@@ -32,6 +32,7 @@ OpenChat is an everyday user chatbot console that simplifies the utilization of 
 
 https://github.com/openchatai/OpenChat/assets/32633162/112a72a7-4314-474b-b7b5-91228558370c
 
+Chinese Video Tutorial:https://www.bilibili.com/video/BV1YX4y1H7oN
 
 ## 🏁 Current Features
 
