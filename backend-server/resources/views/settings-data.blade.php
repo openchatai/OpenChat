@@ -436,6 +436,193 @@
                                 </div>
                             @endforeach
 
+                            <hr style="margin-top: 2rem; margin-bottom: 2rem">
+                            @php
+                                /** @var \App\Models\JsonDataSource[] $jsonDataSources */
+                            @endphp
+                            @foreach($jsonDataSources as $source)
+                                <div style="margin-top: 1.5rem; margin-bottom: 1.5rem">
+                                    <!-- Start -->
+                                    <div class="rounded-sm border border-slate-200">
+                                        <div class="overflow-x-auto">
+                                            <table class="table-auto w-full divide-y divide-slate-200">
+                                                <!-- Table body -->
+                                                <tbody class="text-sm" x-data="{ open: false }">
+                                                <!-- Row -->
+                                                <tr>
+                                                    <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                                                        <div class="flex items-center text-slate-800">
+                                                            <div
+                                                                class="w-10 h-10 shrink-0 flex items-center justify-center bg-slate-100 rounded-full mr-2 sm:mr-3">
+                                                                <img class="rounded-full ml-1"
+                                                                     src="https://upload.wikimedia.org/wikipedia/commons/c/c9/JSON_vector_logo.svg"
+                                                                     width="40"
+                                                                     height="40" alt="User 01">
+                                                            </div>
+                                                            <div class="font-medium text-slate-800">
+                                                                <strong>Bulk Upload of Json files</strong>
+
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                                                        <div class="text-left font-medium text-emerald-500">
+                                                            {{count($source->getFiles())}} files scanned
+                                                        </div>
+                                                    </td>
+                                                    <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                                                        @if($source->getCreatedAt()->diffInMinutes(now()) <= 3)
+                                                            <div
+                                                                class="inline-flex font-medium bg-blue-100 text-blue-600 rounded-full text-center px-2.5 py-0.5">
+                                                                In progress (eta: {{$source->getCreatedAt()->addMinutes(3)->diffForHumans()}})
+                                                            </div>
+                                                        @else
+                                                            <div
+                                                                class="inline-flex font-medium bg-emerald-100 text-emerald-600 rounded-full text-center px-2.5 py-0.5">
+                                                                Completed
+                                                            </div>
+                                                        @endif
+                                                    </td>
+
+                                                    <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                                                        <div class="flex items-center">
+                                                            <svg
+                                                                class="w-4 h-4 fill-current text-slate-400 shrink-0 mr-2"
+                                                                viewBox="0 0 16 16">
+                                                                <path
+                                                                    d="M4.3 4.5c1.9-1.9 5.1-1.9 7 0 .7.7 1.2 1.7 1.4 2.7l2-.3c-.2-1.5-.9-2.8-1.9-3.8C10.1.4 5.7.4 2.9 3.1L.7.9 0 7.3l6.4-.7-2.1-2.1zM15.6 8.7l-6.4.7 2.1 2.1c-1.9 1.9-5.1 1.9-7 0-.7-.7-1.2-1.7-1.4-2.7l-2 .3c.2 1.5.9 2.8 1.9 3.8 1.4 1.4 3.1 2 4.9 2 1.8 0 3.6-.7 4.9-2l2.2 2.2.8-6.4z"></path>
+                                                            </svg>
+                                                            <div class="cursor-not-allowed">Re-sync
+                                                                <div
+                                                                    class="inline-flex items-center text-xs font-medium text-slate-100 bg-slate-700 rounded-full text-center px-2 py-0.5"
+                                                                    style="margin-left: 0.3rem">
+                                                                    <svg
+                                                                        class="w-3 h-3 shrink-0 fill-current text-amber-500 mr-1"
+                                                                        viewBox="0 0 12 12">
+                                                                        <path
+                                                                            d="M11.953 4.29a.5.5 0 00-.454-.292H6.14L6.984.62A.5.5 0 006.12.173l-6 7a.5.5 0 00.379.825h5.359l-.844 3.38a.5.5 0 00.864.445l6-7a.5.5 0 00.075-.534z"></path>
+                                                                    </svg>
+                                                                    <span>soon </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                                                        <button
+                                                            class="text-rose-500 hover:text-rose-600 rounded-full cursor-not-allowed"
+                                                            disabled>
+                                                            <span class="sr-only">Delete</span>
+                                                            <svg class="w-8 h-8 fill-current" viewBox="0 0 32 32">
+                                                                <path d="M13 15h2v6h-2zM17 15h2v6h-2z"></path>
+                                                                <path
+                                                                    d="M20 9c0-.6-.4-1-1-1h-6c-.6 0-1 .4-1 1v2H8v2h1v10c0 .6.4 1 1 1h12c.6 0 1-.4 1-1V13h1v-2h-4V9zm-6 1h4v1h-4v-1zm7 3v9H11v-9h10z"></path>
+                                                            </svg>
+                                                        </button>
+                                                    </td>
+
+                                                    <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">
+                                                        <div class="flex items-center">
+                                                            <button
+                                                                class="text-slate-400 hover:text-slate-500 transform"
+                                                                :class="{ 'rotate-180': open }"
+                                                                @click.prevent="open = !open" :aria-expanded="open"
+                                                                aria-controls="description-01" aria-expanded="false">
+                                                                <span class="sr-only">Menu</span>
+                                                                <svg class="w-8 h-8 fill-current" viewBox="0 0 32 32">
+                                                                    <path
+                                                                        d="M16 20l-5.4-5.4 1.4-1.4 4 4 4-4 1.4 1.4z"></path>
+                                                                </svg>
+                                                            </button>
+                                                        </div>
+                                                    </td>
+
+                                                </tr>
+                                                <!--
+                                                Example of content revealing when clicking the button on the right side:
+                                                Note that you must set a "colspan" attribute on the <td> element,
+                                                and it should match the number of columns in your table
+                                                -->
+
+                                                <tr id="description-01" role="region" x-show="open"
+                                                    style="display: none;">
+                                                    <td colspan="10" class="px-2 first:pl-5 last:pr-5 py-3">
+                                                        <div class="overflow-x-auto">
+                                                            <table class="table-auto w-full"
+                                                                   @click.stop="$dispatch('set-transactionopen', true)">
+                                                                <!-- Table header -->
+                                                                <thead
+                                                                    class="text-xs font-semibold uppercase text-slate-500 border-t border-b border-slate-200">
+                                                                <tr>
+
+                                                                    <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                                                                        <div class="font-semibold text-left">Name
+                                                                        </div>
+                                                                    </th>
+                                                                    <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                                                                        <div class="font-semibold text-left">Download
+                                                                            URL
+                                                                        </div>
+                                                                    </th>
+                                                                    <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                                                                        <div class="font-semibold text-left">Status
+                                                                        </div>
+                                                                    </th>
+                                                                    <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                                                                        <div class="font-semibold text-right">On</div>
+                                                                    </th>
+                                                                </tr>
+                                                                </thead>
+                                                                <!-- Table body -->
+                                                                <tbody
+                                                                    class="text-sm divide-y divide-slate-200 border-b border-slate-200">
+
+                                                                @foreach($source->getFiles() as $file)
+                                                                    <tr>
+                                                                        <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap md:w-1/2">
+                                                                            <div class="flex items-center">
+                                                                                <div
+                                                                                    class="w-9 h-9 shrink-0 mr-2 sm:mr-3">
+                                                                                    <img class="w-9 h-9 rounded-full"
+                                                                                         src="/dashboard/images/transactions-image-06.svg"
+                                                                                         width="36" height="36"
+                                                                                         alt="Transaction 01">
+                                                                                </div>
+                                                                                <div class="font-medium text-slate-800">
+                                                                                    {{$file}}
+
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                                                                            <div class="text-left">
+                                                                                <a href="{{$file}}">download</a>
+                                                                            </div>
+                                                                        </td>
+
+                                                                        <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">
+                                                                            <div
+                                                                                class="text-right text-slate-700 font-medium">
+                                                                                {{$source->getCreatedAt()->format('d.m.Y H:i')}}
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                @endforeach
+                                                                </tbody>
+                                                            </table>
+
+                                                        </div>
+                                                    </td>
+                                                </tr>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <!-- End -->
+                                </div>
+                            @endforeach
+
 
                             <hr style="margin-top: 2rem; margin-bottom: 2rem">
                             @php
@@ -591,6 +778,17 @@
                                                                         </div>
                                                                         <div class="text-sm">We will scan your PDF files and extract knowledge and any
                                                                             information
+                                                                        </div>
+                                                                    </button>
+                                                                </li>
+                                                                <li>
+                                                                    <button
+                                                                        onclick="window.location.href = '{{ route('onboarding.other-data-sources-json', ['id' => request()->route('id')]) }}'"
+                                                                        class="w-full h-full text-left py-3 px-4 rounded bg-white border border-slate-200 hover:border-slate-300 shadow-sm duration-150 ease-in-out">
+                                                                        <div class="flex flex-wrap items-center justify-between mb-0.5">
+                                                                            <span class="font-semibold text-slate-800">JSON Files</span>
+                                                                        </div>
+                                                                        <div class="text-sm">We will scan json files in a directory
                                                                         </div>
                                                                     </button>
                                                                 </li>

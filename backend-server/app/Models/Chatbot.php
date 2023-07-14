@@ -130,6 +130,11 @@ class Chatbot extends Model
         return $this->hasMany(CodebaseDataSource::class);
     }
 
+    public function getJsonFilesDataSources()
+    {
+        return $this->hasMany(JsonDataSource::class);
+    }
+    
     public function getCreatedAt(): \DateTimeInterface
     {
         return $this->created_at;

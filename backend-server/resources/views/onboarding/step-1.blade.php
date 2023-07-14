@@ -108,6 +108,19 @@
 
                         <li>
                             <button
+                                onclick="window.location.href = '{{ route('onboarding.json') }}'"
+                                class="w-full h-full text-left py-3 px-4 rounded bg-white border border-slate-200 hover:border-slate-300 shadow-sm duration-150 ease-in-out">
+                                <div class="flex flex-wrap items-center justify-between mb-0.5">
+                                    <span class="font-semibold text-slate-800">📄 JSON</span>
+                                </div>
+                                <div class="text-sm">
+                                    Provide a link to your json files and we will extract the knowledge and any information
+                                </div>
+                            </button>
+                        </li>
+
+                        <li>
+                            <button
                                 class="w-full h-full text-left py-3 px-4 rounded bg-white border border-slate-200 hover:border-slate-300 shadow-sm duration-150 ease-in-out cursor-not-allowed" >
                                 <div class="flex flex-wrap items-center justify-between mb-0.5">
                                     <span class="font-semibold text-slate-800">Confluence

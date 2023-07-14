@@ -4,13 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Http\Events\ChatbotWasCreated;
 use App\Http\Events\CodebaseDataSourceWasAdded;
+use App\Http\Events\JsonDataSourceWasAdded;
 use App\Http\Events\PdfDataSourceWasAdded;
 use App\Http\Requests\CreateChatbotRequest;
 use App\Http\Requests\CreateChatbotViaCodebaseRequest;
+use App\Http\Requests\CreateChatbotViaJsonFlowRequest;
 use App\Http\Requests\CreateChatbotViaPdfFlowRequest;
 use App\Http\Requests\SendChatMessageRequest;
 use App\Http\Requests\UpdateCharacterSettingsRequest;
 use App\Http\Responses\ChatbotResponse;
+use App\Http\Services\HandleJsonDataSource;
 use App\Http\Services\HandlePdfDataSource;
 use App\Models\Chatbot;
 use App\Models\ChatHistory;
@@ -97,6 +100,39 @@ class ChatbotController extends Controller
 
         // Trigger the PdfDataSourceWasAdded event
         event(new PdfDataSourceWasAdded($chatbot->getId(), $dataSource->getId()));
+
+        // Redirect to the onboarding configuration page
+        return redirect()->route('onboarding.config', ['id' => $chatbot->getId()->toString()]);
+    }
+
+    /**
+     * Create a chatbot via Json flow.
+     *
+     * @param  \App\Http\Requests\CreateChatbotViaJsonFlowRequest  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function createViaJsonFlow(CreateChatbotViaJsonFlowRequest $request): RedirectResponse
+    {
+        // Create a new Chatbot instance
+        $chatbot = new Chatbot();
+
+        // Set the properties of the chatbot
+        $chatbot->setId(Uuid::uuid4());
+        $chatbot->setName($request->getName());
+        $chatbot->setToken(Str::random(20));
+        $chatbot->setPromptMessage($request->getPromptMessage());
+
+        // Save the chatbot to the database
+        $chatbot->save();
+
+        // Get the JSON files from the request
+        $files = $request->file('jsonfiles');
+
+        // Handle the JSON data source
+        $dataSource = (new HandleJsonDataSource($chatbot, $files))->handle(); // todo this should be moved to an event listener similar to the one in the previous method
+
+        // Trigger the JsonDataSourceWasAdded event
+        event(new JsonDataSourceWasAdded($chatbot->getId(), $dataSource->getId()));
 
         // Redirect to the onboarding configuration page
         return redirect()->route('onboarding.config', ['id' => $chatbot->getId()->toString()]);

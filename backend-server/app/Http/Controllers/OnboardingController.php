@@ -26,6 +26,11 @@ class OnboardingController extends Controller
         return view('onboarding.step-2-pdf');
     }
 
+    public function dataSourcesJson()
+    {
+        return view('onboarding.step-2-json');
+    }
+
     public function config()
     {
         return view('onboarding.step-3');
