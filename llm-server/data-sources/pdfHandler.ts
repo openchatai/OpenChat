@@ -1,11 +1,11 @@
-import type {NextApiRequest, NextApiResponse} from 'next';
-import {PINECONE_INDEX_NAME} from '@/config/pinecone';
-import {DirectoryLoader} from 'langchain/document_loaders/fs/directory';
-import {CustomPDFLoader} from '@/utils/customPDFLoader';
-import {RecursiveCharacterTextSplitter} from 'langchain/text_splitter';
-import {OpenAIEmbeddings} from 'langchain/embeddings/openai';
-import {PineconeStore} from 'langchain/vectorstores/pinecone';
-import {pinecone} from '@/utils/pinecone-client';
+import { PINECONE_INDEX_NAME } from '@/config/pinecone';
+import { CustomPDFLoader } from '@/utils/customPDFLoader';
+import { initVectorStore } from '@/utils/initVectorStore';
+import { pinecone } from '@/utils/pinecone-client';
+import { DirectoryLoader } from 'langchain/document_loaders/fs/directory';
+import { OpenAIEmbeddings } from 'langchain/embeddings/openai';
+import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter';
+import type { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function pdfHandler(req: NextApiRequest, res: NextApiResponse) {
     try {
@@ -27,9 +27,7 @@ export default async function pdfHandler(req: NextApiRequest, res: NextApiRespon
         const embeddings = new OpenAIEmbeddings();
         const index = pinecone.Index(PINECONE_INDEX_NAME);
 
-        await PineconeStore.fromDocuments(docs, embeddings, {
-            pineconeIndex: index, namespace: namespace, textKey: 'text',
-        });
+        await initVectorStore(docs, embeddings, {index, namespace});
 
         console.log('All is done, folder deleted');
         return res.status(200).json({message: 'Success'});

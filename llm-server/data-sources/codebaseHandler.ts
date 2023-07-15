@@ -2,9 +2,9 @@ import type {NextApiRequest, NextApiResponse} from 'next';
 import {PINECONE_INDEX_NAME} from '@/config/pinecone';
 import {RecursiveCharacterTextSplitter} from 'langchain/text_splitter';
 import {OpenAIEmbeddings} from 'langchain/embeddings/openai';
-import {PineconeStore} from 'langchain/vectorstores/pinecone';
 import {pinecone} from '@/utils/pinecone-client';
 import {GithubRepoLoader} from "langchain/document_loaders/web/github";
+import { initVectorStore } from '@/utils/initVectorStore';
 
 export default async function codebaseHandler(req: NextApiRequest, res: NextApiResponse) {
     try {
@@ -28,9 +28,7 @@ export default async function codebaseHandler(req: NextApiRequest, res: NextApiR
         const embeddings = new OpenAIEmbeddings();
         const index = pinecone.Index(PINECONE_INDEX_NAME);
 
-        await PineconeStore.fromDocuments(docs, embeddings, {
-            pineconeIndex: index, namespace: namespace, textKey: 'text',
-        });
+        await initVectorStore(docs, embeddings, {index, namespace})
 
         console.log('Indexed documents. all done!')
         return res.status(200).json({message: 'Success'});
