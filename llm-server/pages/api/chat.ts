@@ -1,4 +1,4 @@
-import { PINECONE_INDEX_NAME } from '@/config/pinecone';
+import { VECTOR_STORE_INDEX_NAME } from '@/config/pinecone';
 import { getVectorStore } from '@/utils/getVectorStore';
 import { makeChain } from '@/utils/makechain';
 import { pinecone } from '@/utils/pinecone-client';
@@ -21,7 +21,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse,
     const sanitizedQuestion = question.trim().replaceAll('\n', ' ');
 
     try {
-        const index = pinecone.Index(PINECONE_INDEX_NAME);
+        const index = pinecone.Index(VECTOR_STORE_INDEX_NAME);
 
         /* create vectorstore*/
         const vectorStore = await getVectorStore({index, namespace})

@@ -1,4 +1,4 @@
-import { PINECONE_INDEX_NAME } from '@/config/pinecone';
+import { VECTOR_STORE_INDEX_NAME } from '@/config/pinecone';
 import { CustomPDFLoader } from '@/utils/customPDFLoader';
 import { initVectorStore } from '@/utils/initVectorStore';
 import { pinecone } from '@/utils/pinecone-client';
@@ -25,7 +25,7 @@ export default async function pdfHandler(req: NextApiRequest, res: NextApiRespon
         const docs = await textSplitter.splitDocuments(rawDocs);
 
         const embeddings = new OpenAIEmbeddings();
-        const index = pinecone.Index(PINECONE_INDEX_NAME);
+        const index = pinecone.Index(VECTOR_STORE_INDEX_NAME);
 
         await initVectorStore(docs, embeddings, {index, namespace});
 

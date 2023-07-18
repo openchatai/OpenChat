@@ -1,5 +1,5 @@
 import type {NextApiRequest, NextApiResponse} from 'next';
-import {PINECONE_INDEX_NAME} from '@/config/pinecone';
+import {VECTOR_STORE_INDEX_NAME} from '@/config/pinecone';
 import {DirectoryLoader} from 'langchain/document_loaders/fs/directory';
 import {RecursiveCharacterTextSplitter} from 'langchain/text_splitter';
 import {TextLoader} from 'langchain/document_loaders';
@@ -25,7 +25,7 @@ export default async function websiteHandler(req: NextApiRequest, res: NextApiRe
         const docs = await textSplitter.splitDocuments(rawDocs);
 
         const embeddings = new OpenAIEmbeddings();
-        const index = pinecone.Index(PINECONE_INDEX_NAME);
+        const index = pinecone.Index(VECTOR_STORE_INDEX_NAME);
 
         await initVectorStore(docs, embeddings, {index, namespace})
         console.log('All is done, folder deleted');
