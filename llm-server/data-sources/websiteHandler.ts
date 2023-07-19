@@ -25,9 +25,8 @@ export default async function websiteHandler(req: NextApiRequest, res: NextApiRe
         const docs = await textSplitter.splitDocuments(rawDocs);
 
         const embeddings = new OpenAIEmbeddings();
-        const index = pinecone.Index(VECTOR_STORE_INDEX_NAME);
 
-        await initVectorStore(docs, embeddings, {index, namespace})
+        await initVectorStore(docs, embeddings, {namespace})
         console.log('All is done, folder deleted');
         return res.status(200).json({message: 'Success'});
     } catch (e) {

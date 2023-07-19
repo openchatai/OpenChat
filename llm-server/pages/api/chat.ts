@@ -21,10 +21,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse,
     const sanitizedQuestion = question.trim().replaceAll('\n', ' ');
 
     try {
-        const index = pinecone.Index(VECTOR_STORE_INDEX_NAME);
 
         /* create vectorstore*/
-        const vectorStore = await getVectorStore({index, namespace})
+        const vectorStore = await getVectorStore({namespace})
 
         //create chain
         const chain = makeChain(vectorStore, mode, initial_prompt);

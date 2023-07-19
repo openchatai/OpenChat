@@ -26,9 +26,8 @@ export default async function codebaseHandler(req: NextApiRequest, res: NextApiR
         console.log('Split documents')
 
         const embeddings = new OpenAIEmbeddings();
-        const index = pinecone.Index(VECTOR_STORE_INDEX_NAME);
 
-        await initVectorStore(docs, embeddings, {index, namespace})
+        await initVectorStore(docs, embeddings, {namespace})
 
         console.log('Indexed documents. all done!')
         return res.status(200).json({message: 'Success'});

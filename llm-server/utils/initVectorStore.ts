@@ -4,7 +4,8 @@ import { QdrantVectorStore } from "langchain/vectorstores/qdrant";
 import { StoreType } from "./store.enum";
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
 import { StoreOptions } from "@/interfaces/storeOptions.interface";
-import { PINECONE_TEXT_KEY } from "@/config/pinecone";
+import { PINECONE_TEXT_KEY, VECTOR_STORE_INDEX_NAME } from "@/config/pinecone";
+
 
 export async function initVectorStore(
   docs:  Document[],
@@ -13,8 +14,9 @@ export async function initVectorStore(
 ) {
   switch (process.env.STORE) {
     case StoreType.PINECONE:
+      const { pinecone } = await import('./pinecone-client');
       await PineconeStore.fromDocuments(docs, embeddings, {
-        pineconeIndex: options.index!,
+        pineconeIndex: pinecone.Index(VECTOR_STORE_INDEX_NAME),
         namespace: options.namespace,
         textKey: PINECONE_TEXT_KEY,
       });
