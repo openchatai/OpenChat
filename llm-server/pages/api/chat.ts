@@ -1,7 +1,5 @@
-import { VECTOR_STORE_INDEX_NAME } from '@/config/pinecone';
 import { getVectorStore } from '@/utils/getVectorStore';
 import { makeChain } from '@/utils/makechain';
-import { pinecone } from '@/utils/pinecone-client';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse,) {

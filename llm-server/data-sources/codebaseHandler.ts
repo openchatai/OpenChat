@@ -1,8 +1,6 @@
 import type {NextApiRequest, NextApiResponse} from 'next';
-import {VECTOR_STORE_INDEX_NAME} from '@/config/pinecone';
 import {RecursiveCharacterTextSplitter} from 'langchain/text_splitter';
 import {OpenAIEmbeddings} from 'langchain/embeddings/openai';
-import {pinecone} from '@/utils/pinecone-client';
 import {GithubRepoLoader} from "langchain/document_loaders/web/github";
 import { initVectorStore } from '@/utils/initVectorStore';
 

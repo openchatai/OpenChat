@@ -1,10 +1,8 @@
 import type {NextApiRequest, NextApiResponse} from 'next';
-import {VECTOR_STORE_INDEX_NAME} from '@/config/pinecone';
 import {DirectoryLoader} from 'langchain/document_loaders/fs/directory';
 import {RecursiveCharacterTextSplitter} from 'langchain/text_splitter';
 import {TextLoader} from 'langchain/document_loaders';
 import {OpenAIEmbeddings} from 'langchain/embeddings/openai';
-import {pinecone} from '@/utils/pinecone-client';
 import { initVectorStore } from '@/utils/initVectorStore';
 
 export default async function websiteHandler(req: NextApiRequest, res: NextApiResponse) {

@@ -1,7 +1,5 @@
-import { VECTOR_STORE_INDEX_NAME } from '@/config/pinecone';
 import { CustomPDFLoader } from '@/utils/customPDFLoader';
 import { initVectorStore } from '@/utils/initVectorStore';
-import { pinecone } from '@/utils/pinecone-client';
 import { DirectoryLoader } from 'langchain/document_loaders/fs/directory';
 import { OpenAIEmbeddings } from 'langchain/embeddings/openai';
 import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter';
