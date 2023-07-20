@@ -53,6 +53,16 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "codebanesr",
+      "name": "codebane",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17947802?v=4",
+      "profile": "https://resume.applesauce.co.in",
+      "contributions": [
+        "code",
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
