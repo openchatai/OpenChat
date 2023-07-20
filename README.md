@@ -81,8 +81,24 @@ git clone git@github.com:openchatai/OpenChat.git
 OPENAI_API_KEY=# you can get it from your account in openai.com
 PINECONE_API_KEY=# you can get from "API Keys" tab in pinecone
 PINECONE_ENVIRONMENT=# you can get it after creating your index in pinecone
-PINECONE_INDEX_NAME=# you can get it after creating your index in pinecone
+VECTOR_STORE_INDEX_NAME=# you can get it after creating your index in pinecone
 ```
+
+
+####  Using Azure OpenAI
+
+- `USE_AZURE_OPENAI=true`: Whether to use the Azure OpenAI API.
+- `AZURE_OPENAI_API_KEY`: Your Azure OpenAI API key.
+- `AZURE_OPENAI_API_INSTANCE_NAME`: The name of your Azure OpenAI API instance.
+- `AZURE_OPENAI_API_COMPLETIONS_DEPLOYMENT_NAME`: The name of the Azure OpenAI API deployment for completions.
+- `AZURE_OPENAI_API_EMBEDDINGS_DEPLOYMENT_NAME`: The name of the Azure OpenAI API deployment for embeddings.
+
+#### Using Qdrant
+If you want to switch from Pinecone to Qdrant, you can set the following environment variables:
+
+- `QDRANT_URL`: The URL of the Qdrant server.
+- `STORE`: The store to use to store embeddings. Can be `qdrant` or `pinecone`.
+
 
 > Note: for pincone db, make sure that the dimension is equal to 1536 
 

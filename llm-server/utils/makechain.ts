@@ -1,15 +1,22 @@
-import {OpenAI} from 'langchain/llms/openai';
-import {PineconeStore} from 'langchain/vectorstores/pinecone';
+import {OpenAI, OpenAIChat} from 'langchain/llms/openai';
 import {ConversationalRetrievalQAChain} from 'langchain/chains';
+import { BaseLLM } from 'langchain/dist/llms/base';
+import { VectorStore } from 'langchain/dist/vectorstores/base';
 
-export const makeChain = (vectorstore: PineconeStore, mode: string, initial_prompt: string) => {
+export const makeChain = (vectorstore: VectorStore, mode: string, initial_prompt: string) => {
 
     const prompts = getInitialPromptByMode(mode, initial_prompt);
-
-    const model = new OpenAI({
-        temperature: 0, // increase temepreature to get more creative answers
-        modelName: 'gpt-3.5-turbo', //change this to gpt-4 if you have access
-    });
+    let model: BaseLLM;
+    if(process.env.USE_AZURE_OPENAI) {
+        model =  new OpenAIChat({
+            modelName: 'gpt-35-turbo',
+        });
+    } else {
+        model = new OpenAI({
+            temperature: 0, // increase temepreature to get more creative answers
+            modelName: 'gpt-3.5-turbo', //change this to gpt-4 if you have access
+        });
+    }
 
     let enableSourceDocuments = false;
 

@@ -1,11 +1,9 @@
 import type {NextApiRequest, NextApiResponse} from 'next';
-import {PINECONE_INDEX_NAME} from '@/config/pinecone';
 import {DirectoryLoader} from 'langchain/document_loaders/fs/directory';
 import {RecursiveCharacterTextSplitter} from 'langchain/text_splitter';
 import {TextLoader} from 'langchain/document_loaders';
 import {OpenAIEmbeddings} from 'langchain/embeddings/openai';
-import {PineconeStore} from 'langchain/vectorstores/pinecone';
-import {pinecone} from '@/utils/pinecone-client';
+import { initVectorStore } from '@/utils/initVectorStore';
 
 export default async function websiteHandler(req: NextApiRequest, res: NextApiResponse) {
     try {
@@ -25,11 +23,8 @@ export default async function websiteHandler(req: NextApiRequest, res: NextApiRe
         const docs = await textSplitter.splitDocuments(rawDocs);
 
         const embeddings = new OpenAIEmbeddings();
-        const index = pinecone.Index(PINECONE_INDEX_NAME);
 
-        await PineconeStore.fromDocuments(docs, embeddings, {
-            pineconeIndex: index, namespace: namespace, textKey: 'text',
-        });
+        await initVectorStore(docs, embeddings, {namespace})
         console.log('All is done, folder deleted');
         return res.status(200).json({message: 'Success'});
     } catch (e) {

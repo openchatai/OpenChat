@@ -1,9 +1,6 @@
-import type {NextApiRequest, NextApiResponse} from 'next';
-import {OpenAIEmbeddings} from 'langchain/embeddings/openai';
-import {PineconeStore} from 'langchain/vectorstores/pinecone';
-import {makeChain} from '@/utils/makechain';
-import {pinecone} from '@/utils/pinecone-client';
-import {PINECONE_INDEX_NAME, PINECONE_NAME_SPACE} from '@/config/pinecone';
+import { getVectorStore } from '@/utils/getVectorStore';
+import { makeChain } from '@/utils/makechain';
+import type { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse,) {
     const {question, history, namespace, mode, initial_prompt} = req.body;
@@ -22,18 +19,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse,
     const sanitizedQuestion = question.trim().replaceAll('\n', ' ');
 
     try {
-        const index = pinecone.Index(PINECONE_INDEX_NAME);
 
         /* create vectorstore*/
-        const vectorStore = await PineconeStore.fromExistingIndex(new OpenAIEmbeddings({}), {
-            pineconeIndex: index, textKey: 'text', namespace: namespace, //namespace comes from your config folder
-        },);
+        const vectorStore = await getVectorStore({namespace})
 
         //create chain
         const chain = makeChain(vectorStore, mode, initial_prompt);
         //Ask a question using chat history
         const response = await chain.call({
-            question: sanitizedQuestion, chat_history: history || [],
+            question: sanitizedQuestion, chat_history: history?.join('\n') || [],
         });
 
         console.log('response', response);
