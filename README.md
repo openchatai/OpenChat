@@ -51,6 +51,7 @@ Chinese Video Tutorial:https://www.bilibili.com/video/BV1YX4y1H7oN
 - [x] Support multiple data sources per chatbot
 - [x] Support ingesting an entire codebase using GitHub API and use it as a data source with pair programming mode
 - [x] Support pre-defined messages with a single click
+- [X] Support offline vector DB
 - [ ] **In progress: re write the backend in Python Django**
 - [ ] **In progress: re-write the frontend in Next.js & TS**
 - [ ] Support Slack integration (allow users to connect chatbots with their Slack workspaces)
