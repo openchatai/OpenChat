@@ -1,0 +1,1 @@
+from .inspire import Command

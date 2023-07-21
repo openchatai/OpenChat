@@ -1,3 +1,7 @@
-from django.shortcuts import render
+# api/views.py
+from django.http import JsonResponse
 
-# Create your views here.
+def api_endpoint(request):
+    # Your API logic goes here
+    data = {'message': 'Hello, this is the API endpoint!'}
+    return JsonResponse(data)

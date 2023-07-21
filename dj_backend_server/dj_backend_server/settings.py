@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'api'
+    'api',
+    'management'
 ]
 
 MIDDLEWARE = [
@@ -122,3 +123,12 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# settings.py
+INSPIRING_QUOTES = [
+    "The future belongs to those who believe in the beauty of their dreams. - Eleanor Roosevelt",
+    "Strive not to be a success, but rather to be of value. - Albert Einstein",
+    "Life is what happens when you're busy making other plans. - John Lennon",
+    # Add more inspiring quotes as needed
+]
