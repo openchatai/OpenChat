@@ -13,6 +13,9 @@ class PdfDataSource(models.Model):
     
     # Using CharField to represent the "folder_name" field as a string
     folder_name = models.CharField(max_length=255, blank=True, null=True)
+
+    # New field for "ingest_status" using CharField
+    ingest_status = models.CharField(max_length=255, default='SUCCESS')
     
     # The "timestamps" field is represented as two DateTimeField fields in Django
     # to represent the "created_at" and "updated_at" timestamps.
