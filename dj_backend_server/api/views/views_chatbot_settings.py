@@ -1,0 +1,78 @@
+# chatbot/views.py
+
+from django.shortcuts import render, redirect, get_object_or_404
+from django.core.exceptions import ValidationError
+from django.http import HttpResponse
+from api.models import chatbot, chat_histories
+from api.enums.chatbot_initial_prompt_enum import ChatBotInitialPromptEnum
+from django.db.models import Count, Min
+
+
+def general_settings(request, id):
+    bot = get_object_or_404(chatbot, id=id)
+    return render(request, 'settings.html', {'bot': bot})
+
+
+def delete_bot(request, id):
+    bot = get_object_or_404(chatbot, id=id)
+    bot.delete()
+    return redirect('index')
+
+
+def general_settings_update(request, id):
+    bot = get_object_or_404(chatbot, id=id)
+
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        if not name:
+            raise ValidationError("Name field is required.")
+        
+        bot.name = name
+        bot.prompt_message = request.POST.get('prompt_message', ChatBotInitialPromptEnum.AI_ASSISTANT_INITIAL_PROMPT)
+        bot.save()
+        return redirect('chatbot_settings', id=id)
+
+    return HttpResponse("Method not allowed.", status=405)
+
+
+def history_settings(request, id):
+    bot = get_object_or_404(chatbot, id=id)
+    chat_history = chat_histories.objects.values('session_id').annotate(total_messages=Count('*'), first_message=Min('created_at')).filter(chatbot_id=bot.id).order_by('-first_message')
+    return render(request, 'settings-history.html', {'bot': bot, 'chatHistory': chat_history})
+
+
+def get_history_by_session_id(request, id, session_id):
+    bot = get_object_or_404(chatbot, id=id)
+    chat_history = chat_histories.objects.filter(chatbot_id=bot.id, session_id=session_id).order_by('created_at')
+    return render(request, 'widgets/chat-history.html', {'chatHistory': chat_history})
+
+
+def data_settings(request, id):
+    bot = get_object_or_404(chatbot, id=id)
+    website_data_sources = bot.website_data_sources.all()
+    pdf_data_sources = bot.pdf_files_data_sources.all()
+    codebase_data_sources = bot.codebase_data_sources.all()
+    return render(request, 'settings-data.html', {'bot': bot, 'websiteDataSources': website_data_sources, 'pdfDataSources': pdf_data_sources, 'codebaseDataSources': codebase_data_sources})
+
+
+def analytics_settings(request, id):
+    bot = get_object_or_404(chatbot, id=id)
+    data_sources = bot.website_data_sources.all()
+    return render(request, 'settings-analytics.html', {'bot': bot, 'dataSources': data_sources})
+
+
+def integrations_settings(request, id):
+    bot = get_object_or_404(chatbot, id=id)
+    return render(request, 'settings-integrations.html', {'bot': bot})
+
+
+def data_sources_updates(request, id):
+    bot = get_object_or_404(chatbot, id=id)
+    data_sources = bot.website_data_sources.all()
+    pdf_data_sources = bot.pdf_files_data_sources.all()
+    return render(request, 'widgets/data-sources-updates.html', {'dataSources': data_sources, 'pdfDataSources': pdf_data_sources})
+
+
+def theme_settings(request, id):
+    bot = get_object_or_404(chatbot, id=id)
+    return render(request, 'settings-theme.html', {'bot': bot})
