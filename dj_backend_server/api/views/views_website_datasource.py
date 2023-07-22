@@ -2,27 +2,28 @@
 import uuid
 from django.shortcuts import render, redirect
 from django.http import Http404
-from api.models import chatbot, website_data_sources
+from api.models.chatbot import Chatbot
+from api.models.website_data_sources import WebsiteDataSource
 from api.utils import get_logo_from_url
 
 def show(request, id):
     try:
-        bot = chatbot.objects.get(id=id)
-    except chatbot.DoesNotExist:
+        bot = Chatbot.objects.get(id=id)
+    except Chatbot.DoesNotExist:
         raise Http404("Chatbot does not exist.")
 
     return render(request, 'onboarding/other-data-sources-website.html', {'bot': bot})
 
 def create(request, id):
     try:
-        bot = chatbot.objects.get(id=id)
-    except chatbot.DoesNotExist:
+        bot = Chatbot.objects.get(id=id)
+    except Chatbot.DoesNotExist:
         raise Http404("Chatbot does not exist.")
 
     root_url = request.POST.get('website')
     icon = get_logo_from_url(root_url)
 
-    data_source = website_data_sources.objects.create(
+    data_source = WebsiteDataSource.objects.create(
         id=uuid.uuid4(),
         chatbot=bot,
         root_url=root_url,

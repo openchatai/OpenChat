@@ -5,11 +5,13 @@ from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from api.models import chatbot, chat_histories, codebase_data_sources
+from api.models.chatbot import Chatbot
+from api.models.chat_histories import ChatHistory
+from api.models.codebase_data_sources import CodebaseDataSource
 
 
 def index(request):
-    chatbots = chatbot.objects.all()
+    chatbots = Chatbot.objects.all()
     return render(request, 'index.html', {'chatbots': chatbots})
 
 
@@ -66,7 +68,7 @@ def update_character_settings(request):
 
 def send_message(request, token):
     if request.method == 'POST':
-        bot = chatbot.objects.get(token=token)
+        bot = Chatbot.objects.get(token=token)
         # Retrieve and process the request data
 
         # Call the API (if needed) to send the message to the chatbot
@@ -79,7 +81,7 @@ def send_message(request, token):
 
 
 def get_chat_view(request, token):
-    bot = chatbot.objects.get(token=token)
+    bot = Chatbot.objects.get(token=token)
     # Initiate a cookie (if needed) if it doesn't exist
 
     return render(request, 'chat.html', {'bot': bot})
@@ -98,7 +100,7 @@ def create_via_codebase_flow(request):
             prompt_message=prompt_message
         )
 
-        codebase_data_sources.objects.create(
+        CodebaseDataSource.objects.create(
             id=uuid4(),
             chatbot_id=chatbot.id,
             repository=repo_url
