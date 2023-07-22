@@ -1,0 +1,149 @@
+{% extends 'layout.app' %}
+
+{% block content %}
+
+<div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
+
+    <!-- Page header -->
+    <div class="mb-8">
+
+        <!-- Title -->
+        <h1 class="text-2xl md:text-3xl text-slate-800 font-bold">{{ bot.name }}: Data Sources</h1>
+
+        <!-- Breadcrumbs -->
+        <ul class="inline-flex flex-wrap text-sm font-medium">
+            <li class="flex items-center">
+                <a class="text-slate-500 hover:text-indigo-500" href="{% url 'home' %}">Home</a>
+                <svg class="h-4 w-4 fill-current text-slate-400 mx-3" viewBox="0 0 16 16">
+                    <path d="M6.6 13.4L5.2 12l4-4-4-4 1.4-1.4L12 8z"></path>
+                </svg>
+            </li>
+            <li class="flex items-center">
+                <a class="text-slate-500 hover:text-indigo-500" href="#">Data Sources</a>
+            </li>
+        </ul>
+
+    </div>
+
+    {% for source in website_sources %}
+
+    <div class="rounded-sm border border-slate-200">
+
+        <div class="overflow-x-auto">
+            <table class="table-auto w-full divide-y divide-slate-200">
+
+                <tbody class="text-sm">
+                    <tr>
+                        <td class="p-3 whitespace-nowrap">
+                            <div class="flex items-center text-slate-800">
+                                <div class="w-10 h-10 flex items-center justify-center bg-slate-100 rounded-full mr-3">
+                                    <img src="{{ source.icon }}" alt="Website Icon" width="40" height="40">
+                                </div>
+                                <div class="font-medium">Website: {{ source.root_url }}</div>
+                            </div>
+                        </td>
+                        <td class="p-3 whitespace-nowrap">
+                            <div class="text-emerald-500 font-medium">
+                                {{ source.crawled_pages.count }} pages scanned
+                            </div>
+                        </td>
+                        <td class="p-3 whitespace-nowrap">
+                            <div class="inline-flex rounded-full text-center px-3 py-1"
+                                style="background: {% if source.status == 'PENDING' %}#FFE9A8{% elif source.status == 'IN_PROGRESS' %}#E0F2FE{% else %}#ECFDF5{% endif %}; color: {% if source.status == 'PENDING' %}#F59E0B{% elif source.status == 'IN_PROGRESS' %}#10B981{% else %}#0EA5E9{% endif %}">
+                                {{ source.status }}
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+    {% for source in pdf_sources %}
+
+    <div class="rounded-sm border border-slate-200">
+
+        <div class="overflow-x-auto">
+            <table class="table-auto w-full divide-y divide-slate-200">
+
+                <tbody class="text-sm">
+                    <tr>
+                        <td class="p-3 whitespace-nowrap">
+                            <div class="flex items-center text-slate-800">
+                                <div class="w-10 h-10 flex items-center justify-center bg-slate-100 rounded-full mr-3">
+                                    <img src="pdf-icon.png" alt="PDF Icon" width="40" height="40">
+                                </div>
+                                <div class="font-medium">
+                                    Bulk PDF Upload
+                                </div>
+                            </div>
+                        </td>
+                        <td class="p-3 whitespace-nowrap">
+                            <div class="text-emerald-500 font-medium">
+                                {{ source.files.count }} files scanned
+                            </div>
+                        </td>
+                        <td class="p-3 whitespace-nowrap">
+                            <div class="inline-flex rounded-full text-center px-3 py-1"
+                                style="background: {% if source.status == 'PENDING' %}#E0F2FE{% elif source.status == 'SUCCESS' %}#ECFDF5{% else %}}#FFE9A8{% endif %}; color: {% if source.status == 'PENDING' %}#10B981{% elif source.status == 'SUCCESS' %}#0EA5E9{% else %}#F59E0B{% endif %}">
+                                {{ source.status }}
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+    {% for source in codebase_sources %}
+
+    <div class="rounded-sm border border-slate-200">
+
+        <div class="overflow-x-auto">
+            <table class="table-auto w-full divide-y divide-slate-200">
+
+                <tbody class="text-sm">
+                    <tr>
+                        <td class="p-3 whitespace-nowrap">
+                            <div class="flex items-center text-slate-800">
+                                <div class="w-10 h-10 flex items-center justify-center bg-slate-100 rounded-full mr-3">
+                                    <img src="github-icon.png" alt="GitHub Icon" width="40" height="40">
+                                </div>
+                                <div class="font-medium">
+                                    Codebase ({{ source.repo }})
+                                </div>
+                            </div>
+                        </td>
+                        <td class="p-3 whitespace-nowrap">
+                            {% if source.created_at|timesince < timedelta(minutes=3) %} <div
+                                class="inline-flex rounded-full text-center px-3 py-1"
+                                style="background: #E0F2FE; color: #10B981;">
+                                In progress (eta: {{ source.created_at|timeuntil_format:"%d %H:%M:%S" }})
+        </div>
+        {% else %}
+        <div class="inline-flex rounded-full text-center px-3 py-1" style="background: #ECFDF5; color:#0EA5E9;">
+            Completed
+        </div>
+        {% endif %}
+        </td>
+        </tr>
+        </tbody>
+
+        </table>
+    </div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% endblock %}
