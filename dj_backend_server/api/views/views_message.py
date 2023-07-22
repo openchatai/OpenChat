@@ -1,6 +1,6 @@
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_POST, require_GET
 from web.models.chatbot import Chatbot
 import requests
 
@@ -55,7 +55,7 @@ def send_search_request(request):
             'ai_response': "Something went wrong, please try again later. If this issue persists, please contact support."
         }, status=500)
 
-@require_POST
+@require_GET
 def init_chat(request):
     bot_token = request.headers.get('X-Bot-Token')
     bot = get_object_or_404(Chatbot, token=bot_token)
