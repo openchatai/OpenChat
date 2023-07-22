@@ -3,9 +3,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.exceptions import ValidationError
 from django.http import HttpResponse
-from api.models.chatbot import Chatbot
-from api.models.chat_histories import ChatHistory
-from api.enums.chatbot_initial_prompt_enum import ChatBotInitialPromptEnum
+from web.models.chatbot import Chatbot
+from web.models.chat_histories import ChatHistory
+from web.enums.chatbot_initial_prompt_enum import ChatBotInitialPromptEnum
 from django.db.models import Count, Min
 
 

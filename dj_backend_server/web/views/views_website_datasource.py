@@ -2,9 +2,9 @@
 import uuid
 from django.shortcuts import render, redirect
 from django.http import Http404
-from api.models.chatbot import Chatbot
-from api.models.website_data_sources import WebsiteDataSource
-from api.utils import get_logo_from_url
+from web.models.chatbot import Chatbot
+from web.models.website_data_sources import WebsiteDataSource
+from web.utils import get_logo_from_url
 
 def show(request, id):
     try:

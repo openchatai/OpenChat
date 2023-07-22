@@ -1,8 +1,8 @@
 # views.py
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.exceptions import PermissionDenied
-from api.models.chatbot import Chatbot
-from api.services.handle_pdf_datasource import HandlePdfDataSource
+from web.models.chatbot import Chatbot
+from web.services.handle_pdf_datasource import HandlePdfDataSource
 
 def create_pdf_data_source(request, id):
     if request.method == 'POST':

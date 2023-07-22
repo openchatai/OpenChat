@@ -5,9 +5,9 @@ from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from api.models.chatbot import Chatbot
-from api.models.chat_histories import ChatHistory
-from api.models.codebase_data_sources import CodebaseDataSource
+from web.models.chatbot import Chatbot
+from web.models.chat_histories import ChatHistory
+from web.models.codebase_data_sources import CodebaseDataSource
 
 
 def index(request):

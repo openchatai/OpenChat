@@ -4,7 +4,7 @@ import random
 import string
 from django.core.exceptions import ValidationError
 from django.core.files.storage import default_storage
-from api.models import chatbot, pdf_data_sources
+from web.models import chatbot, pdf_data_sources
 from uuid import uuid4
 
 class HandlePdfDataSource:

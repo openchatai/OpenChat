@@ -1,1 +1,1 @@
-from . import views_chatbot_settings, views_onboarding;
+from . import views_message;
