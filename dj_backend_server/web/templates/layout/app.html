@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,8 +11,7 @@
     <link href="{% static 'dashboard/style.css' %}" rel="stylesheet">
 </head>
 
-<body class="font-inter antialiased bg-slate-100 text-slate-600" {% if sidebarExpanded %}class="sidebar-expanded" {%
-    endif %} x-data="{ sidebarOpen: false, sidebarExpanded: localStorage.getItem('sidebar-expanded') == 'true' }"
+<body class="font-inter antialiased bg-slate-100 text-slate-600" {% if sidebarExpanded %} class="sidebar-expanded" {% endif %} x-data="{ sidebarOpen: false, sidebarExpanded: localStorage.getItem('sidebar-expanded') == 'true' }"
     x-init="$watch('sidebarExpanded', value => localStorage.setItem('sidebar-expanded', value))">
 
     <script>

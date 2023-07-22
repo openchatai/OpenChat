@@ -55,7 +55,7 @@
                 <!-- Dashboard -->
                 <li class="px-3 py-2 rounded-sm mb-0.5 last:mb-0">
                     <a class="block text-slate-200 hover:text-white truncate transition duration-150"
-                        href="{% url 'dashboard' %}">
+                        href="{% url 'index' %}">
                         <div class="flex items-center">
                             <svg class="shrink-0 h-6 w-6" viewBox="0 0 24 24">
                                 <path class="fill-current text-slate-600" d="M16 13v4H8v-4H0l3-9h18l3 9h-8Z" />
@@ -160,7 +160,7 @@
                         <ul class="pl-9 mt-1 hidden" :class="open ? '!block' : 'hidden'">
                             <li class="mb-1 last:mb-0">
                                 <a class="block text-slate-400 hover:text-slate-200 transition duration-150 truncate"
-                                    href="{% url 'onboarding-01' %}">
+                                    href="{% url 'onboarding.welcome' %}">
                                     <span
                                         class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Step
                                         1</span>
@@ -198,7 +198,7 @@
                         <ul class="pl-9 mt-1 hidden" :class="open ? '!block' : 'hidden'">
                             <li class="mb-1 last:mb-0">
                                 <a class="block text-slate-400 hover:text-slate-200 transition duration-150 truncate"
-                                    href="{% url 'component-button' %}">
+                                    href="#">
                                     <span
                                         class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Button</span>
                                 </a>

@@ -4,7 +4,7 @@ from .views import views_chatbot_settings, views_onboarding, views_chatbot, view
 
 urlpatterns = [
     # Dashboard
-    # path('', views.index, name='index'),
+    path('', views_chatbot.index, name='index'),
 
     # Chatbot Settings
     path('app/<int:id>/', views_chatbot_settings.general_settings, name='chatbot.settings'),
