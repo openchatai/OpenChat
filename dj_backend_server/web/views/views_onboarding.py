@@ -39,6 +39,9 @@ def data_sources(request):
 def data_sources_website(request):
     return render(request, 'onboarding/step-2.html')
 
+def data_sources_codebase(request):
+    return render(request, 'onboarding/step-2-codebase.html')
+
 def data_sources_pdf(request):
     return render(request, 'onboarding/step-2-pdf.html')
 
@@ -48,5 +51,3 @@ def config(request):
 def done(request):
     return render(request, 'onboarding/step-4.html')
 
-def data_sources_codebase(request):
-    return render(request, 'onboarding/step-2-codebase.html')
