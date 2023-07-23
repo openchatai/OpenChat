@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-23 00:24+0000\n"
+"POT-Creation-Date: 2023-07-23 04:29+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,10 +17,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-#: dj_backend_server/settings.py:108
-msgid "English"
-msgstr ""
 
 #: management/management/commands/inspire.py:8
 msgid "Displays an inspiring quote"
@@ -31,7 +27,7 @@ msgid "Don't forget to set INSPIRING_QUOTES in settings.py!"
 msgstr ""
 
 #: web/templates/onboarding/other-data-sources-website.html:4
-#: web/templates/onboarding/step-1.html:6
+#: web/templates/onboarding/step-1.html:7
 #: web/templates/onboarding/step-2.html:4
 #: web/templates/settings-analytics.html:4
 msgid "Dashboard"
@@ -49,11 +45,11 @@ msgstr ""
 msgid "Website url"
 msgstr ""
 
-#: web/templates/onboarding/step-1.html:76
+#: web/templates/onboarding/step-1.html:77
 msgid "Website"
 msgstr ""
 
-#: web/templates/onboarding/step-1.html:87
+#: web/templates/onboarding/step-1.html:88
 msgid "Many others to come 🔥️"
 msgstr ""
 
