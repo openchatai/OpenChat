@@ -28,9 +28,9 @@ urlpatterns = [
     path('onboarding/<int:id>/done/', views_onboarding.done, name='onboarding.done'),
 
     # Onboarding Backend
-    path('onboarding/website/', views_chatbot.create_via_website_flow, name='onboarding.website.create'),
+    path('onboarding/website/create/', views_chatbot.create_via_website_flow, name='onboarding.website.create'),
     path('onboarding/pdf/', views_chatbot.create_via_pdf_flow, name='onboarding.pdf.create'),
-    path('onboarding/codebase/', views_chatbot.create_via_codebase_flow, name='onboarding.codebase.create'),
+    path('onboarding/codebase/create', views_chatbot.create_via_codebase_flow, name='onboarding.codebase.create'),
     path('onboarding/<int:id>/config/', views_chatbot.update_character_settings, name='onboarding.config.create'),
 
     path('app/<int:id>/data/pdf/', views_pdf_data_source.show_pdf_data_sources, name='onboarding.other-data-sources-pdf'),

@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from django.utils.translation import gettext_lazy as _
+from os import path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -102,6 +104,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Set the list of languages you want to support
+LANGUAGES = [
+    ('en', 'English'),  # Add more languages as needed.
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
@@ -113,6 +119,8 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+
+USE_L10N = True
 
 
 # Static files (CSS, JavaScript, Images)
@@ -132,4 +140,9 @@ INSPIRING_QUOTES = [
     "Strive not to be a success, but rather to be of value. - Albert Einstein",
     "Life is what happens when you're busy making other plans. - John Lennon",
     # Add more inspiring quotes as needed
+]
+
+
+LOCALE_PATHS = [
+    path.join(BASE_DIR, 'locale'),
 ]
