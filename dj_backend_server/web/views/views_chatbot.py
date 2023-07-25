@@ -21,7 +21,7 @@ def create_via_website_flow(request):
         website = request.POST.get('website')
         prompt_message = request.POST.get('prompt_message')
 
-        chatbot = chatbot.objects.create(
+        chatbot = Chatbot.objects.create(
             id=uuid4(),
             name=name,
             token=str(uuid4())[:20],
@@ -39,7 +39,7 @@ def create_via_pdf_flow(request):
         name = request.POST.get('name')
         prompt_message = request.POST.get('prompt_message')
 
-        chatbot = chatbot.objects.create(
+        chatbot = Chatbot.objects.create(
             id=uuid4(),
             name=name,
             token=str(uuid4())[:20],
@@ -60,7 +60,7 @@ def update_character_settings(request):
         chatbot_id = request.POST.get('chatbot_id')
         character_name = request.POST.get('character_name')
 
-        chatbot = chatbot.objects.get(id=chatbot_id)
+        chatbot = Chatbot.objects.get(id=chatbot_id)
         chatbot.create_or_update_setting('character_name', character_name)
 
         return HttpResponseRedirect(reverse('onboarding.done', args=[str(chatbot.id)]))
@@ -93,7 +93,7 @@ def create_via_codebase_flow(request):
         prompt_message = request.POST.get('prompt_message')
         repo_url = request.POST.get('repo_url')
 
-        chatbot = chatbot.objects.create(
+        chatbot = Chatbot.objects.create(
             id=uuid4(),
             name=name,
             token=str(uuid4())[:20],
@@ -102,7 +102,7 @@ def create_via_codebase_flow(request):
 
         CodebaseDataSource.objects.create(
             id=uuid4(),
-            chatbot_id=chatbot.id,
+            chatbot_id=Chatbot.id,
             repository=repo_url
         )
 
