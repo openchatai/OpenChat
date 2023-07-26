@@ -2,26 +2,44 @@ from django.db import models
 import uuid
 
 class PdfDataSource(models.Model):
-    # Using UUIDField to represent the "id" field as a UUID primary key
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    
-    # Using UUIDField to represent the "chatbot_id" field as a UUID
     chatbot_id = models.UUIDField()
-    
-    # Using JSONField to represent the "files" field as a JSON data type
     files = models.JSONField()
-    
-    # Using CharField to represent the "folder_name" field as a string
-    folder_name = models.CharField(max_length=255, blank=True, null=True)
+    folder_name = models.CharField(max_length=255)
+    ingest_status = models.CharField(max_length=50)
 
-    # New field for "ingest_status" using CharField
-    ingest_status = models.CharField(max_length=255, default='SUCCESS')
-    
-    # The "timestamps" field is represented as two DateTimeField fields in Django
-    # to represent the "created_at" and "updated_at" timestamps.
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    def set_id(self, _id):
+        self.id = _id
+
+    def get_id(self):
+        return self.id
+
+    def set_chatbot_id(self, chatbot_id):
+        self.chatbot_id = chatbot_id
+
+    def get_chatbot_id(self):
+        return self.chatbot_id
+
+    def set_files(self, files):
+        self.files = files
+
+    def set_folder_name(self, folder_name):
+        self.folder_name = folder_name
+
+    def get_folder_name(self):
+        return self.folder_name
+
+    def get_files(self):
+        return self.files
+
+    def get_created_at(self):
+        return self.created_at
+
+    def set_status(self, status):
+        self.ingest_status = status
+
+    def get_status(self):
+        return self.ingest_status
 
     class Meta:
-        # Define the table name explicitly, as it is different from Django's default
-        db_table = 'pdf_data_sources'
+        db_table = 'pdf_data_source'  # Replace 'pdf_data_source' with the actual table name in the database
