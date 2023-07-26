@@ -8,7 +8,16 @@ from django.urls import reverse
 from web.models.chatbot import Chatbot
 from web.models.chat_histories import ChatHistory
 from web.models.codebase_data_sources import CodebaseDataSource
+from signals.codebase_datasource_was_created import codebase_data_source_added
+from signals.pdf_datasource_was_added import pdf_data_source_added
+from services.handle_pdf_datasource import HandlePdfDataSource
+from django.views.decorators.http import require_POST
+from django.http import JsonResponse, HttpResponseServerError
 
+import requests
+import uuid
+
+from django.shortcuts import get_object_or_404
 
 def index(request):
     chatbots = Chatbot.objects.all()
@@ -47,11 +56,13 @@ def create_via_pdf_flow(request):
         )
 
         files = request.FILES.getlist('pdffiles')
-        # Handle the PDF data source (you need to create the HandlePdfDataSource class)
-        # dataSource = HandlePdfDataSource(chatbot, files).handle()
+        # Handle the PDF data source
+        handle_pdf = HandlePdfDataSource(chatbot, files)
+        data_sources = handle_pdf.handle()
 
-        # Trigger the PdfDataSourceWasAdded event (if using Django signals or channels)
 
+        # Trigger the PdfDataSourceWasAdded event
+        pdf_data_source_added.connect(sender=chatbot.__class__, chatbot=chatbot, data_sources=data_sources)
         return HttpResponseRedirect(reverse('onboarding.config', args=[str(chatbot.id)]))
 
 
@@ -65,26 +76,83 @@ def update_character_settings(request):
 
         return HttpResponseRedirect(reverse('onboarding.done', args=[str(chatbot.id)]))
 
+def get_session_id(request):
+    bot_id = '<your_bot_id_here>'
+    cookie_name = 'chatbot_' + bot_id
 
+    session_id = request.COOKIES.get(cookie_name)
+    return session_id
+
+@require_POST
 def send_message(request, token):
-    if request.method == 'POST':
-        bot = Chatbot.objects.get(token=token)
-        # Retrieve and process the request data
+    # Find the chatbot by token
+    bot = get_object_or_404(Chatbot, token=token)
 
-        # Call the API (if needed) to send the message to the chatbot
-        response_data = {
-            'botReply': 'Bot response here',
-            'sources': ['Source Document 1', 'Source Document 2'],
-        }
+    # Get the question and history from the request
+    question = request.POST.get('question')
+    history = request.POST.getlist('history')
+    mode = request.POST.get('mode')
+    initial_prompt = bot.prompt_message
 
-        return JsonResponse(response_data)
+    # Remove null and empty values and empty arrays or objects from the history
+    history = [value for value in history if value is not None and value != '' and value != [] and value != {}]
+
+    # Call the API to send the message to the chatbot with a timeout of 5 seconds
+    try:
+        response = requests.post("http://llm-server:3000/api/chat", json={
+            'question': question,
+            'history': history,
+            'namespace': str(bot.id),
+            'mode': mode,
+            'initial_prompt': initial_prompt,
+        }, timeout=5)
+        response.raise_for_status()
+    except requests.RequestException as e:
+        return HttpResponseServerError('Something went wrong')
+
+    # Create a ChatbotResponse instance from the API response
+    bot_response = response.json()
+
+    session_id = get_session_id(request)
+
+    if session_id is not None:
+        # Save chat history
+        ChatHistory.objects.create(
+            id=uuid.uuid4(),
+            chatbot=bot,
+            from_user=True,
+            message=question,
+            session_id=session_id
+        )
+        ChatHistory.objects.create(
+            id=uuid.uuid4(),
+            chatbot=bot,
+            from_user=False,
+            message=bot_response['botReply'],
+            session_id=session_id
+        )
+
+    # Return the response from the chatbot
+    return JsonResponse({
+        'botReply': bot_response['botReply'],
+        'sources': bot_response['sources'],
+    })
 
 
 def get_chat_view(request, token):
-    bot = Chatbot.objects.get(token=token)
-    # Initiate a cookie (if needed) if it doesn't exist
+    # Find the chatbot by token
+    bot = get_object_or_404(Chatbot, token=token)
+
+    # Initiate a cookie if it doesn't exist
+    cookie_name = 'chatbot_' + str(bot.id)
+    if cookie_name not in request.COOKIES:
+        cookie_value = str(uuid4())[:20]
+        response = render(request, 'chat.html', {'bot': bot})
+        response.set_cookie(cookie_name, cookie_value, max_age=60 * 60 * 24 * 365)  # 1 year
+        return response
 
     return render(request, 'chat.html', {'bot': bot})
+
 
 
 def create_via_codebase_flow(request):

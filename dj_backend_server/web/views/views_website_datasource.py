@@ -5,6 +5,7 @@ from django.http import Http404
 from web.models.chatbot import Chatbot
 from web.models.website_data_sources import WebsiteDataSource
 from web.utils import get_logo_from_url
+from signals.website_data_source_was_added import website_data_source_added
 
 def show(request, id):
     try:
@@ -30,9 +31,6 @@ def create(request, id):
         icon=icon
     )
 
-    # Assuming you have created a Django signal for the event WebsiteDataSourceWasAdded
-    # Replace this with your actual signal handling logic
-    # Refer to Django signals documentation for more details on signals.
-    # For example: website_data_source_was_added.send(sender=WebsiteDataSource, bot_id=bot.id, data_source_id=data_source.id)
-
+    # adding signal
+    website_data_source_added.send(sender=WebsiteDataSource, bot_id=bot.id, data_source_id=data_source.id)
     return redirect('chatbot.settings-data', id=bot.id)
