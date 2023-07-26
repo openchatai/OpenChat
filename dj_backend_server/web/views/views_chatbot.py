@@ -13,6 +13,8 @@ from signals.pdf_datasource_was_added import pdf_data_source_added
 from services.handle_pdf_datasource import HandlePdfDataSource
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse, HttpResponseServerError
+from signals.codebase_datasource_was_created import codebase_data_source_added
+from signals.chatbot_was_created import chatbot_was_created
 
 import requests
 import uuid
@@ -39,7 +41,13 @@ def create_via_website_flow(request):
         )
 
         # Trigger the ChatbotWasCreated event (if using Django signals or channels)
-
+        chatbot_was_created.send(
+            id=chatbot.id,
+            name=chatbot.name,
+            website=chatbot.website,
+            prompt_message=chatbot.prompt_message
+        )
+        
         return HttpResponseRedirect(reverse('onboarding.config', args=[str(chatbot.id)]))
 
 
@@ -168,12 +176,16 @@ def create_via_codebase_flow(request):
             prompt_message=prompt_message
         )
 
-        CodebaseDataSource.objects.create(
+        codebase_data_source = CodebaseDataSource.objects.create(
             id=uuid4(),
             chatbot_id=Chatbot.id,
             repository=repo_url
         )
 
-        # Trigger the CodebaseDataSourceWasAdded event (if using Django signals or channels)
+        codebase_data_source_added.send(
+            sender=create_via_codebase_flow,
+            chatbot_id=chatbot.id,
+            data_source_id=codebase_data_source.id,
+        )
 
         return HttpResponseRedirect(reverse('onboarding.config', args=[str(chatbot.id)]))
