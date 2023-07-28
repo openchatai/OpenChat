@@ -1,9 +1,7 @@
 from django.dispatch import Signal
 
 # Define a custom Django signal
-website_data_source_crawling_completed = Signal(providing_args=[
-    'chatbot_id', 'website_data_source_id',
-])
+website_data_source_crawling_completed = Signal()
 
 # This is just a placeholder for demonstration. You can replace it with your actual model for WebsiteDataSource.
 class WebsiteDataSource:

@@ -1,9 +1,7 @@
 from django.dispatch import Signal
 
 # Define a custom Django signal
-website_data_source_added = Signal(providing_args=[
-    'chatbot_id', 'website_data_source_id',
-])
+website_data_source_added = Signal()
 
 # This function will be the Django signal receiver.
 def add_website_data_source(sender, chatbot_id, website_data_source_id, **kwargs):

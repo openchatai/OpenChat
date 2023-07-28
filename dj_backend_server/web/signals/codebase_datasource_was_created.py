@@ -1,9 +1,7 @@
 from django.dispatch import Signal
 
 # Define a custom Django signal
-codebase_data_source_added = Signal(providing_args=[
-    'chatbot_id', 'codebase_data_source_id',
-])
+codebase_data_source_added = Signal()
 
 # This function will be the Django signal receiver.
 def add_codebase_data_source(sender, chatbot_id, codebase_data_source_id, **kwargs):
@@ -15,7 +13,6 @@ def add_codebase_data_source(sender, chatbot_id, codebase_data_source_id, **kwar
 
 # Connect the receiver function to the signal
 codebase_data_source_added.connect(add_codebase_data_source)
-
 # # Emit the signal when a codebase data source is added
 # codebase_data_source_added.send(sender=CodebaseDataSource, chatbot_id=chatbot_id,
 #                                 codebase_data_source_id=codebase_data_source_id)

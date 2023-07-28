@@ -5,7 +5,7 @@ from django.http import Http404
 from web.models.chatbot import Chatbot
 from web.models.website_data_sources import WebsiteDataSource
 from web.utils import get_logo_from_url
-from signals.website_data_source_was_added import website_data_source_added
+from web.signals.website_data_source_was_added import website_data_source_added
 
 def show(request, id):
     try:

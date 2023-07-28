@@ -4,17 +4,18 @@ from uuid import uuid4
 from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django.views.decorators.http import require_POST
+from django.http import JsonResponse, HttpResponseServerError
 
 from web.models.chatbot import Chatbot
 from web.models.chat_histories import ChatHistory
 from web.models.codebase_data_sources import CodebaseDataSource
-from signals.codebase_datasource_was_created import codebase_data_source_added
-from signals.pdf_datasource_was_added import pdf_data_source_added
-from services.handle_pdf_datasource import HandlePdfDataSource
-from django.views.decorators.http import require_POST
-from django.http import JsonResponse, HttpResponseServerError
-from signals.codebase_datasource_was_created import codebase_data_source_added
-from signals.chatbot_was_created import chatbot_was_created
+
+from web.signals.pdf_datasource_was_added import pdf_data_source_added
+from web.signals.codebase_datasource_was_created import codebase_data_source_added
+from web.signals.chatbot_was_created import chatbot_was_created
+
+from web.services.handle_pdf_datasource import HandlePdfDataSource
 
 import requests
 import uuid

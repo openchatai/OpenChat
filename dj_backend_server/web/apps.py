@@ -7,4 +7,4 @@ class ApiConfig(AppConfig):
     models_module = 'web.models.models'
     
     def ready(self):
-        import signals  # Replace 'your_app_name' with your actual app name
+        import web.signals  # Replace 'your_app_name' with your actual app name

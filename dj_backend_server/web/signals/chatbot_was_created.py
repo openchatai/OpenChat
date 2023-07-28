@@ -1,10 +1,7 @@
 from django.dispatch import Signal
 
 # Define a custom Django signal
-chatbot_was_created = Signal(providing_args=[
-    'chatbot_id', 'chatbot_name', 'chatbot_website', 'chatbot_prompt_message'
-])
-
+chatbot_was_created = Signal()
 # This function will be the Django signal receiver.
 def create_chatbot(sender, chatbot_id, chatbot_name, chatbot_website, chatbot_prompt_message, **kwargs):
     # Create a Chatbot instance or perform any other necessary actions here.

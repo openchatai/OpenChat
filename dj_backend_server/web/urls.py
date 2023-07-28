@@ -1,6 +1,6 @@
 # api/urls.py
 from django.urls import path
-from .views import views_chatbot_settings, views_onboarding, views_chatbot, views_pdf_data_source, views_website_datasource;
+from web.views import views_chatbot_settings, views_onboarding, views_chatbot, views_pdf_data_source, views_website_datasource;
 
 urlpatterns = [
     # Dashboard
@@ -33,8 +33,8 @@ urlpatterns = [
     path('onboarding/codebase/create', views_chatbot.create_via_codebase_flow, name='onboarding.codebase.create'),
     path('onboarding/<int:id>/config/', views_chatbot.update_character_settings, name='onboarding.config.create'),
 
-    path('app/<int:id>/data/pdf/', views_pdf_data_source.show_pdf_data_sources, name='onboarding.other-data-sources-pdf'),
-    path('app/<int:id>/data/pdf/', views_pdf_data_source.create_pdf_data_source, name='onboarding.other-data-sources-pdf.create'),
+    path('app/<int:id>/data/pdf/', views_pdf_data_source.show, name='onboarding.other-data-sources-pdf'),
+    path('app/<int:id>/data/pdf/', views_pdf_data_source.create, name='onboarding.other-data-sources-pdf.create'),
 
     path('app/<int:id>/data/web/', views_website_datasource.show, name='onboarding.other-data-sources-web'),
     path('app/<int:id>/data/web/', views_website_datasource.create, name='onboarding.other-data-sources-web.create'),

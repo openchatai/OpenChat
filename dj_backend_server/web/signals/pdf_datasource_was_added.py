@@ -1,9 +1,7 @@
 from django.dispatch import Signal
 
 # Define a custom Django signal
-pdf_data_source_added = Signal(providing_args=[
-    'chatbot_id', 'pdf_data_source_id',
-])
+pdf_data_source_added = Signal()
 
 # This is just a placeholder for demonstration. You can replace it with your actual model for PdfDataSource.
 class PdfDataSource:

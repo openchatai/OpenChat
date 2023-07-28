@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.core.exceptions import PermissionDenied
 from web.models.chatbot import Chatbot
 from web.services.handle_pdf_datasource import HandlePdfDataSource
-from signals.pdf_datasource_was_added import pdf_data_source_added
+from web.signals.pdf_datasource_was_added import pdf_data_source_added
 
 def create(request, id):
     if request.method == 'POST' and request.FILES.getlist('pdffiles'):
