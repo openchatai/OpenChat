@@ -43,7 +43,12 @@ def data_sources_codebase(request):
     return render(request, 'onboarding/step-2-codebase.html')
 
 def data_sources_pdf(request):
-    return render(request, 'onboarding/step-2-pdf.html')
+    submit_text = """all.step_6_please_wait"""
+    context = {
+        'submit_text': submit_text
+    }
+
+    return render(request, 'onboarding/step-2-pdf.html', context)
 
 def config(request):
     return render(request, 'onboarding/step-3.html')

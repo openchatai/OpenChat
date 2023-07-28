@@ -7,6 +7,7 @@ class Chatbot(models.Model):
     website = models.CharField(max_length=255)
     status = models.CharField(max_length=50)  # Assuming ChatbotStatusType is a string-based enum in Laravel
     prompt_message = models.TextField(blank=True, null=True)  # Assuming prompt_message can be nullable in Laravel
+    token = models.CharField(max_length=50)  # Assuming token is a CharField
 
     def __str__(self):
         return self.name

@@ -29,7 +29,7 @@ urlpatterns = [
 
     # Onboarding Backend
     path('onboarding/website/create/', views_chatbot.create_via_website_flow, name='onboarding.website.create'),
-    path('onboarding/pdf/', views_chatbot.create_via_pdf_flow, name='onboarding.pdf.create'),
+    path('onboarding/pdf/create', views_chatbot.create_via_pdf_flow, name='onboarding.pdf.create'),
     path('onboarding/codebase/create', views_chatbot.create_via_codebase_flow, name='onboarding.codebase.create'),
     path('onboarding/<int:id>/config/', views_chatbot.update_character_settings, name='onboarding.config.create'),
 

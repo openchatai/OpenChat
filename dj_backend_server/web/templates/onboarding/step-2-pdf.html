@@ -162,19 +162,26 @@
     const fileInputs = document.getElementById('fileInput');
 
     function showLoading() {
+
         // Get submit button and loading icon
         const submitBtn = document.getElementById('submitBtn');
 
         if (fileInputs.files.length > 0) {
+
             document.getElementById('submitBtn').setAttribute('disabled', 'true');
+
             document.getElementById('loadingIcon').classList.remove('d-none');
+
             submitBtn.disabled = true;
+
             // change the text back to the original
-            submitBtn.innerHTML = "{{__('all.step_6_please_wait')}}";
+            submitBtn.innerHTML = "{{ submit_text }}";
 
             // submit the form
             document.getElementById('uploadForm').submit();
+
         }
+
     }
 </script>
 {% endblock %}
