@@ -24,20 +24,20 @@ urlpatterns = [
     path('onboarding/website/', views_onboarding.data_sources_website, name='onboarding.website'),
     path('onboarding/pdf/', views_onboarding.data_sources_pdf, name='onboarding.pdf'),
     path('onboarding/codebase/', views_onboarding.data_sources_codebase, name='onboarding.codebase'),
-    path('onboarding/<int:id>/config/', views_onboarding.config, name='onboarding.config'),
-    path('onboarding/<int:id>/done/', views_onboarding.done, name='onboarding.done'),
+    path('onboarding/<uuid:id>/config/', views_onboarding.config, name='onboarding.config'),
+    path('onboarding/<uuid:id>/done/', views_onboarding.done, name='onboarding.done'),
 
     # Onboarding Backend
     path('onboarding/website/create/', views_chatbot.create_via_website_flow, name='onboarding.website.create'),
     path('onboarding/pdf/create', views_chatbot.create_via_pdf_flow, name='onboarding.pdf.create'),
     path('onboarding/codebase/create', views_chatbot.create_via_codebase_flow, name='onboarding.codebase.create'),
-    path('onboarding/<int:id>/config/', views_chatbot.update_character_settings, name='onboarding.config.create'),
+    path('onboarding/<uuid:id>/config/create', views_chatbot.update_character_settings, name='onboarding.config.create'),
 
-    path('app/<int:id>/data/pdf/', views_pdf_data_source.show, name='onboarding.other-data-sources-pdf'),
-    path('app/<int:id>/data/pdf/', views_pdf_data_source.create, name='onboarding.other-data-sources-pdf.create'),
+    path('app/<uuid:id>/data/pdf/', views_pdf_data_source.show, name='onboarding.other-data-sources-pdf'),
+    path('app/<uuid:id>/data/pdf/', views_pdf_data_source.create, name='onboarding.other-data-sources-pdf.create'),
 
-    path('app/<int:id>/data/web/', views_website_datasource.show, name='onboarding.other-data-sources-web'),
-    path('app/<int:id>/data/web/', views_website_datasource.create, name='onboarding.other-data-sources-web.create'),
+    path('app/<uuid:id>/data/web/', views_website_datasource.show, name='onboarding.other-data-sources-web'),
+    path('app/<uuid:id>/data/web/', views_website_datasource.create, name='onboarding.other-data-sources-web.create'),
 
     # Chat URL
     path('chat/<str:token>/', views_chatbot.get_chat_view, name='chat'),

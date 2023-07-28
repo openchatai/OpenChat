@@ -4,18 +4,19 @@ from uuid import uuid4
 from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-from django.views.decorators.http import require_POST
-from django.http import JsonResponse, HttpResponseServerError
 
 from web.models.chatbot import Chatbot
 from web.models.chat_histories import ChatHistory
 from web.models.codebase_data_sources import CodebaseDataSource
-
+from web.signals.codebase_datasource_was_created import codebase_data_source_added
 from web.signals.pdf_datasource_was_added import pdf_data_source_added
+from web.services.handle_pdf_datasource import HandlePdfDataSource
+from django.views.decorators.http import require_POST
+from django.http import JsonResponse, HttpResponseServerError
 from web.signals.codebase_datasource_was_created import codebase_data_source_added
 from web.signals.chatbot_was_created import chatbot_was_created
-
-from web.services.handle_pdf_datasource import HandlePdfDataSource
+from web.enums.chatbot_initial_prompt_enum import ChatBotInitialPromptEnum
+from web.enums.common_enums import ChatBotDefaults
 
 import requests
 import uuid
@@ -29,9 +30,9 @@ def index(request):
 
 def create_via_website_flow(request):
     if request.method == 'POST':
-        name = request.POST.get('name')
+        name = request.POST.get('name') or ChatBotDefaults.NAME.value
         website = request.POST.get('website')
-        prompt_message = request.POST.get('prompt_message')
+        prompt_message = request.POST.get('prompt_message') or ChatBotInitialPromptEnum.AI_ASSISTANT_INITIAL_PROMPT
 
         chatbot = Chatbot.objects.create(
             id=uuid4(),
@@ -41,8 +42,10 @@ def create_via_website_flow(request):
             prompt_message=prompt_message
         )
 
+        print(chatbot.name)
         # Trigger the ChatbotWasCreated event (if using Django signals or channels)
         chatbot_was_created.send(
+            sender=create_via_codebase_flow.__name__,
             id=chatbot.id,
             name=chatbot.name,
             website=chatbot.website,
@@ -54,7 +57,7 @@ def create_via_website_flow(request):
 
 def create_via_pdf_flow(request):
     if request.method == 'POST':
-        name = request.POST.get('name')
+        name = request.POST.get('name') or ChatBotDefaults.NAME.value
         prompt_message = request.POST.get('prompt_message')
 
         chatbot = Chatbot.objects.create(
@@ -75,9 +78,10 @@ def create_via_pdf_flow(request):
         return HttpResponseRedirect(reverse('onboarding.config', args=[str(chatbot.id)]))
 
 
-def update_character_settings(request):
+def update_character_settings(request, id):
+    print("update_character_settings", str(id))
     if request.method == 'POST':
-        chatbot_id = request.POST.get('chatbot_id')
+        chatbot_id = id # request.POST.get('chatbot_id')
         character_name = request.POST.get('character_name')
 
         chatbot = Chatbot.objects.get(id=chatbot_id)

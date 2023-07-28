@@ -50,7 +50,8 @@ def data_sources_pdf(request):
 
     return render(request, 'onboarding/step-2-pdf.html', context)
 
-def config(request):
+def config(request, id):
+    print(id)
     return render(request, 'onboarding/step-3.html')
 
 def done(request):

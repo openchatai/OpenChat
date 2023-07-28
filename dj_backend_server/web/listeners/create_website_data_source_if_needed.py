@@ -9,6 +9,8 @@ from models.website_data_sources import WebsiteDataSource
 def create_website_data_source(sender, **kwargs):
     event = kwargs['event']
 
+    print("called the receiver for chatbot was created event")
+
     if not isinstance(event, chatbot_was_created):
         return
 

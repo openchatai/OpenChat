@@ -4,16 +4,17 @@ import random
 import string
 from django.core.exceptions import ValidationError
 from django.core.files.storage import default_storage
-from web.models import chatbot, pdf_data_sources
+from web.models.chatbot import Chatbot
+from web.models.pdf_data_sources import PdfDataSource
 from uuid import uuid4
 
 class HandlePdfDataSource:
-    def __init__(self, bot: chatbot, files):
+    def __init__(self, bot: Chatbot, files):
         self.bot = bot
         self.files = files
 
-    def handle(self) -> pdf_data_sources:
-        data_source = pdf_data_sources()
+    def handle(self) -> PdfDataSource:
+        data_source = PdfDataSource()
         data_source.bot = self.bot
 
         folder_name = ''.join(random.choices(string.ascii_letters, k=20))
