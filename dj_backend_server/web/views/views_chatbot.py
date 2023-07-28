@@ -1,4 +1,3 @@
-import json
 from uuid import uuid4
 
 from django.http import JsonResponse, HttpResponseRedirect
@@ -55,39 +54,39 @@ def create_via_website_flow(request):
         return HttpResponseRedirect(reverse('onboarding.config', args=[str(chatbot.id)]))
 
 
+@require_POST
 def create_via_pdf_flow(request):
-    if request.method == 'POST':
-        name = request.POST.get('name') or ChatBotDefaults.NAME.value
-        prompt_message = request.POST.get('prompt_message')
+    name = request.POST.get('name') or ChatBotDefaults.NAME.value
+    prompt_message = request.POST.get('prompt_message')
 
-        chatbot = Chatbot.objects.create(
-            id=uuid4(),
-            name=name,
-            token=str(uuid4())[:20],
-            prompt_message=prompt_message
-        )
+    chatbot = Chatbot.objects.create(
+        id=uuid4(),
+        name=name,
+        token=str(uuid4())[:20],
+        prompt_message=prompt_message
+    )
 
-        files = request.FILES.getlist('pdffiles')
-        # Handle the PDF data source
-        handle_pdf = HandlePdfDataSource(chatbot, files)
-        data_sources = handle_pdf.handle()
+    files = request.FILES.getlist('pdffiles')
+    # Handle the PDF data source
+    handle_pdf = HandlePdfDataSource(chatbot, files)
+    data_sources = handle_pdf.handle()
 
+    # Trigger the PdfDataSourceWasAdded event
+    pdf_data_source_added.send(sender=chatbot.__class__, chatbot=chatbot, data_sources=data_sources)
+    return HttpResponseRedirect(reverse('onboarding.config', args=[str(chatbot.id)]))
 
-        # Trigger the PdfDataSourceWasAdded event
-        pdf_data_source_added.connect(sender=chatbot.__class__, chatbot=chatbot, data_sources=data_sources)
-        return HttpResponseRedirect(reverse('onboarding.config', args=[str(chatbot.id)]))
-
-
+@require_POST
 def update_character_settings(request, id):
     print("update_character_settings", str(id))
-    if request.method == 'POST':
-        chatbot_id = id # request.POST.get('chatbot_id')
-        character_name = request.POST.get('character_name')
 
-        chatbot = Chatbot.objects.get(id=chatbot_id)
-        chatbot.create_or_update_setting('character_name', character_name)
+    chatbot_id = id # request.POST.get('chatbot_id')
+    character_name = request.POST.get('character_name')
 
-        return HttpResponseRedirect(reverse('onboarding.done', args=[str(chatbot.id)]))
+    chatbot = Chatbot.objects.get(id=chatbot_id)
+    chatbot.create_or_update_setting('character_name', character_name)
+
+    return HttpResponseRedirect(reverse('onboarding.done', args=[str(chatbot.id)]))
+
 
 def get_session_id(request):
     bot_id = '<your_bot_id_here>'

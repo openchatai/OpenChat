@@ -40,6 +40,7 @@ class HandlePdfDataSource:
                 # You can also raise a more specific custom exception if needed
                 raise ValidationError(f"Error while uploading file: {file.name}, Error: {str(e)}")
 
+        data_source.chatbot_id = self.bot.id
         data_source.files = files_urls
         data_source.folder_name = folder_name
 
