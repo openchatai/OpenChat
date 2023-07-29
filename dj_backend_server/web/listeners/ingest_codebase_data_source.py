@@ -2,9 +2,9 @@
 
 import requests
 from requests.exceptions import RequestException
-from models.codebase_data_sources import CodebaseDataSource
-from enums.ingest_status_enum import IngestStatusType
-from signals.codebase_datasource_was_created import codebase_data_source_added
+from web.models.codebase_data_sources import CodebaseDataSource
+from web.enums.ingest_status_enum import IngestStatusType
+from web.signals.codebase_datasource_was_created import codebase_data_source_added
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.timezone import now
 

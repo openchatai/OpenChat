@@ -2,13 +2,13 @@
 
 import requests
 from requests.exceptions import RequestException
-from models.pdf_data_sources import PdfDataSource
-from enums.ingest_status_enum import IngestStatusType
-from signals.pdf_datasource_was_added import pdf_data_source_added
+from web.models.pdf_data_sources import PdfDataSource
+from web.enums.ingest_status_enum import IngestStatusType
+from web.signals.pdf_datasource_was_added import pdf_data_source_added
 from django.core.exceptions import ObjectDoesNotExist
 from django.dispatch import receiver
 
-@receiver(pdf_data_source_added)
+@pdf_data_source_added.connect
 def ingest_pdf_datasource(self, **kwargs):
     # if not isinstance(event, pdf_data_source_added):
     #     return

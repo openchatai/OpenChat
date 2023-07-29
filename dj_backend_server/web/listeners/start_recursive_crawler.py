@@ -3,30 +3,26 @@
 import os
 import requests
 from bs4 import BeautifulSoup
-from signals.website_data_source_was_added import website_data_source_added
-from signals.website_data_source_crawling_was_completed import website_data_source_crawling_completed 
-from models.crawled_pages import CrawledPage
-from models.website_data_sources import WebsiteDataSource
+from web.signals.website_data_source_was_added import website_data_source_added
+from web.signals.website_data_source_crawling_was_completed import website_data_source_crawling_completed 
+from web.models.crawled_pages import CrawledPages
+from web.models.website_data_sources import WebsiteDataSource
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 from django.utils.text import slugify
 from uuid import uuid4
 from django.dispatch import receiver
 from urllib.parse import urlparse, urlunparse
-from enums.website_data_source_status_enum import WebsiteDataSourceStatusType
+from web.enums.website_data_source_status_enum import WebsiteDataSourceStatusType
 import logging
 
-@receiver(website_data_source_added)
+@website_data_source_added.connect
 def start_recursive_crawler(sender, **kwargs):
-    event = kwargs['event']
-
-    if not isinstance(event, website_data_source_added):
-        return
-
     # Get the WebsiteDataSource object
-    data_source_id = event.get_website_data_source_id()
+    data_source_id = kwargs['data_source_id']
+    chatbot_id = kwargs['bot_id']
+
     data_source = WebsiteDataSource.objects.get(pk=data_source_id)
-    chatbot_id = event.get_chatbot_id()
     root_url = data_source.root_url
 
     if data_source.crawling_status == WebsiteDataSourceStatusType.COMPLETED:
@@ -76,7 +72,7 @@ def store_crawled_page_content_to_database(url, response, chatbot_id, data_sourc
     title = get_crawled_page_title(html)
 
     # Create a CrawledPages object and save it to the database
-    page = CrawledPage.objects.create(
+    page = CrawledPages.objects.create(
         url=url,
         status_code=response.status_code,
         chatbot_id=chatbot_id,

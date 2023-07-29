@@ -2,15 +2,15 @@
 
 import requests
 from requests.exceptions import RequestException
-from models.website_data_sources import WebsiteDataSource
-from enums.website_data_source_status_enum import WebsiteDataSourceStatusType
-from signals.website_data_source_crawling_was_completed import website_data_source_crawling_completed
+from web.models.website_data_sources import WebsiteDataSource
+from web.enums.website_data_source_status_enum import WebsiteDataSourceStatusType
+from web.signals.website_data_source_crawling_was_completed import website_data_source_crawling_completed
 from django.core.exceptions import ObjectDoesNotExist
 from django.dispatch import receiver
 
-@receiver(website_data_source_crawling_completed)
+@website_data_source_crawling_completed.connect
 def handle_crawling_completed(sender, **kwargs):
-    chatbot_id, website_data_source_id = {kwargs}
+    chatbot_id, website_data_source_id = kwargs['chatbot_id'], kwargs['website_data_source_id']
     
     try:
         website_data_source = WebsiteDataSource.objects.get(id=website_data_source_id)
