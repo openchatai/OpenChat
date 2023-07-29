@@ -1,8 +1,25 @@
 {% extends 'layout/app.html' %}
+{% load time_difference %}
 
 {% block content %}
 
 <div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
+    <style>
+        .pending {
+            background-color: #FFE9A8;
+            color: #F59E0B;
+        }
+
+        .in-progress {
+            background-color: #E0F2FE;
+            color: #10B981;
+        }
+
+        .default {
+            background-color: #ECFDF5;
+            color: #0EA5E9;
+        }
+    </style>
 
     <!-- Page header -->
     <div class="mb-8">
@@ -13,7 +30,7 @@
         <!-- Breadcrumbs -->
         <ul class="inline-flex flex-wrap text-sm font-medium">
             <li class="flex items-center">
-                <a class="text-slate-500 hover:text-indigo-500" href="{% url 'home' %}">Home</a>
+                <a class="text-slate-500 hover:text-indigo-500" href="{% url 'onboarding.welcome' %}">Home</a>
                 <svg class="h-4 w-4 fill-current text-slate-400 mx-3" viewBox="0 0 16 16">
                     <path d="M6.6 13.4L5.2 12l4-4-4-4 1.4-1.4L12 8z"></path>
                 </svg>
@@ -48,8 +65,8 @@
                             </div>
                         </td>
                         <td class="p-3 whitespace-nowrap">
-                            <div class="inline-flex rounded-full text-center px-3 py-1"
-                                style="background: {% if source.status == 'PENDING' %}#FFE9A8{% elif source.status == 'IN_PROGRESS' %}#E0F2FE{% else %}#ECFDF5{% endif %}; color: {% if source.status == 'PENDING' %}#F59E0B{% elif source.status == 'IN_PROGRESS' %}#10B981{% else %}#0EA5E9{% endif %}">
+                            <div
+                                class="inline-flex rounded-full text-center px-3 py-1 {% if source.status == 'PENDING' %}pending{% elif source.status == 'IN_PROGRESS' %}in-progress{% else %}default{% endif %}">
                                 {{ source.status }}
                             </div>
                         </td>
@@ -88,8 +105,8 @@
                             </div>
                         </td>
                         <td class="p-3 whitespace-nowrap">
-                            <div class="inline-flex rounded-full text-center px-3 py-1"
-                                style="background: {% if source.status == 'PENDING' %}#E0F2FE{% elif source.status == 'SUCCESS' %}#ECFDF5{% else %}}#FFE9A8{% endif %}; color: {% if source.status == 'PENDING' %}#10B981{% elif source.status == 'SUCCESS' %}#0EA5E9{% else %}#F59E0B{% endif %}">
+                            <div
+                                class="inline-flex rounded-full text-center px-3 py-1 {% if source.status == 'PENDING' %}pending{% elif source.status == 'SUCCESS' %}success{% else %}default{% endif %}">
                                 {{ source.status }}
                             </div>
                         </td>
@@ -103,7 +120,7 @@
 
     {% endfor %}
 
-    {% for source in codebase_sources %}
+    {% for source in codebaseDataSources %}
 
     <div class="rounded-sm border border-slate-200">
 
@@ -123,16 +140,19 @@
                             </div>
                         </td>
                         <td class="p-3 whitespace-nowrap">
-                            {% if source.created_at|timesince < timedelta(minutes=3) %} <div
-                                class="inline-flex rounded-full text-center px-3 py-1"
-                                style="background: #E0F2FE; color: #10B981;">
-                                In progress (eta: {{ source.created_at|timeuntil_format:"%d %H:%M:%S" }})
-        </div>
-        {% else %}
-        <div class="inline-flex rounded-full text-center px-3 py-1" style="background: #ECFDF5; color:#0EA5E9;">
-            Completed
-        </div>
-        {% endif %}
+                            {% with source.created_at|time_difference as time_diff %}
+                            {% if time_diff < 3 %}
+                                <div class="inline-flex rounded-full text-center px-3 py-1" style="background: #E0F2FE; color: #10B981;">
+                                    {% with time_diff=source.created_at|time_difference %}
+                                        In progress (eta: {{ time_diff|timeuntil:"%d %H:%M:%S" }})
+                                    {% endwith %}
+                                </div>
+                            {% else %}
+                                <div class="inline-flex rounded-full text-center px-3 py-1" style="background: #ECFDF5; color:#0EA5E9;">
+                                    Completed
+                                </div>
+                            {% endif %}
+                        {% endwith %}
         </td>
         </tr>
         </tbody>

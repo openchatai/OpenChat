@@ -70,10 +70,10 @@ def create_via_pdf_flow(request):
     files = request.FILES.getlist('pdffiles')
     # Handle the PDF data source
     handle_pdf = HandlePdfDataSource(chatbot, files)
-    data_sources = handle_pdf.handle()
+    data_source = handle_pdf.handle()
 
     # Trigger the PdfDataSourceWasAdded event
-    pdf_data_source_added.send(sender=chatbot.__class__, chatbot=chatbot, data_sources=data_sources)
+    pdf_data_source_added.send(sender=create_via_pdf_flow.__name__, bot_id=chatbot.id, data_sources=data_source.id)
     return HttpResponseRedirect(reverse('onboarding.config', args=[str(chatbot.id)]))
 
 @require_POST
@@ -85,7 +85,7 @@ def update_character_settings(request, id):
 
     chatbot = Chatbot.objects.get(id=chatbot_id)
     # chatbot.create_or_update_setting('character_name', character_name)
-    ChatbotSetting.objects.update_or_create(chatbot_id=chatbot.id, defaults={character_name})
+    ChatbotSetting.objects.update_or_create(chatbot_id=chatbot.id, defaults={'name': character_name})
     return HttpResponseRedirect(reverse('onboarding.done', args=[str(chatbot.id)]))
 
 

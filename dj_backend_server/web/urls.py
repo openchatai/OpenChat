@@ -7,15 +7,15 @@ urlpatterns = [
     path('', views_chatbot.index, name='index'),
 
     # Chatbot Settings
-    path('app/<int:id>/', views_chatbot_settings.general_settings, name='chatbot.settings'),
+    path('app/<uuid:id>/', views_chatbot_settings.general_settings, name='chatbot.settings'),
     path('app/<int:id>/delete/', views_chatbot_settings.delete_bot, name='chatbot.settings.delete'),
     path('app/<int:id>/', views_chatbot_settings.general_settings_update, name='chatbot.settings.update'),
-    path('app/<int:id>/try-and-share/', views_chatbot_settings.theme_settings, name='chatbot.settings-theme'),
-    path('app/<int:id>/data/', views_chatbot_settings.data_settings, name='chatbot.settings-data'),
+    path('app/<uuid:id>/try-and-share/', views_chatbot_settings.theme_settings, name='chatbot.settings-theme'),
+    path('app/<uuid:id>/data/', views_chatbot_settings.data_settings, name='chatbot.settings-data'),
     path('app/<int:id>/analytics/', views_chatbot_settings.analytics_settings, name='chatbot.settings-analytics'),
     path('app/<int:id>/integrations/', views_chatbot_settings.integrations_settings, name='chatbot.settings-integrations'),
-    path('app/<int:id>/history/', views_chatbot_settings.history_settings, name='chatbot.settings-history'),
-    path('widget/data-sources-updates/<int:id>/', views_chatbot_settings.data_sources_updates, name='widget.data-sources-updates'),
+    path('app/<uuid:id>/history/', views_chatbot_settings.history_settings, name='chatbot.settings-history'),
+    path('widget/data-sources-updates/<uuid:id>/', views_chatbot_settings.data_sources_updates, name='widget.data-sources-updates'),
     path('widget/chat-history/<int:id>/<int:session_id>/', views_chatbot_settings.get_history_by_session_id, name='widget.chat-history'),
 
     # Onboarding Frontend

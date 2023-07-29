@@ -1,6 +1,10 @@
-{% extends 'layout/app.html' with title='Dashboard' %}
+{% extends 'layout/app.html' %}
+{% with title="Dashboard" %}
+
+{% load static %}
 
 {% block content %}
+
 
 <div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
 
@@ -28,7 +32,7 @@
         <div class="flex flex-col md:flex-row md:-mr-px">
 
             <!-- Sidebar -->
-            {% include 'layout/sidebar_bot_page.html' %}
+            {% include 'layout/sidebar-bot-page.html' %}
 
             <!-- Panel -->
             <div class="grow">
@@ -200,14 +204,14 @@
 </div>
 
 {% endblock content %}
-
+{% endwith %}
 {% block scripts %}
 
 <script>
 
     // Fetch data sources updates
     function fetchDataSourcesUpdates() {
-        fetch('{% url 'widget.data_sources_updates' bot.id %}')
+        fetch("{% url 'widget.data-sources-updates' bot.id %}")
             .then(response => response.text())
             .then(data => {
                 document.querySelector('#data-sources-updates-container').innerHTML = data;

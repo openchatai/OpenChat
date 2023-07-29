@@ -54,6 +54,9 @@ def config(request, id):
     print(id)
     return render(request, 'onboarding/step-3.html')
 
-def done(request):
-    return render(request, 'onboarding/step-4.html')
+def done(request, id):
+    context = {
+        "id": id
+    }
+    return render(request, 'onboarding/step-4.html', context)
 

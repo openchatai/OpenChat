@@ -5,6 +5,9 @@ from django.core.exceptions import ValidationError
 from django.http import HttpResponse
 from web.models.chatbot import Chatbot
 from web.models.chat_histories import ChatHistory
+from web.models.website_data_sources import WebsiteDataSource
+from web.models.pdf_data_sources import PdfDataSource
+from web.models.codebase_data_sources import CodebaseDataSource
 from web.enums.chatbot_initial_prompt_enum import ChatBotInitialPromptEnum
 from django.db.models import Count, Min
 
@@ -50,9 +53,11 @@ def get_history_by_session_id(request, id, session_id):
 
 def data_settings(request, id):
     bot = get_object_or_404(Chatbot, id=id)
-    website_data_sources = bot.website_data_sources.all()
-    pdf_data_sources = bot.pdf_files_data_sources.all()
-    codebase_data_sources = bot.codebase_data_sources.all()
+    website_data_sources = WebsiteDataSource.objects.filter(chatbot_id=id)
+    pdf_data_sources = PdfDataSource.objects.filter(chatbot_id=id)
+    codebase_data_sources = CodebaseDataSource.objects.filter(chatbot_id=id)
+
+    print("data sources : ", codebase_data_sources)
     return render(request, 'settings-data.html', {'bot': bot, 'websiteDataSources': website_data_sources, 'pdfDataSources': pdf_data_sources, 'codebaseDataSources': codebase_data_sources})
 
 
@@ -68,9 +73,9 @@ def integrations_settings(request, id):
 
 
 def data_sources_updates(request, id):
-    bot = get_object_or_404(Chatbot, id=id)
-    data_sources = bot.website_data_sources.all()
-    pdf_data_sources = bot.pdf_files_data_sources.all()
+    # bot = get_object_or_404(Chatbot, id=id)
+    data_sources = WebsiteDataSource.objects.filter(chatbot_id=id)
+    pdf_data_sources = PdfDataSource.objects.filter(chatbot_id=id)
     return render(request, 'widgets/data-sources-updates.html', {'dataSources': data_sources, 'pdfDataSources': pdf_data_sources})
 
 
