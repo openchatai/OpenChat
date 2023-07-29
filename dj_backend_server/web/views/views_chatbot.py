@@ -5,6 +5,7 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from web.models.chatbot import Chatbot
+from web.models.chatbot_settings import ChatbotSetting
 from web.models.chat_histories import ChatHistory
 from web.models.codebase_data_sources import CodebaseDataSource
 from web.signals.codebase_datasource_was_created import codebase_data_source_added
@@ -83,8 +84,8 @@ def update_character_settings(request, id):
     character_name = request.POST.get('character_name')
 
     chatbot = Chatbot.objects.get(id=chatbot_id)
-    chatbot.create_or_update_setting('character_name', character_name)
-
+    # chatbot.create_or_update_setting('character_name', character_name)
+    ChatbotSetting.objects.update_or_create(chatbot_id=chatbot.id, defaults={character_name})
     return HttpResponseRedirect(reverse('onboarding.done', args=[str(chatbot.id)]))
 
 

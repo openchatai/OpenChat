@@ -1,5 +1,6 @@
 from django.db import models
 from web.enums.chatbot_initial_prompt_enum import ChatBotInitialPromptEnum
+
 import uuid
 
 class Chatbot(models.Model):
@@ -14,26 +15,31 @@ class Chatbot(models.Model):
         return self.name
 
     def settings(self):
-        return self.chatbotsetting_set.all()
+        return self.chatbotsettings.all()  # Use the correct reverse related_name
 
-    def crate_or_update_setting(self, name, value):
-        setting, created = self.chatbotsetting_set.get_or_create(name=name, defaults={'value': value})
-        if not created:
-            setting.value = value
-            setting.save()
+    def create_or_update_setting(self, name, value):
+        setting, created = self.chatbotsettings.get_or_create(name=name)  # Use the correct reverse related_name
+        setting.value = value
+        setting.save()
 
     def get_setting(self, name):
-        setting = self.chatbotsetting_set.filter(name=name).first()
-        return setting.value if setting else None
+        try:
+            setting = self.chatbotsettings.get(name=name)  # Use the correct reverse related_name
+            return setting.value
+        except models.DoesNotExist:
+            return None
 
     def get_website_data_sources(self):
-        return self.websitedatasource_set.all()
+        return self.websitedatasources.all()  # Use the correct reverse related_name
 
     def get_pdf_files_data_sources(self):
-        return self.pdfdatasource_set.all()
+        return self.pdfdatasources.all()  # Use the correct reverse related_name
 
     def get_codebase_data_sources(self):
-        return self.codebasedatasource_set.all()
+        return self.codebasedatasources.all()  # Use the correct reverse related_name
+
+    def get_created_at(self):
+        return self.created_at
 
     def messages(self):
         return self.chathistory_set.all()
