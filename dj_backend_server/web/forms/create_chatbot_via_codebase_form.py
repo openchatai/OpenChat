@@ -6,7 +6,7 @@ class CreateChatbotViaCodebaseForm(forms.Form):
     repo = forms.URLField(validators=[GithubRepoUrlValidator()])
 
     name = forms.CharField(max_length=100, initial='My first chatbot')
-    prompt_message = forms.CharField(max_length=255, required=False, initial=ChatBotInitialPromptEnum.AI_ASSISTANT_INITIAL_PROMPT)
+    prompt_message = forms.CharField(max_length=255, required=False, initial=ChatBotInitialPromptEnum.AI_ASSISTANT_INITIAL_PROMPT.value)
 
     def get_repo_url(self):
         return self.cleaned_data['repo']

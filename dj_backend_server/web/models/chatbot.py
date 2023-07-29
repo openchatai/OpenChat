@@ -8,7 +8,7 @@ class Chatbot(models.Model):
     name = models.CharField(max_length=255, default="My first chatbot")
     website = models.CharField(max_length=255, default="https://openchat.so")
     status = models.CharField(max_length=50)  # Assuming ChatbotStatusType is a string-based enum in Laravel
-    prompt_message = models.TextField(blank=True, default=ChatBotInitialPromptEnum.AI_ASSISTANT_INITIAL_PROMPT)
+    prompt_message = models.TextField(blank=True, default=ChatBotInitialPromptEnum.AI_ASSISTANT_INITIAL_PROMPT.value)
     token = models.CharField(max_length=50)  # Assuming token is a CharField
 
     def __str__(self):

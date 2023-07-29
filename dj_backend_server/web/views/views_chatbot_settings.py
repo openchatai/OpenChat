@@ -32,7 +32,7 @@ def general_settings_update(request, id):
             raise ValidationError("Name field is required.")
         
         bot.name = name
-        bot.prompt_message = request.POST.get('prompt_message', ChatBotInitialPromptEnum.AI_ASSISTANT_INITIAL_PROMPT)
+        bot.prompt_message = request.POST.get('prompt_message', ChatBotInitialPromptEnum.AI_ASSISTANT_INITIAL_PROMPT.value)
         bot.save()
         return redirect('chatbot_settings', id=id)
 

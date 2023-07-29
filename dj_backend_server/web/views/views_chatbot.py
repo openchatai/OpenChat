@@ -27,38 +27,37 @@ def index(request):
     chatbots = Chatbot.objects.all()
     return render(request, 'index.html', {'chatbots': chatbots})
 
-
+@require_POST
 def create_via_website_flow(request):
-    if request.method == 'POST':
-        name = request.POST.get('name') or ChatBotDefaults.NAME.value
-        website = request.POST.get('website')
-        prompt_message = request.POST.get('prompt_message') or ChatBotInitialPromptEnum.AI_ASSISTANT_INITIAL_PROMPT
+    name = request.POST.get('name') or ChatBotDefaults.NAME.value
+    website = request.POST.get('website')
+    prompt_message = request.POST.get('prompt_message') or ChatBotInitialPromptEnum.AI_ASSISTANT_INITIAL_PROMPT.value
 
-        chatbot = Chatbot.objects.create(
-            id=uuid4(),
-            name=name,
-            token=str(uuid4())[:20],
-            website=website,
-            prompt_message=prompt_message
-        )
+    chatbot = Chatbot.objects.create(
+        id=uuid4(),
+        name=name,
+        token=str(uuid4())[:20],
+        website=website,
+        prompt_message=prompt_message
+    )
 
-        print(chatbot.name)
-        # Trigger the ChatbotWasCreated event (if using Django signals or channels)
-        chatbot_was_created.send(
-            sender=create_via_codebase_flow.__name__,
-            id=chatbot.id,
-            name=chatbot.name,
-            website=chatbot.website,
-            prompt_message=chatbot.prompt_message
-        )
-        
-        return HttpResponseRedirect(reverse('onboarding.config', args=[str(chatbot.id)]))
+    print(chatbot.name)
+    # Trigger the ChatbotWasCreated event (if using Django signals or channels)
+    chatbot_was_created.send(
+        sender=create_via_codebase_flow.__name__,
+        id=chatbot.id,
+        name=chatbot.name,
+        website=chatbot.website,
+        prompt_message=chatbot.prompt_message
+    )
+    
+    return HttpResponseRedirect(reverse('onboarding.config', args=[str(chatbot.id)]))
 
 
 @require_POST
 def create_via_pdf_flow(request):
     name = request.POST.get('name') or ChatBotDefaults.NAME.value
-    prompt_message = request.POST.get('prompt_message')
+    prompt_message = request.POST.get('prompt_message') or ChatBotInitialPromptEnum.AI_ASSISTANT_INITIAL_PROMPT.value
 
     chatbot = Chatbot.objects.create(
         id=uuid4(),
