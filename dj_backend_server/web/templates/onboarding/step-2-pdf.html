@@ -3,7 +3,31 @@
 
 {% block content %}
 <style>
-    /* Add your styles here */
+    .image-uploader {
+            border: 2px dashed #aaa;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 9px;
+            background: #fafaf9;
+        }
+
+        .image-uploader img {
+            max-width: 100%;
+            max-height: 200px;
+            margin-bottom: 1rem;
+        }
+
+        .img-thumbnail {
+            padding: 0.25rem;
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+            border-radius: 0.25rem;
+            width: 69px;
+            margin-left: 4px;
+            display: inline;
+            margin-right: 1rem;
+        }
 </style>
 
 <div class="min-h-screen h-full flex flex-col after:flex-1">
@@ -65,43 +89,44 @@
                 </div>
             </div>
             {% endif %}
-            <form action="{% url 'onboarding.pdf.create' %}" method="POST" enctype="multipart/form-data">
+            <form action="{% url 'onboarding.pdf.create' %}" method="POST" enctype="multipart/form-data" id="pdfCreate">
                 {% csrf_token %}
+              
                 <div class="space-y-4 mb-8">
-                    <!-- Company Name -->
+              
+                  <!-- Company Name -->
+                  <div>
+                    <div class="image-uploader" id="imageUploader">
+                      <div class="emoji" style="font-size: 30px">
+                        ⬆️
+                      </div>
+                      <p style="font-weight: bold; margin-bottom: 1rem">Click to upload or drag & drop</p>
+                      <span style="color: #2563eb">
+                        you can upload up to 5 pdf files, and we will process the first ±100k words</span>
+                    </div>
+              
+                    <input type="file" name="pdffiles" id="fileInput" style="display: none" required accept="application/pdf" multiple>
+                    
+                    <div class="uploaded-images" id="uploadedImages" style="margin-top: 1rem">
+                    </div>
+                  </div>
+              
+                  <div class="flex items-center justify-between mb-8">
                     <div>
-                        <div class="image-uploader" id="imageUploader">
-                            <div class="emoji" style="font-size: 30px">
-                                ⬆️
-                            </div>
-                            <p style="font-weight: bold; margin-bottom: 1rem"> Click to upload or drag & drop
-                            </p>
-                            <span style="color: #2563eb">
-                                you can upload up to 5 pdf files, and we will process the first ±100k words</span>
-                        </div>
-                        <input type="file" name="pdffiles[]" id="fileInput" style="display: none" required
-                            accept="application/pdf" multiple>
-                        <div class="uploaded-images" id="uploadedImages" style="margin-top: 1rem">
-                        </div>
+                      <div class="font-medium text-slate-800 text-sm mb-1">Make sure that your files are scannable (text not images) 🫶</div>
+                      <div class="text-xs">You can upload multiple files at once and we will process them in the background.</div>
                     </div>
-                    <div class="flex items-center justify-between space-x-6 mb-8">
-                        <div>
-                            <div class="font-medium text-slate-800 text-sm mb-1">Make sure that your files are
-                                scannable (text not images) 🫶
-                            </div>
-                            <div class="text-xs">
-                                You can upload multiple files at once and we will process them in the background.
-                            </div>
-                        </div>
-                    </div>
+                  </div>
+              
                 </div>
+              
                 <div class="flex items-center justify-between">
-                    <a class="text-sm underline hover:no-underline" href="{% url 'onboarding.data-source' %}">&lt;-
-                        Back</a>
-                    <button type="submit" class="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-auto">Next Step
-                        -&gt;</button>
+                  <a class="text-sm underline hover:no-underline" href="{% url 'onboarding.data-source' %}">&lt;- Back</a>
+                  
+                  <button type="submit" form="pdfCreate" class="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-auto">Next Step -&gt;</button>
                 </div>
-            </form>
+              
+              </form>
         </div>
     </div>
 </div>
