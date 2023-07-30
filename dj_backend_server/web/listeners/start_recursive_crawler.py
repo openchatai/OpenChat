@@ -110,7 +110,7 @@ def get_normalized_content(html):
     exclude_elements = ['script', 'style']
     exclude_classes = ['skip', 'menu', 'dropdown']
 
-    soup = BeautifulSoup(html, features="html.parser")
+    soup = BeautifulSoup(html, features="lxml")
 
     # Function to recursively remove unwanted elements
     def clean_elements(element):
