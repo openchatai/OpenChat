@@ -34,7 +34,7 @@ def general_settings_update(request, id):
         bot.name = name
         bot.prompt_message = request.POST.get('prompt_message', ChatBotInitialPromptEnum.AI_ASSISTANT_INITIAL_PROMPT.value)
         bot.save()
-        return redirect('chatbot_settings', id=id)
+        return redirect('chatbot.settings', id=id)
 
     return HttpResponse("Method not allowed.", status=405)
 

@@ -9,7 +9,7 @@ urlpatterns = [
     # Chatbot Settings
     path('app/<uuid:id>/', views_chatbot_settings.general_settings, name='chatbot.settings'),
     path('app/<uuid:id>/delete/', views_chatbot_settings.delete_bot, name='chatbot.settings.delete'),
-    path('app/<uuid:id>/', views_chatbot_settings.general_settings_update, name='chatbot.settings.update'),
+    path('app/<uuid:id>/update', views_chatbot_settings.general_settings_update, name='chatbot.settings.update'),
     path('app/<uuid:id>/try-and-share/', views_chatbot_settings.theme_settings, name='chatbot.settings-theme'),
     path('app/<uuid:id>/data/', views_chatbot_settings.data_settings, name='chatbot.settings-data'),
     path('app/<int:id>/analytics/', views_chatbot_settings.analytics_settings, name='chatbot.settings-analytics'),
