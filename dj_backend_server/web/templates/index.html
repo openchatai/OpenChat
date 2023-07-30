@@ -67,7 +67,7 @@
                 </header>
                 <div class="grow mt-2">
                     <a class="inline-flex text-slate-800 hover:text-slate-900 mb-1"
-                        href="{% url 'chatbot.settings-theme' id=bot.getId.toString %}">
+                        href="{% url 'chatbot.settings-theme' id=bot.id %}">
                         <h2 class="text-xl leading-snug font-semibold">{{ bot.name }}</h2>
                     </a>
                     <!-- Additional content can be added here -->
@@ -80,7 +80,7 @@
                         </div>
                         <div>
                             <a class="text-sm font-medium text-indigo-500 hover:text-indigo-600"
-                                href="{% url 'chatbot.settings-theme' id=bot.getId.toString %}">Open -&gt;</a>
+                                href="{% url 'chatbot.settings-theme' id=bot.id %}">Open -&gt;</a>
                         </div>
                     </div>
                 </footer>
