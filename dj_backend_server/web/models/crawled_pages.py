@@ -8,6 +8,7 @@ class CrawledPages(models.Model):
     url = models.URLField()
     title = models.CharField(max_length=255, blank=True, null=True)
     status_code = models.CharField(max_length=10)
+    content_file= models.CharField(max_length=100)
 
     def get_id(self):
         return self.id
