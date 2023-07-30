@@ -104,20 +104,35 @@ def update_crawling_progress(chatbot_id, data_source_id, progress):
 from bs4 import BeautifulSoup
 import re
 
+# This method needs to be revisited and has to be written in a more sophisticated manner. 
 def get_normalized_content(html):
-  # Remove inline script and style tags and their contents
-  text = BeautifulSoup(html, features="html.parser").get_text()
+    # Define a list of tags and classes to exclude
+    exclude_elements = ['script', 'style']
+    exclude_classes = ['skip', 'menu', 'dropdown']
 
-  # Remove extra whitespace between tags
-  text = re.sub(r'> <', '><', text)
+    soup = BeautifulSoup(html, features="html.parser")
 
-  # Remove extra newlines  
-  text = re.sub(r'\n+', '\n', text)
+    # Function to recursively remove unwanted elements
+    def clean_elements(element):
+        for child in element.find_all(recursive=False):
+            if child.name in exclude_elements or any(cls in child.get('class', []) for cls in exclude_classes):
+                # Replace excluded elements with whitespace
+                child.replace_with(" ")
+            else:
+                clean_elements(child)
 
-  # Trim whitespace
-  text = text.strip()
+    # Start cleaning from the root of the document
+    clean_elements(soup)
 
-  return text
+    # Get the text content from the cleaned HTML
+    text = soup.get_text()
+
+    # Remove extra whitespace between words
+    text = re.sub(r'\s+', ' ', text)
+
+    # Trim whitespace
+    text = text.strip()
+    return text
     
 
 def get_crawled_page_title(html):
