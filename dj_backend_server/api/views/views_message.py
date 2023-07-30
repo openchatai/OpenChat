@@ -3,6 +3,8 @@ from django.shortcuts import get_object_or_404
 from django.views.decorators.http import require_POST, require_GET
 from web.models.chatbot import Chatbot
 import requests
+from django.views.decorators.csrf import csrf_exempt
+import json
 
 class ChatbotResponse:
     def __init__(self, response):
@@ -14,6 +16,7 @@ class ChatbotResponse:
     def get_source_documents(self):
         return self.response.get('sourceDocuments', [])
 
+@csrf_exempt
 @require_POST
 def send_search_request(request):
     try:
@@ -33,12 +36,12 @@ def send_search_request(request):
 
         # Implement the equivalent logic to send the HTTP request to the external API
         response = requests.post(
-            'http://llm-server:3000/api/chat',
+            'http://localhost:3000/api/chat',
             json={
                 'question': message,
-                'namespace': str(bot.getId()),  # Assuming getId returns a UUID object
+                'namespace': str(bot.id),  # Assuming getId returns a UUID object
                 'mode': "assistant",
-                'initial_prompt': bot.getPromptMessage(),
+                'initial_prompt': bot.prompt_message,
                 'history': history  # Assuming the API expects the chat history
             },
             timeout=200
@@ -61,19 +64,21 @@ def init_chat(request):
     bot = get_object_or_404(Chatbot, token=bot_token)
 
     return JsonResponse({
-        "bot_name": bot.getName(),
+        "bot_name": bot.name,
         "logo": "logo",
         "faq": [],
         "initial_questions": []
     })
 
+@csrf_exempt
 @require_POST
 def send_chat(request):
     try:
+        data = json.loads(request.body)
         # Validate the request data
-        content = request.POST.get('content')
-        history = request.POST.getlist('history[]')
-        content_type = request.POST.get('type')
+        content = data.get('content')
+        history = data.get('history')
+        content_type = data.get('type')
 
         # Implement the equivalent logic for validation
         if not content:
@@ -90,7 +95,7 @@ def send_chat(request):
 
         # Implement the equivalent logic to send the HTTP request to the external API
         response = requests.post(
-            'http://llm-server:3000/api/chat',
+            'http://localhost:3000/api/chat',
             json={
                 'question': content,
                 'namespace': str(bot.id),  # Assuming getId returns a UUID object

@@ -1,9 +1,8 @@
-# In utils.py of your Django app (my_app/utils.py)
 import os
 import hashlib
 import requests
-from django.core.files.base import ContentFile
 from urllib.parse import urlparse
+from django.core.files.base import ContentFile
 from django.core.files.storage import FileSystemStorage
 
 def get_logo_from_url(url):
@@ -20,7 +19,7 @@ def get_logo_from_url(url):
             logo_name = hashlib.md5(domain.encode('utf-8')).hexdigest() + '.png'
 
             # Save logo file using Django's FileSystemStorage
-            logo_storage = FileSystemStorage(location='path/to/your/media/folder/')
+            logo_storage = FileSystemStorage(location='/tmp/')
             logo_path = os.path.join('website_data_sources/icons/', logo_name)
             logo_file = ContentFile(response.content)
             logo_storage.save(logo_path, logo_file)

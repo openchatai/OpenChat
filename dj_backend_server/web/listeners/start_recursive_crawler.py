@@ -2,6 +2,7 @@
 
 import os
 import requests
+import re
 from bs4 import BeautifulSoup
 from web.signals.website_data_source_was_added import website_data_source_added
 from web.signals.website_data_source_crawling_was_completed import website_data_source_crawling_completed 
@@ -11,10 +12,8 @@ from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 from django.utils.text import slugify
 from uuid import uuid4
-from django.dispatch import receiver
 from urllib.parse import urlparse, urlunparse
 from web.enums.website_data_source_status_enum import WebsiteDataSourceStatusType
-from html import unescape
 
 import logging
 
@@ -63,11 +62,13 @@ def start_recursive_crawler(sender, **kwargs):
     )
 
 
+# the file will be stored in the /tmp/website_data_sources/<data_source_id>/ directory.
 def store_crawled_page_content_to_database(url, response, chatbot_id, data_source_id, html):
     html = get_normalized_content(html)
-    # Save the HTML content to a local file
-    file_name = str(uuid4()) + ".html"
-    folder_name = os.path.join("website_data_sources", str(data_source_id))
+    
+    # Save the HTML content to a local file in /tmp directory
+    file_name = str(uuid4()) + ".txt"
+    folder_name = os.path.join("/tmp", "website_data_sources", str(data_source_id))
     file_path = os.path.join(folder_name, file_name)
     file_content = ContentFile(html.encode("utf-8"))
     default_storage.save(file_path, file_content)
@@ -101,8 +102,6 @@ def update_crawling_progress(chatbot_id, data_source_id, progress):
     except WebsiteDataSource.DoesNotExist:
         pass
 
-from bs4 import BeautifulSoup
-import re
 
 # This method needs to be revisited and has to be written in a more sophisticated manner. 
 def get_normalized_content(html):

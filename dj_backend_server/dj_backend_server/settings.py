@@ -29,6 +29,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# Use /tmp as the temporary media directory
+MEDIA_ROOT = '/tmp/'
 
 # Application definition
 

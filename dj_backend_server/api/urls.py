@@ -3,8 +3,8 @@ from .views import views_message, views_auth
 
 urlpatterns = [
     path('send_search_request/', views_message.send_search_request, name='send_search_request'),
-    path('init_chat/', views_message.init_chat, name='init_chat'),
-    path('send_chat/', views_message.send_chat, name='send_chat'),
+    path('chat/init/', views_message.init_chat, name='init_chat'),
+    path('chat/send/', views_message.send_chat, name='send_chat'),
 
     # Dummy auth endpoints to prevent template engine errors
     path('signin/', views_auth.signin, name='signin'),

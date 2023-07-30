@@ -10,7 +10,7 @@ export default async function websiteHandler(req: NextApiRequest, res: NextApiRe
         const {shared_folder} = req.body;
         const namespace = req.body.namespace;
 
-        const directoryLoader = new DirectoryLoader("/app/shared_data/" + shared_folder, {
+        const directoryLoader = new DirectoryLoader("/tmp/website_data_sources/" + shared_folder, {
             '.txt': (path) => new TextLoader(path),
         });
 

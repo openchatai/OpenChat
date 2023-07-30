@@ -111,7 +111,7 @@ def send_message(request, token):
 
     # Call the API to send the message to the chatbot with a timeout of 5 seconds
     try:
-        response = requests.post("http://llm-server:3000/api/chat", json={
+        response = requests.post("http://localhost:3000/api/chat", json={
             'question': question,
             'history': history,
             'namespace': str(bot.id),

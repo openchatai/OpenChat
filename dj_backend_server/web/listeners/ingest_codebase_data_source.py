@@ -31,7 +31,7 @@ class IngestCodebaseDataSource:
 
         try:
             # Call to ingest service endpoint
-            url = "http://llm-server:3000/api/ingest"  # Replace with the actual URL
+            url = "http://localhost:3000/api/ingest"  # Replace with the actual URL
             response = requests.post(url, json=request_body)
 
             datasouce.ingested_at = now()
