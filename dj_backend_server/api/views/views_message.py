@@ -93,9 +93,9 @@ def send_chat(request):
             'http://llm-server:3000/api/chat',
             json={
                 'question': content,
-                'namespace': str(bot.getId()),  # Assuming getId returns a UUID object
+                'namespace': str(bot.id),  # Assuming getId returns a UUID object
                 'mode': "assistant",
-                'initial_prompt': bot.getPromptMessage(),
+                'initial_prompt': bot.prompt_message,
                 'history': history
             },
             timeout=200

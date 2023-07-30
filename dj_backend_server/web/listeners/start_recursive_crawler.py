@@ -14,6 +14,8 @@ from uuid import uuid4
 from django.dispatch import receiver
 from urllib.parse import urlparse, urlunparse
 from web.enums.website_data_source_status_enum import WebsiteDataSourceStatusType
+from html import unescape
+
 import logging
 
 @website_data_source_added.connect
@@ -49,6 +51,7 @@ def start_recursive_crawler(sender, **kwargs):
             chatbot_id=chatbot_id,
             website_data_source_id=data_source_id
         )
+        
     except Exception:
         data_source.crawling_status = WebsiteDataSourceStatusType.FAILED
         data_source.save()
@@ -61,6 +64,7 @@ def start_recursive_crawler(sender, **kwargs):
 
 
 def store_crawled_page_content_to_database(url, response, chatbot_id, data_source_id, html):
+    html = get_normalized_content(html)
     # Save the HTML content to a local file
     file_name = str(uuid4()) + ".html"
     folder_name = os.path.join("website_data_sources", str(data_source_id))
@@ -97,32 +101,24 @@ def update_crawling_progress(chatbot_id, data_source_id, progress):
     except WebsiteDataSource.DoesNotExist:
         pass
 
+from bs4 import BeautifulSoup
+import re
+
 def get_normalized_content(html):
-    # Remove inline script and style tags and their contents
-    soup = BeautifulSoup(html, 'html.parser')
-    for tag in soup(['script', 'style']):
-        tag.decompose()
+  # Remove inline script and style tags and their contents
+  text = BeautifulSoup(html, features="html.parser").get_text()
 
-    # Remove all HTML tags except for line break and paragraph tags
-    for tag in soup.find_all(True):
-        if tag.name not in ['br', 'p']:
-            tag.unwrap()
+  # Remove extra whitespace between tags
+  text = re.sub(r'> <', '><', text)
 
-    # Replace line breaks and paragraphs with new lines
-    for br in soup.find_all('br'):
-        br.replace_with("\n")
-    for p in soup.find_all('p'):
-        p.replace_with("\n" + p.get_text() + "\n")
+  # Remove extra newlines  
+  text = re.sub(r'\n+', '\n', text)
 
-    # Remove extra whitespace and normalize new lines
-    normalized_content = soup.get_text().strip()
-    normalized_content = "\n".join(line.strip() for line in normalized_content.splitlines())
+  # Trim whitespace
+  text = text.strip()
 
-    # Decode any HTML entities in the content
-    normalized_content = html.unescape(normalized_content)
-
-    # Return the normalized content
-    return normalized_content
+  return text
+    
 
 def get_crawled_page_title(html):
     # Use BeautifulSoup to parse the HTML and extract the title
