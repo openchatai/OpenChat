@@ -7,6 +7,9 @@ class ChatHistory(models.Model):
     from_user = models.BooleanField(default=False)
     message = models.TextField()
     session_id = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
 
     def set_id(self, _id):
         self.id = _id

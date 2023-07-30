@@ -141,18 +141,18 @@
                         </td>
                         <td class="p-3 whitespace-nowrap">
                             {% with source.created_at|time_difference as time_diff %}
-                            {% if time_diff < 3 %}
-                                <div class="inline-flex rounded-full text-center px-3 py-1" style="background: #E0F2FE; color: #10B981;">
-                                    {% with time_diff=source.created_at|time_difference %}
-                                        In progress (eta: {{ time_diff|timeuntil:"%d %H:%M:%S" }})
-                                    {% endwith %}
-                                </div>
-                            {% else %}
-                                <div class="inline-flex rounded-full text-center px-3 py-1" style="background: #ECFDF5; color:#0EA5E9;">
-                                    Completed
-                                </div>
-                            {% endif %}
-                        {% endwith %}
+                            {% if time_diff < 3 %} <div class="inline-flex rounded-full text-center px-3 py-1"
+                                style="background: #E0F2FE; color: #10B981;">
+                                {% with time_diff=source.created_at|time_difference %}
+                                In progress (eta: {{ time_diff|timeuntil:"%d %H:%M:%S" }})
+                                {% endwith %}
+        </div>
+        {% else %}
+        <div class="inline-flex rounded-full text-center px-3 py-1" style="background: #ECFDF5; color:#0EA5E9;">
+            Completed
+        </div>
+        {% endif %}
+        {% endwith %}
         </td>
         </tr>
         </tbody>

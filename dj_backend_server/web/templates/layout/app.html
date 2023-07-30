@@ -26,16 +26,9 @@
     <div class="flex h-screen overflow-hidden">
 
         <!-- Sidebar -->
-        <div>
-            <!-- Sidebar backdrop (mobile only) -->
-            <div class="fixed inset-0 bg-slate-900 bg-opacity-30 z-40 lg:hidden lg:z-auto transition-opacity duration-200"
-                {% if sidebarOpen %}class="opacity-100" {% else %}class="opacity-0 pointer-events-none" {% endif %}
-                aria-hidden="true" x-cloak></div>
 
-            <!-- Sidebar -->
-            {% include 'layout/sidebar.html' %}
-        </div>
-
+        <!-- Sidebar ends -->
+        
         <!-- Content area -->
         <div class="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
 
