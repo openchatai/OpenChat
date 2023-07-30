@@ -19,8 +19,7 @@ from django.urls import path, include
 from web.views.view_root import root_navigation_view
 
 urlpatterns = [
-    path('', root_navigation_view, name='root'),
+    path('', include('web.urls')),
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),  # Include the API URLs from the 'api' app
-    path('web/', include('web.urls'))
 ]
