@@ -1,1 +1,1 @@
-from . import init_vector_store, get_vector_store, pinecone_client
+from . import init_vector_store, get_vector_store

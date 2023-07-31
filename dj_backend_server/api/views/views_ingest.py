@@ -5,7 +5,7 @@ from api.data_sources import codebase_handler, pdf_handler, website_handler
 import json
 
 @require_POST
-def handler(request):
+def ingest(request):
     try:
         data = json.loads(request.body.decode('utf-8'))
         type_ = data['type']
