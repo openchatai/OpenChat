@@ -25,8 +25,8 @@ def make_chain(vector_store: VectorStore, mode: str, initial_prompt: str) -> Con
     return ConversationalRetrievalChain.from_llm(
         llm=model,
         retriever=vector_store.as_retriever(),
-        initial_prompt=prompts.qa_prompt,
-        condense_question_prompt=prompts.condense_prompt,
+        initial_prompt=prompts['qa_prompt'],
+        condense_question_prompt=prompts['condense_prompt'],
         enable_source_documents=enable_source_documents
     )
 

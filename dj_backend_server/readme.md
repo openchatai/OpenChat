@@ -19,3 +19,7 @@ python manage.py compilemessages
 
 ## Langchain References
 https://github.com/easonlai/azure_openai_langchain_sample/blob/main/chat_with_pdf.ipynb
+
+
+## Also here
+https://github.com/openai/openai-cookbook/blob/main/examples/vector_databases/qdrant/QA_with_Langchain_Qdrant_and_OpenAI.ipynb

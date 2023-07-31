@@ -8,6 +8,7 @@ from api.configs import VECTOR_STORE_INDEX_NAME, PINECONE_TEXT_KEY
 from api.interfaces import StoreOptions
 from dotenv import load_dotenv
 from api.utils.get_embeddings import get_embeddings
+import qdrant_client
 
 load_dotenv()
 
@@ -25,7 +26,9 @@ def get_vector_store(options: StoreOptions) -> VectorStore:
         options.namespace
     )
   elif store_type == StoreType.QDRANT.value:
-    vector_store = Qdrant.from_documents([], embedding, url='http://localhost:6333', collection=options.namespace)
+    client = qdrant_client.QdrantClient(host="localhost", prefer_grpc=True)
+    vector_store = Qdrant(client, options.namespace, embeddings=embedding)
+    # vector_store = Qdrant.from_documents([], embedding, url='http://localhost:6333', collection=options.namespace)
 
   else:
     raise ValueError('Invalid STORE environment variable value')
