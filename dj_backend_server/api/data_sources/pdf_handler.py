@@ -15,6 +15,8 @@ def pdf_handler(request):
         shared_folder = data.get('shared_folder')
         namespace = data.get('namespace')
 
+        # https://blog.nextideatech.com/chat-with-documents-using-langchain-gpt-4-python/
+        # try this too PyMuPDFLoader
         directory_loader = DirectoryLoader(f"/tmp/website_data_sources/{shared_folder}", {
             '.pdf': lambda path: PyPDFium2Loader.load_and_split(path),
         })

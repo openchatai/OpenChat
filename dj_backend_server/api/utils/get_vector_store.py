@@ -7,7 +7,7 @@ from api.enums import StoreType
 from api.configs import VECTOR_STORE_INDEX_NAME, PINECONE_TEXT_KEY
 from api.interfaces import StoreOptions
 
-def get_vector_store(options: StoreOptions):
+def get_vector_store(options: StoreOptions) -> VectorStore:
   """Gets the vector store for the given options."""
   vector_store: VectorStore = None
 
