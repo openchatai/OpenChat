@@ -3,13 +3,15 @@ from django.views.decorators.http import require_POST
 
 from api.utils import get_vector_store, make_chain
 import json
+from django.views.decorators.csrf import csrf_exempt
+from api.interfaces import StoreOptions
 
-
+@csrf_exempt
 @require_POST
 def chat(request):
     body = json.loads(request.body.decode('utf-8'))
     question = body.get('question')
-    history = body.get('history')
+    history = body.get('history') or []
     namespace = body.get('namespace')
     mode = body.get('mode')
     initial_prompt = body.get('initial_prompt')
@@ -20,7 +22,7 @@ def chat(request):
     sanitized_question = question.strip().replace('\n', ' ')
 
     try:
-        vector_store = get_vector_store(namespace)
+        vector_store = get_vector_store(StoreOptions(namespace=namespace))
         chain = make_chain(vector_store, mode, initial_prompt)
 
         response = chain({"question": sanitized_question, "chat_history": history})

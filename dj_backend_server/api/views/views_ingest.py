@@ -3,7 +3,9 @@ from django.views.decorators.http import require_POST
 
 from api.data_sources import codebase_handler, pdf_handler, website_handler
 import json
+from django.views.decorators.csrf import csrf_exempt
 
+@csrf_exempt
 @require_POST
 def ingest(request):
     try:

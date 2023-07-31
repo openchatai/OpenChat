@@ -4,8 +4,8 @@ from django.http import JsonResponse
 from langchain.document_loaders.directory import DirectoryLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.document_loaders import TextLoader
-from langchain.embeddings.openai import OpenAIEmbeddings
 from api.utils import init_vector_store
+from api.utils.get_embeddings import get_embeddings
 import json
 
 def website_handler(request):
@@ -24,7 +24,7 @@ def website_handler(request):
 
         docs = text_splitter.split_documents(raw_docs)
 
-        embeddings = OpenAIEmbeddings()
+        embeddings = get_embeddings()
 
         init_vector_store(docs, embeddings, namespace=namespace)
         print('All is done, folder deleted')

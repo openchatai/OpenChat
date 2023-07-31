@@ -9,10 +9,9 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.dispatch import receiver
 
 @pdf_data_source_added.connect
-def ingest_pdf_datasource(self, **kwargs):
-    # if not isinstance(event, pdf_data_source_added):
-    #     return
+def ingest_pdf_datasource(sender, **kwargs):
 
+    print(sender)
     bot_id = kwargs['bot_id']
     pdf_data_source_id = kwargs['data_source_id']
 
@@ -24,12 +23,12 @@ def ingest_pdf_datasource(self, **kwargs):
     request_body = {
         'type': 'pdf',
         'shared_folder': pdf_data_source.folder_name,
-        'namespace': bot_id,
+        'namespace': str(bot_id),
     }
 
     try:
         # Call to ingest service endpoint
-        url = "http://localhost:3000/api/ingest"  # Replace with the actual URL
+        url = "http://localhost:8000/api/ingest"  # Replace with the actual URL
         response = requests.post(url, json=request_body, timeout=200)
 
         if response.status_code != 200:

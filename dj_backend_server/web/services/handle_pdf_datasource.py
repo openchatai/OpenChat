@@ -17,7 +17,7 @@ class HandlePdfDataSource:
         data_source = PdfDataSource()
         data_source.bot = self.bot
 
-        folder_name = ''.join(random.choices(string.ascii_letters, k=20))
+        folder_name = '/tmp/website_data_sources'
 
         files_urls = []
         for file in self.files:
@@ -26,7 +26,8 @@ class HandlePdfDataSource:
                 # For example: if not file.name.endswith('.pdf'): raise ValidationError('Invalid file type')
                 
                 # Generate a unique file name using UUID
-                file_name = str(uuid4()) + '.' + os.path.splitext(file.name)[1]
+                file_extension = os.path.splitext(file.name)[1]
+                file_name = str(uuid4()) + file_extension
                 file_path = os.path.join(folder_name, file_name)
                 
                 # Save the file to the storage system

@@ -14,3 +14,8 @@ python manage.py compilemessages
 > for both apps
 python manage.py makemessages -l en -i "web/*" -i "api/*" -e html,py,js,txt
 python manage.py compilemessages
+
+
+
+## Langchain References
+https://github.com/easonlai/azure_openai_langchain_sample/blob/main/chat_with_pdf.ipynb

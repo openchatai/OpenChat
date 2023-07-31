@@ -36,7 +36,7 @@ def send_search_request(request):
 
         # Implement the equivalent logic to send the HTTP request to the external API
         response = requests.post(
-            'http://localhost:3000/api/chat',
+            'http://localhost:8000/api/chat',
             json={
                 'question': message,
                 'namespace': str(bot.id),  # Assuming getId returns a UUID object
@@ -95,7 +95,7 @@ def send_chat(request):
 
         # Implement the equivalent logic to send the HTTP request to the external API
         response = requests.post(
-            'http://localhost:3000/api/chat',
+            'http://localhost:8000/api/chat',
             json={
                 'question': content,
                 'namespace': str(bot.id),  # Assuming getId returns a UUID object

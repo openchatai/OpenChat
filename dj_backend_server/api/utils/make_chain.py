@@ -1,13 +1,22 @@
 from langchain.chains.conversational_retrieval.base import ConversationalRetrievalChain
-from langchain.llms import OpenAI, OpenAIChat
+# Import Azure OpenAI
+from langchain.llms import AzureOpenAI
 from langchain.vectorstores.base import VectorStore
 
+from dotenv import load_dotenv
+
+load_dotenv()
 import os
 
-def make_chain(vectorstore: VectorStore, mode: str, initial_prompt: str) -> ConversationalRetrievalChain:
-
+def make_chain(vector_store: VectorStore, mode: str, initial_prompt: str) -> ConversationalRetrievalChain:
     prompts = get_initial_prompt_by_mode(mode, initial_prompt)
-    model = OpenAIChat() if os.environ['USE_AZURE_OPENAI'] else OpenAI()
+
+    # https://github.com/easonlai/azure_openai_langchain_sample/blob/main/chat_with_pdf.ipynb
+    model = AzureOpenAI(
+        openai_api_key=os.environ['OPENAI_API_KEY'], 
+        deployment_name=os.environ['OPENAI_DEPLOYMENT_NAME'], 
+        model_name=os.environ['OPENAI_COMPLETION_MODEL']
+    )
 
     enable_source_documents = False
     if mode == 'pair_programmer':
@@ -15,7 +24,7 @@ def make_chain(vectorstore: VectorStore, mode: str, initial_prompt: str) -> Conv
 
     return ConversationalRetrievalChain.from_llm(
         llm=model,
-        retriever=vectorstore.as_retriever(),
+        retriever=vector_store.as_retriever(),
         initial_prompt=prompts.qa_prompt,
         condense_question_prompt=prompts.condense_prompt,
         enable_source_documents=enable_source_documents

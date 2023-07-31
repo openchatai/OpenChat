@@ -3,7 +3,7 @@ import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.embeddings.openai import OpenAIEmbeddings
+from api.utils import get_embeddings
 from langchain.document_loaders.directory import DirectoryLoader
 from api.utils import init_vector_store
 from langchain.document_loaders import PyPDFium2Loader
@@ -26,7 +26,7 @@ def pdf_handler(request):
         text_splitter = RecursiveCharacterTextSplitter(chunkSize=1000, chunkOverlap=200)
         docs = text_splitter.split_documents(raw_docs)
 
-        embeddings = OpenAIEmbeddings()
+        embeddings = get_embeddings()
 
         init_vector_store(docs, embeddings, namespace=namespace)
 

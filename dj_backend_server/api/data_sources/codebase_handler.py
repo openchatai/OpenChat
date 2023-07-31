@@ -2,7 +2,7 @@
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.embeddings.openai import OpenAIEmbeddings
+from api.utils import get_embeddings
 from langchain.document_loaders import GitLoader
 from api.utils import init_vector_store
 import json
@@ -25,7 +25,7 @@ def codebase_handler(request):
 
         print('Split documents')
 
-        embeddings = OpenAIEmbeddings()
+        embeddings = get_embeddings()
 
         init_vector_store(docs, embeddings, namespace=namespace)
 

@@ -58,7 +58,7 @@ def data_settings(request, id):
     codebase_data_sources = CodebaseDataSource.objects.filter(chatbot_id=id)
 
     print("data sources : ", codebase_data_sources)
-    return render(request, 'settings-data.html', {'bot': bot, 'websiteDataSources': website_data_sources, 'pdfDataSources': pdf_data_sources, 'codebaseDataSources': codebase_data_sources})
+    return render(request, 'settings-data.html', {'bot': bot, 'website_data_sources': website_data_sources, 'pdf_data_sources': pdf_data_sources, 'codebase_data_sources': codebase_data_sources})
 
 
 def analytics_settings(request, id):
