@@ -26,7 +26,7 @@ def get_vector_store(options: StoreOptions) -> VectorStore:
         options.namespace
     )
   elif store_type == StoreType.QDRANT.value:
-    client = qdrant_client.QdrantClient(host="localhost", prefer_grpc=True)
+    client = qdrant_client.QdrantClient(url=os.environ['QDRANT_URL'], prefer_grpc=True)
     vector_store = Qdrant(client, options.namespace, embeddings=embedding)
     # vector_store = Qdrant.from_documents([], embedding, url='http://localhost:6333', collection=options.namespace)
 
