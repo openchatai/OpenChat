@@ -1,0 +1,2 @@
+PINECONE_TEXT_KEY='text'
+VECTOR_STORE_INDEX_NAME='somestrangeindex'
