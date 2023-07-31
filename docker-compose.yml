@@ -55,7 +55,7 @@ services:
     ports:
       - 6333:6333
     volumes:
-      - /tmp/qdrant_storage:/qdrant/storage
+      - qdrant_storage:/qdrant/storage
     networks:
       - openchat_network
 
@@ -74,3 +74,4 @@ networks:
 volumes:
   shared_data:
   database:
+  qdrant_storage:
