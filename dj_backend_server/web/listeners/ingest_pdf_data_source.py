@@ -28,7 +28,7 @@ def ingest_pdf_datasource(sender, **kwargs):
 
     try:
         # Call to ingest service endpoint
-        url = "http://localhost:8000/api/ingest"  # Replace with the actual URL
+        url = "http://localhost:8000/api/ingest/"  # Replace with the actual URL
         response = requests.post(url, json=request_body, timeout=200)
 
         if response.status_code != 200:

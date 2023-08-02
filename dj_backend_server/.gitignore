@@ -34,3 +34,4 @@ staticfiles
 *.egg-info
 pip-log.txt
 pip-delete-this-directory.txt
+website_data_sources/*

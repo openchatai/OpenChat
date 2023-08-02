@@ -1,12 +1,11 @@
 # services.py
 import os
-import random
-import string
 from django.core.exceptions import ValidationError
 from django.core.files.storage import default_storage
 from web.models.chatbot import Chatbot
 from web.models.pdf_data_sources import PdfDataSource
 from uuid import uuid4
+import secrets
 
 class HandlePdfDataSource:
     def __init__(self, bot: Chatbot, files):
@@ -17,7 +16,8 @@ class HandlePdfDataSource:
         data_source = PdfDataSource()
         data_source.bot = self.bot
 
-        folder_name = '/tmp/website_data_sources'
+        folder_name = secrets.token_hex(20)
+        folder_path = f"website_data_sources/{folder_name}"
 
         files_urls = []
         for file in self.files:
@@ -28,7 +28,7 @@ class HandlePdfDataSource:
                 # Generate a unique file name using UUID
                 file_extension = os.path.splitext(file.name)[1]
                 file_name = str(uuid4()) + file_extension
-                file_path = os.path.join(folder_name, file_name)
+                file_path = os.path.join(folder_path, file_name)
                 
                 # Save the file to the storage system
                 default_storage.save(file_path, file)

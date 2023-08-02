@@ -38,7 +38,7 @@ def init_vector_store(docs: list[Document], embeddings: OpenAIEmbeddings, option
         )
 
     elif store_type == StoreType.QDRANT:
-        Qdrant.from_documents(docs, embeddings, options.namespace, os.environ['QDRANT_URL'])
+        Qdrant.from_documents(docs, embeddings, collection_name=options.namespace, url=os.environ['QDRANT_URL'])
 
     else:
         valid_stores = ", ".join(StoreType._member_names())

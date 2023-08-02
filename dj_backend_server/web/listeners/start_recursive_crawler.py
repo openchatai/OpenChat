@@ -62,13 +62,13 @@ def start_recursive_crawler(sender, **kwargs):
     )
 
 
-# the file will be stored in the /tmp/website_data_sources/<data_source_id>/ directory.
+# the file will be stored in the website_data_sources/<data_source_id>/ directory.
 def store_crawled_page_content_to_database(url, response, chatbot_id, data_source_id, html):
     html = get_normalized_content(html)
     
     # Save the HTML content to a local file in /tmp directory
     file_name = str(uuid4()) + ".txt"
-    folder_name = os.path.join("/tmp", "website_data_sources", str(data_source_id))
+    folder_name = os.path.join("website_data_sources", str(data_source_id))
     file_path = os.path.join(folder_name, file_name)
     file_content = ContentFile(html.encode("utf-8"))
     default_storage.save(file_path, file_content)

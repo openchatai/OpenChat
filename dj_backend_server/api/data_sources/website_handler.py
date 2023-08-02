@@ -15,7 +15,7 @@ def website_handler(request):
         namespace = data.get('namespace')
 
 
-        directory_path = os.path.join("/tmp/website_data_sources/", shared_folder)
+        directory_path = os.path.join("website_data_sources", shared_folder)
         directory_loader = DirectoryLoader(directory_path, {'.txt': lambda path: TextLoader(path)})
 
         raw_docs = directory_loader.load()

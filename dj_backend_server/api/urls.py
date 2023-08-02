@@ -6,8 +6,8 @@ urlpatterns = [
     path('chat/init/', views_message.init_chat, name='init_chat'),
     path('chat/send/', views_message.send_chat, name='send_chat'),
     # website/codebase/pdf ingestion endpoint
-    path('ingest', views_ingest.ingest, name='ingest'),
-    path('chat', views_chat.chat, name='chat'),
+    path('ingest/', views_ingest.ingest, name='ingest'),
+    path('chat/', views_chat.chat, name='chat'),
     # Dummy auth endpoints to prevent template engine errors
     path('signin/', views_auth.signin, name='signin'),
     path('signup/', views_auth.signup, name='signup'),

@@ -1,13 +1,14 @@
 # views.py
 import json
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseServerError
 from django.views.decorators.csrf import csrf_exempt
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from api.utils import get_embeddings
 from langchain.document_loaders.directory import DirectoryLoader
 from api.utils import init_vector_store
-from langchain.document_loaders import PyPDFium2Loader
-
+from langchain.document_loaders import PyPDFLoader
+import os
+from api.interfaces import StoreOptions
 @csrf_exempt
 def pdf_handler(request):
     try:
@@ -17,22 +18,27 @@ def pdf_handler(request):
 
         # https://blog.nextideatech.com/chat-with-documents-using-langchain-gpt-4-python/
         # try this too PyMuPDFLoader
-        directory_loader = DirectoryLoader(f"/tmp/website_data_sources/{shared_folder}", {
-            '.pdf': lambda path: PyPDFium2Loader.load_and_split(path),
-        })
+        # directory_loader = DirectoryLoader("/Users/shanurrahman/Documents/Gitlab/opensource/OpenChat/dj_backend_server/website_data_sources/7e54d8ef993375547b87b9031292e0bbbd8b19b1", {
+        #     '.pdf': lambda path: PyPDFLoader.load_and_split(path),
+        # })
+        path = "/Users/shanurrahman/Documents/Gitlab/opensource/OpenChat/dj_backend_server/website_data_sources/7e54d8ef993375547b87b9031292e0bbbd8b19b1"
 
-        raw_docs = directory_loader.load()
+        directory_loader = DirectoryLoader(path=path, glob="**/*.pdf", loader_cls=PyPDFLoader)
 
-        text_splitter = RecursiveCharacterTextSplitter(chunkSize=1000, chunkOverlap=200)
+        raw_docs = directory_loader.load_and_split()
+
+        text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
         docs = text_splitter.split_documents(raw_docs)
 
         embeddings = get_embeddings()
 
-        init_vector_store(docs, embeddings, namespace=namespace)
+        init_vector_store(docs, embeddings, StoreOptions(namespace))
 
         print('All is done, folder deleted')
         return JsonResponse({'message': 'Success'})
 
     except Exception as e:
+        import traceback
         print(e)
-        return JsonResponse({'error': str(e)})
+        traceback.print_exc()
+        return HttpResponseServerError({'error': str(e)})
