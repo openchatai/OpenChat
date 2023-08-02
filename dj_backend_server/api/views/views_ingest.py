@@ -1,7 +1,9 @@
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 
-from api.data_sources import codebase_handler, pdf_handler, website_handler
+from api.data_sources.codebase_handler import codebase_handler
+from api.data_sources.website_handler import website_handler
+from api.data_sources.pdf_handler import pdf_handler
 import json
 from django.views.decorators.csrf import csrf_exempt
 

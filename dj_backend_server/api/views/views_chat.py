@@ -1,7 +1,8 @@
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 
-from api.utils import get_vector_store, make_chain
+from api.utils import get_vector_store
+from api.utils.make_chain import make_chain
 import json
 from django.views.decorators.csrf import csrf_exempt
 from api.interfaces import StoreOptions
@@ -25,9 +26,12 @@ def chat(request):
         vector_store = get_vector_store(StoreOptions(namespace=namespace))
         chain = make_chain(vector_store, mode, initial_prompt)
 
-        response = chain({"question": sanitized_question, "chat_history": history})
-
-        return JsonResponse(response)
+        response = chain({"question": question, "chat_history": history})
+        r = {'text': response['answer']};
+        return JsonResponse(r)
     except Exception as e:
-        return JsonResponse({'error': str(e)})
+            import traceback
+            print(e)
+            traceback.print_exc()
+            return JsonResponse({'error': str(e)})
 
