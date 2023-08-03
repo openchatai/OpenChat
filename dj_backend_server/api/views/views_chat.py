@@ -2,7 +2,7 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 
 from api.utils import get_vector_store
-from api.utils.make_chain import make_chain
+from api.utils.make_chain import get_qa_chain
 import json
 from django.views.decorators.csrf import csrf_exempt
 from api.interfaces import StoreOptions
@@ -24,7 +24,7 @@ def chat(request):
 
     try:
         vector_store = get_vector_store(StoreOptions(namespace=namespace))
-        chain = make_chain(vector_store, mode, initial_prompt)
+        chain = get_qa_chain(vector_store, mode, initial_prompt)
 
         response = chain({"query": sanitized_question })
         r = {'text': response['result']}

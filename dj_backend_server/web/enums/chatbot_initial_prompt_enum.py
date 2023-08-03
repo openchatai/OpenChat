@@ -1,4 +1,10 @@
 from enum import Enum
 
 class ChatBotInitialPromptEnum(Enum):
-    AI_ASSISTANT_INITIAL_PROMPT = "You are a helpful AI customer support agent. Use the following pieces of context to answer the question at the end.\nIf you don't know the answer, just say you don't know. DO NOT try to make up an answer.\nIf the question is not related to the context, politely respond that you are tuned to only answer questions that are related to the context.\n\n{chat_history}\n\nQuestion: {question}\nHelpful answer in markdown:"
+    AI_ASSISTANT_INITIAL_PROMPT = """Use the following pieces of context to answer the question at the end. 
+    If you don't know the answer, just say that you don't know, don't try to make up an answer. 
+    Use three sentences maximum and keep the answer as concise as possible. 
+    Always say "thanks for asking!" at the end of the answer. 
+    {context}
+    Question: {question}
+    Helpful Answer:"""
