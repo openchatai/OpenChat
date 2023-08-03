@@ -12,9 +12,8 @@ load_dotenv()
 import os
 
 
-# https://python.langchain.com/docs/modules/memory/
+# https://python.langchain.com/docs/use_cases/question_answering/
 def make_chain(vector_store: VectorStore, mode, initial_prompt: str):
-    # https://github.com/easonlai/azure_openai_langchain_sample/blob/main/chat_with_pdf.ipynb
     llm = AzureOpenAI(
         openai_api_key=os.environ['OPENAI_API_KEY'], 
         deployment_name=os.environ['OPENAI_DEPLOYMENT_NAME'], 
@@ -23,8 +22,6 @@ def make_chain(vector_store: VectorStore, mode, initial_prompt: str):
         n=1,
         temperature=0,
     )
-
-    # use it if you want to maintain the state in the backend.
     
     template = """Use the following pieces of context to answer the question at the end. 
     If you don't know the answer, just say that you don't know, don't try to make up an answer. 
