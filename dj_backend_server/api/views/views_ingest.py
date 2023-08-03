@@ -1,9 +1,6 @@
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
-
-from api.data_sources.codebase_handler import codebase_handler
-from api.data_sources.website_handler import website_handler
-from api.data_sources.pdf_handler import pdf_handler
+from api.tasks import codebase_handler_task, pdf_handler_task, website_handler_task
 import json
 from django.views.decorators.csrf import csrf_exempt
 
@@ -18,11 +15,13 @@ def ingest(request):
             return JsonResponse({'error': 'Type not supported'})
 
         if type_ == 'pdf':
-            return pdf_handler(request)
+            pdf_handler_task.delay(request)
         elif type_ == 'website':
-            return website_handler(request)
+            website_handler_task.delay(request)
         elif type_ == 'codebase':
-            return codebase_handler(request)
+            codebase_handler_task.delay(request)
+        
+        return JsonResponse({'status': 'Processing request'})
 
     except Exception as e:
         return JsonResponse({

@@ -126,3 +126,13 @@ Answer in markdown format:"""
 
 
     return chain
+
+
+---
+Conversational retriever chain with qa_prompts
+https://github.com/langchain-ai/langchain/issues/5542
+
+
+
+---
+To run celery app: celery -A dj_backend_server worker --loglevel=info

@@ -41,10 +41,9 @@ def create_via_website_flow(request):
         prompt_message=prompt_message
     )
 
-    print(chatbot.name)
     # Trigger the ChatbotWasCreated event (if using Django signals or channels)
     chatbot_was_created.send(
-        sender=create_via_codebase_flow.__name__,
+        sender='create_via_codebase_flow',
         id=chatbot.id,
         name=chatbot.name,
         website=chatbot.website,
@@ -72,7 +71,7 @@ def create_via_pdf_flow(request):
     data_source = handle_pdf.handle()
 
     # Trigger the PdfDataSourceWasAdded event
-    pdf_data_source_added.send(sender=create_via_pdf_flow.__name__, bot_id=chatbot.id, data_source_id=data_source.id)
+    pdf_data_source_added.send(sender='create_via_pdf_flow', bot_id=chatbot.id, data_source_id=data_source.id)
     return HttpResponseRedirect(reverse('onboarding.config', args=[str(chatbot.id)]))
 
 @require_POST

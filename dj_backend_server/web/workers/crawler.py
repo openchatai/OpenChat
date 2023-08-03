@@ -1,10 +1,7 @@
-# listeners.py
-
 import os
 import requests
 import re
 from bs4 import BeautifulSoup
-from web.signals.website_data_source_was_added import website_data_source_added
 from web.signals.website_data_source_crawling_was_completed import website_data_source_crawling_completed 
 from web.models.crawled_pages import CrawledPages
 from web.models.website_data_sources import WebsiteDataSource
@@ -17,12 +14,8 @@ from web.enums.website_data_source_status_enum import WebsiteDataSourceStatusTyp
 
 import logging
 
-@website_data_source_added.connect
-def start_recursive_crawler(sender, **kwargs):
-    # Get the WebsiteDataSource object
-    data_source_id = kwargs['data_source_id']
-    chatbot_id = kwargs['bot_id']
 
+def start_recursive_crawler(data_source_id, chatbot_id):
     data_source = WebsiteDataSource.objects.get(pk=data_source_id)
     root_url = data_source.root_url
 

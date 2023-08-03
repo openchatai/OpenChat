@@ -9,7 +9,6 @@ from uuid import uuid4
 
 @chatbot_was_created.connect
 def create_website_data_source(sender, **kwargs):
-    print("create_website_data_source triggered by: ", sender)
 
     id, name, website = kwargs['id'], kwargs['name'], kwargs['website']
     print("called the receiver for chatbot was created event")
