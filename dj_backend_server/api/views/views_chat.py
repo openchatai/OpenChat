@@ -26,8 +26,8 @@ def chat(request):
         vector_store = get_vector_store(StoreOptions(namespace=namespace))
         chain = make_chain(vector_store, mode, initial_prompt)
 
-        response = chain({"question": question, "chat_history": history})
-        r = {'text': response['answer']};
+        response = chain({"query": sanitized_question })
+        r = {'text': response['result']}
         return JsonResponse(r)
     except Exception as e:
             import traceback
