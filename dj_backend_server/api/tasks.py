@@ -5,16 +5,16 @@ from api.data_sources.pdf_handler import pdf_handler
 from web.workers.crawler import start_recursive_crawler
 
 @shared_task
-def pdf_handler_task(request):
-    return pdf_handler(request)
+def pdf_handler_task(shared_folder, namespace):
+    return pdf_handler(shared_folder=shared_folder, namespace=namespace)
 
 @shared_task 
 def website_handler_task(shared_folder, namespace):
     return website_handler(shared_folder=shared_folder, namespace=namespace)
 
 @shared_task
-def codebase_handler_task(request):
-    return codebase_handler(request)
+def codebase_handler_task(repo_path, namespace):
+    return codebase_handler(repo_path=repo_path, namespace=namespace)
 
 
 

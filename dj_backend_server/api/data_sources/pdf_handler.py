@@ -1,37 +1,31 @@
 # views.py
 import json
-from django.http import JsonResponse, HttpResponseServerError
 from django.views.decorators.csrf import csrf_exempt
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from api.utils import get_embeddings
 from langchain.document_loaders.directory import DirectoryLoader
 from api.utils import init_vector_store
 from langchain.document_loaders import PyPDFium2Loader
-from pathlib import Path
 import os
 from web.utils.delete_foler import delete_folder
 from api.interfaces import StoreOptions
 @csrf_exempt
-def pdf_handler(request):
+def pdf_handler(shared_folder: str, namespace: str):
     try:
-        data = json.loads(request.body.decode('utf-8'))
-        shared_folder = data.get('shared_folder')
-        namespace = data.get('namespace')
-
         directory_path = os.path.join("website_data_sources", shared_folder)
 
-        directory_loader = DirectoryLoader(path=directory_path, glob="**/*.pdf", loader_cls=PyPDFium2Loader)
+        directory_loader = DirectoryLoader(path=directory_path, glob="**/*.pdf", loader_cls=PyPDFium2Loader, use_multithreading=True)
 
         raw_docs = directory_loader.load_and_split()
 
-        text_splitter = RecursiveCharacterTextSplitter(separators=["\n"], chunk_size=1000, chunk_overlap=200,length_function=len)
+        text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200,length_function=len)
         docs = text_splitter.split_documents(raw_docs)
 
         embeddings = get_embeddings()
 
         init_vector_store(docs, embeddings, StoreOptions(namespace))
         
-        delete_folder(folder_path=delete_folder)
+        delete_folder(folder_path=directory_path)
         print('All is done, folder deleted')
 
     except Exception as e:

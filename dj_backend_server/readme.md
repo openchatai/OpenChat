@@ -135,4 +135,9 @@ https://github.com/langchain-ai/langchain/issues/5542
 
 
 ---
-To run celery app: celery -A dj_backend_server worker --loglevel=info
+To run celery app: 
+There are fork issues with mac m1, a complete thread can be found here
+> https://github.com/rails/rails/issues/38560
+
+To start: 
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES && export DISABLE_SPRING=true && celery -A dj_backend_server worker --loglevel=info

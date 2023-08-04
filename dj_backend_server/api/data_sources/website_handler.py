@@ -12,7 +12,7 @@ from web.utils.delete_foler import delete_folder
 def website_handler(shared_folder, namespace):
     try:
         directory_path = os.path.join("website_data_sources", shared_folder)
-        directory_loader = DirectoryLoader(directory_path, glob="**/*.txt", loader_cls=TextLoader)
+        directory_loader = DirectoryLoader(directory_path, glob="**/*.txt", loader_cls=TextLoader, use_multithreading=True)
 
         raw_docs = directory_loader.load()
 
@@ -25,7 +25,7 @@ def website_handler(shared_folder, namespace):
 
         init_vector_store(docs, embeddings, StoreOptions(namespace=namespace))
 
-        delete_folder(folder_path=delete_folder)
+        delete_folder(folder_path=directory_path)
         print('All is done, folder deleted...')
     except Exception as e:
         import traceback
