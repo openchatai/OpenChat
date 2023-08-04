@@ -14,6 +14,15 @@
             ],
             "django": true,
             "justMyCode": true
+        },
+        {
+            "name": "Python: Celery Workers",
+            "type": "python",
+            "request": "launch",
+            "module": "celery",
+            "console": "integratedTerminal",
+            "envFile": "${workspaceFolder}/.env",
+            "args": ["-A", "dj_backend_server", "worker", "-l", "debug"]
         }
     ]
 }

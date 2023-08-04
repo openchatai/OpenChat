@@ -38,6 +38,7 @@ def init_vector_store(docs: list[Document], embeddings: OpenAIEmbeddings, option
         )
 
     elif store_type == StoreType.QDRANT:
+        print("called qdrant.from_documents")
         Qdrant.from_documents(docs, embeddings, collection_name=options.namespace, url=os.environ['QDRANT_URL'])
 
     else:

@@ -9,7 +9,7 @@ from api.utils import init_vector_store
 from langchain.document_loaders import PyPDFium2Loader
 from pathlib import Path
 import os
-
+from web.utils.delete_foler import delete_folder
 from api.interfaces import StoreOptions
 @csrf_exempt
 def pdf_handler(request):
@@ -30,12 +30,11 @@ def pdf_handler(request):
         embeddings = get_embeddings()
 
         init_vector_store(docs, embeddings, StoreOptions(namespace))
-
+        
+        delete_folder(folder_path=delete_folder)
         print('All is done, folder deleted')
-        return JsonResponse({'message': 'Success'})
 
     except Exception as e:
         import traceback
         print(e)
         traceback.print_exc()
-        return HttpResponseServerError({'error': str(e)})

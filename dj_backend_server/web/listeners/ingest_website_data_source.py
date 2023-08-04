@@ -8,9 +8,8 @@ from web.signals.website_data_source_crawling_was_completed import website_data_
 from django.core.exceptions import ObjectDoesNotExist
 from django.dispatch import receiver
 
-@website_data_source_crawling_completed.connect
-def handle_crawling_completed(sender, **kwargs):
-    chatbot_id, website_data_source_id = kwargs['chatbot_id'], kwargs['website_data_source_id']
+# @website_data_source_crawling_completed.connect
+def handle_crawling_completed(chatbot_id, website_data_source_id):
     
     try:
         website_data_source = WebsiteDataSource.objects.get(id=website_data_source_id)
@@ -25,7 +24,7 @@ def handle_crawling_completed(sender, **kwargs):
 
     try:
         # Call to ingest service endpoint
-        url = "http://localhost:3000/api/ingest"  # Replace with the actual URL
+        url = "http://localhost:8000/api/ingest/"  # Replace with the actual URL
         response = requests.post(url, json=request_body)
 
         if response.status_code != 200:

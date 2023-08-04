@@ -11,6 +11,7 @@ from django.utils.text import slugify
 from uuid import uuid4
 from urllib.parse import urlparse, urlunparse
 from web.enums.website_data_source_status_enum import WebsiteDataSourceStatusType
+from web.listeners.ingest_website_data_source import handle_crawling_completed
 
 import logging
 
@@ -38,21 +39,25 @@ def start_recursive_crawler(data_source_id, chatbot_id):
         data_source.crawling_status = WebsiteDataSourceStatusType.COMPLETED
         data_source.save()
 
-        website_data_source_crawling_completed.send(
-            sender=None,
-            chatbot_id=chatbot_id,
-            website_data_source_id=data_source_id
-        )
+        # website_data_source_crawling_completed.send(
+        #     sender=None,
+        #     chatbot_id=chatbot_id,
+        #     website_data_source_id=data_source_id
+        # )
+
+        handle_crawling_completed(chatbot_id=chatbot_id, website_data_source_id=data_source_id)
         
     except Exception:
         data_source.crawling_status = WebsiteDataSourceStatusType.FAILED
         data_source.save()
 
-    website_data_source_crawling_completed.send(
-        sender=None,
-        chatbot_id=chatbot_id,
-        website_data_source_id=data_source_id
-    )
+    # website_data_source_crawling_completed.send(
+    #     sender=None,
+    #     chatbot_id=chatbot_id,
+    #     website_data_source_id=data_source_id
+    # )
+    print(chatbot_id, data_source_id)
+    handle_crawling_completed(chatbot_id=chatbot_id, website_data_source_id=data_source_id)
 
 
 # the file will be stored in the website_data_sources/<data_source_id>/ directory.

@@ -17,7 +17,11 @@ def ingest(request):
         if type_ == 'pdf':
             pdf_handler_task.delay(request)
         elif type_ == 'website':
-            website_handler_task.delay(request)
+            print("Calling website handler task")
+            shared_folder = data.get('shared_folder')
+            namespace = data.get('namespace')
+
+            website_handler_task.delay(shared_folder, namespace)
         elif type_ == 'codebase':
             codebase_handler_task.delay(request)
         

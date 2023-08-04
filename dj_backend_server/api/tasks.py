@@ -9,8 +9,8 @@ def pdf_handler_task(request):
     return pdf_handler(request)
 
 @shared_task 
-def website_handler_task(request):
-    return website_handler(request)
+def website_handler_task(shared_folder, namespace):
+    return website_handler(shared_folder=shared_folder, namespace=namespace)
 
 @shared_task
 def codebase_handler_task(request):
