@@ -18,7 +18,7 @@ def get_embeddings() -> Embeddings:
         openai_api_key = os.environ.get("OPENAI_API_KEY")
         deployment = os.environ.get("OPENAI_EMBEDDING_MODEL_NAME")
         client = os.environ.get("OPENAI_API_TYPE")
-        return OpenAIEmbeddings(openai_api_key=openai_api_key, deployment=deployment, client=client, chunk_size=8)
+        return OpenAIEmbeddings(openai_api_key=openai_api_key, deployment=deployment, client=client, chunk_size=1)
     else:
         available_providers = ", ".join([service.value for service in EmbeddingProvider])
         raise ValueError(f"Embedding service '{embedding_provider}' is not currently available. "

@@ -5,11 +5,12 @@ from langchain.prompts import PromptTemplate
 from api.utils.get_prompts import get_condense_prompt_by_mode, get_qa_prompt_by_mode
 from api.utils.get_openai_llm import get_llm
 from langchain import PromptTemplate, LLMChain
+from langchain.chains import RetrievalQAWithSourcesChain
 
 load_dotenv()
 
 # https://python.langchain.com/docs/use_cases/question_answering/
-def get_qa_chain(vector_store: VectorStore, mode, initial_prompt: str):
+def get_qa_chain(vector_store: VectorStore, mode, initial_prompt: str) -> RetrievalQA:
     
     llm = get_llm()
 
@@ -19,11 +20,18 @@ def get_qa_chain(vector_store: VectorStore, mode, initial_prompt: str):
     qa_chain = RetrievalQA.from_chain_type(
         llm,
         retriever=vector_store.as_retriever(),
-        chain_type_kwargs={"prompt": prompt}
+        chain_type_kwargs={"prompt": prompt},
+        return_source_documents=True
     )
     
 
     return qa_chain
+
+
+def getRetrievalQAWithSourcesChain(vector_store: VectorStore, mode, initial_prompt: str):
+    llm = get_llm()
+    chain = RetrievalQAWithSourcesChain.from_chain_type(llm, chain_type="stuff", retriever=vector_store.as_retriever())
+    return chain
 
 
 def get_condense_chain(mode: str):
