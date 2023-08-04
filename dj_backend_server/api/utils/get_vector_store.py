@@ -8,7 +8,9 @@ from api.configs import VECTOR_STORE_INDEX_NAME, PINECONE_TEXT_KEY
 from api.interfaces import StoreOptions
 from dotenv import load_dotenv
 from api.utils.get_embeddings import get_embeddings
+from api.utils.init_vector_store import initialize_pinecone
 import qdrant_client
+
 
 load_dotenv()
 
@@ -19,6 +21,7 @@ def get_vector_store(options: StoreOptions) -> VectorStore:
 
   store_type = os.environ.get('STORE')
   if store_type == StoreType.PINECONE.value:
+    initialize_pinecone()
     vector_store = Pinecone.from_existing_index(
         VECTOR_STORE_INDEX_NAME,
         embedding,

@@ -124,6 +124,9 @@ def send_chat(request):
         })
 
     except Exception as e:
+        import traceback
+        print(e)
+        traceback.print_exc()
         return JsonResponse({
             "type": "text",
             "response": {
