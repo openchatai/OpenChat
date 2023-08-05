@@ -18,6 +18,9 @@
             background-color: #ECFDF5;
             color: #0EA5E9;
         }
+        .collapsed {
+            display: none;
+        }
     </style>
     <!-- Page header -->
     <div class="mb-8">
@@ -142,7 +145,7 @@
                                                 <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">
                                                     <div class="flex items-center">
                                                         <button class="text-slate-400 hover:text-slate-500 transform"
-                                                            :class="{ 'rotate-180': open }" onclick="open = !open"
+                                                            :class="{ 'rotate-180': open }" id="toggleTable"
                                                             :aria-expanded="open" aria-controls="description-01"
                                                             aria-expanded="false">
                                                             <span class="sr-only">Menu</span>
@@ -162,8 +165,7 @@
                                             <tr id="description-01" role="region">
                                                 <td colspan="10" class="px-2 first:pl-5 last:pr-5 py-3">
                                                     <div class="overflow-x-auto">
-                                                        <table class="table-auto w-full"
-                                                            @click.stop="$dispatch('set-transactionopen', true)">
+                                                        <table class="table-auto w-full" id="data_sources_table">
                                                             <!-- Table header -->
                                                             <thead
                                                                 class="text-xs font-semibold uppercase text-slate-500 border-t border-b border-slate-200">
@@ -685,6 +687,18 @@
         </div>
 
     </div>
+
+    <script>
+        const table = document.getElementById('data_sources_table');
+        const toggleBtn = document.getElementById('toggleTable');
+        toggleBtn.addEventListener('click', () => {
+            if (table.style.display === 'none') {
+                table.style.display = 'table';
+            } else {
+                table.style.display = 'none'; 
+            }
+        });
+    </script>
 </div>
 
 
