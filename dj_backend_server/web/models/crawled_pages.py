@@ -1,10 +1,11 @@
 from django.db import models
 import uuid
+from .website_data_sources import WebsiteDataSource
 
 class CrawledPages(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     chatbot_id = models.UUIDField()
-    website_data_source_id = models.UUIDField()
+    website_data_source = models.ForeignKey(WebsiteDataSource, on_delete=models.CASCADE, related_name='crawled_pages')
     url = models.URLField()
     title = models.CharField(max_length=255, blank=True, null=True)
     status_code = models.CharField(max_length=10)

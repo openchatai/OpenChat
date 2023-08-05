@@ -30,11 +30,11 @@ def handle_crawling_completed(chatbot_id, website_data_source_id):
         if response.status_code != 200:
             raise Exception('Ingest service returned an error: ' + response.text)
 
-        website_data_source.crawling_status = WebsiteDataSourceStatusType.COMPLETED
+        website_data_source.crawling_status = WebsiteDataSourceStatusType.COMPLETED.value
         website_data_source.save()
 
     except RequestException as e:
-        website_data_source.crawling_status = WebsiteDataSourceStatusType.FAILED
+        website_data_source.crawling_status = WebsiteDataSourceStatusType.FAILED.value
         website_data_source.save()
         return
 

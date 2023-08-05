@@ -77,7 +77,7 @@
                                                 </td>
                                                 <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
                                                     <div class="text-left font-medium text-emerald-500">
-                                                        {{ source.crawled_pages.count }} pages scanned
+                                                        {{ source.crawledpages_set.count }} pages scanned
                                                     </div>
                                                 </td>
                                                 <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
@@ -159,7 +159,7 @@
                                             Note that you must set a "colspan" attribute on the <td> element,
                                             and it should match the number of columns in your table
                                             -->
-                                            <tr id="description-01" role="region" x-show="open" style="display: none;">
+                                            <tr id="description-01" role="region">
                                                 <td colspan="10" class="px-2 first:pl-5 last:pr-5 py-3">
                                                     <div class="overflow-x-auto">
                                                         <table class="table-auto w-full"

@@ -1,9 +1,10 @@
 from django.db import models
+from web.models.chatbot import Chatbot
 import uuid
 
 class PdfDataSource(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    chatbot_id = models.UUIDField()
+    chatbot = models.ForeignKey(Chatbot, on_delete=models.CASCADE, related_name='pdf_data_sources')
     files = models.JSONField()
     folder_name = models.CharField(max_length=255)
     ingest_status = models.CharField(max_length=50)

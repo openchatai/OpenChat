@@ -154,3 +154,8 @@ https://github.com/GoogleCloudPlatform/generative-ai/blob/main/language/examples
 Up Next
 --
 Integrating mysql instead of sqlite, and provide configuration in env files or some other config file
+Crawled icons are stored somewhere and they are missing for website data sources
+Crawling status always shows up as failed.. check why
+
+bot_response = ChatbotResponse(response.json())
+fails for when content moderation finds an issue with submitted document or the prompt, test with FREE_TEST_DATA_100KB

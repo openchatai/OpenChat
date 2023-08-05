@@ -10,7 +10,7 @@ from web.models.pdf_data_sources import PdfDataSource
 from web.models.codebase_data_sources import CodebaseDataSource
 from web.enums.chatbot_initial_prompt_enum import ChatBotInitialPromptEnum
 from django.db.models import Count, Min
-
+from web.models.crawled_pages import CrawledPages
 
 def general_settings(request, id):
     bot = get_object_or_404(Chatbot, id=id)
@@ -53,7 +53,13 @@ def get_history_by_session_id(request, id, session_id):
 
 def data_settings(request, id):
     bot = get_object_or_404(Chatbot, id=id)
-    website_data_sources = WebsiteDataSource.objects.filter(chatbot_id=id)
+    website_data_sources = WebsiteDataSource.objects.filter(chatbot_id=id).prefetch_related('crawledpages_set')
+
+    for source in website_data_sources:
+        crawled_pages = source.crawledpages_set.all()
+        for page in crawled_pages:
+            print(page.url)
+
     pdf_data_sources = PdfDataSource.objects.filter(chatbot_id=id)
     codebase_data_sources = CodebaseDataSource.objects.filter(chatbot_id=id)
 
@@ -73,7 +79,7 @@ def integrations_settings(request, id):
 
 
 def data_sources_updates(request, id):
-    # bot = get_object_or_404(Chatbot, id=id)
+    # chatbot = get_object_or_404(Chatbot, id=id)
     data_sources = WebsiteDataSource.objects.filter(chatbot_id=id)
     pdf_data_sources = PdfDataSource.objects.filter(chatbot_id=id)
     return render(request, 'widgets/data-sources-updates.html', {'dataSources': data_sources, 'pdfDataSources': pdf_data_sources})

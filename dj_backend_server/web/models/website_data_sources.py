@@ -1,9 +1,10 @@
 from django.db import models
 import uuid
 from django.utils import timezone
+from web.models.chatbot import Chatbot
 class WebsiteDataSource(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    chatbot_id = models.UUIDField()
+    chatbot = models.ForeignKey(Chatbot, on_delete=models.CASCADE, related_name='website_data_sources')
     html_files = models.JSONField(default=list)
     root_url = models.URLField()
     icon = models.ImageField(upload_to='website_icons/', null=True, blank=True)
@@ -48,10 +49,7 @@ class WebsiteDataSource(models.Model):
 
     def get_crawling_status(self):
         return self.crawling_status
-
-    def chatbot(self):
-        return self.chatbot  # Replace with the related name of the Chatbot model (if defined)
-
+    
     def set_crawling_progress(self, crawling_progress):
         self.crawling_progress = crawling_progress
 
@@ -59,7 +57,7 @@ class WebsiteDataSource(models.Model):
         return self.crawling_progress
 
     def get_crawled_pages(self):
-        return self.crawledpages_set.all()  # Replace with the related name of the CrawledPages model (if defined)
+        return self.crawled_pages_set.all() 
 
     def get_created_at(self):
         return self.created_at

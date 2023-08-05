@@ -20,7 +20,7 @@ def start_recursive_crawler(data_source_id, chatbot_id):
     data_source = WebsiteDataSource.objects.get(pk=data_source_id)
     root_url = data_source.root_url
 
-    if data_source.crawling_status == WebsiteDataSourceStatusType.COMPLETED:
+    if data_source.crawling_status == WebsiteDataSourceStatusType.COMPLETED.value:
         return
 
     try:
@@ -28,7 +28,7 @@ def start_recursive_crawler(data_source_id, chatbot_id):
         crawled_urls = []
 
         # Set the crawling status to "in progress"
-        data_source.crawling_status = WebsiteDataSourceStatusType.IN_PROGRESS
+        data_source.crawling_status = WebsiteDataSourceStatusType.IN_PROGRESS.value
         data_source.save()
 
         # Start recursive crawling from the root URL
@@ -36,7 +36,7 @@ def start_recursive_crawler(data_source_id, chatbot_id):
         crawl(data_source_id, root_url, crawled_urls, max_pages, chatbot_id)
 
         # Set the crawling status to "completed"
-        data_source.crawling_status = WebsiteDataSourceStatusType.COMPLETED
+        data_source.crawling_status = WebsiteDataSourceStatusType.COMPLETED.value
         data_source.save()
 
         # website_data_source_crawling_completed.send(
@@ -48,7 +48,7 @@ def start_recursive_crawler(data_source_id, chatbot_id):
         handle_crawling_completed(chatbot_id=chatbot_id, website_data_source_id=data_source_id)
         
     except Exception:
-        data_source.crawling_status = WebsiteDataSourceStatusType.FAILED
+        data_source.crawling_status = WebsiteDataSourceStatusType.FAILED.value
         data_source.save()
 
     # website_data_source_crawling_completed.send(
@@ -80,7 +80,7 @@ def store_crawled_page_content_to_database(url, response, chatbot_id, data_sourc
         status_code=response.status_code,
         chatbot_id=chatbot_id,
         title=title,
-        website_data_source_id=data_source_id,
+        website_data_source=data_source_id,
         content_file=file_path,
     )
 
