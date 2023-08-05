@@ -159,3 +159,5 @@ Crawling status always shows up as failed.. check why
 
 bot_response = ChatbotResponse(response.json())
 fails for when content moderation finds an issue with submitted document or the prompt, test with FREE_TEST_DATA_100KB
+
+'Chatbot' object has no attribute 'pdfdatasources'

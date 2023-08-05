@@ -10,6 +10,8 @@ def ingest(request):
     try:
         data = json.loads(request.body.decode('utf-8'))
         shared_folder = data.get('shared_folder')
+        
+        # namespace is the same as chatbot id
         namespace = data.get('namespace')
         repo_path = data.get('repo')
         type_ = data['type']
@@ -26,5 +28,7 @@ def ingest(request):
         elif type_ == 'codebase':
             codebase_handler_task.delay(repo_path, namespace)
 
+        return JsonResponse({'message': 'Task dispatched successfully'}, status=200)
+    
     except Exception as e:
         print(e)

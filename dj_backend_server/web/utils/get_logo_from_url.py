@@ -19,10 +19,13 @@ def get_logo_from_url(url):
             logo_name = hashlib.md5(domain.encode('utf-8')).hexdigest() + '.png'
 
             # Save logo file using Django's FileSystemStorage
-            logo_storage = FileSystemStorage(location='/tmp/')
+            logo_storage = FileSystemStorage()
             logo_path = os.path.join('website_data_sources/icons/', logo_name)
             logo_file = ContentFile(response.content)
-            logo_storage.save(logo_path, logo_file)
+            icon_path = logo_storage.save(logo_path, logo_file)
+
+
+            print("icon path -> ", icon_path)
 
             # Return logo file name
             return logo_name

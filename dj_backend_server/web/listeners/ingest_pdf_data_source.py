@@ -10,8 +10,6 @@ from django.dispatch import receiver
 
 @pdf_data_source_added.connect
 def ingest_pdf_datasource(sender, **kwargs):
-
-    print(sender)
     bot_id = kwargs['bot_id']
     pdf_data_source_id = kwargs['data_source_id']
 
