@@ -141,3 +141,8 @@ There are fork issues with mac m1, a complete thread can be found here
 
 To start: 
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES && export DISABLE_SPRING=true && celery -A dj_backend_server worker --loglevel=info
+
+
+
+---
+https://github.com/GoogleCloudPlatform/generative-ai/blob/main/language/examples/document-qa/question_answering_large_documents_langchain.ipynb
