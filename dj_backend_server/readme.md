@@ -1,163 +1,113 @@
-## To delete all older migrations
-find . -path "*/migrations/*.py" -not -name "__init__.py" -delete
-find . -path "*/migrations/*.pyc" -delete
+# Django Project with Celery Integration
 
-## To create migrations for models [run the following from root directory]
-> python manage.py makemigrations api
+Welcome to the exciting world of our Django project! This repository combines the power of Django and Celery to deliver a robust and efficient backend solution. Below, you'll find all the information you need to get started, run migrations, and utilize the project effectively.
 
+## Table of Contents
+- [Introduction](#introduction)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Running the Project](#running-the-project)
+- [Running Migrations](#running-migrations)
+- [Environment Variables](#environment-variables)
+- [Troubleshooting](#troubleshooting)
+- [Contributing](#contributing)
+- [License](#license)
 
-# Generate translations
-> for web app
-python manage.py makemessages -l en -i "web/*" -e html,py,js,txt
-python manage.py compilemessages
+## Introduction
 
-> for both apps
-python manage.py makemessages -l en -i "web/*" -i "api/*" -e html,py,js,txt
-python manage.py compilemessages
+Our project combines Django, a powerful web framework, and Celery, a distributed task queue system. This combination allows for seamless handling of background tasks, ensuring a responsive user experience and efficient resource utilization.
 
+## Prerequisites
 
+Before you begin, make sure you have the following installed:
 
-## Langchain References
-https://github.com/easonlai/azure_openai_langchain_sample/blob/main/chat_with_pdf.ipynb
+- Python (version x.y.z)
+- Django (version x.y.z)
+- Celery (version x.y.z)
+- Other project-specific dependencies (see `requirements.txt`)
 
+## Installation
 
-## Also here
-https://github.com/openai/openai-cookbook/blob/main/examples/vector_databases/qdrant/QA_with_Langchain_Qdrant_and_OpenAI.ipynb
+1. Clone this repository:
+   ```
+   git clone https://github.com/your-username/your-project.git
+   cd your-project
+   ```
 
+2. Create a virtual environment:
+   ```
+   python3 -m venv venv
+   source venv/bin/activate
+   ```
 
----
-Make Chain [using conversation retrieval chain]
----
-```py
-from langchain.chains.conversational_retrieval.base import ConversationalRetrievalChain
-# Import Azure OpenAI
-from langchain.llms import AzureOpenAI
-from langchain.vectorstores.base import VectorStore
+3. Install dependencies:
+   ```
+   pip install -r requirements.txt
+   ```
 
-from dotenv import load_dotenv
-from langchain.chains import ConversationalRetrievalChain
-from langchain.prompts import SystemMessagePromptTemplate
-from langchain.memory import VectorStoreRetrieverMemory
+## Configuration
 
-load_dotenv()
-import os
+Before running the project, you need to configure your environment variables. Rename the `.env.example` file to `.env` and fill in the necessary values for your environment.
 
-def make_chain(vector_store: VectorStore, mode: str, initial_prompt: str) -> ConversationalRetrievalChain:
-    # https://github.com/easonlai/azure_openai_langchain_sample/blob/main/chat_with_pdf.ipynb
-    llm = AzureOpenAI(
-        openai_api_key=os.environ['OPENAI_API_KEY'], 
-        deployment_name=os.environ['OPENAI_DEPLOYMENT_NAME'], 
-        model_name=os.environ['OPENAI_COMPLETION_MODEL']
-    )
+## Running the Project
 
-    memory = VectorStoreRetrieverMemory(retriever=vector_store.as_retriever(), memory_key="chat_history", return_docs=False, return_messages=True)
+To start the Django development server along with Celery:
 
-    qachat = ConversationalRetrievalChain.from_llm(llm, retriever=vector_store.as_retriever(), memory=memory, return_source_documents=True, get_chat_history=lambda h : h)
-
-    # MEMORY 👇
-    chat_history = []
-
-    ## Question 1
-    query = "Hi there, how are you?"
-    result = qachat({"question": query, "chat_history": chat_history})
-    print(result['answer'])
-    
-    
-    return qachat
-
-
+```bash
+python manage.py runserver
 ```
 
----
-Better Question answering
-https://python.langchain.com/docs/use_cases/question_answering/how_to/chat_vector_db
+To start the Celery worker:
 
+```bash
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+export DISABLE_SPRING=true
+celery -A dj_backend_server worker --loglevel=info
+```
 
----
-Using Retreival QA Chain
+## Running Migrations
 
+To apply database migrations:
 
-https://python.langchain.com/docs/use_cases/question_answering/how_to/chat_vector_db
+```bash
+python manage.py migrate
+```
 
+## Environment Variables
 
-Another chain
----
-def make_chain(vector_store: VectorStore, mode, initial_prompt: str) -> ConversationalRetrievalChain:
-    # https://github.com/easonlai/azure_openai_langchain_sample/blob/main/chat_with_pdf.ipynb
-    llm = AzureOpenAI(
-        openai_api_key=os.environ['OPENAI_API_KEY'], 
-        deployment_name=os.environ['OPENAI_DEPLOYMENT_NAME'], 
-        model_name=os.environ['OPENAI_COMPLETION_MODEL'],
-        max_tokens=1000,
-        n=1,
-        temperature=0,
-    )
+Here's a breakdown of the environment variables in the `.env` file:
 
-    # use it if you want to maintain the state in the backend.
-    # memory = VectorStoreRetrieverMemory(retriever=vector_store.as_retriever(), memory_key="chat_history", return_docs=False, return_messages=True)
+- `OPENAI_API_TYPE`: Type of API (azure/openai)
+- `OPENAI_API_BASE`: Base URL for the OpenAI API
+- `OPENAI_API_KEY`: Your OpenAI API key
+- `OPENAI_API_VERSION`: OpenAI API version
+- `OPENAI_EMBEDDING_MODEL_NAME`: Name of the embedding model
+- `OPENAI_DEPLOYMENT_NAME`: Name of the deployment
+- `OPENAI_COMPLETION_MODEL`: Completion model (gpt-3.5-turbo)
+- `EMBEDDING_PROVIDER`: Provider for embeddings (openai)
+- `STORE`: Vector store (PINECONE/QDRANT)
+- `PINECONE_API_KEY`: API key for Pinecone (if used)
+- `PINECONE_ENV`: Pinecone environment (if used)
+- `VECTOR_STORE_INDEX_NAME`: Index name for vector store (if used)
+- `QDRANT_URL`: URL for Qdrant (if used)
 
-    prompts = get_prompt_by_mode(mode=mode, initial_prompt=initial_prompt)
-    
-    condense_question_prompt = prompts.get(UserAgent.CONDENSE_PROMPT)
-    qa_prompt = """You are a helpful AI assistant. Use the following pieces of context to answer the question at the end.
-If the question is not related to the context, politely respond that you are teached to only answer questions that are related to the context.
-If you don't know the answer, just say you don't know. DO NOT try to make up an answer. Keep answers as concise as possible
+## Troubleshooting
 
-{context}
+If you encounter issues related to forking on Mac M1, use the following flags before starting Celery:
+```bash
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+export DISABLE_SPRING=true
+```
 
-Question: {question}
-Answer in markdown format:"""
+## Contributing
 
-    prompt = PromptTemplate(
-        input_variables=["context", "question"],
-        template=qa_prompt,
-    )
+We welcome contributions! If you find any issues or want to enhance the project, please create a pull request.
 
-    condense_question_prompt = PromptTemplate(template = condense_question_prompt, input_variables=["question", "chat_history"])
+## License
 
-    question_generator = LLMChain(llm=llm, prompt=condense_question_prompt)
-    doc_chain = load_qa_chain(llm, chain_type="stuff")
-
-    chain = ConversationalRetrievalChain(
-        retriever=vector_store.as_retriever(),
-        question_generator=question_generator,
-        combine_docs_chain=doc_chain,
-    )
-
-
-    return chain
-
-
----
-Conversational retriever chain with qa_prompts
-https://github.com/langchain-ai/langchain/issues/5542
-
-
-
----
-To run celery app: 
-There are fork issues with mac m1, a complete thread can be found here
-> https://github.com/rails/rails/issues/38560
-
-To start: 
-export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES && export DISABLE_SPRING=true && celery -A dj_backend_server worker --loglevel=info
-
-
-
----
-https://github.com/GoogleCloudPlatform/generative-ai/blob/main/language/examples/document-qa/question_answering_large_documents_langchain.ipynb
-
-
+This project is licensed under the XYZ License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
-Up Next
---
-Integrating mysql instead of sqlite, and provide configuration in env files or some other config file
-Crawled icons are stored somewhere and they are missing for website data sources
-Crawling status always shows up as failed.. check why
-
-bot_response = ChatbotResponse(response.json())
-fails for when content moderation finds an issue with submitted document or the prompt, test with FREE_TEST_DATA_100KB
-
-'Chatbot' object has no attribute 'pdfdatasources'
+Thank you for choosing our project! If you have any questions or need further assistance, feel free to reach out to us.
