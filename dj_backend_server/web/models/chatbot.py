@@ -30,13 +30,13 @@ class Chatbot(models.Model):
             return None
 
     def get_website_data_sources(self):
-        return self.websitedatasources.all()  # Use the correct reverse related_name
+        return self.website_data_sources.all()  # Use the correct reverse related_name
 
     def get_pdf_files_data_sources(self):
-        return self.pdfdatasources.all()  # Use the correct reverse related_name
+        return self.pdf_data_sources.all()  # Use the correct reverse related_name
 
     def get_codebase_data_sources(self):
-        return self.codebasedatasources.all()  # Use the correct reverse related_name
+        return self.codebase_data_sources.all()  # Use the correct reverse related_name
 
     def get_created_at(self):
         return self.created_at

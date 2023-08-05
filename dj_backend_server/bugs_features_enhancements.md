@@ -155,9 +155,11 @@ Up Next
 --
 Integrating mysql instead of sqlite, and provide configuration in env files or some other config file
 Crawled icons are stored somewhere and they are missing for website data sources
-Crawling status always shows up as failed.. check why
+Crawling status shows failed for pdf data sources, status update should happen in the celery task and not in the caller
 
 bot_response = ChatbotResponse(response.json())
 fails for when content moderation finds an issue with submitted document or the prompt, test with FREE_TEST_DATA_100KB
 
 'Chatbot' object has no attribute 'pdfdatasources'
+ingest_status for pdf_data_sources is not working... same issue as above
+crawled_pages is not being saved in the database

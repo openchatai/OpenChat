@@ -1,6 +1,6 @@
 <!-- Page Intro -->
-{% for source in dataSources %}
-{% if not source.getCrawlingStatus.isCompleted %}
+{% for source in pdf_data_sources %}
+{% if not source.crawling_status == 'completed' %}
 <div class="flex flex-col col-span-full bg-white shadow-lg rounded-sm border border-slate-200">
     <div class="px-5 py-6">
         <div class="md:flex md:justify-between md:items-center">
@@ -17,9 +17,9 @@
                     </div>
                 </div>
                 <!-- User info -->
-                {% if source.getCrawlingStatus.isPending or source.getCrawlingStatus.isInProgress %}
+                {% if source.crawling_status == 'pending' or source.crawling_status == 'InProgress' %}
                 <div>
-                    <div class="text-3xl font-bold text-emerald-500">{{ source.getCrawlingProgress }} % ⌛</div>
+                    <div class="text-3xl font-bold text-emerald-500">{{ source.crawling_progress }} % ⌛</div>
                     <div class="mb-2">We are currently in the process of crawling your website to prepare your chatbot.
                         Once the crawling is complete, your chatbot will be ready. To access all data sources, please <a
                             class="underline"
@@ -28,11 +28,11 @@
                 </div>
                 {% endif %}
 
-                {% if source.getCrawlingStatus.isFailed %}
+                {% if source.crawling_status == 'failed' %}
                 <div>
                     <div class="text-3xl font-bold text-red-500">❌</div>
                     <div class="mb-2">We're sorry, <strong>but we're having trouble crawling your website ({{
-                            source.getRootUrl }}). </strong> Please double-check that your website is up and running.
+                            source.root_url }}). </strong> Please double-check that your website is up and running.
                     </div>
                 </div>
                 {% endif %}
@@ -42,7 +42,7 @@
 </div>
 {% endif %}
 
-{% if source.getCrawlingStatus.isCompleted and source.getCreatedAt|timeuntil:now < '3 minutes' %} <div
+{% if source.crawling_status == 'completed' and source.created_at|timeuntil:now < '3 minutes' %} <div
     class="flex flex-col col-span-full">
     <div class="px-5 pt-5 pb-0">
         <div x-show="open" x-data="{ open: true }">
@@ -56,7 +56,7 @@
                                 </path>
                             </svg>
                             <div class="font-medium">🥳 We are done crawling your website! Your chatbot is ready to go
-                                with {{ source.getRootUrl }} knowledge.</div>
+                                with {{ source.root_url }} knowledge.</div>
                         </div>
                     </a>
                 </div>
@@ -67,8 +67,8 @@
     {% endif %}
     {% endfor %}
 
-    {% for source in pdfDataSources %}
-    {% if not source.getStatus.isSuccessful %}
+    {% for source in pdf_data_sources %}
+    {% if not source.ingest_status == 'successful' %}
     <div class="flex flex-col col-span-full bg-white shadow-lg rounded-sm border border-slate-200">
         <div class="px-5 py-6">
             <div class="md:flex md:justify-between md:items-center">
@@ -85,7 +85,7 @@
                         </div>
                     </div>
                     <!-- User info -->
-                    {% if source.getStatus.isPending %}
+                    {% if source.status == 'pending' %}
                     <div>
                         <div class="text-3xl font-bold text-emerald-500"> ⌛</div>
                         <div class="mb-2">We are currently in the process of processing your PDF files. It may take some
@@ -95,7 +95,7 @@
                     </div>
                     {% endif %}
 
-                    {% if source.getStatus.isFailed %}
+                    {% if source.status == 'failed' %}
                     <div>
                         <div class="text-3xl font-bold text-red-500">❌</div>
                         <div class="mb-2">We encountered a problem while training the bot on your PDF files. Our team

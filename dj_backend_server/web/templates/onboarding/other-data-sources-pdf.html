@@ -63,7 +63,7 @@
                     </div>
                 {% endif %}
                 <form action="{% url 'onboarding.other-data-sources-pdf.create' id=request.resolver_match.kwargs.id %}"
-                      method="POST" enctype="multipart/form-data">
+                      method="POST" enctype="multipart/form-data" id="pdfCreate">
                     {% csrf_token %}
                     <div class="space-y-4 mb-8">
                         <!-- Company Name -->
@@ -75,7 +75,7 @@
                                 <p style="font-weight: bold; margin-bottom: 1rem"> Click to upload or drag & drop</p>
                                 <span style="color: #2563eb">you can upload up to 5 pdf files, and we will process the first ±100k words</span>
                             </div>
-                            <input type="file" name="pdffiles[]" id="fileInput" style="display: none" required accept="application/pdf" multiple>
+                            <input type="file" name="pdffiles" id="fileInput" style="display: none" required accept="application/pdf" multiple>
                             <div class="uploaded-images" id="uploadedImages" style="margin-top: 1rem">
                                 <!-- Uploaded images will be displayed here -->
                             </div>
@@ -89,7 +89,7 @@
                     </div>
                     <div class="flex items-center justify-between">
                         <a class="text-sm underline hover:no-underline" href="{% url 'onboarding.welcome' %}">&lt;- Back</a>
-                        <button type="submit" class="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-auto">Next Step -&gt;</button>
+                        <button form="pdfCreate"  type="submit" class="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-auto">Next Step -&gt;</button>
                     </div>
                 </form>
             </div>
@@ -160,7 +160,7 @@
                 document.getElementById('loadingIcon').classList.remove('d-none');
                 submitBtn.disabled = true;
                 // change the text back to the original
-                submitBtn.innerHTML = "{{__('all.step_6_please_wait')}}";
+                submitBtn.innerHTML = "all.step_6_please_wait";
 
                 // submit the form
                 document.getElementById('uploadForm').submit();

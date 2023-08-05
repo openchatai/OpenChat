@@ -53,13 +53,20 @@ def get_history_by_session_id(request, id, session_id):
 
 def data_settings(request, id):
     bot = get_object_or_404(Chatbot, id=id)
-    website_data_sources = WebsiteDataSource.objects.filter(chatbot_id=id).prefetch_related('crawledpages_set')
+    website_data_sources = WebsiteDataSource.objects.filter(chatbot_id=id).prefetch_related('crawled_pages')
 
-    for source in website_data_sources:
-        crawled_pages = source.crawledpages_set.all()
-        for page in crawled_pages:
-            print(page.url)
+    # Debugging only
+    # for data_source in website_data_sources:
+    #     for page in data_source.crawled_pages.all():
+    #         print("Page:", page) 
 
+    #         # Get index of current page
+    #         page_index = data_source.crawled_pages.all().index(page)
+
+    #         # Print raw JSON for this page
+    #         print("Raw Page Data:")
+    #         print(data_source._crawled_pages_cache[page_index])
+    
     pdf_data_sources = PdfDataSource.objects.filter(chatbot_id=id)
     codebase_data_sources = CodebaseDataSource.objects.filter(chatbot_id=id)
 
@@ -80,9 +87,9 @@ def integrations_settings(request, id):
 
 def data_sources_updates(request, id):
     # chatbot = get_object_or_404(Chatbot, id=id)
-    data_sources = WebsiteDataSource.objects.filter(chatbot_id=id)
+    website_data_sources = WebsiteDataSource.objects.filter(chatbot_id=id)
     pdf_data_sources = PdfDataSource.objects.filter(chatbot_id=id)
-    return render(request, 'widgets/data-sources-updates.html', {'dataSources': data_sources, 'pdfDataSources': pdf_data_sources})
+    return render(request, 'widgets/data-sources-updates.html', {'website_data_sources': website_data_sources, 'pdf_data_sources': pdf_data_sources})
 
 
 def theme_settings(request, id):

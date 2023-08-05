@@ -1,11 +1,12 @@
 from django.db import models
 from django.utils import timezone
+from web.models.chatbot import Chatbot
 import uuid
 
 class CodebaseDataSource(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     repository = models.CharField(max_length=255)
-    chatbot_id = models.UUIDField()
+    chatbot = models.ForeignKey(Chatbot, on_delete=models.CASCADE, related_name='codebase_data_source')
     ingested_at = models.DateTimeField()
     ingestion_status = models.CharField(max_length=50)
 
@@ -44,9 +45,6 @@ class CodebaseDataSource(models.Model):
 
     def get_updated_at(self):
         return self.updated_at
-
-    def chatbot(self):
-        return self.chatbot  # Replace with the related name of the Chatbot model (if defined)
 
     class Meta:
         db_table = 'codebase_data_source'  # Replace 'codebase_data_source' with the actual table name in the database

@@ -34,7 +34,7 @@ urlpatterns = [
     path('onboarding/<uuid:id>/config/create', views_chatbot.update_character_settings, name='onboarding.config.create'),
 
     path('app/<uuid:id>/data/pdf/', views_pdf_data_source.show, name='onboarding.other-data-sources-pdf'),
-    path('app/<uuid:id>/data/pdf/', views_pdf_data_source.create, name='onboarding.other-data-sources-pdf.create'),
+    path('app/<uuid:id>/data/pdf/create', views_pdf_data_source.create, name='onboarding.other-data-sources-pdf.create'),
 
     path('app/<uuid:id>/data/web/', views_website_datasource.show, name='onboarding.other-data-sources-web'),
     path('app/<uuid:id>/data/web/', views_website_datasource.create, name='onboarding.other-data-sources-web.create'),
