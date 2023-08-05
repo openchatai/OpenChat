@@ -32,7 +32,7 @@ def start_recursive_crawler(data_source_id, chatbot_id):
         data_source.save()
 
         # Start recursive crawling from the root URL
-        max_pages = 15
+        max_pages = 10
         crawl(data_source_id, root_url, crawled_urls, max_pages, chatbot_id)
 
         # Set the crawling status to "completed"
@@ -75,14 +75,18 @@ def store_crawled_page_content_to_database(url, response, chatbot_id, data_sourc
     title = get_crawled_page_title(html)
 
     # Create a CrawledPages object and save it to the database
-    CrawledPages.objects.create(
-        url=url,
-        status_code=response.status_code,
-        chatbot_id=chatbot_id,
-        title=title,
-        website_data_source=data_source_id,
-        content_file=file_path,
-    )
+    try:
+        CrawledPages.objects.create(
+            url=url,
+            status_code=response.status_code,
+            chatbot_id=chatbot_id,
+            title=title,  
+            website_data_source_id=data_source_id,
+            content_file=file_path,
+        )
+    except Exception as e:
+        print("Error creating CrawledPages object: ", e)
+
 
 def calculate_crawling_progress(crawled_pages, max_pages):
     if max_pages <= 0:

@@ -160,6 +160,9 @@ Crawling status shows failed for pdf data sources, status update should happen i
 bot_response = ChatbotResponse(response.json())
 fails for when content moderation finds an issue with submitted document or the prompt, test with FREE_TEST_DATA_100KB
 
-'Chatbot' object has no attribute 'pdfdatasources'
 ingest_status for pdf_data_sources is not working... same issue as above
-crawled_pages is not being saved in the database
+
+Add more data source of type web is still not working
+
+
+get_crawled_page_title - is not able to get or generate the title
