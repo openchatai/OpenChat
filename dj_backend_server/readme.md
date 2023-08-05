@@ -146,3 +146,11 @@ export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES && export DISABLE_SPRING=true && 
 
 ---
 https://github.com/GoogleCloudPlatform/generative-ai/blob/main/language/examples/document-qa/question_answering_large_documents_langchain.ipynb
+
+
+
+---
+
+Up Next
+--
+Integrating mysql instead of sqlite, and provide configuration in env files or some other config file
