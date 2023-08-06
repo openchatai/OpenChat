@@ -30,15 +30,15 @@ def ingest_pdf_datasource(sender, **kwargs):
         response = requests.post(url, json=request_body, timeout=200)
 
         if response.status_code != 200:
-            pdf_data_source.status = IngestStatusType.FAILED
+            pdf_data_source.ingest_status = IngestStatusType.FAILED.value
             pdf_data_source.save()
             return
 
-        pdf_data_source.status = IngestStatusType.SUCCESS
+        pdf_data_source.ingest_status = IngestStatusType.SUCCESS.value
         pdf_data_source.save()
 
     except RequestException as e:
-        pdf_data_source.status = IngestStatusType.FAILED
+        pdf_data_source.ingest_status = IngestStatusType.FAILED.value
         pdf_data_source.save()
         return
 

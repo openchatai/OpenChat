@@ -166,3 +166,10 @@ Add more data source of type web is still not working
 
 
 get_crawled_page_title - is not able to get or generate the title
+
+
+crawling_progress is not being updated
+in data sources update page, there is created_at and updated_at... Database doesnot have those
+
+
+in pdf data sources ingest_status is not being updated to anything
