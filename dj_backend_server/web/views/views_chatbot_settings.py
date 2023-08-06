@@ -11,7 +11,16 @@ from web.models.codebase_data_sources import CodebaseDataSource
 from web.enums.chatbot_initial_prompt_enum import ChatBotInitialPromptEnum
 from django.db.models import Count, Min
 from web.models.crawled_pages import CrawledPages
+import os
+from django.http import HttpResponseNotFound, FileResponse
 
+def image_view(request, app_id, image_name):
+    image_path = os.path.join('website_data_sources/icons', image_name)
+    if os.path.exists(image_path):
+        return FileResponse(open(image_path, 'rb'))
+    else:
+        return HttpResponseNotFound()
+    
 def general_settings(request, id):
     bot = get_object_or_404(Chatbot, id=id)
     return render(request, 'settings.html', {'bot': bot})

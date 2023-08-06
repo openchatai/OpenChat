@@ -39,6 +39,7 @@ urlpatterns = [
     path('app/<uuid:id>/data/web/', views_website_datasource.show, name='onboarding.other-data-sources-web'),
     path('app/<uuid:id>/data/web/', views_website_datasource.create, name='onboarding.other-data-sources-web.create'),
 
+    path('app/<uuid:app_id>/data/<path:image_name>', views_chatbot_settings.image_view, name="image-data"),
     # Chat URL
     path('chat/<str:token>/', views_chatbot.get_chat_view, name='chat'),
     path('chat/<str:token>/send-message/', views_chatbot.send_message, name='sendMessage'),
