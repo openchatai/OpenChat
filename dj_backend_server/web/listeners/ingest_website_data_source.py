@@ -2,7 +2,6 @@
 
 import requests
 from requests.exceptions import RequestException
-from web.signals.website_data_source_crawling_was_completed import website_data_source_crawling_completed
 
 # @website_data_source_crawling_completed.connect
 def handle_crawling_completed(chatbot_id, website_data_source_id):

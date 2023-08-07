@@ -154,22 +154,8 @@ https://github.com/GoogleCloudPlatform/generative-ai/blob/main/language/examples
 Up Next
 --
 Integrating mysql instead of sqlite, and provide configuration in env files or some other config file
-Crawled icons are stored somewhere and they are missing for website data sources
-Crawling status shows failed for pdf data sources, status update should happen in the celery task and not in the caller
 
 bot_response = ChatbotResponse(response.json())
 fails for when content moderation finds an issue with submitted document or the prompt, test with FREE_TEST_DATA_100KB
 
-ingest_status for pdf_data_sources is not working... same issue as above
-
 Add more data source of type web is still not working
-
-
-get_crawled_page_title - is not able to get or generate the title
-
-
-crawling_progress is not being updated
-in data sources update page, there is created_at and updated_at... Database doesnot have those
-
-
-in pdf data sources ingest_status is not being updated to anything

@@ -35,18 +35,13 @@ def start_recursive_crawler(data_source_id, chatbot_id):
         max_pages = 10
         crawl(data_source_id, root_url, crawled_urls, max_pages, chatbot_id)
 
-        # Set the crawling status to "completed"
-        data_source.crawling_status = WebsiteDataSourceStatusType.COMPLETED.value
-        data_source.save()
-
         # website_data_source_crawling_completed.send(
         #     sender=None,
         #     chatbot_id=chatbot_id,
         #     website_data_source_id=data_source_id
         # )
 
-        handle_crawling_completed(chatbot_id=chatbot_id, website_data_source_id=data_source_id)
-        
+        handle_crawling_completed(chatbot_id=chatbot_id, website_data_source_id=data_source_id)        
     except Exception:
         data_source.crawling_status = WebsiteDataSourceStatusType.FAILED.value
         data_source.save()
@@ -56,8 +51,7 @@ def start_recursive_crawler(data_source_id, chatbot_id):
     #     chatbot_id=chatbot_id,
     #     website_data_source_id=data_source_id
     # )
-    print(chatbot_id, data_source_id)
-    handle_crawling_completed(chatbot_id=chatbot_id, website_data_source_id=data_source_id)
+    # handle_crawling_completed(chatbot_id=chatbot_id, website_data_source_id=data_source_id)
 
 
 # the file will be stored in the website_data_sources/<data_source_id>/ directory.
@@ -93,7 +87,7 @@ def calculate_crawling_progress(crawled_pages, max_pages):
         return 0  # Avoid division by zero
 
     progress = (crawled_pages / max_pages) * 100
-    # Cap the progress at 100%
+    progress = round(progress, 2)
     return min(progress, 100)
 
 def update_crawling_progress(chatbot_id, data_source_id, progress):
