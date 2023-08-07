@@ -158,4 +158,9 @@ Integrating mysql instead of sqlite, and provide configuration in env files or s
 bot_response = ChatbotResponse(response.json())
 fails for when content moderation finds an issue with submitted document or the prompt, test with FREE_TEST_DATA_100KB
 
-Add more data source of type web is still not working
+Add more data source of type web is still not working - This has been fixed, but the bot takes an eternity to reply!!
+example bot - `http://localhost:8000/chat/76307849-98e7-46cf-a/`
+Needs more inspection
+
+
+Also the chain has to be revisited, with condense prompts. + maybe just use raw openai endpoints. + we need to allow users to choose one of the bot types

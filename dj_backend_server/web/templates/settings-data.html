@@ -625,9 +625,8 @@
                                                 <!-- Options -->
                                                 <ul
                                                     class="space-y-2 sm:flex sm:space-y-0 sm:space-x-2 lg:space-y-2 lg:space-x-0 lg:flex-col mb-4">
-                                                    <li>
-                                                        <button id="other_data_sources"
-                                                            class="w-full h-full text-left py-3 px-4 rounded bg-white border border-slate-200 hover:border-slate-300 shadow-sm duration-150 ease-in-out">
+                                                    <li class="w-full h-full text-left py-3 px-4 rounded bg-white border border-slate-200 hover:border-slate-300 shadow-sm duration-150 ease-in-out">
+                                                        <a href='{% url 'onboarding.other-data-sources-web' id=request.resolver_match.kwargs.id %}'>
                                                             <div
                                                                 class="flex flex-wrap items-center justify-between mb-0.5">
                                                                 <span
@@ -635,7 +634,7 @@
                                                             </div>
                                                             <div class="text-sm">We will crawl your website and extract
                                                                 the knowledge automatically.</div>
-                                                        </button>
+                                                            </a>
 
                                                     </li>
 

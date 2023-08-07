@@ -80,22 +80,20 @@
 
                     <div class="flex items-center justify-between space-x-6 mb-8">
                         <div>
-                            <div class="font-medium text-slate-800 text-sm mb-1">{% trans 'Just to make sure we are on
-                                the same page 🫶' %}</div>
+                            <div class="font-medium text-slate-800 text-sm mb-1">Just to make sure we are on
+                                the same page</div>
                             <div class="text-xs">
-                                {% trans 'Sometimes, we might face challenges when trying to crawl certain websites,
-                                especially the ones built using JavaScript (Single-Page Applications). However, we\'re
+                                Sometimes, we might face challenges when trying to crawl certain websites,
+                                especially the ones built using JavaScript (Single-Page Applications). However, we're
                                 currently working on adding headless browsing to our system so that we can support all
-                                kinds of websites.' %}
+                                kinds of websites.
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="flex items-center justify-between">
-                    <a class="text-sm underline hover:no-underline" href="{% url 'onboarding.data-source' %}">&lt;- {%
-                        trans 'Back' %}</a>
-                    <button type="submit" class="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-auto">{% trans
-                        'Next Step' %} -&gt;</button>
+                    <a class="text-sm underline hover:no-underline" href="{% url 'onboarding.data-source' %}">&lt;- Back</a>
+                    <button type="submit" class="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-auto">Next Step</button>
                 </div>
             </form>
         </div>

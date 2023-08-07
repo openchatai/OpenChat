@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from django.http import Http404
 from web.models.chatbot import Chatbot
 from web.models.website_data_sources import WebsiteDataSource
-from web.utils import get_logo_from_url
+from web.utils.get_logo_from_url import get_logo_from_url
 from web.signals.website_data_source_was_added import website_data_source_added
 
 def show(request, id):
@@ -32,5 +32,5 @@ def create(request, id):
     )
 
     # adding signal
-    website_data_source_added.send(sender=WebsiteDataSource, bot_id=bot.id, data_source_id=data_source.id)
+    website_data_source_added.send(sender='Other_data_source_web', bot_id=bot.id, data_source_id=data_source.id)
     return redirect('chatbot.settings-data', id=bot.id)
