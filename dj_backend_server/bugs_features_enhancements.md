@@ -164,3 +164,14 @@ Needs more inspection
 
 
 Also the chain has to be revisited, with condense prompts. + maybe just use raw openai endpoints. + we need to allow users to choose one of the bot types
+
+
+
+Next [performance improvement]
+1. Increase embedding speed by parallelizing chunks into a bunch of 4
+AzureOpenAI, batch_size can be set to 16... need to make sure if it works on all other llms... this is currently set to 1 to be on the safe side.
+
+
+2. Web crawler is missing spaces between words
+Example from embedded document Qdrant
+the JavaScript ecosystem On Chrome DevelopersAurora ProjectA collaboration between Chrome and open-source web frameworks and tools. CommunityGDE community highlight: Lars KnudsenOne of a series of interviews with members of the Google Developers Experts (GDE) program.

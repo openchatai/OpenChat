@@ -1,5 +1,5 @@
 # In views.py of your Django app (my_app/views.py)
-import uuid
+from uuid import uuid4
 from django.shortcuts import render, redirect
 from django.http import Http404
 from web.models.chatbot import Chatbot
@@ -25,7 +25,7 @@ def create(request, id):
     icon = get_logo_from_url(root_url)
 
     data_source = WebsiteDataSource.objects.create(
-        id=uuid.uuid4(),
+        id=uuid4(),
         chatbot=bot,
         root_url=root_url,
         icon=icon

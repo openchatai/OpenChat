@@ -14,6 +14,10 @@ from web.enums.website_data_source_status_enum import WebsiteDataSourceStatusTyp
 from web.listeners.ingest_website_data_source import handle_crawling_completed
 
 import logging
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 def start_recursive_crawler(data_source_id, chatbot_id):
@@ -32,27 +36,13 @@ def start_recursive_crawler(data_source_id, chatbot_id):
         data_source.save()
 
         # Start recursive crawling from the root URL
-        max_pages = 10
+        max_pages = int(os.environ.get('MAX_PAGES_CRAWL', 15))
         crawl(data_source_id, root_url, crawled_urls, max_pages, chatbot_id)
-
-        # website_data_source_crawling_completed.send(
-        #     sender=None,
-        #     chatbot_id=chatbot_id,
-        #     website_data_source_id=data_source_id
-        # )
 
         handle_crawling_completed(chatbot_id=chatbot_id, website_data_source_id=data_source_id)        
     except Exception:
         data_source.crawling_status = WebsiteDataSourceStatusType.FAILED.value
         data_source.save()
-
-    # website_data_source_crawling_completed.send(
-    #     sender=None,
-    #     chatbot_id=chatbot_id,
-    #     website_data_source_id=data_source_id
-    # )
-    # handle_crawling_completed(chatbot_id=chatbot_id, website_data_source_id=data_source_id)
-
 
 # the file will be stored in the website_data_sources/<data_source_id>/ directory.
 def store_crawled_page_content_to_database(url, response, chatbot_id, data_source_id, html):

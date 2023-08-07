@@ -19,7 +19,7 @@ from web.enums.chatbot_initial_prompt_enum import ChatBotInitialPromptEnum
 from web.enums.common_enums import ChatBotDefaults
 
 import requests
-import uuid
+from uuid import uuid4
 
 from django.shortcuts import get_object_or_404
 
