@@ -77,12 +77,19 @@ We love hearing from you! Got any cool ideas or requests? We're all ears! So, if
 git clone git@github.com:openchatai/OpenChat.git
 ```
 
-- Update common.env with your keys:
-```
-OPENAI_API_KEY=# you can get it from your account in openai.com
-PINECONE_API_KEY=# you can get from "API Keys" tab in pinecone
-PINECONE_ENVIRONMENT=# you can get it after creating your index in pinecone
-VECTOR_STORE_INDEX_NAME=# you can get it after creating your index in pinecone
+---
+### Setting Up Your Environment
+
+**Note**: Starting July, Qdrant is our Preferred Open-Source Vector Store 🚀 No initial Pinecone registration required. To begin, delve into the comprehensive guide: [**Using Qdrant**](#using-qdrant), provided in the following section.
+
+#### Before you begin, make sure to update the `common.env` file with the necessary keys:
+
+```sh
+OPENAI_API_KEY=# Retrieve from your [openai.com](https://www.openai.com) account
+PINECONE_API_KEY=# Obtain from the "API Keys" tab in [pinecone](https://www.pinecone.io)
+PINECONE_ENVIRONMENT=# Obtain after creating your index in [pinecone](https://www.pinecone.io)
+VECTOR_STORE_INDEX_NAME=# Obtain after creating your index in [pinecone](https://www.pinecone.io)
+STORE=pinecone
 ```
 
 
@@ -96,7 +103,7 @@ VECTOR_STORE_INDEX_NAME=# you can get it after creating your index in pinecone
 
 #### Using Qdrant
 If you want to switch from Pinecone to Qdrant, you can set the following environment variables:
-
+- `OPENAI_API_KEY`= Your open ai key
 - `QDRANT_URL`: The URL of the Qdrant server.
 - `STORE`: The store to use to store embeddings. Can be `qdrant` or `pinecone`.
 
