@@ -47,6 +47,7 @@ portalocker==2.7.0
 prompt-toolkit==3.0.39
 protobuf==4.23.4
 pydantic==1.10.12
+PyMySQL==1.1.0
 pypdf==3.14.0
 pypdfium2==4.18.0
 python-dateutil==2.8.2

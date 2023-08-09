@@ -1,0 +1,79 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:8
+    container_name: mysql_db
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: mydb
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - openchat_network
+
+  qdrant:
+    image: qdrant/qdrant
+    ports:
+      - 6333:6333
+      - 6334:6334
+    volumes:
+      - qdrant_storage:/qdrant/storage
+    networks:
+      - openchat_network
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    depends_on:
+      - mysql
+    env_file:
+      - .env.docker
+    command: >
+      sh -c "python manage.py makemigrations web &&
+             python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+    networks:
+      - openchat_network
+  
+  
+  celery_worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: myproject_celery
+    volumes:
+      - .:/app
+    depends_on:
+      - web
+    env_file:
+      - .env.docker
+    command: celery -A dj_backend_server worker --loglevel=info
+    networks:
+      - openchat_network
+
+
+  redis:
+    image: redis:latest
+    container_name: redis_cache
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - openchat_network
+networks:
+  openchat_network:
+
+volumes:
+  qdrant_storage:
+  mysql_data:
+  redis_data:
