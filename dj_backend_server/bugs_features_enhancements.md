@@ -175,3 +175,9 @@ AzureOpenAI, batch_size can be set to 16... need to make sure if it works on all
 2. Web crawler is missing spaces between words
 Example from embedded document Qdrant
 the JavaScript ecosystem On Chrome DevelopersAurora ProjectA collaboration between Chrome and open-source web frameworks and tools. CommunityGDE community highlight: Lars KnudsenOne of a series of interviews with members of the Google Developers Experts (GDE) program.
+
+
+
+----
+setup a timeout on azure api calls... seems to get stuck
+wait for file to be uploaded before allowing the user to move to the next page. Getting broken pipe errors on large pdf file uploads

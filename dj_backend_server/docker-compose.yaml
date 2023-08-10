@@ -43,6 +43,9 @@ services:
              python manage.py runserver 0.0.0.0:8000"
     networks:
       - openchat_network
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
 
   adminer:
     image: adminer
@@ -71,6 +74,9 @@ services:
     command: celery -A dj_backend_server worker --loglevel=info
     networks:
       - openchat_network
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
 
 
   redis:
@@ -82,6 +88,7 @@ services:
       - redis_data:/data
     networks:
       - openchat_network
+
 networks:
   openchat_network:
 

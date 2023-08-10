@@ -11,9 +11,7 @@ from api.utils.get_prompts import get_qa_prompt_by_mode
 load_dotenv()
 
 def get_qa_chain(vector_store: VectorStore, mode, initial_prompt: str) -> RetrievalQA:
-    
     llm = get_llm()
-
     template = get_qa_prompt_by_mode(mode, initial_prompt=initial_prompt)
     prompt = PromptTemplate.from_template(template)
 
@@ -36,7 +34,6 @@ def getConversationRetrievalChain(vector_store: VectorStore, mode, initial_promp
     llm = get_llm()
     template = get_qa_prompt_by_mode(mode, initial_prompt=initial_prompt)
     prompt = PromptTemplate.from_template(template)
-    # kwargs={"prompt": prompt}
     chain = ConversationalRetrievalChain.from_llm(
         llm, 
         chain_type="stuff", 

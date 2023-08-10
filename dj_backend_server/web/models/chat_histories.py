@@ -1,9 +1,10 @@
 from django.db import models
+from web.models.chatbot import Chatbot
 import uuid
 
 class ChatHistory(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    chatbot_id = models.UUIDField()
+    chatbot = models.ForeignKey(Chatbot, on_delete=models.CASCADE, related_name='chat_history')
     from_user = models.BooleanField(default=False)
     message = models.TextField()
     session_id = models.CharField(max_length=255)
@@ -40,9 +41,6 @@ class ChatHistory(models.Model):
 
     def set_session_id(self, session_id):
         self.session_id = session_id
-
-    def chatbot(self):
-        return self.chatbot  # Replace with the related name of the Chatbot model (if defined)
 
     class Meta:
         db_table = 'chat_history'  # Replace 'chat_history' with the actual table name in the database
