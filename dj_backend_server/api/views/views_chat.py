@@ -2,10 +2,15 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 
 from api.utils import get_vector_store
-from api.utils.make_chain import get_qa_chain, get_condense_chain, getRetrievalQAWithSourcesChain
+from api.utils.make_chain import getConversationRetrievalChain
 import json
 from django.views.decorators.csrf import csrf_exempt
 from api.interfaces import StoreOptions
+from web.models.chat_histories import ChatHistory
+from django.shortcuts import get_object_or_404
+from web.models.chatbot import Chatbot
+from uuid import uuid4
+from django.db.models import F
 
 @csrf_exempt
 @require_POST
@@ -16,6 +21,10 @@ def chat(request):
     namespace = body.get('namespace')
     mode = body.get('mode')
     initial_prompt = body.get('initial_prompt')
+    token = body.get('token')
+    session_id = body.get('session_id')
+
+    bot = get_object_or_404(Chatbot, token=token)
 
     if not question:
         return JsonResponse({'message': 'No question in the request'})
@@ -23,16 +32,28 @@ def chat(request):
     sanitized_question = question.strip().replace('\n', ' ')
 
     try:
+        ChatHistory.objects.create(
+            id=uuid4(),
+            chatbot_id=bot.id,
+            from_user=True,
+            message=sanitized_question,
+            session_id=session_id
+        )
+
         vector_store = get_vector_store(StoreOptions(namespace=namespace))
-        chain = getRetrievalQAWithSourcesChain(vector_store, mode, initial_prompt)
+        chain = getConversationRetrievalChain(vector_store, mode, initial_prompt, memory_key=session_id)        
 
-        # use this only if constructing a qa retrieval chain
-        # condense_chain = get_condense_chain(mode)
-        # sanitized_question = condense_chain.predict(chat_history="\n".join(history), question=question)
-        
-
-        response = chain({"question": sanitized_question }, return_only_outputs=True)
+        response = chain({"question": sanitized_question, "chat_history": [] }, return_only_outputs=True)
         r = {'text': response['answer']}
+
+
+        ChatHistory.objects.create(
+            id=uuid4(),
+            chatbot_id=bot.id,
+            from_user=False,
+            message=r['text'],
+            session_id=session_id
+        )
         return JsonResponse(r)
     except Exception as e:
             import traceback

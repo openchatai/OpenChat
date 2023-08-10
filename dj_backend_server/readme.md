@@ -22,18 +22,14 @@ Our project combines Django, a powerful web framework, and Celery, a distributed
 ## Prerequisites
 
 Before you begin, make sure you have the following installed:
-
-- Python (version x.y.z)
-- Django (version x.y.z)
-- Celery (version x.y.z)
-- Other project-specific dependencies (see `requirements.txt`)
+- project-specific dependencies (see `requirements.txt`)
 
 ## Installation
 
 1. Clone this repository:
    ```
-   git clone https://github.com/your-username/your-project.git
-   cd your-project
+   git clone https://github.com/openchatai/OpenChat.git
+   cd dj_backend_server
    ```
 
 2. Create a virtual environment:

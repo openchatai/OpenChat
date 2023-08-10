@@ -169,3 +169,5 @@ DATABASES = {
         'PORT': os.environ.get('DATABASE_PORT', '3306'),
     }
 }
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # You can choose other engines as well

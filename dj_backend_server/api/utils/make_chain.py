@@ -2,14 +2,14 @@ from langchain.vectorstores.base import VectorStore
 from dotenv import load_dotenv
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
-from api.utils.get_prompts import get_condense_prompt_by_mode, get_qa_prompt_by_mode
+from langchain.memory import ConversationBufferMemory
 from api.utils.get_openai_llm import get_llm
 from langchain import PromptTemplate, LLMChain
-from langchain.chains import RetrievalQAWithSourcesChain
+from langchain.chains import RetrievalQAWithSourcesChain, ConversationalRetrievalChain
+from api.utils.get_prompts import get_qa_prompt_by_mode
 
 load_dotenv()
 
-# https://python.langchain.com/docs/use_cases/question_answering/
 def get_qa_chain(vector_store: VectorStore, mode, initial_prompt: str) -> RetrievalQA:
     
     llm = get_llm()
@@ -26,16 +26,22 @@ def get_qa_chain(vector_store: VectorStore, mode, initial_prompt: str) -> Retrie
     
 
     return qa_chain
-
-
 def getRetrievalQAWithSourcesChain(vector_store: VectorStore, mode, initial_prompt: str):
     llm = get_llm()
     chain = RetrievalQAWithSourcesChain.from_chain_type(llm, chain_type="stuff", retriever=vector_store.as_retriever())
     return chain
 
 
-def get_condense_chain(mode: str):
+def getConversationRetrievalChain(vector_store: VectorStore, mode, initial_prompt: str, memory_key: str):
     llm = get_llm()
-    template = get_condense_prompt_by_mode(mode)
-    llm_chain = LLMChain.from_string(llm=llm, template=template)
-    return llm_chain
+    template = get_qa_prompt_by_mode(mode, initial_prompt=initial_prompt)
+    prompt = PromptTemplate.from_template(template)
+    # kwargs={"prompt": prompt}
+    chain = ConversationalRetrievalChain.from_llm(
+        llm, 
+        chain_type="stuff", 
+        retriever=vector_store.as_retriever(), 
+        verbose=True,
+        combine_docs_chain_kwargs={"prompt": prompt}
+    )
+    return chain

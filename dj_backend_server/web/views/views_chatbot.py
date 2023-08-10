@@ -17,6 +17,8 @@ from web.signals.codebase_datasource_was_created import codebase_data_source_add
 from web.signals.chatbot_was_created import chatbot_was_created
 from web.enums.chatbot_initial_prompt_enum import ChatBotInitialPromptEnum
 from web.enums.common_enums import ChatBotDefaults
+from uuid import uuid4
+from web.utils.common import get_session_id
 
 import requests
 from uuid import uuid4
@@ -86,14 +88,6 @@ def update_character_settings(request, id):
     ChatbotSetting.objects.update_or_create(chatbot_id=chatbot.id, defaults={'name': character_name})
     return HttpResponseRedirect(reverse('onboarding.done', args=[str(chatbot.id)]))
 
-
-def get_session_id(request):
-    bot_id = '<your_bot_id_here>'
-    cookie_name = 'chatbot_' + bot_id
-
-    session_id = request.COOKIES.get(cookie_name)
-    return session_id
-
 @require_POST
 def send_message(request, token):
     # Find the chatbot by token
@@ -101,7 +95,10 @@ def send_message(request, token):
 
     # Get the question and history from the request
     question = request.POST.get('question')
-    history = request.POST.getlist('history')
+    session_id = get_session_id(request=request, bot_id=bot.id)
+    history = ChatHistory.objects.filter(session_id=session_id)
+
+    print(history)
     mode = request.POST.get('mode')
     initial_prompt = bot.prompt_message
 
@@ -124,19 +121,19 @@ def send_message(request, token):
     # Create a ChatbotResponse instance from the API response
     bot_response = response.json()
 
-    session_id = get_session_id(request)
+    session_id = get_session_id(request, bot.id)
 
     if session_id is not None:
         # Save chat history
         ChatHistory.objects.create(
-            id=uuid.uuid4(),
+            id=uuid4(),
             chatbot=bot,
             from_user=True,
             message=question,
             session_id=session_id
         )
         ChatHistory.objects.create(
-            id=uuid.uuid4(),
+            id=uuid4(),
             chatbot=bot,
             from_user=False,
             message=bot_response['botReply'],

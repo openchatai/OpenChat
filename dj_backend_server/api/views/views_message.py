@@ -5,7 +5,9 @@ from web.models.chatbot import Chatbot
 import requests
 from django.views.decorators.csrf import csrf_exempt
 import json
+from web.utils.common import get_session_id
 
+from web.models.chat_histories import ChatHistory
 class ChatbotResponse:
     def __init__(self, response):
         self.response = response
@@ -74,11 +76,21 @@ def init_chat(request):
 @require_POST
 def send_chat(request):
     try:
+        # You can add additional validation for 'history' and 'content_type' if needed.
+
+        bot_token = request.headers.get('X-Bot-Token')
+        bot = get_object_or_404(Chatbot, token=bot_token)
+
         data = json.loads(request.body)
         # Validate the request data
         content = data.get('content')
         history = data.get('history')
         content_type = data.get('type')
+
+        session_id = get_session_id(request=request, bot_id=bot.id)
+        history = ChatHistory.objects.filter(session_id=session_id)
+        history_entries = [{"message": entry.message, "from_user": entry.from_user} for entry in history]
+
 
         # Implement the equivalent logic for validation
         if not content:
@@ -88,10 +100,6 @@ def send_chat(request):
                     "text": "Content is required."
                 }
             }, status=400)
-        # You can add additional validation for 'history' and 'content_type' if needed.
-
-        bot_token = request.headers.get('X-Bot-Token')
-        bot = get_object_or_404(Chatbot, token=bot_token)
 
         # Implement the equivalent logic to send the HTTP request to the external API
         response = requests.post(
@@ -101,7 +109,9 @@ def send_chat(request):
                 'namespace': str(bot.id),  # Assuming getId returns a UUID object
                 'mode': "assistant",
                 'initial_prompt': bot.prompt_message,
-                'history': history
+                'history': history_entries,
+                'token': bot_token,
+                "session_id": session_id
             },
             timeout=200
         )
