@@ -1,18 +1,15 @@
 from django.db import models
-import uuid
-from django.utils import timezone
 from web.models.chatbot import Chatbot
 class WebsiteDataSource(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    id = models.CharField(max_length=36, primary_key=True)
     chatbot = models.ForeignKey(Chatbot, on_delete=models.CASCADE, related_name='website_data_sources')
-    html_files = models.JSONField(default=list)
-    root_url = models.URLField()
-    icon = models.ImageField(upload_to='website_icons/', null=True, blank=True)
-    vector_databased_last_ingested_at = models.DateTimeField(default=timezone.now) 
-    crawling_status = models.CharField(max_length=50)
-    crawling_progress = models.FloatField(default=0.0)
-    
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    root_url = models.CharField(max_length=255)
+    icon = models.CharField(max_length=255, null=True)
+    vector_databased_last_ingested_at = models.DateTimeField(null=True)
+    crawling_status = models.CharField(max_length=255, default='pending')
+    crawling_progress = models.FloatField(default=0.00)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True)
+
     class Meta:
         db_table = 'website_data_sources'  # Replace 'website_data_source' with the actual table name in the database

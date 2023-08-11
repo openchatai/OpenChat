@@ -1,15 +1,15 @@
 from django.db import models
 from web.models.chatbot import Chatbot
-import uuid
 
 class ChatHistory(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    id = models.CharField(max_length=36, primary_key=True)
     chatbot = models.ForeignKey(Chatbot, on_delete=models.CASCADE, related_name='chat_histories')
-    from_user = models.BooleanField(default=False)
+    session_id = models.CharField(max_length=255, null=True)
+    from_user = models.CharField(max_length=255)
     message = models.TextField()
-    session_id = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
 
 
     def set_id(self, _id):

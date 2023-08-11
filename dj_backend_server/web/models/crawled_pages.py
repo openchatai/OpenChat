@@ -1,14 +1,18 @@
 from django.db import models
 import uuid
 from .website_data_sources import WebsiteDataSource
+from web.models.chatbot import Chatbot
 
 class CrawledPages(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    chatbot_id = models.UUIDField()
+    id = models.CharField(max_length=36, primary_key=True)
+    chatbot = models.ForeignKey(Chatbot, on_delete=models.CASCADE, related_name='crawled_pages')
     website_data_source = models.ForeignKey(WebsiteDataSource, on_delete=models.CASCADE, related_name='crawled_pages')
-    url = models.URLField()
-    title = models.CharField(max_length=255, blank=True, null=True)
-    status_code = models.CharField(max_length=10)
+    url = models.CharField(max_length=255)
+    title = models.CharField(max_length=255, null=True)
+    status_code = models.CharField(max_length=255, null=True)
+    aws_url = models.TextField(null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     content_file= models.CharField(max_length=100)
 
     def get_id(self):

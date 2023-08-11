@@ -3,11 +3,13 @@ from web.models.chatbot import Chatbot
 import uuid
 
 class PdfDataSource(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    id = models.CharField(max_length=36, primary_key=True)
     chatbot = models.ForeignKey(Chatbot, on_delete=models.CASCADE, related_name='pdf_data_sources')
     files = models.JSONField()
-    folder_name = models.CharField(max_length=255)
-    ingest_status = models.CharField(max_length=50)
+    folder_name = models.CharField(max_length=255, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True)
+    ingest_status = models.CharField(max_length=255, default='success')
 
     def set_id(self, _id):
         self.id = _id

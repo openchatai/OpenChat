@@ -4,12 +4,18 @@ from web.enums.chatbot_initial_prompt_enum import ChatBotInitialPromptEnum
 import uuid
 
 class Chatbot(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    id = models.CharField(max_length=36, primary_key=True)
     name = models.CharField(max_length=255, default="My first chatbot")
     website = models.CharField(max_length=255, default="https://openchat.so")
-    status = models.CharField(max_length=50)  # Assuming ChatbotStatusType is a string-based enum in Laravel
+    status = models.CharField(max_length=255)  # Assuming ChatbotStatusType is a string-based enum in Laravel
     prompt_message = models.TextField(blank=True, default=ChatBotInitialPromptEnum.AI_ASSISTANT_INITIAL_PROMPT.value)
-    token = models.CharField(max_length=50)  # Assuming token is a CharField
+    token = models.CharField(max_length=255)  # Assuming token is a CharField
+    
+    enhanced_privacy = models.BooleanField(default=False)
+    smart_sync = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True)
+    deleted_at = models.DateTimeField(null=True)
 
     def __str__(self):
         return self.name

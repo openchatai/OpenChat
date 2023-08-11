@@ -3,10 +3,10 @@
 from django.db import models
 
 class PasswordResetToken(models.Model):
+    email = models.CharField(max_length=255)
+    token = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
 
-    email = models.EmailField(primary_key=True)
-    token = models.CharField(max_length=255) 
-    created_at = models.DateTimeField(null=True)
 
     class Meta:
        db_table = 'password_reset_tokens'
