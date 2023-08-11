@@ -45,4 +45,4 @@ class Chatbot(models.Model):
         return self.chathistory_set.all()
 
     class Meta:
-        db_table = 'chatbot'  # Replace 'chatbot' with the actual table name in the database
+        db_table = 'chatbots'  # Replace 'chatbot' with the actual table name in the database

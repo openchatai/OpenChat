@@ -43,4 +43,4 @@ class PdfDataSource(models.Model):
         return self.ingest_status
 
     class Meta:
-        db_table = 'pdf_data_source'  # Replace 'pdf_data_source' with the actual table name in the database
+        db_table = 'pdf_data_sources'  # Replace 'pdf_data_source' with the actual table name in the database

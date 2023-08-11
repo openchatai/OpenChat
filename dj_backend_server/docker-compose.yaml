@@ -1,17 +1,19 @@
 version: '3'
 services:
   mysql:
-    image: mysql:8
-    container_name: mysql_db
-    environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: mydb
-      MYSQL_USER: myuser
-      MYSQL_PASSWORD: mypassword
+    restart: unless-stopped
+    platform: linux/x86_64
+    image: "mysql:5.7"
     ports:
-      - "3306:3306"
+      - "3307:3306"
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: openchat
+      MYSQL_USER: dbuser
+      MYSQL_PASSWORD: dbpass
     volumes:
-      - mysql_data:/var/lib/mysql
+      - database:/var/lib/mysql
     networks:
       - openchat_network
 

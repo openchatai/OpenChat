@@ -4,7 +4,7 @@ from web.models.chatbot import Chatbot
 
 class ChatbotSetting(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    chatbot_id = models.UUIDField()
+    chatbot = models.ForeignKey(Chatbot, on_delete=models.CASCADE, related_name='chatbot_settings')
     name = models.CharField(max_length=255)
     value = models.CharField(max_length=255)
 
@@ -36,4 +36,4 @@ class ChatbotSetting(models.Model):
         return self.chatbot  # Replace with the related name of the Chatbot model (if defined)
 
     class Meta:
-        db_table = 'chatbot_setting'  # Replace 'chatbot_setting' with the actual table name in the database
+        db_table = 'chatbot_settings'  # Replace 'chatbot_setting' with the actual table name in the database

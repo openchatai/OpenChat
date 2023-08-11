@@ -6,7 +6,7 @@ import uuid
 class CodebaseDataSource(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     repository = models.CharField(max_length=255)
-    chatbot = models.ForeignKey(Chatbot, on_delete=models.CASCADE, related_name='codebase_data_source')
+    chatbot = models.ForeignKey(Chatbot, on_delete=models.CASCADE, related_name='codebase_data_sources')
     ingested_at = models.DateTimeField()
     ingestion_status = models.CharField(max_length=50)
 
@@ -47,7 +47,7 @@ class CodebaseDataSource(models.Model):
         return self.updated_at
 
     class Meta:
-        db_table = 'codebase_data_source'  # Replace 'codebase_data_source' with the actual table name in the database
+        db_table = 'codebase_data_sources'  # Replace 'codebase_data_source' with the actual table name in the database
 
     def save(self, *args, **kwargs):
         if not self.ingested_at:

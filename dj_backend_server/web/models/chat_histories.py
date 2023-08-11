@@ -4,7 +4,7 @@ import uuid
 
 class ChatHistory(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    chatbot = models.ForeignKey(Chatbot, on_delete=models.CASCADE, related_name='chat_history')
+    chatbot = models.ForeignKey(Chatbot, on_delete=models.CASCADE, related_name='chat_histories')
     from_user = models.BooleanField(default=False)
     message = models.TextField()
     session_id = models.CharField(max_length=255)
@@ -43,4 +43,4 @@ class ChatHistory(models.Model):
         self.session_id = session_id
 
     class Meta:
-        db_table = 'chat_history'  # Replace 'chat_history' with the actual table name in the database
+        db_table = 'chat_histories'  # Replace 'chat_history' with the actual table name in the database

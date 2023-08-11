@@ -15,4 +15,4 @@ class WebsiteDataSource(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     class Meta:
-        db_table = 'website_data_source'  # Replace 'website_data_source' with the actual table name in the database
+        db_table = 'website_data_sources'  # Replace 'website_data_source' with the actual table name in the database

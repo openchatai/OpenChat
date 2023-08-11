@@ -15,3 +15,6 @@ class PersonalAccessToken(models.Model):
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        db_table = 'personal_access_tokens'  # Replace 'pdf_data_source' with the actual table name in the database
