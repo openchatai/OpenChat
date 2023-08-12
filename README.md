@@ -121,6 +121,9 @@ make install
 make.bat
 ```
 
+## Getting Started with the Openchat Django App
+
+Start your adventure of contributing to and using OpenChat, now remade using the Python programming language. You can begin by following the instructions in the guide available here: [OpenChat Python Guide](docs/django_release.md).
 
 Once the installation is complete, you can access the OpenChat console at: http://localhost:8000
 

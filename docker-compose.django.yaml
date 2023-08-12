@@ -1,6 +1,16 @@
-# use the dockerfile provided at root, this is only for development purposes and will be deleted
 version: '3.9'
 services:
+  adminer:
+    image: adminer
+    ports:
+      - "8080:8080"
+    environment:
+      ADMINER_DEFAULT_SERVER: db  # Change this to match your database server name
+    depends_on:
+      - mysql
+    networks:
+      - openchat_network
+
   mysql:
     restart: unless-stopped
     platform: linux/x86_64
@@ -28,9 +38,16 @@ services:
     networks:
       - openchat_network
 
+  redis:
+    restart: unless-stopped
+    image: "redis:3.2"
+    ports:
+      - "6379:6379"
+    networks:
+      - openchat_network
   web:
     build:
-      context: .
+      context: ./dj_backend_server
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
@@ -49,20 +66,9 @@ services:
       - 8.8.8.8
       - 8.8.4.4
 
-  adminer:
-    image: adminer
-    ports:
-      - "8080:8080"
-    environment:
-      ADMINER_DEFAULT_SERVER: db  # Change this to match your database server name
-    depends_on:
-      - mysql
-    networks:
-      - openchat_network
-  
   celery_worker:
     build:
-      context: .
+      context: ./dj_backend_server
       dockerfile: Dockerfile
     container_name: myproject_celery
     # volumes:
@@ -78,21 +84,10 @@ services:
       - 8.8.8.8
       - 8.8.4.4
 
-
-  redis:
-    image: redis:latest
-    container_name: redis_cache
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis_data:/data
-    networks:
-      - openchat_network
-
 networks:
   openchat_network:
 
 volumes:
-  qdrant_storage:
+  shared_data:
   database:
-  redis_data:
+  qdrant_storage:
