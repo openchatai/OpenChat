@@ -3,7 +3,7 @@ services:
   mysql:
     restart: unless-stopped
     platform: linux/x86_64
-    image: "mysql:5.7"
+    image: "mysql:8"
     ports:
       - "3307:3306"
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
@@ -33,15 +33,14 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
-    volumes:
-      - .:/app
+    # volumes:
+    #   - .:/app
     depends_on:
       - mysql
     env_file:
       - .env.docker
     command: >
-      sh -c "python manage.py makemigrations web &&
-             python manage.py migrate &&
+      sh -c "python manage.py sync_models &&
              python manage.py runserver 0.0.0.0:8000"
     networks:
       - openchat_network
@@ -59,16 +58,14 @@ services:
       - mysql
     networks:
       - openchat_network
-
-  
   
   celery_worker:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: myproject_celery
-    volumes:
-      - .:/app
+    # volumes:
+    #   - .:/app
     depends_on:
       - web
     env_file:
@@ -96,5 +93,5 @@ networks:
 
 volumes:
   qdrant_storage:
-  mysql_data:
+  database:
   redis_data:

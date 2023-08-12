@@ -3,8 +3,8 @@ import uuid
 from web.models.chatbot import Chatbot
 
 class ChatbotSetting(models.Model):
-    id = models.CharField(max_length=36, primary_key=True) 
-    chatbot = models.ForeignKey(Chatbot, on_delete=models.CASCADE, related_name='chatbot_settings')
+    id = models.CharField(max_length=36, primary_key=True)
+    chatbot_id = models.CharField(max_length=36, null=True)
     name = models.CharField(max_length=255)
     value = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True, null=True) 

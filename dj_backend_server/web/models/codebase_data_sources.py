@@ -6,7 +6,7 @@ import uuid
 class CodebaseDataSource(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     repository = models.CharField(max_length=255)
-    chatbot = models.ForeignKey(Chatbot, on_delete=models.CASCADE, related_name='codebase_data_sources')
+    chatbot_id = models.CharField(max_length=36, null=True)
     ingested_at = models.DateTimeField()
     ingestion_status = models.CharField(max_length=50)
 

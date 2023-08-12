@@ -4,7 +4,7 @@ import uuid
 
 class PdfDataSource(models.Model):
     id = models.CharField(max_length=36, primary_key=True)
-    chatbot = models.ForeignKey(Chatbot, on_delete=models.CASCADE, related_name='pdf_data_sources')
+    chatbot_id = models.CharField(max_length=36, null=True)
     files = models.JSONField()
     folder_name = models.CharField(max_length=255, null=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True)

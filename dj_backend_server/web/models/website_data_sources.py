@@ -2,7 +2,7 @@ from django.db import models
 from web.models.chatbot import Chatbot
 class WebsiteDataSource(models.Model):
     id = models.CharField(max_length=36, primary_key=True)
-    chatbot = models.ForeignKey(Chatbot, on_delete=models.CASCADE, related_name='website_data_sources')
+    chatbot_id = models.CharField(max_length=36, null=True)
     root_url = models.CharField(max_length=255)
     icon = models.CharField(max_length=255, null=True)
     vector_databased_last_ingested_at = models.DateTimeField(null=True)

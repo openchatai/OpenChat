@@ -3,9 +3,9 @@ from web.models.chatbot import Chatbot
 
 class ChatHistory(models.Model):
     id = models.CharField(max_length=36, primary_key=True)
-    chatbot = models.ForeignKey(Chatbot, on_delete=models.CASCADE, related_name='chat_histories')
+    chatbot_id = models.CharField(max_length=36, null=True)
     session_id = models.CharField(max_length=255, null=True)
-    from_user = models.CharField(max_length=255)
+    from_user = models.CharField(max_length=255, db_column="from")
     message = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
