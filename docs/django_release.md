@@ -66,6 +66,8 @@ make uninstall_django
 
    5. **Optional: Debugging in Visual Studio Code:** If you're employing Visual Studio Code, the source code includes convenient debug scripts. You can utilize these scripts for debugging purposes. Please disregard the step mentioned in 4 if you choose this option.
 
+   ![Debugging on vscode](aug_11/django.gif)
+
 With these steps, you can make the most of hot reloading and enhance your development experience.
 
 ## Compatibility
