@@ -121,12 +121,15 @@ make install
 make.bat
 ```
 
+Sure, here's the modified text with the additional line you requested:
+
 ## Getting Started with the Openchat Django App
 
 Start your adventure of contributing to and using OpenChat, now remade using the Python programming language. You can begin by following the instructions in the guide available here: [OpenChat Python Guide](docs/django_release.md).
 
-Once the installation is complete, you can access the OpenChat console at: http://localhost:8000
+**Kindly be aware that the transition to the Python backend includes a significant alteration related to the Qdrant vector store, constituting a breaking change.**
 
+Once the installation is complete, you can access the OpenChat console at: http://localhost:8000
 
 Documentation [available here](https://docs.openchat.so/introduction)
 
