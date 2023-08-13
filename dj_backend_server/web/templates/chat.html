@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ bot.getName }}</title>
+</head>
+<body>
+    {% load static %}
+    <script src="{% static 'chat.js' %}?v6" type="text/javascript" defer></script>
+    <script>
+        window.onload = function () {
+            initializeChatWidget({
+                token: "{{ bot.token }}",
+                isFullScreen: true
+            });
+        };
+    </script>
+</body>
+</html>

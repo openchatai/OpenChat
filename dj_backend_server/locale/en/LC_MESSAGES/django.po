@@ -1,0 +1,87 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-07-23 04:29+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: management/management/commands/inspire.py:8
+msgid "Displays an inspiring quote"
+msgstr ""
+
+#: management/management/commands/inspire.py:12
+msgid "Don't forget to set INSPIRING_QUOTES in settings.py!"
+msgstr ""
+
+#: web/templates/onboarding/other-data-sources-website.html:4
+#: web/templates/onboarding/step-1.html:7
+#: web/templates/onboarding/step-2.html:4
+#: web/templates/settings-analytics.html:4
+msgid "Dashboard"
+msgstr ""
+
+#: web/templates/onboarding/other-data-sources-website.html:42
+msgid "Website information ✨"
+msgstr ""
+
+#: web/templates/onboarding/other-data-sources-website.html:58
+msgid "Close"
+msgstr ""
+
+#: web/templates/onboarding/other-data-sources-website.html:75
+msgid "Website url"
+msgstr ""
+
+#: web/templates/onboarding/step-1.html:77
+msgid "Website"
+msgstr ""
+
+#: web/templates/onboarding/step-1.html:88
+msgid "Many others to come 🔥️"
+msgstr ""
+
+#: web/templates/settings-analytics.html:64
+msgid "Try it out! ->"
+msgstr ""
+
+#: web/templates/settings-analytics.html:83
+#: web/templates/settings-analytics.html:97
+msgid "Analytics"
+msgstr ""
+
+#: web/templates/settings-analytics.html:84
+msgid "This is your general bot settings such as name and id"
+msgstr ""
+
+#: web/templates/settings-analytics.html:94
+msgid "Analytics is coming soon!"
+msgstr ""
+
+#: web/templates/settings-analytics.html:108
+msgid "Unique Visitors"
+msgstr ""
+
+#: web/templates/settings-analytics.html:120
+msgid "Total Pageviews"
+msgstr ""
+
+#: web/templates/settings-analytics.html:132
+msgid "Bounce Rate"
+msgstr ""
+
+#: web/templates/settings-analytics.html:144
+msgid "Visit Duration"
+msgstr ""

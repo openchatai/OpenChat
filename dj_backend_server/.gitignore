@@ -1,0 +1,38 @@
+# Ignore general OS and text editor files
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+*.swp
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Ignore Django-specific files
+*.log
+*.pot
+*.pyc
+local_settings.py
+db.sqlite3
+media
+staticfiles
+
+# Ignore development and environment files
+.env
+.env.*
+*.envrc
+.env.local
+.env.*.local
+*.sqlite3
+*.db
+*.sqlite
+*.pdb
+*.env
+*.pyc
+*.orig
+*.egg-info/
+*.egg-info
+pip-log.txt
+pip-delete-this-directory.txt
+website_data_sources/*
+venv

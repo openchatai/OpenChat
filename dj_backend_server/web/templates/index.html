@@ -1,0 +1,95 @@
+<!-- Assuming this template is named "dashboard.html" -->
+
+{% extends 'layout/app.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+
+</style>
+
+<div
+    class="relative flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 py-8 lg:py-16 bg-indigo-500 overflow-hidden">
+    <!-- Glow -->
+    <div class="absolute pointer-events-none" aria-hidden="true">
+        <svg width="512" height="512" xmlns="http://www.w3.org/2000/svg">
+            <!-- SVG content remains the same -->
+        </svg>
+    </div>
+    <!-- Illustration -->
+    <div class="absolute pointer-events-none" aria-hidden="true">
+        <svg width="1280" height="361" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <!-- SVG content remains the same -->
+        </svg>
+    </div>
+    <div class="relative w-full max-w-2xl mx-auto text-center">
+        <div class="mb-5">
+            <h1 class="text-2xl md:text-3xl text-white font-bold">👋 Welcome to OpenChat!</h1>
+        </div>
+    </div>
+</div>
+<div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
+
+    <!-- Page header -->
+    <div class="sm:flex sm:justify-between sm:items-center mb-8">
+
+        <!-- Left: Title -->
+        <div class="mb-4 sm:mb-0">
+            <h1 class="text-2xl md:text-3xl text-slate-800 font-bold">My chatbots ✨</h1>
+        </div>
+
+        <!-- Right: Actions -->
+        <div class="grid grid-flow-col sm:auto-cols-max justify-start sm:justify-end gap-2">
+            <!-- Create campaign button -->
+            <a href="{% url 'onboarding.welcome' %}" class="btn bg-indigo-500 hover:bg-indigo-600 text-white">
+                <svg class="w-4 h-4 fill-current opacity-50 shrink-0" viewBox="0 0 16 16">
+                    <path d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z"></path>
+                </svg>
+                <span class="hidden xs:block ml-2">Create chatbot</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Cards -->
+    <div class="grid grid-cols-12 gap-6">
+        <!-- Card 1 -->
+        {% for bot in chatbots %}
+        <div class="col-span-full sm:col-span-6 xl:col-span-4 bg-white shadow-lg rounded-sm border border-slate-200">
+            <div class="flex flex-col h-full p-5">
+                <header>
+                    <div class="flex items-center justify-between">
+                        <div class="w-10 h-10 rounded-full flex items-center justify-center shrink-0 bg-rose-500">
+                            <svg class="w-9 h-9 fill-current text-rose-50" viewBox="0 0 36 36">
+                                <!-- SVG content remains the same -->
+                            </svg>
+                        </div>
+                    </div>
+                </header>
+                <div class="grow mt-2">
+                    <a class="inline-flex text-slate-800 hover:text-slate-900 mb-1"
+                        href="{% url 'chatbot.settings-theme' id=bot.id %}">
+                        <h2 class="text-xl leading-snug font-semibold">{{ bot.name }}</h2>
+                    </a>
+                    <!-- Additional content can be added here -->
+                </div>
+                <footer class="mt-5">
+                    <div class="text-sm font-medium text-slate-500 mb-2">{{ bot.created_at }}</div>
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <!-- Additional status elements can be added here -->
+                        </div>
+                        <div>
+                            <a class="text-sm font-medium text-indigo-500 hover:text-indigo-600"
+                                href="{% url 'chatbot.settings-theme' id=bot.id %}">Open -&gt;</a>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
