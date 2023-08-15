@@ -7,44 +7,39 @@ from web.enums.ingest_status_enum import IngestStatusType
 from web.signals.codebase_datasource_was_created import codebase_data_source_added
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.timezone import now
+from web.signals.codebase_datasource_was_created import codebase_data_source_added
 
-class IngestCodebaseDataSource:
-    def handle(self, event):
-        if not isinstance(event, codebase_data_source_added):
-            return
+@codebase_data_source_added.connect
+def ingest_codebase_data_source(sender, chatbot_id, data_source_id, **kwargs):
+    try:
+        datasource = CodebaseDataSource.objects.get(id=data_source_id)
+    except ObjectDoesNotExist:
+        return
 
-        bot_id = event.get_chatbot_id()
-        codebase_data_source_id = event.get_codebase_data_source_id()
+    repo = datasource.repository
 
-        try:
-            datasouce = CodebaseDataSource.objects.get(id=codebase_data_source_id)
-        except ObjectDoesNotExist:
-            return
+    request_body = {
+        'type': 'codebase',
+        'repo': repo,
+        'namespace': str(chatbot_id),
+    }
 
-        repo = datasouce.get_repository()
+    try:
+        # Call to ingest service endpoint
+        url = "http://localhost:8000/api/ingest/"  # Replace with the actual URL
+        response = requests.post(url, json=request_body)
 
-        request_body = {
-            'type': 'codebase',
-            'repo': repo,
-            'namespace': bot_id,
-        }
+        datasource.ingested_at = now()
 
-        try:
-            # Call to ingest service endpoint
-            url = "http://localhost:3000/api/ingest"  # Replace with the actual URL
-            response = requests.post(url, json=request_body)
+        if response.status_code != 200:
+            datasource.ingestion_status = IngestStatusType.FAILED
+        else:
+            datasource.ingestion_status = IngestStatusType.SUCCESS
 
-            datasouce.ingested_at = now()
+        datasource.save()
 
-            if response.status_code != 200:
-                datasouce.ingestion_status = IngestStatusType.FAILED
-            else:
-                datasouce.ingestion_status = IngestStatusType.SUCCESS
-
-            datasouce.save()
-
-        except RequestException as e:
-            datasouce.ingested_at = now()
-            datasouce.ingestion_status = IngestStatusType.FAILED
-            datasouce.save()
-            return
+    except RequestException as e:
+        datasource.ingested_at = now()
+        datasource.ingestion_status = IngestStatusType.FAILED
+        datasource.save()
+        return
