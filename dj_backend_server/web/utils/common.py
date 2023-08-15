@@ -35,9 +35,3 @@ def generate_chatbot_name(repo_url, name=None):
         name = f"{default_name}-{random_suffix}"
 
     return name
-
-# Example usage
-git_url = "your-git-url-here"
-provided_name = "provided-name"
-chatbot_name = generate_chatbot_name(git_url, provided_name)
-print(chatbot_name)
