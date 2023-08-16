@@ -19,9 +19,13 @@ from web.enums.chatbot_initial_prompt_enum import ChatBotInitialPromptEnum
 from web.enums.common_enums import ChatBotDefaults
 from uuid import uuid4
 from web.utils.common import get_session_id
+from web.utils.common import generate_chatbot_name
+from api.utils.get_prompts import get_qa_prompt_by_mode
+from django.utils import timezone
 
 import requests
 from uuid import uuid4
+import re
 
 from django.shortcuts import get_object_or_404
 
@@ -162,13 +166,13 @@ def get_chat_view(request, token):
     return render(request, 'chat.html', {'bot': bot})
 
 
-
 def create_via_codebase_flow(request):
     if request.method == 'POST':
-        name = request.POST.get('name')
-        prompt_message = request.POST.get('prompt_message')
-        repo_url = request.POST.get('repo_url')
+        prompt_message = request.POST.get('prompt_message') or get_qa_prompt_by_mode(mode="pair_programmer", initial_prompt=None)
+        repo_url = request.POST.get('repo')
 
+        name = request.POST.get('name')
+        name = generate_chatbot_name(repo_url=repo_url, name=name)
         chatbot = Chatbot.objects.create(
             id=uuid4(),
             name=name,
@@ -178,8 +182,10 @@ def create_via_codebase_flow(request):
 
         codebase_data_source = CodebaseDataSource.objects.create(
             id=uuid4(),
-            chatbot_id=Chatbot.id,
-            repository=repo_url
+            chatbot_id=chatbot.id,
+            repository=repo_url,
+            ingested_at=timezone.now(),
+            ingestion_status="pending"
         )
 
         codebase_data_source_added.send(

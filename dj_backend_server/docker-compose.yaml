@@ -3,7 +3,7 @@ version: '3.9'
 services:
   mysql:
     restart: unless-stopped
-    platform: linux/x86_64
+    platform: linux/arm64/v8 # for mac
     image: "mysql:8"
     ports:
       - "3307:3306"
@@ -28,26 +28,26 @@ services:
     networks:
       - openchat_network
 
-  web:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - "8000:8000"
-    # volumes:
-    #   - .:/app
-    depends_on:
-      - mysql
-    env_file:
-      - .env.docker
-    command: >
-      sh -c "python manage.py sync_models &&
-             python manage.py runserver 0.0.0.0:8000"
-    networks:
-      - openchat_network
-    dns:
-      - 8.8.8.8
-      - 8.8.4.4
+  # web:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "8000:8000"
+  #   # volumes:
+  #   #   - .:/app
+  #   depends_on:
+  #     - mysql
+  #   env_file:
+  #     - .env.docker
+  #   command: >
+  #     sh -c "python manage.py sync_models &&
+  #            python manage.py runserver 0.0.0.0:8000"
+  #   networks:
+  #     - openchat_network
+  #   dns:
+  #     - 8.8.8.8
+  #     - 8.8.4.4
 
   adminer:
     image: adminer
@@ -60,23 +60,23 @@ services:
     networks:
       - openchat_network
   
-  celery_worker:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: myproject_celery
-    # volumes:
-    #   - .:/app
-    depends_on:
-      - web
-    env_file:
-      - .env.docker
-    command: celery -A dj_backend_server worker --loglevel=info
-    networks:
-      - openchat_network
-    dns:
-      - 8.8.8.8
-      - 8.8.4.4
+  # celery_worker:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   container_name: myproject_celery
+  #   # volumes:
+  #   #   - .:/app
+  #   depends_on:
+  #     - web
+  #   env_file:
+  #     - .env.docker
+  #   command: celery -A dj_backend_server worker --loglevel=info
+  #   networks:
+  #     - openchat_network
+  #   dns:
+  #     - 8.8.8.8
+  #     - 8.8.4.4
 
 
   redis:

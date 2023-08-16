@@ -64,7 +64,7 @@
                         </div>
                     </div>
                 {% endif %}
-                <form action="{% url 'onboarding.codebase.create' %}" method="POST">
+                <form action="{% url 'onboarding.codebase.create' %}" method="POST"  id="codebaseCreate">
                     {% csrf_token %}
                     <div class="space-y-4 mb-8">
                         <!-- Company Name -->
@@ -91,7 +91,7 @@
                     <div class="flex items-center justify-between">
                         <a class="text-sm underline hover:no-underline" href="{% url 'onboarding.data-source' %}">&lt;-
                             Back</a>
-                        <button type="submit" class="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-auto">Next Step
+                        <button form="codebaseCreate" type="submit" class="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-auto">Next Step
                             -&gt;
                         </button>
                     </div>
