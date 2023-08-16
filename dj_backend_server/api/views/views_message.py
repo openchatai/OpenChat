@@ -86,6 +86,7 @@ def send_chat(request):
         content = data.get('content')
         history = data.get('history')
         content_type = data.get('type')
+        metadata = data.get('metadata') or {}
 
         session_id = get_session_id(request=request, bot_id=bot.id)
         history = ChatHistory.objects.filter(session_id=session_id)
@@ -111,7 +112,8 @@ def send_chat(request):
                 'initial_prompt': bot.prompt_message,
                 'history': history_entries,
                 'token': bot_token,
-                "session_id": session_id
+                "session_id": session_id,
+                "metadata": metadata
             },
             timeout=200
         )

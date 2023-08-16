@@ -14,19 +14,21 @@ def ingest(request):
         # namespace is the same as chatbot id
         namespace = data.get('namespace')
         repo_path = data.get('repo')
+        metadata = data.get('metadata')
+        
         type_ = data['type']
 
         if type_ not in ('pdf', 'website', 'codebase'):
             return JsonResponse({'error': 'Type not supported, use one of pdf, website or codebase'})
 
         if type_ == 'pdf':
-            pdf_handler_task.delay(shared_folder, namespace)
+            pdf_handler_task.delay(shared_folder, namespace, metadata)
         elif type_ == 'website':
             print("Calling website handler task")
-            website_handler_task.delay(shared_folder, namespace)
+            website_handler_task.delay(shared_folder, namespace, metadata)
         
         elif type_ == 'codebase':
-            codebase_handler_task.delay(repo_path, namespace)
+            codebase_handler_task.delay(repo_path, namespace, metadata)
 
         return JsonResponse({'message': 'Task dispatched successfully'}, status=200)
     

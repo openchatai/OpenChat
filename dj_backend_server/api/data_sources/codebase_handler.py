@@ -6,17 +6,18 @@ from api.utils import get_embeddings
 from langchain.document_loaders import GitLoader
 from api.utils import init_vector_store
 from api.interfaces import StoreOptions
+from typing import Optional, Dict, Any, List
 
 # https://python.langchain.com/docs/integrations/document_loaders/git
 @csrf_exempt
-def codebase_handler(repo_path: str, namespace: str):
+def codebase_handler(repo_path: str, namespace: str, metadata: Dict[str, Any]):
     try:
         folder_path = f"website_data_sources/{namespace}"
         loader = GitLoader(repo_path=folder_path, clone_url=repo_path, branch="master")
 
         raw_docs = loader.load()
-
-        print('Loaded documents')
+        for doc in raw_docs:
+            doc['metadata'].update(metadata)
 
         text_splitter = RecursiveCharacterTextSplitter(separators=["\n"], chunk_size=1000, chunk_overlap=200,length_function=len)
         docs = text_splitter.split_documents(raw_docs)
