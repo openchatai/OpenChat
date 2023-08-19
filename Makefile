@@ -61,16 +61,3 @@ down:
 exec-backend-server:
 	$(DOCKER_COMPOSE) exec backend-server bash
 .PHONY: install down
-
-
-# Makefile to Run docker-compose for Django App
-
-.env.docker:
-	@echo "Error: The .env.docker file is missing. Please create it before proceeding. Refer readme"
-	@exit 1
-
-install_django: .env.docker
-	@docker-compose -f docker-compose.django.yaml up -d
-
-uninstall_django:
-	@docker-compose -f docker-compose.django.yaml down
