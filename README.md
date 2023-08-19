@@ -108,6 +108,14 @@ If you want to switch from Pinecone to Qdrant, you can set the following environ
 - `STORE`: The store to use to store embeddings. Can be `qdrant` or `pinecone`.
 
 
+#### Optional [To modify the chat behaviour]
+
+`CHAIN_TYPE` = The type of chain to use: `conversation_retrieval` | `retrieval_qa`
+
+- `retrieval_qa` -> [Learn more](https://python.langchain.com/docs/use_cases/question_answering/how_to/vector_db_qa)
+- `conversation_retrieval` -> [Learn more](https://python.langchain.com/docs/use_cases/question_answering/how_to/chat_vector_db)
+
+
 > Note: for pincone db, make sure that the dimension is equal to 1536 
 
 - Navigate to the repository folder and run the following command (for MacOS or Linux):

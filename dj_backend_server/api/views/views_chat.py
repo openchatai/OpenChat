@@ -1,8 +1,9 @@
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
+from langchain import QAWithSourcesChain
 
 from api.utils import get_vector_store
-from api.utils.make_chain import getConversationRetrievalChain
+from api.utils.make_chain import getConversationRetrievalChain, getRetrievalQAWithSourcesChain
 import json
 from django.views.decorators.csrf import csrf_exempt
 from api.interfaces import StoreOptions
@@ -13,6 +14,10 @@ from uuid import uuid4
 import logging
 import traceback
 from web.services.chat_history_service import get_chat_history_for_retrieval_chain
+import os
+
+from dotenv import load_dotenv
+load_dotenv()
 
 logger = logging.getLogger(__name__)
 
@@ -36,12 +41,8 @@ def chat(request):
         sanitized_question = question.strip().replace('\n', ' ')
 
         vector_store = get_vector_store(StoreOptions(namespace=namespace))
-        chain = getConversationRetrievalChain(vector_store, mode, initial_prompt, memory_key=session_id)
         
-        # To avoid fetching an excessively large amount of history data from the database, set a limit on the maximum number of records that can be retrieved in a single query.
-        chat_history = get_chat_history_for_retrieval_chain(session_id, limit=40)
-        response = chain({"question": sanitized_question, "chat_history": chat_history }, return_only_outputs=True)
-        response_text = response['answer']
+        response_text = get_completion_response(vector_store=vector_store, initial_prompt=initial_prompt,mode=mode, sanitized_question=sanitized_question, session_id=session_id)
 
         ChatHistory.objects.bulk_create([
             ChatHistory(
@@ -69,3 +70,18 @@ def chat(request):
         logger.error(str(e))
         logger.error(traceback.format_exc())
         return JsonResponse({'error': 'An error occurred'}, status=500)
+
+
+def get_completion_response(vector_store, mode, initial_prompt, sanitized_question, session_id):
+    chain_type = os.getenv("CHAIN_TYPE", "conversation_retrieval")
+    chain: QAWithSourcesChain
+    if chain_type == 'retrieval_qa':
+        chain = getRetrievalQAWithSourcesChain(vector_store, mode, initial_prompt)
+        response = chain({"question": sanitized_question}, return_only_outputs=True)
+        response_text = response['answer']
+    elif chain_type == 'conversation_retrieval':
+        chain = getConversationRetrievalChain(vector_store, mode, initial_prompt)
+        chat_history = get_chat_history_for_retrieval_chain(session_id, limit=40)
+        response = chain({"question": sanitized_question, "chat_history": chat_history}, return_only_outputs=True)
+        response_text = response['answer']
+    return response_text
