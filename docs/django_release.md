@@ -19,20 +19,21 @@ Before you dive into the exciting world of our new application, there are a few 
 ## Configuration
 To ensure the application works seamlessly with your environment, you'll need to configure a few settings.
 
-1. **Environment Configuration:** To run the app in Docker, open the `example.env` file in the root directory of the project. Update the required environment variables, such as database credentials, API keys, etc. After making the changes, rename the file to `.env.docker` and then run `make install_django`. To run the app in development environment, just rename example.env to .env
+1. **Environment Configuration:** To run the app in Docker, open the `example.env` file in the root directory of the project. Update the required environment variables, such as database credentials, API keys, etc. After making the changes, rename the file to `.env.docker` and then run `make install`. To run the app in development environment, just rename example.env to .env
 
 ## Running the Application
 
 **1. Launch the Backend Server as a Docker Container:**
 
+1. switch to python directory, `cd dj_backend_server`
 To initiate the app, execute the following command:
 ```bash
-make install_django
+make install
 ```
 
 To stop the server, use:
 ```bash
-make uninstall_django
+make down
 ```
 
 **Local Machine Deployment for Development:**
@@ -72,6 +73,8 @@ With these steps, you can make the most of hot reloading and enhance your develo
 
 ## Compatibility
 We understand the importance of seamless integration with your existing databases. Our team has worked diligently to ensure compatibility so that you can continue to use and enjoy the chatbots you've created earlier.
+
+If you're migrating from PHP to Python, it's important to handle volume mounting correctly. This ensures that your data remains accessible and functional. Additionally, you can opt for a migration script if that suits your needs better.
 
 ## Feedback and Support
 Your feedback is incredibly important to us as a beta tester and developer. If you come across any problems, have ideas to share, or simply want to tell us about your experience, please don't hesitate to get in touch. You can use the GitHub issue tracker or join our community forum on Discord, named "Openchat".
