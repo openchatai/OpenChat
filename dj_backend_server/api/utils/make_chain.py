@@ -30,7 +30,7 @@ def getRetrievalQAWithSourcesChain(vector_store: VectorStore, mode, initial_prom
     return chain
 
 
-def getConversationRetrievalChain(vector_store: VectorStore, mode, initial_prompt: str, memory_key: str):
+def getConversationRetrievalChain(vector_store: VectorStore, mode, initial_prompt: str):
     llm = get_llm()
     template = get_qa_prompt_by_mode(mode, initial_prompt=initial_prompt)
     prompt = PromptTemplate.from_template(template)
