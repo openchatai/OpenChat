@@ -2,9 +2,7 @@ version: '3'
 services:
   backend-server:
     restart: unless-stopped
-    build:
-      context: ./backend-server
-      dockerfile: Dockerfile
+    image: codebanesr/openchat_backend_server:latest
     ports:
       - "8000:8000"
     depends_on:
@@ -18,29 +16,31 @@ services:
       - DB_DATABASE=openchat
       - DB_USERNAME=dbuser
       - DB_PASSWORD=dbpass
+    env_file:
+      - ./common.env
     volumes:
       - shared_data:/app/shared_data
     networks:
       - openchat_network
 
-  adminer:
-    image: adminer
-    ports:
-      - "8080:8080"
-    environment:
-      ADMINER_DEFAULT_SERVER: db  # Change this to match your database server name
-    depends_on:
-      - mysql
-    networks:
-      - openchat_network
+  # adminer:
+  #   image: adminer
+  #   ports:
+  #     - "8080:8080"
+  #   environment:
+  #     ADMINER_DEFAULT_SERVER: db  # Change this to match your database server name
+  #   depends_on:
+  #     - mysql
+  #   networks:
+  #     - openchat_network
 
   llm-server:
     restart: unless-stopped
-    build:
-      context: ./llm-server
-      dockerfile: Dockerfile
+    image: codebanesr/openchat_llm_server:edge
     volumes:
       - shared_data:/app/shared_data
+    env_file:
+      - ./common.env
     networks:
       - openchat_network
 
