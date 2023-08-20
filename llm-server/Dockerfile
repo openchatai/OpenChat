@@ -1,26 +1,19 @@
-# Use an official Node.js runtime as the base image
-FROM node:18
+FROM node:18-alpine as builder
+WORKDIR /my-space
 
-# Set the working directory
-WORKDIR /usr/src/app
-
-# Copy package.json and yarn.lock
-COPY package*.json yarn.lock ./
-
-COPY .env .env
-
-# Install dependencies
+COPY package.json yarn.lock ./
 RUN yarn install
-
-# Copy the project files to the container
 COPY . .
+RUN npm run build
 
-# Expose the container's port (if required by the app)
+FROM node:18-alpine as runner
+WORKDIR /my-space
+COPY --from=builder /my-space/package.json .
+COPY --from=builder /my-space/package-lock.json .
+COPY --from=builder /my-space/next.config.js ./
+# COPY --from=builder /my-space/public ./public
+COPY --from=builder /my-space/.next/standalone ./
+COPY --from=builder /my-space/.next/static ./.next/static
 
-# Start the app
-CMD [ "npm", "run", "dev" ]
-
-
-
-
-
+EXPOSE 3000
+CMD ["node", "server.js"]

@@ -36,7 +36,7 @@ services:
 
   llm-server:
     restart: unless-stopped
-    image: codebanesr/openchat_llm_server:latest
+    image: codebanesr/openchat_llm_server:edge
     volumes:
       - shared_data:/app/shared_data
     env_file:

@@ -15,17 +15,13 @@
     "ingest": "tsx -r dotenv/config scripts/ingest-data.ts"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.332.0",
-    "@microsoft/fetch-event-source": "^2.0.1",
     "@pinecone-database/pinecone": "0.0.12",
     "@qdrant/js-client-rest": "^1.3.0",
-    "@radix-ui/react-accordion": "^1.1.1",
     "axios": "^1.4.0",
     "clsx": "^1.2.1",
     "dotenv": "^16.0.3",
     "ignore": "^5.2.4",
     "langchain": "^0.0.110",
-    "lucide-react": "^0.125.0",
     "next": "13.2.3",
     "pdf-parse": "1.1.1",
     "react": "18.2.0",
