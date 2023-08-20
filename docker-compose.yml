@@ -2,7 +2,9 @@ version: '3'
 services:
   backend-server:
     restart: unless-stopped
-    image: codebanesr/openchat_backend_server:latest
+    build:
+      context: ./backend-server
+      dockerfile: Dockerfile
     ports:
       - "8000:8000"
     depends_on:
