@@ -26,7 +26,7 @@ def create(request, id):
 
     data_source = WebsiteDataSource.objects.create(
         id=uuid4(),
-        chatbot=bot,
+        chatbot_id=bot,
         root_url=root_url,
         icon=icon
     )
