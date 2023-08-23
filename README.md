@@ -115,6 +115,20 @@ If you want to switch from Pinecone to Qdrant, you can set the following environ
 - `retrieval_qa` -> [Learn more](https://python.langchain.com/docs/use_cases/question_answering/how_to/vector_db_qa)
 - `conversation_retrieval` -> [Learn more](https://python.langchain.com/docs/use_cases/question_answering/how_to/chat_vector_db)
 
+#### Using Prebuilt Images
+
+If you're experiencing slow internet speeds or if Docker builds are taking a long time, consider using the prebuilt images for your respective architecture. Simply comment out the unnecessary image line in the `docker-compose.yml` file and uncomment the appropriate prebuilt image line.
+
+Example:
+
+```yaml
+# Mac environment
+image: codebanesr/openchat_llm_server:edge_amd64
+
+# Or, for Linux environment
+image: codebanesr/openchat_llm_server:edge
+```
+
 
 > Note: for pincone db, make sure that the dimension is equal to 1536 
 

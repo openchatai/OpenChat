@@ -38,7 +38,17 @@ services:
 
   llm-server:
     restart: unless-stopped
-    image: codebanesr/openchat_llm_server:edge
+    # prebuilt image for linux
+    # image: codebanesr/openchat_llm_server:edge
+
+    # prebuilt image for mac
+    # image: codebanesr/openchat_llm_server:edge_amd64
+
+    # or build from source
+    build:
+      context: ./llm-server
+      dockerfile: Dockerfile
+
     volumes:
       - shared_data:/app/shared_data
     env_file:
