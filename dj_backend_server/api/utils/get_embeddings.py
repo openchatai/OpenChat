@@ -41,9 +41,8 @@ def get_llama2_embedding():
     return LlamaCppEmbeddings(
         n_batch=512,
         n_gpu_layers=1,
-        n_threads=4,
         f16_kv=True,
-        model_path="/Users/shanurrahman/Documents/vsearch/dj_backend_server/llama-2-7b-chat.ggmlv3.q4_K_M.bin"
+        model_path="llama-2-7b-chat.ggmlv3.q4_K_M.bin"
     )
 
 def choose_embedding_provider():

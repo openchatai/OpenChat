@@ -15,7 +15,7 @@ def get_llama_llm():
     # Callbacks support token-wise streaming
     callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])
     llm = LlamaCpp(
-        model_path="/Users/shanurrahman/Documents/vsearch/dj_backend_server/llama-2-7b-chat.ggmlv3.q4_K_M.bin",
+        model_path="llama-2-7b-chat.ggmlv3.q4_K_M.bin",
         n_gpu_layers=n_gpu_layers,
         n_batch=n_batch,
         n_ctx=4096,
@@ -23,7 +23,6 @@ def get_llama_llm():
         callback_manager=callback_manager,
         verbose=True,
         temperature=0.2,
-        n_threads=4
     )
     
     return llm
