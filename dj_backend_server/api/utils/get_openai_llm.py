@@ -1,8 +1,32 @@
 from langchain.llms import AzureOpenAI, OpenAI
 import os
 from dotenv import load_dotenv
-
+from langchain.llms import LlamaCpp
 load_dotenv()
+from langchain import PromptTemplate, LLMChain
+from langchain.callbacks.manager import CallbackManager
+from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
+
+
+def get_llama_llm():
+    n_gpu_layers = 1  # Metal set to 1 is enough.
+    n_batch = 512  # Should be between 1 and n_ctx, consider the amount of RAM of your Apple Silicon Chip.
+    
+    # Callbacks support token-wise streaming
+    callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])
+    llm = LlamaCpp(
+        model_path="open-llama-7B-open-instruct.ggmlv3.q4_K_M.bin",
+        n_gpu_layers=n_gpu_layers,
+        n_batch=n_batch,
+        n_ctx=4096,
+        f16_kv=True,  # MUST set to True, otherwise you will run into problem after a couple of calls
+        callback_manager=callback_manager,
+        verbose=True,
+        temperature=0.2,
+        use_mmap=True
+    )
+    
+    return llm
 
 # Azure OpenAI Language Model client
 def get_azure_openai_llm():
@@ -43,7 +67,8 @@ def get_llm():
     
     clients = {
         'azure': get_azure_openai_llm,
-        'openai': get_openai_llm
+        'openai': get_openai_llm,
+        'llama2': get_llama_llm
     }
     
     api_type = os.environ.get('OPENAI_API_TYPE')

@@ -36,3 +36,4 @@ pip-log.txt
 pip-delete-this-directory.txt
 website_data_sources/*
 venv
+open-llama-7B-open-instruct.ggmlv3.q4_K_M.bin
