@@ -144,3 +144,5 @@ Thank you for choosing our project! If you have any questions or need further as
 
 
 Download llama2-7b from https://huggingface.co/TheBloke/Llama-2-7B-Chat-GGML/tree/main
+
+install the correct llama-python-cpp from this page https://python.langchain.com/docs/integrations/llms/llamacpp
