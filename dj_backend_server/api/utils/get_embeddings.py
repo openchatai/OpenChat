@@ -38,7 +38,13 @@ def get_openai_embedding():
 
 def get_llama2_embedding():
     """Gets embeddings using the llama2 embedding provider."""
-    return LlamaCppEmbeddings(model_path="open-llama-7B-open-instruct.ggmlv3.q4_K_M.bin")
+    return LlamaCppEmbeddings(
+        n_batch=512,
+        n_gpu_layers=1,
+        n_threads=4,
+        f16_kv=True,
+        model_path="/Users/shanurrahman/Documents/vsearch/dj_backend_server/llama-2-7b-chat.ggmlv3.q4_K_M.bin"
+    )
 
 def choose_embedding_provider():
     """Chooses and returns the appropriate embedding provider instance."""
