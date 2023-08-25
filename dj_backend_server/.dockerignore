@@ -1,0 +1,23 @@
+# Exclude version control directories/files
+.git
+.gitignore
+
+# Exclude temporary or build files
+__pycache__
+*.pyc
+*.pyo
+
+# Exclude editor-specific files
+.vscode
+
+# Exclude local development files
+*.log
+*.db
+
+# Exclude test files and test data
+tests
+test_data
+
+# Exclude any other files or directories that are not needed in the container
+venv
+llama-2-7b-chat.ggmlv3.q4_K_M.bin
