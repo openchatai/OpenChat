@@ -4,6 +4,7 @@ import os
 from dotenv import load_dotenv
 from langchain.embeddings.base import Embeddings
 from langchain.embeddings import LlamaCppEmbeddings
+from langchain.embeddings.spacy_embeddings import SpacyEmbeddings
 
 load_dotenv()
 import os
@@ -38,12 +39,7 @@ def get_openai_embedding():
 
 def get_llama2_embedding():
     """Gets embeddings using the llama2 embedding provider."""
-    return LlamaCppEmbeddings(
-        n_batch=512,
-        n_gpu_layers=1,
-        f16_kv=True,
-        model_path="llama-2-7b-chat.ggmlv3.q4_K_M.bin"
-    )
+    return LlamaCppEmbeddings(model_path="llama-2-7b-chat.ggmlv3.q4_K_M.bin")
 
 def choose_embedding_provider():
     """Chooses and returns the appropriate embedding provider instance."""
