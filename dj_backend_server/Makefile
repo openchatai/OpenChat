@@ -18,7 +18,7 @@ endif
 	exit 1
 
 venv:
-ifndef VIRTUAL_ENV
+ifndef venv
 	ifeq ($(OS), Darwin)
 		@echo $(shell tput setaf 2)"Creating a virtual environment..."$(shell tput sgr0)
 		python3 -m venv venv
@@ -53,8 +53,8 @@ endif
 
 dev-start: 
 	docker-compose up -d
-	venv/bin/celery -A dj_backend_server worker --loglevel=info &
-	venv/bin/python manage.py sync_models && venv/bin/python manage.py runserver 0.0.0.0:8000 &
+	celery -A dj_backend_server worker --loglevel=info &
+	python manage.py sync_models && python manage.py runserver 0.0.0.0:8000
 
 	@echo $(shell tput setaf 3)"Waiting for 20 seconds before opening the browser..."$(shell tput sgr0)
 	sleep 20
