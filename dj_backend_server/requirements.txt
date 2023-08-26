@@ -8,7 +8,7 @@ attrs==23.1.0
 beautifulsoup4==4.12.2
 billiard==4.1.0
 celery==5.3.1
-certifi==2023.5.7
+certifi==2023.7.22
 cffi==1.15.1
 channels==4.0.0
 charset-normalizer==3.2.0
