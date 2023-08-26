@@ -4,7 +4,6 @@ import os
 from dotenv import load_dotenv
 from langchain.embeddings.base import Embeddings
 from langchain.embeddings import LlamaCppEmbeddings
-from langchain.embeddings.spacy_embeddings import SpacyEmbeddings
 
 load_dotenv()
 import os

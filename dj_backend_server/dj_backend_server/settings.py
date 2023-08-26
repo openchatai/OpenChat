@@ -174,6 +174,5 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # You can choose other e
 
 ALLOWED_HOSTS = [
     'localhost',
-    '52.168.83.96',
-    '0.0.0.0',  # Add any other domains or IPs as needed
+    '0.0.0.0',
 ]

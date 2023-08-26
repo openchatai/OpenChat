@@ -28,24 +28,24 @@ services:
     networks:
       - openchat_network
 
-  web:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - "8000:8000"
-    volumes:
-      - ./website_data_sources:/app/website_data_sources
-      - ./llama-2-7b-chat.ggmlv3.q4_K_M.bin:/app/llama-2-7b-chat.ggmlv3.q4_K_M.bin:ro
-    depends_on:
-      - mysql
-    env_file:
-      - .env.docker
-    command: >
-      sh -c "python manage.py sync_models &&
-             python manage.py runserver 0.0.0.0:8000"
-    networks:
-      - openchat_network
+  # web:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "8000:8000"
+  #   volumes:
+  #     - ./website_data_sources:/app/website_data_sources
+  #     - ./llama-2-7b-chat.ggmlv3.q4_K_M.bin:/app/llama-2-7b-chat.ggmlv3.q4_K_M.bin:ro
+  #   depends_on:
+  #     - mysql
+  #   env_file:
+  #     - .env.docker
+  #   command: >
+  #     sh -c "python manage.py sync_models &&
+  #            python manage.py runserver 0.0.0.0:8000"
+  #   networks:
+  #     - openchat_network
 
   adminer:
     image: adminer
@@ -58,21 +58,21 @@ services:
     networks:
       - openchat_network
   
-  celery_worker:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: myproject_celery
-    volumes:
-      - ./website_data_sources:/app/website_data_sources 
-      - ./llama-2-7b-chat.ggmlv3.q4_K_M.bin:/app/llama-2-7b-chat.ggmlv3.q4_K_M.bin:ro
-    depends_on:
-      - web
-    env_file:
-      - .env.docker
-    command: celery -A dj_backend_server worker --loglevel=info
-    networks:
-      - openchat_network
+  # celery_worker:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   container_name: myproject_celery
+  #   volumes:
+  #     - ./website_data_sources:/app/website_data_sources 
+  #     - ./llama-2-7b-chat.ggmlv3.q4_K_M.bin:/app/llama-2-7b-chat.ggmlv3.q4_K_M.bin:ro
+  #   depends_on:
+  #     - web
+  #   env_file:
+  #     - .env.docker
+  #   command: celery -A dj_backend_server worker --loglevel=info
+  #   networks:
+  #     - openchat_network
 
   redis:
     image: redis:latest

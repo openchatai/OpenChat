@@ -133,15 +133,6 @@ export DISABLE_SPRING=true
 
 We welcome contributions! If you find any issues or want to enhance the project, please create a pull request.
 
-## License
-
-This project is licensed under the XYZ License - see the [LICENSE](LICENSE) file for details.
-
----
-
-Thank you for choosing our project! If you have any questions or need further assistance, feel free to reach out to us.
-
-
 
 Download llama2-7b from https://huggingface.co/TheBloke/Llama-2-7B-Chat-GGML/tree/main
 
