@@ -19,7 +19,6 @@
             "name": "Python: Celery Workers",
             "type": "python",
             "request": "launch",
-            // "program": "${workspaceFolder}/path_to_celery_executable",
             "module": "celery",
             "args": [
                 "-A",

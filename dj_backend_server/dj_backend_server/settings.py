@@ -171,3 +171,8 @@ DATABASES = {
 }
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # You can choose other engines as well
+
+ALLOWED_HOSTS = [
+    'localhost',
+    '0.0.0.0',
+]

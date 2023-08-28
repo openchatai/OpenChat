@@ -21,9 +21,8 @@ def get_qa_chain(vector_store: VectorStore, mode, initial_prompt: str) -> Retrie
         chain_type_kwargs={"prompt": prompt},
         return_source_documents=True
     )
-    
-
     return qa_chain
+
 def getRetrievalQAWithSourcesChain(vector_store: VectorStore, mode, initial_prompt: str):
     llm = get_llm()
     chain = RetrievalQAWithSourcesChain.from_chain_type(llm, chain_type="stuff", retriever=vector_store.as_retriever())

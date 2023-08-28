@@ -34,8 +34,9 @@ services:
   #     dockerfile: Dockerfile
   #   ports:
   #     - "8000:8000"
-  #   # volumes:
-  #   #   - .:/app
+  #   volumes:
+  #     - ./website_data_sources:/app/website_data_sources
+  #     - ./llama-2-7b-chat.ggmlv3.q4_K_M.bin:/app/llama-2-7b-chat.ggmlv3.q4_K_M.bin:ro
   #   depends_on:
   #     - mysql
   #   env_file:
@@ -45,9 +46,6 @@ services:
   #            python manage.py runserver 0.0.0.0:8000"
   #   networks:
   #     - openchat_network
-  #   dns:
-  #     - 8.8.8.8
-  #     - 8.8.4.4
 
   adminer:
     image: adminer
@@ -65,8 +63,9 @@ services:
   #     context: .
   #     dockerfile: Dockerfile
   #   container_name: myproject_celery
-  #   # volumes:
-  #   #   - .:/app
+  #   volumes:
+  #     - ./website_data_sources:/app/website_data_sources 
+  #     - ./llama-2-7b-chat.ggmlv3.q4_K_M.bin:/app/llama-2-7b-chat.ggmlv3.q4_K_M.bin:ro
   #   depends_on:
   #     - web
   #   env_file:
@@ -74,10 +73,6 @@ services:
   #   command: celery -A dj_backend_server worker --loglevel=info
   #   networks:
   #     - openchat_network
-  #   dns:
-  #     - 8.8.8.8
-  #     - 8.8.4.4
-
 
   redis:
     image: redis:latest

@@ -3,10 +3,9 @@ from api.enums import EmbeddingProvider
 import os
 from dotenv import load_dotenv
 from langchain.embeddings.base import Embeddings
+from langchain.embeddings import LlamaCppEmbeddings
 
 load_dotenv()
-
-# https://github.com/easonlai/azure_openai_langchain_sample/blob/main/chat_with_pdf.ipynb
 import os
 
 
@@ -37,6 +36,10 @@ def get_openai_embedding():
 
     return OpenAIEmbeddings(openai_api_key=openai_api_key, chunk_size=1)
 
+def get_llama2_embedding():
+    """Gets embeddings using the llama2 embedding provider."""
+    return LlamaCppEmbeddings(model_path="llama-2-7b-chat.ggmlv3.q4_K_M.bin")
+
 def choose_embedding_provider():
     """Chooses and returns the appropriate embedding provider instance."""
     embedding_provider = get_embedding_provider()
@@ -46,6 +49,10 @@ def choose_embedding_provider():
     
     elif embedding_provider == EmbeddingProvider.OPENAI.value:
         return get_openai_embedding()
+    
+    elif embedding_provider == EmbeddingProvider.llama2.value:
+        return get_llama2_embedding()
+    
 
     else:
         available_providers = ", ".join([service.value for service in EmbeddingProvider])
