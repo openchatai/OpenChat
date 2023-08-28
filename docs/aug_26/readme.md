@@ -2,6 +2,7 @@
 
 This repository offers <span style="color: #1E90FF;">LLAMA support</span> for Mac M1/M2 devices. LLAMA stands as an <span style="color: #008000;">advanced language model</span> developed by Meta. This comprehensive guide is intended to assist you in <span style="color: #FF8C00;">configuring and running LLAMA</span> on your Mac M1/M2 device by following the provided instructions. It's important to note that running LLAMA on Mac devices using Docker might not be straightforward due to <span style="color: #FF0000;">emulation constraints</span>, particularly related to accessing video drivers.
 
+Additionally, the current embedding speeds are quite low, although it's worth noting that the model's speed does improve over time.
 
 ## Getting Started
 
