@@ -51,8 +51,16 @@ else
 OPEN_COMMAND := echo $(shell tput setaf 1)"Unsupported OS: $(OS)"$(shell tput sgr0)
 endif
 
-dev-start: 
-	docker-compose up -d
+# Determine the architecture
+ARCH := $(shell uname -m)
+ifeq ($(ARCH),x86_64)
+  COMPOSE_FILE := docker-compose.yaml
+else
+  COMPOSE_FILE := docker-compose.linux.yaml
+endif
+
+dev-start:
+	docker-compose -f $(COMPOSE_FILE) up -d
 	celery -A dj_backend_server worker --loglevel=info &
 	python manage.py sync_models && python manage.py runserver 0.0.0.0:8000
 
@@ -67,5 +75,10 @@ dev-stop:
 	kill -9 $$(pgrep -f "python manage.py runserver")
 
 	@echo $$(tput setaf 3)"Services stopped."$$(tput sgr0)
+
+force_migrate:
+	@echo $(shell tput setaf 2)"Running migrations inside the Docker container..."
+	docker exec -it web python manage.py makemigrations web
+	docker exec -it web python manage.py migrate
 
 .PHONY: venv install-requirements install down dev-start dev-stop
