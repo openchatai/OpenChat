@@ -152,6 +152,8 @@ export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 export DISABLE_SPRING=true
 ```
 
+[Building with docker guide](docs/building_with_docker.md)
+
 ## Contributing
 
 We welcome contributions! If you find any issues or want to enhance the project, please create a pull request.
