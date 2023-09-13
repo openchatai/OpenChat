@@ -3,8 +3,8 @@ version: '3.9'
 services:
   mysql:
     restart: unless-stopped
-    platform: linux/arm64/v8
-    image: "mysql:8"
+    platform: linux/amd64
+    image: "8.0.34-debian"
     ports:
       - "3307:3306"
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
@@ -66,8 +66,8 @@ services:
       dockerfile: Dockerfile
     container_name: celery
     volumes:
-      - ./website_data_sources:/app/website_data_sources
-    # - ./llama-2-7b-chat.ggmlv3.q4_K_M.bin:/app/llama-2-7b-chat.ggmlv3.q4_K_M.bin:ro
+      - ./website_data_sources:/app/website_data_sources 
+      # - ./llama-2-7b-chat.ggmlv3.q4_K_M.bin:/app/llama-2-7b-chat.ggmlv3.q4_K_M.bin:ro
     depends_on:
       - web
     env_file:

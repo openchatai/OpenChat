@@ -43,6 +43,29 @@ Before you begin, make sure you have the following installed:
    pip install -r requirements.txt
    ```
 
+## Common Issues
+
+If database migrations fail to run for any reason, you can use the following command to re-run the migrations within the Docker container:
+
+```bash
+make force_migrate
+```
+
+### Running Migrations in Docker Container
+
+To address migration issues within the Docker container, a new Makefile target named `force_migrate` has been introduced. This target allows you to forcefully re-run the migrations, which can be useful in resolving migration-related problems.
+
+### Conditional Docker Compose Files
+
+The Makefile now includes logic to dynamically select the appropriate Docker Compose file based on the underlying system architecture. This decision is made between two options: `docker-compose.yaml` for non-Linux environments and `docker-compose.linux.yaml` for Linux systems. This ensures that the correct Docker Compose configuration is utilized according to the specific environment in use.
+
+## Running Migrations
+
+To run migrations inside the Docker container, you can use the following command:
+
+```bash
+make migrate
+
 ## Configuration
 
 Before running the project, you need to configure your environment variables. Rename the `.env.example` file to `.env` and fill in the necessary values for your environment.
@@ -128,6 +151,8 @@ If you encounter issues related to forking on Mac M1, use the following flags be
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 export DISABLE_SPRING=true
 ```
+
+[Building with docker guide](docs/building_with_docker.md)
 
 ## Contributing
 
