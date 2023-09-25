@@ -13,6 +13,7 @@ from django.db.models import Count, Min
 from web.models.crawled_pages import CrawledPages
 import os
 from django.http import HttpResponseNotFound, FileResponse
+from django.conf import settings
 
 def image_view(request, app_id, image_name):
     image_path = os.path.join('website_data_sources/icons', image_name)
@@ -102,4 +103,5 @@ def data_sources_updates(request, id):
 
 def theme_settings(request, id):
     bot = get_object_or_404(Chatbot, id=id)
-    return render(request, 'settings-theme.html', {'bot': bot})
+    context = {'APP_URL': settings.APP_URL, 'bot': bot}
+    return render(request, 'settings-theme.html', context)
