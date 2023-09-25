@@ -90,7 +90,7 @@
                                     <a href="{% url 'chat' token=bot.token %}" target="_blank"
                                         style="cursor: pointer!important;">
                                         <input style="cursor: pointer!important;" id="tooltip" class="form-input w-full" type="text"
-                                        value="http://localhost:8000{% url 'chat' token=bot.token %}" disabled>
+                                        value="{{ APP_URL }}{% url 'chat' token=bot.token %}" disabled>
                              
                                     </a>
                                 </div>
@@ -124,7 +124,7 @@
 
                                             <textarea id="tooltip" class="form-input w-full" style="height: 250px"
                                                 type="text" disabled>
-                                                <script src="{% static 'chat.js' %}"></script>
+                                                <script src="{{ APP_URL }}{% static 'chat.js' %}"></script>
                                                 
                                                 <script>
                                                     document.addEventListener('DOMContentLoaded', function () {
@@ -169,7 +169,7 @@
 
                                             <textarea id="tooltip" class="form-input w-full" style="height: 250px"
                                                 type="text" disabled>
-                                                <script src="{% static 'search.js' %}"></script>
+                                                <script src="{{ APP_URL }}{% static 'search.js' %}"></script>
                                                 
                                                 <script>
                                                     window.onload = () => {
