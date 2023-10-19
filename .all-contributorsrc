@@ -63,6 +63,16 @@
         "code",
         "doc"
       ]
+    },
+    {
+      "login": "lvalics",
+      "name": "lvalics",
+      "avatar_url": "https://avatars.githubusercontent.com/u/27447535?v=4",
+      "profile": "https://gloobus.it",
+      "contributions": [
+        "code",
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
