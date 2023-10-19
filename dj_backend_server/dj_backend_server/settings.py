@@ -1,6 +1,13 @@
-from dotenv import load_dotenv
-load_dotenv()
 import os
+from os import path
+from dotenv import load_dotenv,find_dotenv
+
+# Get the parent directory of the Django project
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# Search for the .env.docker file in the parent directory
+dotenv_path = find_dotenv('.env.docker', os.path.join(BASE_DIR, '..'))
+load_dotenv(dotenv_path)
+
 """
 Django settings for dj_backend_server project.
 
@@ -172,7 +179,9 @@ DATABASES = {
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # You can choose other engines as well
 
-ALLOWED_HOSTS = [
-    'localhost',
-    '0.0.0.0',
-]
+#ALLOWED_HOSTS = [
+#    'localhost',
+#    '0.0.0.0',
+#]
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '0.0.0.0').split(',')
+APP_URL = os.environ.get('APP_URL', 'http://localhost:8000')
