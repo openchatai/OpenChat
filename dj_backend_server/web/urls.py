@@ -5,6 +5,8 @@ from web.views import views_chatbot_settings, views_onboarding, views_chatbot, v
 urlpatterns = [
     # Dashboard
     path('', views_chatbot.index, name='index'),
+    path('login', views_chatbot.login_view, name='login'),
+    path('logout', views_chatbot.logout_view, name='logout'),
 
     # Chatbot Settings
     path('app/<uuid:id>/', views_chatbot_settings.general_settings, name='chatbot.settings'),

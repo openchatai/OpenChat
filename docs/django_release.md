@@ -52,6 +52,22 @@ make down
   celery -A dj_backend_server worker --loglevel=info
   ```
 
+## User creation
+
+Create a Superuser. Login into docker 
+
+```bash
+docker exec -it web /bin/bash
+```
+
+and execute command 
+
+```bash
+python manage.py createsuperuser
+```
+
+This will prompt you to enter a username, email, and password for the superuser. After this, you can use username and password to login.
+
 2. **Access the Application:** Open your web browser and navigate to the provided URL (`http://localhost:8000`) to access the application.
 
 

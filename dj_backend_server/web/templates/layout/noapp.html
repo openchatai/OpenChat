@@ -1,0 +1,30 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>OpenChat - LOGIN</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link href="{% static 'dashboard/style.css' %}" rel="stylesheet">
+</head>
+
+<body class="font-inter antialiased bg-slate-100 text-slate-600">
+    <!-- Page wrapper -->
+    <div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
+
+        <!-- Sidebar -->
+
+        <!-- Sidebar ends -->
+        
+        <!-- Content area -->
+        <div class="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
+            <main>
+                {% block content %}{% endblock %}
+            </main>
+        </div>
+    </div>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

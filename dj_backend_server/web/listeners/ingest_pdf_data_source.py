@@ -1,5 +1,5 @@
 # listeners.py
-
+import os
 import requests
 from requests.exceptions import RequestException
 from web.models.pdf_data_sources import PdfDataSource
@@ -26,7 +26,7 @@ def ingest_pdf_datasource(sender, **kwargs):
 
     try:
         # Call to ingest service endpoint
-        url = "http://localhost:8000/api/ingest/"  # Replace with the actual URL
+        url = os.getenv('APP_URL') + "/api/ingest/" 
         response = requests.post(url, json=request_body, timeout=200)
 
         if response.status_code != 200:
