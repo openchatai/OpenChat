@@ -59,20 +59,20 @@ else
   COMPOSE_FILE := docker-compose.linux.yaml
 endif
 
+# celery -A dj_backend_server worker --loglevel=info &
 dev-start:
-	docker-compose -f $(COMPOSE_FILE) up -d
-	celery -A dj_backend_server worker --loglevel=info &
-	python manage.py sync_models && python manage.py runserver 0.0.0.0:8000
+	docker-compose -f docker-compose.linux.yaml up -d
+	python3 manage.py sync_models && python3 manage.py runserver 0.0.0.0:8000
 
 	@echo $(shell tput setaf 3)"Waiting for 20 seconds before opening the browser..."$(shell tput sgr0)
 	sleep 20
 
-	$(OPEN_COMMAND) http://localhost:8000
+	$(OPEN_COMMAND) http://65.109.130.211:8000/	
 
 dev-stop:
 	docker-compose down
 	kill -9 $$(pgrep -f "celery -A dj_backend_server")
-	kill -9 $$(pgrep -f "python manage.py runserver")
+	kill -9 $$(pgrep -f "python3 manage.py runserver")
 
 	@echo $$(tput setaf 3)"Services stopped."$$(tput sgr0)
 
@@ -80,5 +80,11 @@ force_migrate:
 	@echo $(shell tput setaf 2)"Running migrations inside the Docker container..."
 	docker exec -it web python manage.py makemigrations web
 	docker exec -it web python manage.py migrate
+
+all: venv install-requirements install down dev-start dev-stop
+	@echo $$(tput setaf 3)"All steps executed successfully."$$(tput sgr0)
+	
+logs:
+	docker-compose logs -f
 
 .PHONY: venv install-requirements install down dev-start dev-stop

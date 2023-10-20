@@ -1,5 +1,5 @@
 # listeners.py
-
+import os
 import requests
 from requests.exceptions import RequestException
 
@@ -12,7 +12,7 @@ def handle_crawling_completed(chatbot_id, website_data_source_id):
     }
 
     try:
-        url = "http://localhost:8000/api/ingest/"  # Replace with the actual URL
+        url = os.getenv('APP_URL') + "/api/ingest/" 
         response = requests.post(url, json=request_body)
 
         if response.status_code != 200:

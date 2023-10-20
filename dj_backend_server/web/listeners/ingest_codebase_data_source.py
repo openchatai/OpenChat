@@ -1,5 +1,5 @@
 # listeners.py
-
+import os
 import requests
 from requests.exceptions import RequestException
 from web.models.codebase_data_sources import CodebaseDataSource
@@ -26,7 +26,7 @@ def ingest_codebase_data_source(sender, chatbot_id, data_source_id, **kwargs):
 
     try:
         # Call to ingest service endpoint
-        url = "http://localhost:8000/api/ingest/"  # Replace with the actual URL
+        url = os.getenv('APP_URL') + "/api/ingest/" 
         response = requests.post(url, json=request_body)
 
         datasource.ingested_at = now()

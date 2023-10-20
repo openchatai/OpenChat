@@ -1,5 +1,5 @@
 from uuid import uuid4
-
+import os
 from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
@@ -11,6 +11,7 @@ from web.models.codebase_data_sources import CodebaseDataSource
 from web.signals.codebase_datasource_was_created import codebase_data_source_added
 from web.signals.pdf_datasource_was_added import pdf_data_source_added
 from web.services.handle_pdf_datasource import HandlePdfDataSource
+from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse, HttpResponseServerError
 from web.signals.codebase_datasource_was_created import codebase_data_source_added
@@ -27,12 +28,38 @@ import requests
 from uuid import uuid4
 import re
 
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 
+def check_authentication(view_func):
+    def wrapper(request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return HttpResponseRedirect(reverse('login'))
+        return view_func(request, *args, **kwargs)
+    return wrapper
+
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return HttpResponseRedirect(reverse('index'))
+        else:
+            return render(request, 'login.html', {'error': 'Invalid username or password'})
+    else:
+        return render(request, 'login.html')
+
+def logout_view(request):
+    logout(request)
+    return HttpResponseRedirect(reverse('login'))
+
+@check_authentication
 def index(request):
     chatbots = Chatbot.objects.all()
     return render(request, 'index.html', {'chatbots': chatbots})
 
+@check_authentication
 @require_POST
 def create_via_website_flow(request):
     name = request.POST.get('name') or ChatBotDefaults.NAME.value
@@ -58,7 +85,7 @@ def create_via_website_flow(request):
     
     return HttpResponseRedirect(reverse('onboarding.config', args=[str(chatbot.id)]))
 
-
+@check_authentication
 @require_POST
 def create_via_pdf_flow(request):
     name = request.POST.get('name') or ChatBotDefaults.NAME.value
@@ -80,6 +107,7 @@ def create_via_pdf_flow(request):
     pdf_data_source_added.send(sender='create_via_pdf_flow', bot_id=chatbot.id, data_source_id=data_source.id)
     return HttpResponseRedirect(reverse('onboarding.config', args=[str(chatbot.id)]))
 
+@check_authentication
 @require_POST
 def update_character_settings(request, id):
     print("update_character_settings", str(id))
@@ -150,22 +178,22 @@ def send_message(request, token):
         'sources': bot_response['sources'],
     })
 
-
 def get_chat_view(request, token):
     # Find the chatbot by token
     bot = get_object_or_404(Chatbot, token=token)
 
     # Initiate a cookie if it doesn't exist
     cookie_name = 'chatbot_' + str(bot.id)
+    app_url = os.getenv('APP_URL') #better to have full URL here for HTML template.
     if cookie_name not in request.COOKIES:
         cookie_value = str(uuid4())[:20]
         response = render(request, 'chat.html', {'bot': bot})
         response.set_cookie(cookie_name, cookie_value, max_age=60 * 60 * 24 * 365)  # 1 year
         return response
 
-    return render(request, 'chat.html', {'bot': bot})
+    return render(request, 'chat.html', {'bot': bot, 'APP_URL': app_url, 'title': str(bot.name)})
 
-
+@check_authentication
 def create_via_codebase_flow(request):
     if request.method == 'POST':
         prompt_message = request.POST.get('prompt_message') or get_qa_prompt_by_mode(mode="pair_programmer", initial_prompt=None)

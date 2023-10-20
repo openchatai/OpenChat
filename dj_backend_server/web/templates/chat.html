@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{{ bot.getName }}</title>
+    <title>{{ title }}</title>
 </head>
 <body>
     {% load static %}
-    <script src="{% static 'chat.js' %}?v6" type="text/javascript" defer></script>
+    <script src="{{ APP_URL }}{% static 'chat.js' %}?v6" type="text/javascript" defer></script>
     <script>
         window.onload = function () {
             initializeChatWidget({

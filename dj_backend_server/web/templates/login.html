@@ -1,0 +1,31 @@
+{% extends 'layout/noapp.html' %}
+{% load static %}
+{% block content %}
+<div class="bg-white inline-flex shadow-lg rounded-sm mb-8" style="width: 100%;">
+    <div class="flex flex-col md:flex-row md:-mr-px" style="width: 100%">
+        <div class="grow">
+
+            <div class="p-6 space-y-6"><h1>Login</h1>
+                <section>
+     
+     <form method="post">
+         {% csrf_token %}
+         <label for="username">Username:</label><br>
+         <input type="text" id="username" name="username"><br>
+         <label for="password">Password:</label><br>
+         <input type="password" id="password" name="password">
+         <footer>
+            <div class="flex flex-col px-6 py-5 border-t border-slate-200">
+                <div class="flex self-end">
+                <input type="submit" class="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-3" value="Login">
+                </div>
+            </div>
+        </footer>
+     </form>
+     {% if error %}
+         <p class="error">{{ error }}</p>
+     {% endif %}
+    </section></div> </div></div> </div>
+ </body>
+ </html>
+ {% endblock content %}

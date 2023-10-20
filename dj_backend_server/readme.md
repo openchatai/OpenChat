@@ -123,9 +123,27 @@ Below is a breakdown of the environment variables found within the `.env` file:
 - `DATABASE_PASSWORD`: Password for database access.
 - `DATABASE_HOST`: Hostname of the database (usually 'localhost' in this context).
 - `DATABASE_PORT`: Port number for database connection (e.g., `3306`).
+- `ALLOWED_HOSTS` : localhost,0.0.0.0,IPHERE,DOMAINHERE
+- `APP_URL` : 'http://URL-OF-DOMAIN'
 
 These environment variables configure your application's settings, interactions with external services, and database connectivity. Make sure to adjust them as needed to suit your project's requirements.
 
+## User creation
+
+Create a Superuser. Login into docker 
+
+```bash
+docker exec -it web /bin/bash
+```
+
+and execute command 
+
+```bash
+python manage.py createsuperuser
+```
+
+This will prompt you to enter a username, email, and password for the superuser. After this, you can use username and password to login 
+`APP_URL` : 'http://URL-OF-DOMAIN'
 
 ## Dockerizing Project Execution
 

@@ -100,8 +100,7 @@ def data_sources_updates(request, id):
     pdf_data_sources = PdfDataSource.objects.filter(chatbot_id=id)
     return render(request, 'widgets/data-sources-updates.html', {'website_data_sources': website_data_sources, 'pdf_data_sources': pdf_data_sources})
 
-
-def theme_settings(request, id):
+def theme_settings(request, id): 
     bot = get_object_or_404(Chatbot, id=id)
     context = {'APP_URL': settings.APP_URL, 'bot': bot}
     return render(request, 'settings-theme.html', context)
