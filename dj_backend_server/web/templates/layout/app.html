@@ -7,8 +7,9 @@
     <meta charset="utf-8">
     <title>OpenChat - Dashboard</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <link href="{% static 'dashboard/css/vendors/flatpickr.min.css' %}" rel="stylesheet">
-    <link href="{% static 'dashboard/style.css' %}" rel="stylesheet">
+    <link href="{% static 'dashboard/css/vendors/flatpickr.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'dashboard/style.css' %}" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"  />
 </head>
 
 <body class="font-inter antialiased bg-slate-100 text-slate-600" {% if sidebarExpanded %} class="sidebar-expanded" {% endif %} x-data="{ sidebarOpen: false, sidebarExpanded: localStorage.getItem('sidebar-expanded') == 'true' }"
