@@ -413,7 +413,7 @@
                                                             <tbody
                                                                 class="text-sm divide-y divide-slate-200 border-b border-slate-200">
 
-                                                                {% for file in source.files %}
+                                                                {% for file in source.merged_files %}
                                                                 <tr>
                                                                     <td
                                                                         class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap md:w-1/2">
@@ -432,7 +432,9 @@
                                                                     <td
                                                                         class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
                                                                         <div class="text-left">
-                                                                            <a href="{{ file.url }}">download</a>
+                                                                            <a href="{{ file.url }}"><span class="material-symbols-outlined">
+                                                                                download
+                                                                                </span></a>
                                                                         </div>
                                                                     </td>
 

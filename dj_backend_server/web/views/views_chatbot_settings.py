@@ -32,6 +32,12 @@ def delete_bot(request, id):
     bot.delete()
     return redirect('index')
 
+def serve_website_data_source_file(request, file_path):
+    file_path = os.path.join('website_data_sources', file_path)
+    if os.path.exists(file_path):
+        return FileResponse(open(file_path, 'rb'))
+    else:
+        return HttpResponseNotFound()
 
 def general_settings_update(request, id):
     bot = get_object_or_404(Chatbot, id=id)
@@ -64,21 +70,35 @@ def get_history_by_session_id(request, id, session_id):
 def data_settings(request, id):
     bot = get_object_or_404(Chatbot, id=id)
     website_data_sources = WebsiteDataSource.objects.filter(chatbot_id=id).prefetch_related('crawled_pages')
-
-    # Debugging only
-    # for data_source in website_data_sources:
-    #     for page in data_source.crawled_pages.all():
-    #         print("Page:", page) 
-
-    #         # Get index of current page
-    #         page_index = data_source.crawled_pages.all().index(page)
-
-    #         # Print raw JSON for this page
-    #         print("Raw Page Data:")
-    #         print(data_source._crawled_pages_cache[page_index])
-    
     pdf_data_sources = PdfDataSource.objects.filter(chatbot_id=id)
     codebase_data_sources = CodebaseDataSource.objects.filter(chatbot_id=id)
+
+    for source in pdf_data_sources:
+        merged_files = []
+
+        # print("Debug: File info before merging")
+        # print(source.get_files_info())
+
+        # print("Debug: File URLs before merging")
+        # print(source.get_files())
+
+        for file_info, file_url in zip(source.get_files_info(), source.get_files()):
+            # print("Debug: Current file_info")
+            # print(file_info)
+            
+            # print("Debug: Current file_url")
+            # print(file_url)
+            full_file_url = os.environ.get('APP_URL') + '/' + file_url
+            merged_file = {
+                'name': file_info.get('original_name', ''),
+                'url': full_file_url 
+            }
+            merged_files.append(merged_file)
+
+        print("Debug: Merged files")
+        print(merged_files)
+
+        source.merged_files = merged_files
 
     return render(request, 'settings-data.html', {'bot': bot, 'website_data_sources': website_data_sources, 'pdf_data_sources': pdf_data_sources, 'codebase_data_sources': codebase_data_sources})
 

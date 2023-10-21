@@ -45,4 +45,5 @@ urlpatterns = [
     # Chat URL
     path('chat/<str:token>/', views_chatbot.get_chat_view, name='chat'),
     path('chat/<str:token>/send-message/', views_chatbot.send_message, name='sendMessage'),
+    path('website_data_sources/<path:file_path>', views_chatbot_settings.serve_website_data_source_file, name='website_data_source_file'),
 ]

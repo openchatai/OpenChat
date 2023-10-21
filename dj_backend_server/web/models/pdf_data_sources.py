@@ -3,11 +3,10 @@ from web.models.chatbot import Chatbot
 import uuid
 
 class PdfDataSource(models.Model):
-    #id = models.CharField(max_length=36, primary_key=True)
     id = models.AutoField(primary_key=True)
     chatbot = models.ForeignKey(Chatbot, related_name='pdf_data_sources', db_column='chatbot_id', on_delete=models.SET_NULL, null=True)
-    #chatbot_id = models.CharField(max_length=36, null=True)
     files = models.JSONField()
+    files_info = models.JSONField(null=True)
     folder_name = models.CharField(max_length=255, null=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
@@ -19,11 +18,11 @@ class PdfDataSource(models.Model):
     def get_id(self):
         return self.id
 
-    def set_chatbot_id(self, chatbot_id):
-        self.chatbot_id = chatbot_id
+    def set_chatbot(self, chatbot):
+        self.chatbot = chatbot
 
-    def get_chatbot_id(self):
-        return self.chatbot_id
+    def get_chatbot(self):
+        return self.chatbot
 
     def set_files(self, files):
         self.files = files
@@ -46,5 +45,16 @@ class PdfDataSource(models.Model):
     def get_status(self):
         return self.ingest_status
 
+    def set_files_info(self, files_info):
+        self.files_info = files_info
+
+    def get_files_info(self):
+        return self.files_info
+
     class Meta:
         db_table = 'pdf_data_sources'  # Replace 'pdf_data_source' with the actual table name in the database
+
+class PdfDataSourceErrorLog(models.Model):
+     pdf_data_source = models.ForeignKey(PdfDataSource, related_name='error_logs', on_delete=models.CASCADE)
+     error_message = models.TextField()
+     created_at = models.DateTimeField(auto_now_add=True)
