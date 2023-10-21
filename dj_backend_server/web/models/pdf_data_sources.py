@@ -45,6 +45,12 @@ class PdfDataSource(models.Model):
     def get_status(self):
         return self.ingest_status
 
+    def set_files_info(self, files_info):
+        self.files_info = files_info
+
+    def get_files_info(self):
+        return self.files_info
+
     class Meta:
         db_table = 'pdf_data_sources'  # Replace 'pdf_data_source' with the actual table name in the database
 
