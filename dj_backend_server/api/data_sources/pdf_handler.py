@@ -10,7 +10,8 @@ import os
 from web.utils.delete_foler import delete_folder
 from api.interfaces import StoreOptions
 @csrf_exempt
-def pdf_handler(shared_folder: str, namespace: str):
+def pdf_handler(shared_folder: str, namespace: str, delete_folder_flag: bool):
+    print(f"VD:: {delete_folder_flag}")
     try:
         directory_path = os.path.join("website_data_sources", shared_folder)
 
@@ -25,10 +26,10 @@ def pdf_handler(shared_folder: str, namespace: str):
 
         init_vector_store(docs, embeddings, StoreOptions(namespace))
         
-        #TODO: add to settings to delete or not the folder after is successfully sent to QDRANT
-        #TODO: Also need in template to check, if folder exist and file exist, show download button, else empty.
-        #delete_folder(folder_path=directory_path)
-        #print('All is done, folder deleted')
+        # Delete the folder if delete_folder_flag is True
+        if delete_folder_flag:
+            delete_folder(folder_path=directory_path)
+            print('All is done, folder deleted')
 
     except Exception as e:
         import traceback

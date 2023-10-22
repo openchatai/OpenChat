@@ -422,7 +422,7 @@
                                                                                 <img class="w-9 h-9 rounded-full"
                                                                                     src="/static/dashboard/images/transactions-image-01.svg"
                                                                                     width="36" height="36"
-                                                                                    alt="Transaction 01">
+                                                                                    alt="{{ file.name }}">
                                                                             </div>
                                                                             <div class="font-medium text-slate-800">
                                                                                 {{ file.name }}
@@ -432,7 +432,7 @@
                                                                     <td
                                                                         class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
                                                                         <div class="text-left">
-                                                                            <a href="{{ file.url }}">
+                                                                            <a href="{{ file.url }}" target="_blank">
                                                                                 {{ file.message|safe }}
                                                                             </a>
                                                                         </div>

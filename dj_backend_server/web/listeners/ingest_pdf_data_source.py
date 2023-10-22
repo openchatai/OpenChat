@@ -12,6 +12,7 @@ from django.dispatch import receiver
 def ingest_pdf_datasource(sender, **kwargs):
     bot_id = kwargs['bot_id']
     pdf_data_source_id = kwargs['data_source_id']
+    delete_folder_flag = kwargs['delete_folder_flag']
 
     try:
         pdf_data_source = PdfDataSource.objects.get(id=pdf_data_source_id)
@@ -22,6 +23,7 @@ def ingest_pdf_datasource(sender, **kwargs):
         'type': 'pdf',
         'shared_folder': pdf_data_source.folder_name,
         'namespace': str(bot_id),
+        'delete_folder_flag': delete_folder_flag,
     }
 
     try:

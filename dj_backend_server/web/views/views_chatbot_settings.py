@@ -76,8 +76,8 @@ def data_settings(request, id):
     for source in pdf_data_sources:
         merged_files = []
 
-        print("Debug: File info before merging")
-        print(source.get_status())
+        #print("Debug: File info before merging")
+        #print(source.get_status())
 
         # print("Debug: File URLs before merging")
         # print(source.get_files())
