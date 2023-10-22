@@ -69,20 +69,25 @@ def get_history_by_session_id(request, id, session_id):
 
 def data_settings(request, id):
     bot = get_object_or_404(Chatbot, id=id)
-    website_data_sources = WebsiteDataSource.objects.filter(chatbot_id=id).prefetch_related('crawled_pages')
-    pdf_data_sources = PdfDataSource.objects.filter(chatbot_id=id)
-    codebase_data_sources = CodebaseDataSource.objects.filter(chatbot_id=id)
+    website_data_sources = WebsiteDataSource.objects.filter(chatbot_id=id).prefetch_related('crawled_pages').order_by('-id')
+    pdf_data_sources = PdfDataSource.objects.filter(chatbot_id=id).order_by('-id')
+    codebase_data_sources = CodebaseDataSource.objects.filter(chatbot_id=id).order_by('-id')
 
     for source in pdf_data_sources:
         merged_files = []
 
-        # print("Debug: File info before merging")
-        # print(source.get_files_info())
+        print("Debug: File info before merging")
+        print(source.get_status())
 
         # print("Debug: File URLs before merging")
         # print(source.get_files())
 
-        for file_info, file_url in zip(source.get_files_info(), source.get_files()):
+        ingest_status_list = source.get_status()
+        if not isinstance(ingest_status_list, list):
+            ingest_status_list = [ingest_status_list]
+
+        for file_info, file_url, ingest_status in zip(source.get_files_info(), source.get_files(), ingest_status_list):
+
             
             # Checking if the file was deleted. If so, we will show a message instead of the file URL
             if os.path.exists(file_url):
@@ -90,18 +95,20 @@ def data_settings(request, id):
                 merged_file = {
                     'name': file_info.get('original_name', ''),
                     'url': full_file_url,
-                    'message': '<span class="material-symbols-outlined">download</span>'
+                    'message': '<span class="material-symbols-outlined">download</span>',
+                    'ingest_status': ingest_status
                 }
             else:
                 merged_file = {
                     'name': file_info.get('original_name', ''),
                     'url': 'javascript:void(0)',
-                    'message': '<span class="material-symbols-outlined">remove_selection</span>'
+                    'message': '<span class="material-symbols-outlined">remove_selection</span>',
+                    'ingest_status': ingest_status
                 }
             merged_files.append(merged_file)
 
-        #print("Debug: Merged files")
-        #print(merged_files)
+        # print("Debug: Merged files")
+        # print(merged_file['ingest_status'])
 
         source.merged_files = merged_files
 
