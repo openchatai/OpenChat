@@ -83,20 +83,25 @@ def data_settings(request, id):
         # print(source.get_files())
 
         for file_info, file_url in zip(source.get_files_info(), source.get_files()):
-            # print("Debug: Current file_info")
-            # print(file_info)
             
-            # print("Debug: Current file_url")
-            # print(file_url)
-            full_file_url = os.environ.get('APP_URL') + '/' + file_url
-            merged_file = {
-                'name': file_info.get('original_name', ''),
-                'url': full_file_url 
-            }
+            # Checking if the file was deleted. If so, we will show a message instead of the file URL
+            if os.path.exists(file_url):
+                full_file_url = os.environ.get('APP_URL') + '/' + file_url
+                merged_file = {
+                    'name': file_info.get('original_name', ''),
+                    'url': full_file_url,
+                    'message': '<span class="material-symbols-outlined">download</span>'
+                }
+            else:
+                merged_file = {
+                    'name': file_info.get('original_name', ''),
+                    'url': 'javascript:void(0)',
+                    'message': '<span class="material-symbols-outlined">remove_selection</span>'
+                }
             merged_files.append(merged_file)
 
-        print("Debug: Merged files")
-        print(merged_files)
+        #print("Debug: Merged files")
+        #print(merged_files)
 
         source.merged_files = merged_files
 

@@ -25,8 +25,10 @@ def pdf_handler(shared_folder: str, namespace: str):
 
         init_vector_store(docs, embeddings, StoreOptions(namespace))
         
-        delete_folder(folder_path=directory_path)
-        print('All is done, folder deleted')
+        #TODO: add to settings to delete or not the folder after is successfully sent to QDRANT
+        #TODO: Also need in template to check, if folder exist and file exist, show download button, else empty.
+        #delete_folder(folder_path=directory_path)
+        #print('All is done, folder deleted')
 
     except Exception as e:
         import traceback
