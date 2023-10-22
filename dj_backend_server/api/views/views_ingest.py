@@ -20,7 +20,8 @@ def ingest(request):
             return JsonResponse({'error': 'Type not supported, use one of pdf, website or codebase'})
 
         if type_ == 'pdf':
-            pdf_handler_task.delay(shared_folder, namespace)
+            delete_folder_flag = data.get('delete_folder_flag', False)
+            pdf_handler_task.delay(shared_folder, namespace, delete_folder_flag)
         elif type_ == 'website':
             print("Calling website handler task")
             website_handler_task.delay(shared_folder, namespace)
