@@ -2,6 +2,8 @@
 import json
 from django.views.decorators.csrf import csrf_exempt
 from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.document_loaders.directory import DirectoryLoader
+from langchain.document_loaders import TextLoader
 from api.utils import get_embeddings
 from api.utils import init_vector_store
 import os
@@ -14,7 +16,7 @@ import traceback
 def pdf_handler(shared_folder: str, namespace: str, delete_folder_flag: bool):
     try:
         directory_path = os.path.join("website_data_sources", shared_folder)
-        print(f"Debug: Processing folder {directory_path}")
+        # print(f"Debug: Processing folder {directory_path}")
 
         if os.path.exists(directory_path):
             print(f"Debug: Directory exists. Files: {os.listdir(directory_path)}")
@@ -90,32 +92,24 @@ class MockDocument:
 @csrf_exempt
 def txt_to_vectordb(shared_folder: str, namespace: str, delete_folder_flag: bool):
     try:
-        directory_path = os.path.join("website_data_sources", shared_folder)
-        text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200, length_function=len)
+            directory_path = os.path.join("website_data_sources", shared_folder)
+            directory_loader = DirectoryLoader(directory_path, glob="**/*.txt", loader_cls=TextLoader, use_multithreading=True)
 
-        for filename in os.listdir(directory_path):
-            if filename.endswith(".txt"):
-                file_path = os.path.join(directory_path, filename)
+            raw_docs = directory_loader.load()
 
-                with open(file_path, 'r') as txt_file:
-                    raw_doc_content = txt_file.read()
+            text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200, length_function=len)
 
-                # Create a mock Document object
-                mock_doc = MockDocument(page_content=raw_doc_content, metadata={})
+            docs = text_splitter.split_documents(raw_docs)
 
-                # Perform text splitting
-                docs = text_splitter.split_documents([mock_doc])
+            print("docs -->", docs);
+            embeddings = get_embeddings()
 
-                # Get embeddings
-                embeddings = get_embeddings()
+            init_vector_store(docs, embeddings, StoreOptions(namespace=namespace))
 
-                # Initialize vector store
-                init_vector_store(docs, embeddings, StoreOptions(namespace))
-
-        # Delete folder if flag is set
-        if delete_folder_flag:
-            delete_folder(folder_path=directory_path)
-            print('All is done, folder deleted')
+            # Delete folder if flag is set
+            if delete_folder_flag:
+                delete_folder(folder_path=directory_path)
+                print('All is done, folder deleted')
 
     except Exception as e:
         import traceback
