@@ -8,7 +8,6 @@ from django.views.decorators.http import require_POST
 @require_POST
 def create(request, id):
     delete_folder_flag = 'delete_folder_flag' in request.POST
-    print(f"POST: {delete_folder_flag}")
     if request.FILES.getlist('pdffiles'):
         # Get the Chatbot object
         bot = get_object_or_404(Chatbot, id=id)

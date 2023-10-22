@@ -11,7 +11,6 @@ from web.utils.delete_foler import delete_folder
 from api.interfaces import StoreOptions
 @csrf_exempt
 def pdf_handler(shared_folder: str, namespace: str, delete_folder_flag: bool):
-    print(f"VD:: {delete_folder_flag}")
     try:
         directory_path = os.path.join("website_data_sources", shared_folder)
 
