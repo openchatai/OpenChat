@@ -3,6 +3,7 @@ import json
 from django.views.decorators.csrf import csrf_exempt
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.document_loaders.directory import DirectoryLoader
+from langchain.document_loaders import PyPDFium2Loader
 from langchain.document_loaders import TextLoader
 from api.utils import get_embeddings
 from api.utils import init_vector_store
@@ -15,18 +16,20 @@ import traceback
 @csrf_exempt
 def pdf_handler(shared_folder: str, namespace: str, delete_folder_flag: bool):
     try:
-        directory_path = os.path.join("website_data_sources", shared_folder)
-        # print(f"Debug: Processing folder {directory_path}")
+        #TODO: When will be multiple external library to choose, need to change.
+        if os.environ.get("PDF_LIBRARY") == "external":
+            directory_path = os.path.join("website_data_sources", shared_folder)
+            # print(f"Debug: Processing folder {directory_path}")
 
-        if os.path.exists(directory_path):
-            print(f"Debug: Directory exists. Files: {os.listdir(directory_path)}")
-        else:
-            print(f"Debug: Directory does not exist")
+            if os.path.exists(directory_path):
+                print(f"Debug: Directory exists. Files: {os.listdir(directory_path)}")
+            else:
+                print(f"Debug: Directory does not exist")
 
-        for filename in os.listdir(directory_path):
-                if filename.endswith(".pdf"):
-                    file_path = os.path.join(directory_path, filename)
-                    process_pdf(file_path,directory_path)
+            for filename in os.listdir(directory_path):
+                    if filename.endswith(".pdf"):
+                        file_path = os.path.join(directory_path, filename)
+                        process_pdf(file_path,directory_path)
 
         txt_to_vectordb(shared_folder, namespace, delete_folder_flag)
 
@@ -75,10 +78,10 @@ def process_pdf(FilePath,directory_path):
     ocrText = str(jobj["OCRText"])
 
     # Extract the filename without the extension
-    base_filename = os.path.splitext(os.path.basename(FilePath))[0]
+    file_path = os.path.splitext(os.path.basename(FilePath))[0]
 
     # Create a new TXT file with the same name in the same directory
-    txt_file_path = os.path.join(directory_path, base_filename + '.txt')
+    txt_file_path = os.path.join(directory_path, file_path + '.txt')
 
     # Write the OCR text into the new TXT file
     with open(txt_file_path, 'w') as txt_file:
@@ -88,7 +91,12 @@ def process_pdf(FilePath,directory_path):
 def txt_to_vectordb(shared_folder: str, namespace: str, delete_folder_flag: bool):
     try:
             directory_path = os.path.join("website_data_sources", shared_folder)
-            directory_loader = DirectoryLoader(directory_path, glob="**/*.txt", loader_cls=TextLoader, use_multithreading=True)
+
+            #TODO: When will be multiple external library to choose, need to change.    
+            if os.environ.get("PDF_LIBRARY") == "external":
+                directory_loader = DirectoryLoader(directory_path, glob="**/*.txt", loader_cls=TextLoader, use_multithreading=True)
+            else:
+                directory_loader = DirectoryLoader(directory_path, glob="**/*.pdf", loader_cls=PyPDFium2Loader, use_multithreading=True)
 
             raw_docs = directory_loader.load()
 

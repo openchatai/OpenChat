@@ -76,41 +76,32 @@ def data_settings(request, id):
     for source in pdf_data_sources:
         merged_files = []
 
-        #print("Debug: File info before merging")
-        #print(source.get_status())
+        for file_info, file_url in zip(source.get_files_info(), source.get_files()):
 
-        # print("Debug: File URLs before merging")
-        # print(source.get_files())
-
-        ingest_status_list = source.get_status()
-        if not isinstance(ingest_status_list, list):
-            ingest_status_list = [ingest_status_list]
-
-        for file_info, file_url, ingest_status in zip(source.get_files_info(), source.get_files(), ingest_status_list):
-
-            
-            # Checking if the file was deleted. If so, we will show a message instead of the file URL
             if os.path.exists(file_url):
                 full_file_url = os.environ.get('APP_URL') + '/' + file_url
                 merged_file = {
                     'name': file_info.get('original_name', ''),
                     'url': full_file_url,
                     'message': '<span class="material-symbols-outlined">download</span>',
-                    'ingest_status': ingest_status
                 }
             else:
                 merged_file = {
                     'name': file_info.get('original_name', ''),
                     'url': 'javascript:void(0)',
                     'message': '<span class="material-symbols-outlined">remove_selection</span>',
-                    'ingest_status': ingest_status
                 }
             merged_files.append(merged_file)
 
-        # print("Debug: Merged files")
-        # print(merged_file['ingest_status'])
+        if source.ingest_status == 'pending':
+            status_html = '<div class="inline-flex font-medium bg-blue-100 text-blue-600 rounded-full text-center px-2.5 py-0.5">PENDING</div>'
+        elif source.ingest_status == 'success':
+            status_html = '<div class="inline-flex font-medium bg-emerald-100 text-emerald-600 rounded-full text-center px-2.5 py-0.5">SUCCESS</div>'
+        elif source.ingest_status == 'failed':
+            status_html = '<div class="inline-flex font-medium bg-amber-100 text-amber-600 rounded-full text-center px-2.5 py-0.5">FAILED</div>'
 
         source.merged_files = merged_files
+        source.status_html = status_html
 
     return render(request, 'settings-data.html', {'bot': bot, 'website_data_sources': website_data_sources, 'pdf_data_sources': pdf_data_sources, 'codebase_data_sources': codebase_data_sources})
 
