@@ -180,6 +180,9 @@ export DISABLE_SPRING=true
 
 [Building with docker guide](docs/building_with_docker.md)
 
+## Todo list
+[List of todo items](docs/todo.md)
+
 ## Contributing
 
 We welcome contributions! If you find any issues or want to enhance the project, please create a pull request.
