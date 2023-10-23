@@ -54,7 +54,11 @@
                         <div class="pt-0.5 pb-2 px-3 mb-1 border-b border-slate-200">
                             <div class="font-medium text-slate-800">User</div>
                             <div class="text-xs text-slate-500 italic">Admin account</div>
-                            <div class="text-xs text-slate-500 italic"><a href="{% url 'logout' %}">Logout</a></div>
+                            <ul>
+                                <li>
+                                    <a class="font-medium text-sm text-indigo-500 hover:text-indigo-600 flex items-center py-1 px-3" href="{% url 'logout' %}">Sign Out</a>
+                                </li>
+                            </ul>
                         </div>
 
                     </div>

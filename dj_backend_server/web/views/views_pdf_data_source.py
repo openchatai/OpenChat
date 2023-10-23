@@ -7,6 +7,7 @@ from django.views.decorators.http import require_POST
 
 @require_POST
 def create(request, id):
+    delete_folder_flag = 'delete_folder_flag' in request.POST
     if request.FILES.getlist('pdffiles'):
         # Get the Chatbot object
         bot = get_object_or_404(Chatbot, id=id)
@@ -16,7 +17,7 @@ def create(request, id):
         data_source = handle_pdf_data_source.handle()
 
         # Trigger the event (Equivalent to Laravel's event(new PdfDataSourceWasAdded($bot->getId(), $dataSource->getId())))
-        pdf_data_source_added.send(sender=None, bot_id=bot.id, data_source_id=data_source.id)
+        pdf_data_source_added.send(sender=None, bot_id=bot.id, data_source_id=data_source.id, delete_folder_flag=delete_folder_flag)
 
         # Redirect to the chatbot settings page with a success message
         return redirect('chatbot.settings-data', id=bot.id)

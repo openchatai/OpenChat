@@ -38,10 +38,10 @@ install-requirements: activate-venv
 	pip install -r requirements.txt
 
 install: .env install-requirements
-	docker-compose up -d
+	$(DOCKER_COMPOSE) up -d
 
 down:
-	docker-compose down
+	$(DOCKER_COMPOSE) down --remove-orphans
 
 ifeq ($(OS), Darwin)  # macOS
 OPEN_COMMAND := open
@@ -61,16 +61,16 @@ endif
 
 # celery -A dj_backend_server worker --loglevel=info &
 dev-start:
-	docker-compose -f docker-compose.linux.yaml up -d
-	python3 manage.py sync_models && python3 manage.py runserver 0.0.0.0:8000
+	$(DOCKER_COMPOSE) -f docker-compose.linux.yaml up -d
+	# python3 manage.py sync_models && python3 manage.py runserver 0.0.0.0:8000
 
 	@echo $(shell tput setaf 3)"Waiting for 20 seconds before opening the browser..."$(shell tput sgr0)
 	sleep 20
 
-	$(OPEN_COMMAND) http://65.109.130.211:8000/	
+	$(OPEN_COMMAND) http://localhost:8000/	
 
 dev-stop:
-	docker-compose down
+	$(DOCKER_COMPOSE) down --remove-orphans
 	kill -9 $$(pgrep -f "celery -A dj_backend_server")
 	kill -9 $$(pgrep -f "python3 manage.py runserver")
 
@@ -78,13 +78,21 @@ dev-stop:
 
 force_migrate:
 	@echo $(shell tput setaf 2)"Running migrations inside the Docker container..."
-	docker exec -it web python manage.py makemigrations web
-	docker exec -it web python manage.py migrate
+	$(DOCKER) exec -it web python manage.py makemigrations web
+	$(DOCKER) exec -it web python manage.py migrate
 
 all: venv install-requirements install down dev-start dev-stop
 	@echo $$(tput setaf 3)"All steps executed successfully."$$(tput sgr0)
 	
 logs:
-	docker-compose logs -f
+	$(DOCKER_COMPOSE) logs -f
+
+exec:
+	$(DOCKER) exec -u 0 -it oc_web /bin/bash
+
+restart:
+	$(DOCKER) restart oc_web
+	$(DOCKER) restart oc_celery
+	make logs
 
 .PHONY: venv install-requirements install down dev-start dev-stop

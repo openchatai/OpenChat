@@ -302,23 +302,7 @@
                                                     </div>
                                                 </td>
                                                 <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-                                                    {% if source.status == 'PENDING' %}
-                                                    <div
-                                                        class="inline-flex font-medium bg-blue-100 text-blue-600 rounded-full text-center px-2.5 py-0.5">
-                                                        {{ source.status }}
-                                                    </div>
-                                                    {% elif source.status == 'SUCCESS' %}
-                                                    <div
-                                                        class="inline-flex font-medium bg-emerald-100 text-emerald-600 rounded-full text-center px-2.5 py-0.5">
-                                                        {{ source.status }}
-                                                    </div>
-
-                                                    {% elif source.status == 'FAILED' %}
-                                                    <div
-                                                        class="inline-flex font-medium bg-amber-100 text-amber-600 rounded-full text-center px-2.5 py-0.5">
-                                                        {{ source.status }}
-                                                    </div>
-                                                    {% endif %}
+                                                    {{ source.status_html|safe }}
                                                 </td>
 
                                                 <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
@@ -398,11 +382,6 @@
                                                                     </th>
                                                                     <th
                                                                         class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-                                                                        <div class="font-semibold text-left">Status
-                                                                        </div>
-                                                                    </th>
-                                                                    <th
-                                                                        class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
                                                                         <div class="font-semibold text-right">On</div>
                                                                     </th>
 
@@ -422,7 +401,7 @@
                                                                                 <img class="w-9 h-9 rounded-full"
                                                                                     src="/static/dashboard/images/transactions-image-01.svg"
                                                                                     width="36" height="36"
-                                                                                    alt="Transaction 01">
+                                                                                    alt="{{ file.name }}">
                                                                             </div>
                                                                             <div class="font-medium text-slate-800">
                                                                                 {{ file.name }}
@@ -432,12 +411,11 @@
                                                                     <td
                                                                         class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
                                                                         <div class="text-left">
-                                                                            <a href="{{ file.url }}"><span class="material-symbols-outlined">
-                                                                                download
-                                                                                </span></a>
+                                                                            <a href="{{ file.url }}" target="_blank">
+                                                                                {{ file.message|safe }}
+                                                                            </a>
                                                                         </div>
                                                                     </td>
-
                                                                     <td
                                                                         class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">
                                                                         <div

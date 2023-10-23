@@ -125,6 +125,10 @@ Below is a breakdown of the environment variables found within the `.env` file:
 - `DATABASE_PORT`: Port number for database connection (e.g., `3306`).
 - `ALLOWED_HOSTS` : localhost,0.0.0.0,IPHERE,DOMAINHERE
 - `APP_URL` : 'http://URL-OF-DOMAIN'
+- `PDF_LIBRARY` = 'external'
+- `OCR_LICCODE` = 'XXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXX'
+- `OCR_USERNAME` =  'username'
+- `OCR_LANGUAGE` = 'english'
 
 These environment variables configure your application's settings, interactions with external services, and database connectivity. Make sure to adjust them as needed to suit your project's requirements.
 
@@ -161,6 +165,10 @@ DATABASE_PASSWORD=mypassword
 DATABASE_HOST=mysql
 DATABASE_PORT=3306
 ```
+
+## External PDF library
+
+You can now configure the .env.docker file to use an external PDF library. By default, the internal library is used. However, the external library offers several advantages, such as Optical Character Recognition (OCR) capabilities and support for various PDF file types. The external service provides 25 free pages per day, or you can subscribe for additional pages at a reasonable cost. If you want to use it, visit their website and create a new account via http://www.ocrwebservice.com/account/signup and get license code.
 
 ## Troubleshooting
 

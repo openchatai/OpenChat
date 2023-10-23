@@ -69,36 +69,39 @@ def get_history_by_session_id(request, id, session_id):
 
 def data_settings(request, id):
     bot = get_object_or_404(Chatbot, id=id)
-    website_data_sources = WebsiteDataSource.objects.filter(chatbot_id=id).prefetch_related('crawled_pages')
-    pdf_data_sources = PdfDataSource.objects.filter(chatbot_id=id)
-    codebase_data_sources = CodebaseDataSource.objects.filter(chatbot_id=id)
+    website_data_sources = WebsiteDataSource.objects.filter(chatbot_id=id).prefetch_related('crawled_pages').order_by('-id')
+    pdf_data_sources = PdfDataSource.objects.filter(chatbot_id=id).order_by('-id')
+    codebase_data_sources = CodebaseDataSource.objects.filter(chatbot_id=id).order_by('-id')
 
     for source in pdf_data_sources:
         merged_files = []
 
-        # print("Debug: File info before merging")
-        # print(source.get_files_info())
-
-        # print("Debug: File URLs before merging")
-        # print(source.get_files())
-
         for file_info, file_url in zip(source.get_files_info(), source.get_files()):
-            # print("Debug: Current file_info")
-            # print(file_info)
-            
-            # print("Debug: Current file_url")
-            # print(file_url)
-            full_file_url = os.environ.get('APP_URL') + '/' + file_url
-            merged_file = {
-                'name': file_info.get('original_name', ''),
-                'url': full_file_url 
-            }
+
+            if os.path.exists(file_url):
+                full_file_url = os.environ.get('APP_URL') + '/' + file_url
+                merged_file = {
+                    'name': file_info.get('original_name', ''),
+                    'url': full_file_url,
+                    'message': '<span class="material-symbols-outlined">download</span>',
+                }
+            else:
+                merged_file = {
+                    'name': file_info.get('original_name', ''),
+                    'url': 'javascript:void(0)',
+                    'message': '<span class="material-symbols-outlined">remove_selection</span>',
+                }
             merged_files.append(merged_file)
 
-        print("Debug: Merged files")
-        print(merged_files)
+        if source.ingest_status == 'pending':
+            status_html = '<div class="inline-flex font-medium bg-blue-100 text-blue-600 rounded-full text-center px-2.5 py-0.5">PENDING</div>'
+        elif source.ingest_status == 'success':
+            status_html = '<div class="inline-flex font-medium bg-emerald-100 text-emerald-600 rounded-full text-center px-2.5 py-0.5">SUCCESS</div>'
+        elif source.ingest_status == 'failed':
+            status_html = '<div class="inline-flex font-medium bg-amber-100 text-amber-600 rounded-full text-center px-2.5 py-0.5">FAILED</div>'
 
         source.merged_files = merged_files
+        source.status_html = status_html
 
     return render(request, 'settings-data.html', {'bot': bot, 'website_data_sources': website_data_sources, 'pdf_data_sources': pdf_data_sources, 'codebase_data_sources': codebase_data_sources})
 

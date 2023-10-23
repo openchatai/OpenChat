@@ -35,6 +35,14 @@ class HandlePdfDataSource:
                 # Generate hash of the file content
                 file_hash = hashlib.md5(file.read()).hexdigest()
                 file.seek(0)  # Reset file pointer to beginning
+                
+                # Create the directory if it does not exist
+                directory = os.path.dirname(file_path)
+                os.makedirs(directory, exist_ok=True)
+
+                # Check if the directory was created successfully
+                if not os.path.isdir(directory):
+                    raise Exception(f"Failed to create directory: {directory}")
 
                 # Save the file to the storage system
                 default_storage.save(file_path, file)
@@ -61,6 +69,7 @@ class HandlePdfDataSource:
         data_source.files = files_urls
         data_source.files_info = files_info_list
         data_source.folder_name = folder_name
+        data_source.ingest_status = 'PDF(s) Uploaded'
 
         data_source.save()
         return data_source
