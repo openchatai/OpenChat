@@ -159,7 +159,7 @@ bot_response = ChatbotResponse(response.json())
 fails for when content moderation finds an issue with submitted document or the prompt, test with FREE_TEST_DATA_100KB
 
 Add more data source of type web is still not working - This has been fixed, but the bot takes an eternity to reply!!
-example bot - `http://localhost:8000/chat/76307849-98e7-46cf-a/`
+example bot - `http://0.0.0.0:8000/chat/76307849-98e7-46cf-a/`
 Needs more inspection
 
 
