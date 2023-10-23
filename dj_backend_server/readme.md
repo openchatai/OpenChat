@@ -98,39 +98,58 @@ python manage.py migrate
 
 Certainly, here's the rephrased content with a consistent and user-friendly style:
 
-## Environment Variables in `.env` File
+Here's an improved version of your markdown:
 
-Below is a breakdown of the environment variables found within the `.env` file:
+# Environment Variables in the `.env` File
 
-- `OPENAI_API_TYPE`: Specifies the type of API (either 'azure' or 'openai').
+This section provides a detailed breakdown of the environment variables defined within the `.env` file. These variables are crucial for configuring your application and services.
+
+## Common Configuration Variables
+
+- `OPENAI_API_TYPE`: Specifies the type of API, which can be set to either 'azure' or 'openai'.
 - `OPENAI_API_BASE`: The base URL for the OpenAI API.
 - `OPENAI_API_KEY`: Your unique OpenAI API key.
-- `OPENAI_API_VERSION`: The version of the OpenAI API.
-- `OPENAI_EMBEDDING_MODEL_NAME`: The name of the embedding model being used.
+- `OPENAI_API_VERSION`: The version of the OpenAI API in use.
+- `OPENAI_EMBEDDING_MODEL_NAME`: The name of the specific embedding model being utilized.
 - `OPENAI_DEPLOYMENT_NAME`: The designated deployment name.
-- `OPENAI_COMPLETION_MODEL`: The specific completion model in use (e.g., 'gpt-3.5-turbo').
-- `EMBEDDING_PROVIDER`: The provider chosen for embeddings (typically 'openai').
-- `STORE`: The vector store option (PINECONE or QDRANT).
+- `OPENAI_COMPLETION_MODEL`: The exact completion model in use, e.g., 'gpt-3.5-turbo'.
+- `EMBEDDING_PROVIDER`: The chosen provider for embeddings, typically set to 'openai'.
+- `STORE`: The vector store option, which can be either 'PINECONE' or 'QDRANT'.
 - `PINECONE_API_KEY`: API key for Pinecone, if applicable.
 - `PINECONE_ENV`: Pinecone environment identifier, if used.
 - `VECTOR_STORE_INDEX_NAME`: The name assigned to the vector store index, if applicable.
-- `QDRANT_URL`: The URL for Qdrant, if utilized.
+- `QDRANT_URL`: The URL for Qdrant, if it's part of your setup.
+
+## Celery Configuration (Optional)
 
 - `CELERY_BROKER_URL`: Redis broker URL for Celery (e.g., `redis://localhost:6379/0`).
 - `CELERY_RESULT_BACKEND`: Redis backend for Celery (e.g., `redis://localhost:6379/0`).
+
+## Database Configuration
+
 - `DATABASE_NAME`: Name of the database.
 - `DATABASE_USER`: Username for database access.
 - `DATABASE_PASSWORD`: Password for database access.
-- `DATABASE_HOST`: Hostname of the database (usually 'localhost' in this context).
-- `DATABASE_PORT`: Port number for database connection (e.g., `3306`).
-- `ALLOWED_HOSTS` : localhost,0.0.0.0,IPHERE,DOMAINHERE
-- `APP_URL` : 'http://URL-OF-DOMAIN'
-- `PDF_LIBRARY` = 'external'
-- `OCR_LICCODE` = 'XXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXX'
-- `OCR_USERNAME` =  'username'
-- `OCR_LANGUAGE` = 'english'
+- `DATABASE_HOST`: Hostname of the database, usually 'localhost' in this context.
+- `DATABASE_PORT`: Port number for the database connection (e.g., `3306`).
 
-These environment variables configure your application's settings, interactions with external services, and database connectivity. Make sure to adjust them as needed to suit your project's requirements.
+## Application Settings
+
+- `ALLOWED_HOSTS`: A comma-separated list of allowed hostnames, IP addresses, and domains.
+- `APP_URL`: The URL of your application or service.
+- `PDF_LIBRARY`: Specifies the PDF library in use, usually set to 'external'.
+- `OCR_LICCODE`: License code for OCR, e.g., 'XXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXX'.
+- `OCR_USERNAME`: OCR service username.
+- `OCR_LANGUAGE`: The language setting for OCR, often set to 'english'.
+
+## User Authentication (Optional)
+
+- `DJANGO_SUPERUSER_USERNAME`: Superuser username, typically 'admin'.
+- `DJANGO_SUPERUSER_PASSWORD`: Superuser password, commonly 'admin_password'.
+
+Please make sure to set these environment variables according to your project's specific requirements.
+
+These environment variables configure your application's settings, interactions with external services, and database connectivity.
 
 ## User creation
 
