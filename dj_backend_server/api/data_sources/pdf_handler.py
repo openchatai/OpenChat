@@ -84,11 +84,6 @@ def process_pdf(FilePath,directory_path):
     with open(txt_file_path, 'w') as txt_file:
         txt_file.write(ocrText)
 
-class MockDocument:
-    def __init__(self, page_content, metadata={}):
-        self.page_content = page_content
-        self.metadata = metadata
-
 @csrf_exempt
 def txt_to_vectordb(shared_folder: str, namespace: str, delete_folder_flag: bool):
     try:

@@ -69,6 +69,7 @@ class HandlePdfDataSource:
         data_source.files = files_urls
         data_source.files_info = files_info_list
         data_source.folder_name = folder_name
+        data_source.ingest_status = 'PDF(s) Uploaded'
 
         data_source.save()
         return data_source
