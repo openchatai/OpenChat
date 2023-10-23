@@ -93,6 +93,7 @@ def data_settings(request, id):
                 }
             merged_files.append(merged_file)
 
+        status_html = None
         if source.ingest_status == 'pending':
             status_html = '<div class="inline-flex font-medium bg-blue-100 text-blue-600 rounded-full text-center px-2.5 py-0.5">PENDING</div>'
         elif source.ingest_status == 'success':
