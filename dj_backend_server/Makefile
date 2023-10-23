@@ -29,13 +29,14 @@ ifndef venv
 endif
 
 activate-venv: 
-	@echo $(shell tput setaf 3)"Activating virtual environment..."$(shell tput sgr0)
+	@echo $$(tput setaf 3) "Activating virtual environment..." $$(tput sgr0)
 	. venv/bin/activate
 
 
 install-requirements: activate-venv
-	@echo $(shell tput setaf 2)"Installing Python dependencies..."$(shell tput sgr0)
+	@echo $$(tput setaf 2) "Installing Python dependencies..." $$(tput sgr0)
 	pip install -r requirements.txt
+
 
 install: .env install-requirements
 	$(DOCKER_COMPOSE) up -d
@@ -67,7 +68,7 @@ dev-start:
 	@echo $(shell tput setaf 3)"Waiting for 20 seconds before opening the browser..."$(shell tput sgr0)
 	sleep 20
 
-	$(OPEN_COMMAND) http://localhost:8000/	
+	$(OPEN_COMMAND) http://0.0.0.0:8000/	
 
 dev-stop:
 	$(DOCKER_COMPOSE) down --remove-orphans

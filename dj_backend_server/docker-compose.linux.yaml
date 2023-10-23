@@ -67,7 +67,8 @@ services:
     env_file:
       - .env.docker
     command: >
-      sh -c "python manage.py sync_models &&
+      sh -c "python manage.py create_superuser &&
+             python manage.py sync_models &&
              python manage.py runserver 0.0.0.0:8000"
     networks:
       - openchat_network
