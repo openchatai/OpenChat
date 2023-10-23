@@ -90,7 +90,8 @@ def create_via_website_flow(request):
 def create_via_pdf_flow(request):
     name = request.POST.get('name') or ChatBotDefaults.NAME.value
     prompt_message = request.POST.get('prompt_message') or ChatBotInitialPromptEnum.AI_ASSISTANT_INITIAL_PROMPT.value
-
+    delete_folder_flag = 'delete_folder_flag' in request.POST
+    
     chatbot = Chatbot.objects.create(
         id=uuid4(),
         name=name,
@@ -104,7 +105,7 @@ def create_via_pdf_flow(request):
     data_source = handle_pdf.handle()
 
     # Trigger the PdfDataSourceWasAdded event
-    pdf_data_source_added.send(sender='create_via_pdf_flow', bot_id=chatbot.id, data_source_id=data_source.id)
+    pdf_data_source_added.send(sender='create_via_pdf_flow', bot_id=chatbot.id, data_source_id=data_source.id, delete_folder_flag=delete_folder_flag)
     return HttpResponseRedirect(reverse('onboarding.config', args=[str(chatbot.id)]))
 
 @check_authentication
