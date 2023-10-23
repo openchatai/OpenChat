@@ -42,7 +42,6 @@ services:
   #   volumes:
   #     - ./app:/var/www/html
   #     - ./nginx/ssl:/etc/nginx/ssl
-  #     - /mnt/HC_Volume_36276613:/var/www/html/static
   #   working_dir: /etc/nginx
   #   links:
   #     - python
