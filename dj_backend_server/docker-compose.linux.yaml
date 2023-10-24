@@ -32,21 +32,21 @@ services:
     networks:
       - openchat_network
 
-  # nginx:
-  #   restart: unless-stopped
-  #   container_name: oc_nginx
-  #   build: ./docker/nginx
-  #   ports:
-  #     - 80:80
-  #     - 443:443
-  #   volumes:
-  #     - ./app:/var/www/html
-  #     - ./nginx/ssl:/etc/nginx/ssl
-  #   working_dir: /etc/nginx
-  #   links:
-  #     - python
-  #   networks:
-  #     - openchat_network 
+  nginx:
+    restart: unless-stopped
+    container_name: oc_nginx
+    build: ./docker/nginx
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./:/app/
+      - ./nginx/ssl:/etc/nginx/ssl
+    working_dir: /etc/nginx
+    links:
+      - web
+    networks:
+      - openchat_network 
 
   web:
     build:
