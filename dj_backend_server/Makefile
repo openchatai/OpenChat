@@ -63,17 +63,14 @@ endif
 # celery -A dj_backend_server worker --loglevel=info &
 dev-start:
 	$(DOCKER_COMPOSE) -f docker-compose.linux.yaml up -d
-
 	@echo $(shell tput setaf 3)"Waiting for 20 seconds before opening the browser..."$(shell tput sgr0)
 	sleep 20
-
 	$(OPEN_COMMAND) http://0.0.0.0:8000/	
 
 dev-stop:
 	$(DOCKER_COMPOSE) down --remove-orphans
 	kill -9 $$(pgrep -f "celery -A dj_backend_server")
 	kill -9 $$(pgrep -f "python3 manage.py runserver")
-
 	@echo $$(tput setaf 3)"Services stopped."$$(tput sgr0)
 
 force_migrate:

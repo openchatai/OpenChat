@@ -55,7 +55,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'web',
     'api',
-    'management'
+    'management',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
@@ -67,6 +68,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'dj_backend_server.urls'
@@ -187,3 +189,7 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # You can choose other e
 #]
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '0.0.0.0').split(',')
 APP_URL = os.environ.get('APP_URL', 'http://0.0.0.0:8000')
+
+CORS_ALLOWED_ORIGINS = [
+    APP_URL,
+]
