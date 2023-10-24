@@ -78,6 +78,21 @@ services:
     command: celery -A dj_backend_server worker --loglevel=info
     networks:
       - openchat_network
+  
+  minio:
+    image: minio/minio
+    container_name: minio
+    environment:
+      MINIO_ACCESS_KEY: your-access-key
+      MINIO_SECRET_KEY: your-secret-key
+    ports:
+      - "9000:9000"
+    volumes:
+      - minio-data:/data
+    command: server /data
+    networks:
+      - openchat_network
+
 
   redis:
     image: redis:latest
