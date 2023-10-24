@@ -35,7 +35,7 @@ services:
     container_name:
       web
     ports:
-      - "8000:8000"
+      - "8001:8000"
     volumes:
       - ./website_data_sources:/app/website_data_sources
     # - ./llama-2-7b-chat.ggmlv3.q4_K_M.bin:/app/llama-2-7b-chat.ggmlv3.q4_K_M.bin:ro
@@ -88,7 +88,23 @@ services:
       - redis_data:/data
     networks:
       - openchat_network
-
+  
+  nginx:
+    image: nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      - openchat_network
+    depends_on:
+      - qdrant
+      - mysql
+      - web
+      - redis
+      - celery_worker
+      
 networks:
   openchat_network:
 
