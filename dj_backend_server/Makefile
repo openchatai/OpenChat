@@ -63,7 +63,6 @@ endif
 # celery -A dj_backend_server worker --loglevel=info &
 dev-start:
 	$(DOCKER_COMPOSE) -f docker-compose.linux.yaml up -d
-	# python3 manage.py sync_models && python3 manage.py runserver 0.0.0.0:8000
 
 	@echo $(shell tput setaf 3)"Waiting for 20 seconds before opening the browser..."$(shell tput sgr0)
 	sleep 20

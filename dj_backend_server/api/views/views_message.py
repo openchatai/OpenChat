@@ -6,6 +6,7 @@ import requests
 from django.views.decorators.csrf import csrf_exempt
 import json
 from web.utils.common import get_session_id
+import os
 
 from web.models.chat_histories import ChatHistory
 class ChatbotResponse:
@@ -37,8 +38,9 @@ def send_search_request(request):
         bot = get_object_or_404(Chatbot, token=bot_token)
 
         # Implement the equivalent logic to send the HTTP request to the external API
+        print(os.getenv('APP_URL'))
         response = requests.post(
-            'http://0.0.0.0:8000/api/chat',
+            os.getenv('APP_URL') + '/api/chat/',
             json={
                 'question': message,
                 'namespace': str(bot.id),  # Assuming getId returns a UUID object
@@ -102,8 +104,9 @@ def send_chat(request):
             }, status=400)
 
         # Implement the equivalent logic to send the HTTP request to the external API
+        print(os.getenv('APP_URL'))
         response = requests.post(
-            'http://0.0.0.0:8000/api/chat/',
+            os.getenv('APP_URL') + '/api/chat/',
             json={
                 'question': content,
                 'namespace': str(bot.id),  # Assuming getId returns a UUID object
