@@ -32,21 +32,26 @@ services:
     networks:
       - openchat_network
 
-  # nginx:
-  #   restart: unless-stopped
-  #   container_name: oc_nginx
-  #   build: ./docker/nginx
-  #   ports:
-  #     - 80:80
-  #     - 443:443
-  #   volumes:
-  #     - ./app:/var/www/html
-  #     - ./nginx/ssl:/etc/nginx/ssl
-  #   working_dir: /etc/nginx
-  #   links:
-  #     - python
-  #   networks:
-  #     - openchat_network 
+  nginx:
+    image: nginx
+    container_name: oc_nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/ssl/cert.pem:/etc/nginx/ssl/cert.pem
+      - ./nginx/ssl/privkey.pem:/etc/nginx/ssl/privkey.pem
+      - ./static:/app/web/static/
+    networks:
+      - openchat_network
+    depends_on:
+      - qdrant
+      - mysql
+      - web
+      - redis
+      - celery_worker
 
   web:
     build:
@@ -54,10 +59,11 @@ services:
       dockerfile: Dockerfile
     container_name: oc_web
     ports:
-      - "8000:8000"
+      - "8001:8000"
     volumes:
       - ./website_data_sources:/app/website_data_sources
       - ./:/app/
+    # - ./entrypoint.sh:/app/entrypoint.sh
     # - ./llama-2-7b-chat.ggmlv3.q4_K_M.bin:/app/llama-2-7b-chat.ggmlv3.q4_K_M.bin:ro
     depends_on:
       mysql:
@@ -66,6 +72,7 @@ services:
         condition: service_healthy
     env_file:
       - .env.docker
+    entrypoint: ["/entrypoint.sh"]
     command: >
       sh -c "python manage.py migrate auth && 
              python manage.py migrate && 
