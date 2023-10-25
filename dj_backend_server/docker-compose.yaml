@@ -91,11 +91,16 @@ services:
   
   nginx:
     image: nginx
+    container_name: oc_nginx
     restart: unless-stopped
     ports:
       - "80:80"
+      - "443:443"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/ssl/cert.pem:/etc/nginx/ssl/cert.pem
+      - ./nginx/ssl/privkey.pem:/etc/nginx/ssl/privkey.pem
+      - ./static:/app/web/static/
     networks:
       - openchat_network
     depends_on:
