@@ -1,0 +1,7 @@
+# Use the official Nginx image
+FROM nginx
+
+COPY ./nginx/nginx.conf /etc/nginx/nginx.conf.template
+COPY ./entrypoint-nginx.sh /entrypoint-nginx.sh
+RUN chmod +x /entrypoint-nginx.sh
+ENTRYPOINT ["/entrypoint-nginx.sh"]

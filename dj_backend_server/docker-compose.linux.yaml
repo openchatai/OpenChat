@@ -35,6 +35,9 @@ services:
   nginx:
     image: nginx
     container_name: oc_nginx
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
     restart: unless-stopped
     ports:
       - "80:80"
@@ -46,6 +49,9 @@ services:
       - ./static:/app/web/static/
     networks:
       - openchat_network
+    env_file:
+      - .env.docker
+    #entrypoint: ["/entrypoint-nginx.sh"]  
     depends_on:
       - qdrant
       - mysql
