@@ -13,24 +13,13 @@ from uuid import uuid4
 @require_POST
 def upload_pdf_api(request):
     bot_token = request.headers.get('X-Bot-Token')
-    #bot = get_object_or_404(Chatbot, token=bot_token)
-    # Find the chatbot by token
     try:
-        bot = get_object_or_404(Chatbot, token=bot_token)
+        bot = Chatbot.objects.get(token=bot_token)
     except Chatbot.DoesNotExist:
         return JsonResponse({'error': 'Invalid token'}, status=403)
 
     if request.method == 'POST':
-        # name = request.POST.get('name') or ChatBotDefaults.NAME.value
-        # prompt_message = request.POST.get('prompt_message') or ChatBotInitialPromptEnum.AI_ASSISTANT_INITIAL_PROMPT.value
         delete_folder_flag = 'delete_folder_flag' in request.POST
-
-        # bot = Chatbot.objects.create(
-        #     id=uuid4(),
-        #     name=name,
-        #     token=str(uuid4())[:20],
-        #     prompt_message=prompt_message
-        # )
 
         files = request.FILES.getlist('pdffiles')
         # Handle the PDF data source
