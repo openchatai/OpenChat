@@ -1,5 +1,6 @@
 from django.urls import path
 from .views import views_message, views_auth, views_ingest, views_chat
+from .pdf_handler import upload_pdf_api
 
 urlpatterns = [
     path('send_search_request/', views_message.send_search_request, name='send_search_request'),
@@ -12,4 +13,6 @@ urlpatterns = [
     path('signin/', views_auth.signin, name='signin'),
     path('signup/', views_auth.signup, name='signup'),
     path('reset-password/', views_auth.reset_password, name='reset-password'),
+    # PDF upload API endpoint
+    path('upload_pdf/', upload_pdf_api, name='upload_pdf'),
 ]
