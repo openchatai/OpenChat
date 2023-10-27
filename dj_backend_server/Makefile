@@ -37,9 +37,21 @@ install-requirements: activate-venv
 	@echo $$(tput setaf 2) "Installing Python dependencies..." $$(tput sgr0)
 	pip install -r requirements.txt
 
-
 install: .env install-requirements
 	$(DOCKER_COMPOSE) up -d
+
+nginx:
+	if [ ! -f .env.docker ]; then \
+		echo $$(tput setaf 1)"Error: .env.docker file not found. Please create it before proceeding."$$(tput sgr0); \
+		exit 1; \
+	fi; \
+	export APP_URL=$$(grep APP_URL .env.docker | cut -d '=' -f2- | sed -e "s#http[s]\?://##" -e "s#'##g"); \
+	if [ -z "$$APP_URL" ]; then \
+		echo $$(tput setaf 1)"Error: APP_URL is not set in .env.docker. Please set it before proceeding."$$(tput sgr0); \
+		exit 1; \
+	fi; \
+	envsubst < nginx/nginx.template.conf > nginx/nginx.conf; \
+	echo $$(tput setaf 2) "Installing NGINX conf file with APP_URL $$APP_URL"$$(tput sgr0)
 
 down:
 	$(DOCKER_COMPOSE) down --remove-orphans
@@ -92,4 +104,4 @@ restart:
 	$(DOCKER) restart oc_celery
 	make logs
 
-.PHONY: venv install-requirements install down dev-start dev-stop
+.PHONY: venv install-requirements install down dev-start dev-stop nginx

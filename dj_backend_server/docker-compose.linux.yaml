@@ -51,7 +51,6 @@ services:
       - openchat_network
     env_file:
       - .env.docker
-    #entrypoint: ["/entrypoint-nginx.sh"]  
     depends_on:
       - qdrant
       - mysql
