@@ -62,13 +62,14 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'api.middleware.cors_middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
+    #'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'dj_backend_server.urls'
@@ -183,13 +184,17 @@ DATABASES = {
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # You can choose other engines as well
 
-#ALLOWED_HOSTS = [
-#    'localhost',
-#    '0.0.0.0',
-#]
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '0.0.0.0').split(',')
 APP_URL = os.environ.get('APP_URL', 'http://0.0.0.0:8000')
 
 CORS_ALLOWED_ORIGINS = [
+    APP_URL,
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    APP_URL,
+] 
+
+CSRF_COOKIE_DOMAIN = [
     APP_URL,
 ]
