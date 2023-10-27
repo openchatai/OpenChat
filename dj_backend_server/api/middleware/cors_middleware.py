@@ -21,10 +21,8 @@ class CorsMiddleware(MiddlewareMixin):
             response['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
             response['Access-Control-Allow-Headers'] = 'X-Requested-With, Content-Type, X-Bot-Token'
 
-        # print(f"Website URLs checked: {[chatbot.website for chatbot in Chatbot.objects.all()]}")
+        #print(f"Website URLs checked: {[chatbot.website for chatbot in Chatbot.objects.all()]}")
         # print(f"Response status code: {response.status_code}")
         # print(f"Response content: {response.content}")
-        # print(f"Response headers: {response.headers}")
-
-
+        #print(f"Response headers: {response.headers}")
         return response
