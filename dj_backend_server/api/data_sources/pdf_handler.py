@@ -12,9 +12,14 @@ from web.utils.delete_foler import delete_folder
 from api.interfaces import StoreOptions
 import requests
 import traceback
+from web.models.failed_jobs import FailedJob
+import datetime
+from uuid import uuid4
+from web.models.pdf_data_sources import PdfDataSource
 
 @csrf_exempt
 def pdf_handler(shared_folder: str, namespace: str, delete_folder_flag: bool):
+    pdf_data_source = PdfDataSource.objects.get(folder_name=shared_folder)
     try:
         #TODO: When will be multiple external library to choose, need to change.
         if os.environ.get("PDF_LIBRARY") == "external":
@@ -34,12 +39,16 @@ def pdf_handler(shared_folder: str, namespace: str, delete_folder_flag: bool):
         txt_to_vectordb(shared_folder, namespace, delete_folder_flag)
 
     except Exception as e:
+        pdf_data_source.ingest_status = 'failed'
+        pdf_data_source.save()
+        failed_job = FailedJob(uuid=str(uuid4()), connection='default', queue='default', payload='pdf_handler', exception=str(e),failed_at=datetime.now())
+        failed_job.save()
         print("Exception occurred:", e)
         traceback.print_exc()
 
 @csrf_exempt
 def process_pdf(FilePath,directory_path):
-
+    pdf_data_source = PdfDataSource.objects.get(folder_name=FilePath)
     UserName = os.environ.get("OCR_USERNAME")
     LicenseCode = os.environ.get("OCR_LICCODE")
     gettext = True
@@ -56,65 +65,82 @@ def process_pdf(FilePath,directory_path):
         with open(FilePath, 'rb') as image_file:
             image_data = image_file.read()
     except FileNotFoundError:
-         print(f"File not found: {FilePath}")
-         return
-
-    r = requests.post(RequestUrl, data=image_data, auth=(UserName, LicenseCode))
+          pdf_data_source.ingest_status = 'failed'
+          pdf_data_source.save()
+          failed_job = FailedJob(uuid=str(uuid4()), connection='default', queue='default', payload=FilePath, exception='File not found', failed_at=datetime.now())
+          failed_job.save()
+          print(f"File not found: {FilePath}")
+          return
     
-    # Decode Output response
-    jobj = json.loads(r.content)
-    
-    ocrError = str(jobj["ErrorMessage"])
+    try:
+        r = requests.post(RequestUrl, data=image_data, auth=(UserName, LicenseCode))
+        
+        # Decode Output response
+        jobj = json.loads(r.content)
+        
+        ocrError = str(jobj["ErrorMessage"])
 
-    if ocrError != '':
-            #Error occurs during recognition
-            print ("Recognition Error: " + ocrError)
-            exit()
+        if ocrError != '':
+                #Error occurs during recognition
+                raise Exception("Recognition Error: " + ocrError)
 
-    # Extracted text from first or single page
-    # print(str(jobj["OCRText"]))
+        # Extracted text from first or single page
+        # print(str(jobj["OCRText"]))
 
-    # Extracted text from first or single page
-    ocrText = str(jobj["OCRText"])
+        # Extracted text from first or single page
+        ocrText = str(jobj["OCRText"])
 
-    # Extract the filename without the extension
-    file_path = os.path.splitext(os.path.basename(FilePath))[0]
+        # Extract the filename without the extension
+        file_path = os.path.splitext(os.path.basename(FilePath))[0]
 
-    # Create a new TXT file with the same name in the same directory
-    txt_file_path = os.path.join(directory_path, file_path + '.txt')
+        # Create a new TXT file with the same name in the same directory
+        txt_file_path = os.path.join(directory_path, file_path + '.txt')
 
-    # Write the OCR text into the new TXT file
-    with open(txt_file_path, 'w') as txt_file:
-        txt_file.write(ocrText)
+        # Write the OCR text into the new TXT file
+        with open(txt_file_path, 'w') as txt_file:
+            txt_file.write(ocrText)
+
+    except:
+        pdf_data_source.ingest_status = 'failed'
+        pdf_data_source.save()
+        failed_job = FailedJob(uuid=str(uuid4()), connection='default', queue='default', payload=FilePath, exception=str(e), failed_at=datetime.now())
+        failed_job.save()
+        print(f"Exception occurred: {e}")
+        traceback.print_exc()
 
 @csrf_exempt
 def txt_to_vectordb(shared_folder: str, namespace: str, delete_folder_flag: bool):
     try:
-            directory_path = os.path.join("website_data_sources", shared_folder)
+        pdf_data_source = PdfDataSource.objects.get(folder_name=shared_folder)
+        directory_path = os.path.join("website_data_sources", shared_folder)
 
-            #TODO: When will be multiple external library to choose, need to change.    
-            if os.environ.get("PDF_LIBRARY") == "external":
-                directory_loader = DirectoryLoader(directory_path, glob="**/*.txt", loader_cls=TextLoader, use_multithreading=True)
-            else:
-                directory_loader = DirectoryLoader(directory_path, glob="**/*.pdf", loader_cls=PyPDFium2Loader, use_multithreading=True)
+        #TODO: When will be multiple external library to choose, need to change.    
+        if os.environ.get("PDF_LIBRARY") == "external":
+            directory_loader = DirectoryLoader(directory_path, glob="**/*.txt", loader_cls=TextLoader, use_multithreading=True)
+        else:
+            directory_loader = DirectoryLoader(directory_path, glob="**/*.pdf", loader_cls=PyPDFium2Loader, use_multithreading=True)
 
-            raw_docs = directory_loader.load()
+        raw_docs = directory_loader.load()
 
-            text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200, length_function=len)
+        text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200, length_function=len)
 
-            docs = text_splitter.split_documents(raw_docs)
+        docs = text_splitter.split_documents(raw_docs)
 
-            print("docs -->", docs);
-            embeddings = get_embeddings()
+        print("docs -->", docs);
+        embeddings = get_embeddings()
 
-            init_vector_store(docs, embeddings, StoreOptions(namespace=namespace))
+        init_vector_store(docs, embeddings, StoreOptions(namespace=namespace))
 
-            # Delete folder if flag is set
-            if delete_folder_flag:
-                delete_folder(folder_path=directory_path)
-                print('All is done, folder deleted')
+        # Delete folder if flag is set
+        if delete_folder_flag:
+            delete_folder(folder_path=directory_path)
+            print('All is done, folder deleted')
 
     except Exception as e:
+        pdf_data_source.ingest_status = 'failed'
+        pdf_data_source.save()
+        failed_job = FailedJob(uuid=str(uuid4()), connection='default', queue='default', payload='txt_to_vectordb', exception=str(e), failed_at=datetime.now())
+        failed_job.save()
         import traceback
         print(e)
         traceback.print_exc()

@@ -165,6 +165,11 @@ def crawl(data_source_id, url, crawled_urls, max_pages, chatbot_id):
     if url in crawled_urls:
         return
 
+    # Check if the URL ends with a binary file extension
+    binary_extensions = ['.png', '.jpg', '.jpeg', '.gif', '.bmp', '.ico', '.tif', '.tiff', '.webp']
+    if any(url.lower().endswith(ext) for ext in binary_extensions):
+        return
+
     # Add the current URL to the crawled URLs list
     crawled_urls.append(url)
 

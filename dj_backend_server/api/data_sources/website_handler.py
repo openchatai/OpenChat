@@ -1,6 +1,6 @@
 import os
 from django.http import JsonResponse
-
+import traceback
 from langchain.document_loaders.directory import DirectoryLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.document_loaders import TextLoader
@@ -10,6 +10,10 @@ from api.interfaces import StoreOptions
 # from  import delete_folder
 from web.models.website_data_sources import WebsiteDataSource
 from web.enums.website_data_source_status_enum import WebsiteDataSourceStatusType
+from web.models.failed_jobs import FailedJob
+import datetime
+from uuid import uuid4
+
 def website_handler(shared_folder, namespace):
     website_data_source = WebsiteDataSource.objects.get(id=shared_folder)
     try:
@@ -34,6 +38,7 @@ def website_handler(shared_folder, namespace):
     except Exception as e:
         website_data_source.crawling_status = WebsiteDataSourceStatusType.FAILED.value
         website_data_source.save()
-        import traceback
-        print(e)
+        failed_job = FailedJob(uuid=str(uuid4()), connection='default', queue='default', payload='website_handler', exception=str(e), failed_at=datetime.now())
+        failed_job.save()
+        print(f"Exception occurred: {e}")
         traceback.print_exc()

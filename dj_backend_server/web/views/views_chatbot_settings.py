@@ -2,7 +2,7 @@
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.exceptions import ValidationError
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from web.models.chatbot import Chatbot
 from web.models.chat_histories import ChatHistory
 from web.models.website_data_sources import WebsiteDataSource
@@ -58,12 +58,19 @@ def general_settings_update(request, id):
 def history_settings(request, id):
     bot = get_object_or_404(Chatbot, id=id)
     chat_history = ChatHistory.objects.values('session_id').annotate(total_messages=Count('*'), first_message=Min('created_at')).filter(chatbot_id=bot.id).order_by('-first_message')
+    print(chat_history)
     return render(request, 'settings-history.html', {'bot': bot, 'chatHistory': chat_history})
 
 
 def get_history_by_session_id(request, id, session_id):
-    bot = get_object_or_404(Chatbot, id=id)
+    try:
+        bot = Chatbot.objects.get(id=id)
+    except Chatbot.DoesNotExist:
+        print(f"Chatbot with id {id} does not exist.")
+        raise Http404("Chatbot does not exist.")
     chat_history = ChatHistory.objects.filter(chatbot_id=bot.id, session_id=session_id).order_by('created_at')
+    if not chat_history:
+        print(f"No chat history found for session_id {session_id}.")
     return render(request, 'widgets/chat-history.html', {'chatHistory': chat_history})
 
 

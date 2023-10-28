@@ -8,3 +8,5 @@
 dj_backend_server/.aider.conf.yml
 dj_backend_server/nginx/ssl/privkey.pem
 dj_backend_server/nginx/ssl/cert.pem
+.aider.chat.history.md
+dj_backend_server/nginx/nginx.conf

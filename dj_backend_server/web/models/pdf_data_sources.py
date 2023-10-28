@@ -54,7 +54,7 @@ class PdfDataSource(models.Model):
     class Meta:
         db_table = 'pdf_data_sources'  # Replace 'pdf_data_source' with the actual table name in the database
 
-class PdfDataSourceErrorLog(models.Model):
-     pdf_data_source = models.ForeignKey(PdfDataSource, related_name='error_logs', on_delete=models.CASCADE)
-     error_message = models.TextField()
-     created_at = models.DateTimeField(auto_now_add=True)
+# class PdfDataSourceErrorLog(models.Model):
+#      pdf_data_source = models.ForeignKey(PdfDataSource, related_name='error_logs', on_delete=models.CASCADE)
+#      error_message = models.TextField()
+#      created_at = models.DateTimeField(auto_now_add=True)
