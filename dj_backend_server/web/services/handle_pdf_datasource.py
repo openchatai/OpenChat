@@ -4,7 +4,9 @@ import hashlib
 from django.core.exceptions import ValidationError
 from django.core.files.storage import default_storage
 from web.models.chatbot import Chatbot
-from web.models.pdf_data_sources import PdfDataSource, PdfDataSourceErrorLog
+from web.models.pdf_data_sources import PdfDataSource
+from web.models.failed_jobs import FailedJob
+import datetime
 from uuid import uuid4
 import secrets
 
@@ -58,10 +60,11 @@ class HandlePdfDataSource:
 
             except Exception as e:
                 # Log the exception for debugging purposes
-                print(f"Error while uploading file: {file.name}, Error: {str(e)}")
+                # print(f"Error while uploading file: {file.name}, Error: {str(e)}")
                 # You can log the exception to a file or use a proper logging framework
-                error_log = PdfDataSourceErrorLog(pdf_data_source=data_source, error_message=str(e))
-                error_log.save()
+                failed_job = FailedJob(uuid=str(uuid4()), connection='default', queue='default', payload=str(files_info_list), exception=str(e),
+ failed_at=datetime.now())
+                failed_job.save()
                 # You can also raise a more specific custom exception if needed
                 raise ValidationError(f"Error while uploading file: {file.name}, Error: {str(e)}")
         
