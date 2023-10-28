@@ -105,11 +105,14 @@ def process_pdf(FilePath,directory_path):
             txt_file.write(ocrText)
 
     except Exception as e:
+        if str(e) == "Recognition Error: Maximum page limit exceeded":
+            print("The document exceeds the maximum page limit for the OCR service.")
+        else:
+            print(f"Exception occurred: {e}")
         # pdf_data_source.ingest_status = 'failed'
         # pdf_data_source.save()
         failed_job = FailedJob(uuid=str(uuid4()), connection='default', queue='default', payload=FilePath, exception=str(e), failed_at=datetime.now())
         failed_job.save()
-        print(f"Exception occurred: {e}")
         traceback.print_exc()
 
 @csrf_exempt
@@ -131,6 +134,10 @@ def txt_to_vectordb(shared_folder: str, namespace: str, delete_folder_flag: bool
         docs = text_splitter.split_documents(raw_docs)
 
         print("docs -->", docs);
+        if not docs:
+             print("No documents were processed successfully.")
+             return
+
         embeddings = get_embeddings()
 
         init_vector_store(docs, embeddings, StoreOptions(namespace=namespace))
@@ -143,8 +150,7 @@ def txt_to_vectordb(shared_folder: str, namespace: str, delete_folder_flag: bool
     except Exception as e:
         # pdf_data_source.ingest_status = 'failed'
         # pdf_data_source.save()
-        failed_job = FailedJob(uuid=str(uuid4()), connection='default', queue='default', payload='txt_to_vectordb', exception=str(e), failed_at=datetime.now())
+        failed_job = FailedJob(uuid=str(uuid4()), connection='default', queue='default', payload='txt_to_vectordb', exception=str(e),failed_at=datetime.now())
         failed_job.save()
-        import traceback
         print(e)
         traceback.print_exc()
