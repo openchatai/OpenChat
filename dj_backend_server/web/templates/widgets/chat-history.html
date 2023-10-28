@@ -1,34 +1,37 @@
 <div class="grow px-4 sm:px-6 md:px-5 py-6">
-
     {% for message in chatHistory %}
-    {% if message.isFromUser %}
+    {% if message.from_user|lower == 'true' %}
     <!-- Chat msg -->
     <div class="flex items-start mb-4 last:mb-0">
-        <img class="rounded-full mr-4" src="/static/dashboard/images/user-40-11.jpg" width="40" height="40" alt="User 01">
+        <span class="material-symbols-outlined">
+            person
+        </span>
         <div>
             <div
                 class="text-sm bg-white text-slate-800 p-3 rounded-lg rounded-tl-none border border-slate-200 shadow-md mb-1">
-                {{ message.getMessage }}
+                {{ message.message }}
             </div>
             <div class="flex items-center justify-between">
-                <div class="text-xs text-slate-500 font-medium">{{ message.getCreatedAt|date:"H:i A" }}</div>
+                <div class="text-xs text-slate-500 font-medium">{{ message.created_at|date:"H:i A" }}</div>
             </div>
         </div>
     </div>
     {% endif %}
 
-    {% if message.isFromBot %}
+    {% if not message.from_user|lower == 'true' %}
     <!-- Chat msg -->
     <div class="flex items-start mb-4 last:mb-0">
-        <img class="rounded-full mr-4" src="/static/dashboard/images/user-40-12.jpg" width="40" height="40" alt="User 02">
+        <span class="material-symbols-outlined" style="text-decoration-color: brown;">
+            badge
+        </span>
         <div>
             <div
                 class="text-sm bg-indigo-500 text-white p-3 rounded-lg rounded-tl-none border border-transparent shadow-md mb-1">
-                {{ message.getMessage }}
+                {{ message.message }}
             </div>
             <div class="flex items-center justify-between">
                 <div class="text-xs text-slate-500 font-medium">
-                    {{ message.getCreatedAt|date:"H:i A" }}
+                    {{ message.created_at|date:"H:i A" }}
                 </div>
                 <svg class="w-5 h-3 shrink-0 fill-current text-emerald-500" viewBox="0 0 20 12">
                     <path

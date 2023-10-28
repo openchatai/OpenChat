@@ -50,30 +50,33 @@
                                                 Conversations
                                             </div>
                                             <ul class="mb-6">
-                                                {% for history in chat_history %}
-                                                <li class="-mx-2">
-                                                    <button
-                                                        class="flex items-center justify-between w-full p-2 rounded chat-history-button"
-                                                        onclick="fetchChatHistory('{{ history.session_id }}')"
-                                                        id="{{ history.session_id }}">
-                                                        <div class="flex items-center truncate">
-                                                            <img class="w-8 h-8 rounded-full mr-2"
-                                                                src="/static/dashboard/images/user-32-01.jpg" width="32"
-                                                                height="32" alt="User 01">
-                                                            <div class="truncate">
-                                                                <span class="text-sm font-medium text-slate-800">
-                                                                    {{ history.first_message }}
+                                                {% if chatHistory %}
+                                                {% for history in chatHistory %}
+                                                 <li class="-mx-2">
+                                                     <button
+                                                         class="flex items-center justify-between w-full p-2 rounded chat-history-button"
+                                                         onclick="fetchChatHistory('{{ history.session_id }}')"
+                                                         id="{{ history.session_id }}">
+                                                         <div class="flex items-center truncate">
+                                                            <span class="material-symbols-outlined">
+                                                                timeline
                                                                 </span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="flex items-center ml-2">
-                                                            <div
-                                                                class="text-xs inline-flex font-medium bg-indigo-400 text-white rounded-full text-center leading-5 px-2">
-                                                                {{ history.total_messages }}</div>
-                                                        </div>
-                                                    </button>
-                                                </li>
-                                                {% endfor %}
+                                                             <div class="truncate">
+                                                                 <span class="text-sm font-small">
+                                                                     Session ID: {{ history.session_id }}<br>
+                                                                     Total Messages: {{ history.total_messages }}<br>
+                                                                     First Message: {{ history.first_message|date:"F j, Y, P" }}
+                                                                 </span>
+                                                             </div>
+                                                         </div>
+                                                     </button>
+                                                 </li>
+                                                 {% endfor %}
+                                                 {% else %}
+                                                 <li>No chat history available.</li>
+                                                 {% endif %}
+                                        
+
                                             </ul>
                                         </div>
                                     </div>
