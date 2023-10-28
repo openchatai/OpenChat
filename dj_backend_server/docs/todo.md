@@ -17,20 +17,28 @@ TODO list of tasks to be completed.
 ### WEBSITE
 
 - Implement a "Resync on Website" feature.
-- Investigate why PNG or other binary files are being parsed from a website.
-- If a PDF or DOC file is discovered during parsing, push it to the database via the PDF Handler.
+- (done) Investigate why PNG or other binary files are being parsed from a website.
+- If a PDF or DOC file is discovered during parsing, push it to the database via the PDF Handler. Add a checkbox to this. Parse also PDF/Doc files.
 - Implement a Smart Resync feature.
 - Investigate why the sync occasionally stops and implement a restart mechanism if this occurs.
-- Determine why the pages that have been crawled are not being displayed from the database.
+- (done) Determine why the pages that have been crawled are not being displayed from the database.
 - Capture errors and warnings and log them into the database.
+- Chat history to show.
+- Check this tables: failed_jobs, jobs, onboarding_steps, password_reset_tokens, personal_access_tokens, text_data_sources, web_pdfdatasourceerrorlog
+- Title of the crawled URL is not read.
+- Also URL site to be edit, mostly if is PDF site, need a valid URL for the website where the bubble chat will be implemented for CORS issues. 
 - Localize
+- Deleting chatbot will not clear table website_data_sources, pdf_data_sources, crawled_pages, chatbot_settings, chat_histories
 
 ### CHAT
 
 - Check why have localhost inside of JS and replace programatically with real URL.
-- Localize the chat.jss and search.js
+- chat.js correction/writer error.
+- Localize the chat.js and search.js
+- website_data_sources (table), scrapper completion improvement, recall to continue.
+- Crawler do not crawl binary files/url.
 
 ### SERVER - DOCKER
 
-- Implement NGINX to have a possibility to add SSL.
+- (done) Implement NGINX to have a possibility to add SSL.
 - (done) Move the website_data_sources directory to an external volume to facilitate mounting on larger data storage and to ensure data persistence after system restarts.
