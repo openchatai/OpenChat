@@ -104,7 +104,7 @@ def process_pdf(FilePath,directory_path):
         with open(txt_file_path, 'w') as txt_file:
             txt_file.write(ocrText)
 
-    except:
+    except Exception as e:
         # pdf_data_source.ingest_status = 'failed'
         # pdf_data_source.save()
         failed_job = FailedJob(uuid=str(uuid4()), connection='default', queue='default', payload=FilePath, exception=str(e), failed_at=datetime.now())

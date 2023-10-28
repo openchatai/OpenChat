@@ -30,7 +30,7 @@ def get_llama_llm():
         )
         
         return llm
-    except:
+    except Exception as e:
         failed_job = FailedJob(uuid=str(uuid4()), connection='default', queue='default', payload='get_llama_llm', exception=str(e), failed_at=datetime.now())
         failed_job.save()
         print(f"Exception occurred: {e}")
@@ -56,7 +56,7 @@ def get_azure_openai_llm():
             temperature=0,
             batch_size=8
         )
-    except:
+    except Exception as e:
         failed_job = FailedJob(uuid=str(uuid4()), connection='default', queue='default', payload='get_azure_openai_llm', exception=str(e), failed_at=datetime.now())
         failed_job.save()
         print(f"Exception occurred: {e}")
@@ -96,7 +96,7 @@ def get_llm():
             raise ValueError(f"Invalid OPENAI_API_TYPE: {api_type}")
         
         return clients[api_type]()
-    except:
+    except Exception as e:
         failed_job = FailedJob(uuid=str(uuid4()), connection='default', queue='default', payload='get_llm', exception=str(e), failed_at=datetime.now())
         failed_job.save()
         print(f"Exception occurred: {e}")
