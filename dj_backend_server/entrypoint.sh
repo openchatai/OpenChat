@@ -2,9 +2,11 @@
 
 # Define the file path as a variable
 CHAT_JS_FILE="/app/web/static/chat.js"
+SEARCH_JS_FILE="/app/web/static/search.js"
 
 # Actual replacement
 sed -i "s|http://0.0.0.0:8000|${APP_URL}|g" $CHAT_JS_FILE
+sed -i "s|http://0.0.0.0:8000|${APP_URL}|g" $SEARCH_JS_FILE
 
 # Check if the pattern with APP_URL already exists
 if grep -q '("${APP_URL}/api/chat/init")' $CHAT_JS_FILE; then
