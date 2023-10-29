@@ -13,13 +13,16 @@ from api.interfaces import StoreOptions
 import requests
 import traceback
 from web.models.failed_jobs import FailedJob
-import datetime
+from datetime import datetime
 from uuid import uuid4
 from web.models.pdf_data_sources import PdfDataSource
+from django.shortcuts import get_object_or_404
 
 @csrf_exempt
 def pdf_handler(shared_folder: str, namespace: str, delete_folder_flag: bool):
-    pdf_data_source = PdfDataSource.objects.get(folder_name=shared_folder)
+    #pdf_data_source = PdfDataSource.objects.get(folder_name=shared_folder)
+    #pdf_data_source = get_object_or_404(PdfDataSource, folder_name=shared_folder)
+    
     try:
         #TODO: When will be multiple external library to choose, need to change.
         if os.environ.get("PDF_LIBRARY") == "external":
@@ -39,8 +42,8 @@ def pdf_handler(shared_folder: str, namespace: str, delete_folder_flag: bool):
         txt_to_vectordb(shared_folder, namespace, delete_folder_flag)
 
     except Exception as e:
-        pdf_data_source.ingest_status = 'failed'
-        pdf_data_source.save()
+        # pdf_data_source.ingest_status = 'failed'
+        # pdf_data_source.save()
         failed_job = FailedJob(uuid=str(uuid4()), connection='default', queue='default', payload='pdf_handler', exception=str(e),failed_at=datetime.now())
         failed_job.save()
         print("Exception occurred:", e)
@@ -48,7 +51,8 @@ def pdf_handler(shared_folder: str, namespace: str, delete_folder_flag: bool):
 
 @csrf_exempt
 def process_pdf(FilePath,directory_path):
-    pdf_data_source = PdfDataSource.objects.get(folder_name=FilePath)
+    #pdf_data_source = PdfDataSource.objects.get(folder_name=FilePath)
+    #pdf_data_source = PdfDataSource.objects.get(folder_name=directory_path)
     UserName = os.environ.get("OCR_USERNAME")
     LicenseCode = os.environ.get("OCR_LICCODE")
     gettext = True
@@ -65,8 +69,8 @@ def process_pdf(FilePath,directory_path):
         with open(FilePath, 'rb') as image_file:
             image_data = image_file.read()
     except FileNotFoundError:
-          pdf_data_source.ingest_status = 'failed'
-          pdf_data_source.save()
+        #   pdf_data_source.ingest_status = 'failed'
+        #   pdf_data_source.save()
           failed_job = FailedJob(uuid=str(uuid4()), connection='default', queue='default', payload=FilePath, exception='File not found', failed_at=datetime.now())
           failed_job.save()
           print(f"File not found: {FilePath}")
@@ -100,18 +104,21 @@ def process_pdf(FilePath,directory_path):
         with open(txt_file_path, 'w') as txt_file:
             txt_file.write(ocrText)
 
-    except:
-        pdf_data_source.ingest_status = 'failed'
-        pdf_data_source.save()
+    except Exception as e:
+        if str(e) == "Recognition Error: Maximum page limit exceeded":
+            print("The document exceeds the maximum page limit for the OCR service.")
+        else:
+            print(f"Exception occurred: {e}")
+        # pdf_data_source.ingest_status = 'failed'
+        # pdf_data_source.save()
         failed_job = FailedJob(uuid=str(uuid4()), connection='default', queue='default', payload=FilePath, exception=str(e), failed_at=datetime.now())
         failed_job.save()
-        print(f"Exception occurred: {e}")
         traceback.print_exc()
 
 @csrf_exempt
 def txt_to_vectordb(shared_folder: str, namespace: str, delete_folder_flag: bool):
     try:
-        pdf_data_source = PdfDataSource.objects.get(folder_name=shared_folder)
+        #pdf_data_source = PdfDataSource.objects.get(folder_name=shared_folder)
         directory_path = os.path.join("website_data_sources", shared_folder)
 
         #TODO: When will be multiple external library to choose, need to change.    
@@ -127,6 +134,10 @@ def txt_to_vectordb(shared_folder: str, namespace: str, delete_folder_flag: bool
         docs = text_splitter.split_documents(raw_docs)
 
         print("docs -->", docs);
+        if not docs:
+             print("No documents were processed successfully.")
+             return
+
         embeddings = get_embeddings()
 
         init_vector_store(docs, embeddings, StoreOptions(namespace=namespace))
@@ -137,10 +148,9 @@ def txt_to_vectordb(shared_folder: str, namespace: str, delete_folder_flag: bool
             print('All is done, folder deleted')
 
     except Exception as e:
-        pdf_data_source.ingest_status = 'failed'
-        pdf_data_source.save()
-        failed_job = FailedJob(uuid=str(uuid4()), connection='default', queue='default', payload='txt_to_vectordb', exception=str(e), failed_at=datetime.now())
+        # pdf_data_source.ingest_status = 'failed'
+        # pdf_data_source.save()
+        failed_job = FailedJob(uuid=str(uuid4()), connection='default', queue='default', payload='txt_to_vectordb', exception=str(e),failed_at=datetime.now())
         failed_job.save()
-        import traceback
         print(e)
         traceback.print_exc()

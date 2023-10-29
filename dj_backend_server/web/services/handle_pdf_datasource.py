@@ -6,7 +6,7 @@ from django.core.files.storage import default_storage
 from web.models.chatbot import Chatbot
 from web.models.pdf_data_sources import PdfDataSource
 from web.models.failed_jobs import FailedJob
-import datetime
+from datetime import datetime
 from uuid import uuid4
 import secrets
 

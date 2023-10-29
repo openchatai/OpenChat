@@ -11,7 +11,7 @@ from api.interfaces import StoreOptions
 from web.models.website_data_sources import WebsiteDataSource
 from web.enums.website_data_source_status_enum import WebsiteDataSourceStatusType
 from web.models.failed_jobs import FailedJob
-import datetime
+from datetime import datetime
 from uuid import uuid4
 
 def website_handler(shared_folder, namespace):
