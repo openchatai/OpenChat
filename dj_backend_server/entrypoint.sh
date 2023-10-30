@@ -11,6 +11,8 @@ sed -i "s|http://0.0.0.0:8000|${APP_URL}|g" $SEARCH_JS_FILE
 #Bot is Thinking
 sed -i "s|Bot is Thinking...|${LNG_BOT}|g" $CHAT_JS_FILE
 sed -i "s|error sending the message.|${LNG_ERROR}|g" $CHAT_JS_FILE
+sed -i "s|Ask a question...|${LNG_ASK}|g" $CHAT_JS_FILE
+sed -i "s|Write a reply...|${LNG_WRITE}|g" $CHAT_JS_FILE
 
 # Check if the pattern with APP_URL already exists
 if grep -q '("${APP_URL}/api/chat/init")' $CHAT_JS_FILE; then
