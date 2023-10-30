@@ -12,6 +12,7 @@ TODO list of tasks to be completed.
 - When uploading a new PDF, check if the filename already exists and whether the hash is identical; if so, skip the upload.
 - If the file exists but the hash differs when uploading a new PDF, delete the old data from the Vector Database (VD) and restart the job with the new file.
 - Localize
+- If doc need OCR -> Send to LLM to correct the text, drop garbage text and return clean data to ingest into vector database.
 
 - (done 28.10.2023) Capture errors and warnings and log them into the database.
 
@@ -26,7 +27,12 @@ TODO list of tasks to be completed.
 - Also URL site to be edit, mostly if is PDF site, need a valid URL for the website where the bubble chat will be implemented for CORS issues. 
 - Localize
 - Deleting chatbot will not clear table website_data_sources, pdf_data_sources, crawled_pages, chatbot_settings, chat_histories
+- Pagination for WEB and DATA listing.
+- website_data_sources (table), scrapper completion improvement, recall to continue.
+- LLM Settings add to dashboard (Temparature, OpenAI key, OpenAI Model.)
 
+- (done 29.10.2023) Crawler do not crawl binary files/url.
+- (done 29.10.2023) Replace in chat.js and search.js the language strings.
 - (done 28.10.2023) Capture errors and warnings and log them into the database.
 - (done 28.10.2023) Investigate why PNG or other binary files are being parsed from a website.
 - (done 28.10.2023) Chat history to show.
@@ -38,8 +44,7 @@ TODO list of tasks to be completed.
 - Check why have localhost inside of JS and replace programatically with real URL.
 - chat.js correction/writer error.
 - Localize the chat.js and search.js
-- website_data_sources (table), scrapper completion improvement, recall to continue.
-- Crawler do not crawl binary files/url.
+- Mobile friendly
 
 ### SERVER - DOCKER
 
