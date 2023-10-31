@@ -55,7 +55,7 @@
                             Text and even videos!
                         </div>
 
-
+                        {% if messages %}
                         <div x-show="open" x-data="{ open: true }" style="margin-bottom: 1rem;">
                             <div class="px-4 py-2 rounded-sm text-sm bg-amber-100 border border-amber-200 text-amber-600">
                                 <div class="flex w-full justify-between items-start">
@@ -78,7 +78,7 @@
                                 </div>
                             </div>
                         </div>
-
+                        {% endif %}
 
                         {% for source in website_data_sources %}
                         <div style="margin-top: 1.5rem; margin-bottom: 1.5rem">
