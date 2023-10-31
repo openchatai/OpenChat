@@ -3,7 +3,7 @@ import os
 from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-
+from django.contrib import messages
 from web.models.chatbot import Chatbot
 from web.models.chatbot_settings import ChatbotSetting
 from web.models.chat_histories import ChatHistory
@@ -23,6 +23,7 @@ from web.utils.common import get_session_id
 from web.utils.common import generate_chatbot_name
 from api.utils.get_prompts import get_qa_prompt_by_mode
 from django.utils import timezone
+from web.models.pdf_data_sources import PdfDataSource
 
 import requests
 from uuid import uuid4
@@ -228,3 +229,21 @@ def create_via_codebase_flow(request):
         )
 
         return HttpResponseRedirect(reverse('onboarding.config', args=[str(chatbot.id)]))
+
+@check_authentication
+def delete_file(request, id):
+    # Get the PdfDataSource object
+    pdf_data_source = get_object_or_404(PdfDataSource, id=id)
+
+    # Delete the files associated with the PdfDataSource
+    deleted_files = pdf_data_source.delete_files()
+    print(f"Deleted files {deleted_files}")
+    # Delete the record from the database
+    pdf_data_source.delete()
+    # Add success message
+    messages.success(request, deleted_files)
+    # Remove the record from the vector database
+    # You need to implement this part based on your vector database
+
+    return HttpResponseRedirect(reverse('chatbot.settings-data', args=[str(pdf_data_source.chatbot_id)]))
+

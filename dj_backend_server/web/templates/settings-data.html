@@ -55,6 +55,31 @@
                             Text and even videos!
                         </div>
 
+
+                        <div x-show="open" x-data="{ open: true }" style="margin-bottom: 1rem;">
+                            <div class="px-4 py-2 rounded-sm text-sm bg-amber-100 border border-amber-200 text-amber-600">
+                                <div class="flex w-full justify-between items-start">
+                                    <div class="flex">
+                                        <svg class="w-4 h-4 shrink-0 fill-current opacity-80 mt-[3px] mr-3"
+                                            viewBox="0 0 16 16">
+                                            <path
+                                                d="M8 0C3.6 0 0 3.6 0 8s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8zm0 12c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1zm1-3H7V4h2v5z">
+                                            </path>
+                                        </svg>
+                                        <div>
+    
+                                            {% for message in messages %}
+                                            <p class="font-medium leading-snug">- {{ message }}</p>
+                                            {% endfor %}
+    
+                                        </div>
+                                    </div>
+    
+                                </div>
+                            </div>
+                        </div>
+
+
                         {% for source in website_data_sources %}
                         <div style="margin-top: 1.5rem; margin-bottom: 1.5rem">
                             <!-- Start -->
@@ -329,10 +354,9 @@
                                                 </td>
 
                                                 <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-                                                    <button
-                                                        class="text-rose-500 hover:text-rose-600 rounded-full cursor-not-allowed"
-                                                        disabled>
-                                                        <span class="sr-only">Delete</span>
+                                                    <a href="{% url 'delete_file' id=source.id %}" class="btn btn-danger">
+                                                        <button class="text-rose-500 hover:text-rose-600 rounded-full">
+                                                            <span class="sr-only">Delete</span>
                                                         <svg class="w-8 h-8 fill-current" viewBox="0 0 32 32">
                                                             <path d="M13 15h2v6h-2zM17 15h2v6h-2z"></path>
                                                             <path
@@ -340,6 +364,7 @@
                                                             </path>
                                                         </svg>
                                                     </button>
+                                                    </a>
                                                 </td>
 
                                                 <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">

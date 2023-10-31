@@ -19,6 +19,7 @@ urlpatterns = [
     path('app/<uuid:id>/history/', views_chatbot_settings.history_settings, name='chatbot.settings-history'),
     path('widget/data-sources-updates/<uuid:id>/', views_chatbot_settings.data_sources_updates, name='widget.data-sources-updates'),
     path('widget/chat-history/<uuid:id>/<str:session_id>/', views_chatbot_settings.get_history_by_session_id, name='widget.chat-history'),
+    path('app/<int:id>/delete_file/', views_chatbot.delete_file, name='delete_file'),
 
     # Onboarding Frontend
     path('onboarding/welcome/', views_onboarding.welcome, name='onboarding.welcome'),
