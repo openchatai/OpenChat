@@ -10,3 +10,6 @@ dj_backend_server/nginx/ssl/privkey.pem
 dj_backend_server/nginx/ssl/cert.pem
 .aider.chat.history.md
 dj_backend_server/nginx/nginx.conf
+.aider.tags.cache.v3/cache.db
+.aider.tags.cache.v3/cache.db-shm
+.aider.tags.cache.v3/cache.db-wal

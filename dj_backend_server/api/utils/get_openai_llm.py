@@ -8,7 +8,7 @@ from langchain.callbacks.manager import CallbackManager
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 import traceback
 from web.models.failed_jobs import FailedJob
-import datetime
+from datetime import datetime
 from uuid import uuid4
 
 def get_llama_llm():
@@ -69,8 +69,9 @@ def get_openai_llm():
         openai_api_key = os.environ['OPENAI_API_KEY']
 
         return OpenAI(
-            temperature=0,
-            openai_api_key=openai_api_key
+            temperature=float(os.environ.get('OPENAI_API_TEMPERATURE', '0')),
+            openai_api_key=openai_api_key,
+            model_name=os.environ.get('OPENAI_API_MODEL', 'gpt-3.5-turbo'),
         )
     except Exception as e:
         failed_job = FailedJob(uuid=str(uuid4()), connection='default', queue='default', payload='get_openai_llm', exception=str(e), failed_at=datetime.now())

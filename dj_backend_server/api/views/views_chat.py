@@ -44,24 +44,28 @@ def chat(request):
         
         response_text = get_completion_response(vector_store=vector_store, initial_prompt=initial_prompt,mode=mode, sanitized_question=sanitized_question, session_id=session_id)
 
-        ChatHistory.objects.bulk_create([
-            ChatHistory(
-                id=uuid4(),
-                chatbot_id=bot.id,
-                from_user=True,
-                message=sanitized_question,
-                session_id=session_id
-            ),
-            ChatHistory(
-                id=uuid4(),
-                chatbot_id=bot.id,
-                from_user=False,
-                message=response_text,
-                session_id=session_id
-            )
-        ])
+        if 'text' in response_text:
+            ChatHistory.objects.bulk_create([
+                ChatHistory(
+                    id=uuid4(),
+                    chatbot_id=bot.id,
+                    from_user=True,
+                    message=sanitized_question,
+                    session_id=session_id
+                ),
+                ChatHistory(
+                    id=uuid4(),
+                    chatbot_id=bot.id,
+                    from_user=False,
+                    message=response_text,
+                    session_id=session_id
+                )
+            ])
 
-        return JsonResponse({'text': response_text})
+            return JsonResponse({'text': response_text})
+        else:
+            return JsonResponse({'error': 'Unexpected response from API'}, status=500)
+        
     except json.JSONDecodeError:
         return JsonResponse({'error': 'Invalid JSON in request body'}, status=400)
     except Chatbot.DoesNotExist:

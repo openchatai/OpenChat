@@ -51,11 +51,14 @@ def send_search_request(request):
             timeout=200
         )
 
-        bot_response = ChatbotResponse(response.json())
-
-        return JsonResponse({
-            'ai_response': bot_response.get_bot_reply()
-        })
+        response_json = response.json()
+        if 'text' in response_json:
+            bot_response = ChatbotResponse(response_json)
+            return JsonResponse({
+                'ai_response': bot_response.get_bot_reply()
+            })
+        else:
+            return JsonResponse({'error': 'Unexpected response from API'}, status=500)
 
     except Exception as e:
         return JsonResponse({
@@ -119,13 +122,28 @@ def send_chat(request):
             timeout=200
         )
 
-        if response.json() is None:
+        '''
+        This block will first check if the response content is not empty. If it is empty, 
+        it will return a JsonResponse with an error message. If the content is not empty, it will try to decode the JSON. If there is
+        a JSONDecodeError, it will catch the exception and return a JsonResponse with an error message.
+        '''
+        if not response.content:
             return JsonResponse({
                 "type": "text",
                 "response": {
                     "text": "The request was received successfully, but the LLM server was unable to handle it, please make sure your env keys are set correctly. **code: llm5XX**"
                 }
             })
+        else:
+            try:
+                response_json = response.json()
+            except json.JSONDecodeError:
+                return JsonResponse({
+                    "type": "text",
+                    "response": {
+                        "text": "The request was received successfully, but the LLM server was unable to handle it, please make sure your env keys are set correctly. **code: llm5XX**"
+                    }
+                })
 
         bot_response = ChatbotResponse(response.json())
 

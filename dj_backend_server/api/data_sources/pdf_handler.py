@@ -1,5 +1,6 @@
 # views.py
 import json
+import io
 from django.views.decorators.csrf import csrf_exempt
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.document_loaders.directory import DirectoryLoader
@@ -13,15 +14,17 @@ from api.interfaces import StoreOptions
 import requests
 import traceback
 from web.models.failed_jobs import FailedJob
-from datetime import datetime
+from django.utils import timezone
 from uuid import uuid4
 from web.models.pdf_data_sources import PdfDataSource
 from django.shortcuts import get_object_or_404
+from api.utils.make_chain import process_text_with_llm
 
 @csrf_exempt
 def pdf_handler(shared_folder: str, namespace: str, delete_folder_flag: bool):
-    #pdf_data_source = PdfDataSource.objects.get(folder_name=shared_folder)
-    #pdf_data_source = get_object_or_404(PdfDataSource, folder_name=shared_folder)
+    
+    # Convert delete_folder_flag to boolean (send 0 - FALSE or 1 - TRUE)
+    delete_folder_flag = bool(int(delete_folder_flag))
     
     try:
         #TODO: When will be multiple external library to choose, need to change.
@@ -44,7 +47,7 @@ def pdf_handler(shared_folder: str, namespace: str, delete_folder_flag: bool):
     except Exception as e:
         # pdf_data_source.ingest_status = 'failed'
         # pdf_data_source.save()
-        failed_job = FailedJob(uuid=str(uuid4()), connection='default', queue='default', payload='pdf_handler', exception=str(e),failed_at=datetime.now())
+        failed_job = FailedJob(uuid=str(uuid4()), connection='default', queue='default', payload='pdf_handler', exception=str(e),failed_at=timezone.now())
         failed_job.save()
         print("Exception occurred:", e)
         traceback.print_exc()
@@ -71,7 +74,7 @@ def process_pdf(FilePath,directory_path):
     except FileNotFoundError:
         #   pdf_data_source.ingest_status = 'failed'
         #   pdf_data_source.save()
-          failed_job = FailedJob(uuid=str(uuid4()), connection='default', queue='default', payload=FilePath, exception='File not found', failed_at=datetime.now())
+          failed_job = FailedJob(uuid=str(uuid4()), connection='default', queue='default', payload=FilePath, exception='File not found', failed_at=timezone.now())
           failed_job.save()
           print(f"File not found: {FilePath}")
           return
@@ -99,10 +102,27 @@ def process_pdf(FilePath,directory_path):
 
         # Create a new TXT file with the same name in the same directory
         txt_file_path = os.path.join(directory_path, file_path + '.txt')
-
-        # Write the OCR text into the new TXT file
-        with open(txt_file_path, 'w') as txt_file:
-            txt_file.write(ocrText)
+        if os.environ.get("OCR_LLM", "0") == "1":
+            # Write the OCR text into an in-memory text stream
+            txt_file = io.StringIO(ocrText)
+            # print (f"Debug: txt_file: {txt_file}")
+            # Define the mode and initial_prompt variables
+            language= os.environ.get("OCR_LANGUAGE", "english")
+            mode = 'assistant'
+            initial_prompt = f'You are a {language} language teacher who is helping a student correct the text for grammar and spelling. ' \
+            f'\nPlease correct the text for grammar and spelling in the original text, {language}. ' \
+            f'\nDo not translate! Also, if there are any unreadable or nonsensical sentences in the text, please remove them.' \
+            f'\nThe text: {{text}}. ' 
+            print (f"Debug: initial_prompt: {initial_prompt}")
+            # Call LLM and write the result into a new text file
+            process_text_with_llm(txt_file, mode, initial_prompt)
+            final_text = txt_file.getvalue()
+            with open(txt_file_path, 'w') as f:
+                f.write(final_text)
+        else:
+            # Write the OCR text into the new TXT file
+            with open(txt_file_path, 'w') as txt_file:
+                txt_file.write(ocrText)
 
     except Exception as e:
         if str(e) == "Recognition Error: Maximum page limit exceeded":
@@ -111,7 +131,7 @@ def process_pdf(FilePath,directory_path):
             print(f"Exception occurred: {e}")
         # pdf_data_source.ingest_status = 'failed'
         # pdf_data_source.save()
-        failed_job = FailedJob(uuid=str(uuid4()), connection='default', queue='default', payload=FilePath, exception=str(e), failed_at=datetime.now())
+        failed_job = FailedJob(uuid=str(uuid4()), connection='default', queue='default', payload=FilePath, exception=str(e), failed_at=timezone.now())
         failed_job.save()
         traceback.print_exc()
 
@@ -142,15 +162,16 @@ def txt_to_vectordb(shared_folder: str, namespace: str, delete_folder_flag: bool
 
         init_vector_store(docs, embeddings, StoreOptions(namespace=namespace))
 
+        print(f'Folder need or not to delete. {delete_folder_flag}')
         # Delete folder if flag is set
         if delete_folder_flag:
             delete_folder(folder_path=directory_path)
-            print('All is done, folder deleted')
+            print(f'All is done, folder deleted {delete_folder_flag}')
 
     except Exception as e:
         # pdf_data_source.ingest_status = 'failed'
         # pdf_data_source.save()
-        failed_job = FailedJob(uuid=str(uuid4()), connection='default', queue='default', payload='txt_to_vectordb', exception=str(e),failed_at=datetime.now())
+        failed_job = FailedJob(uuid=str(uuid4()), connection='default', queue='default', payload='txt_to_vectordb', exception=str(e),failed_at=timezone.now())
         failed_job.save()
         print(e)
         traceback.print_exc()

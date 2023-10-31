@@ -19,7 +19,7 @@ def upload_pdf_api(request):
         return JsonResponse({'error': 'Invalid token'}, status=403)
 
     if request.method == 'POST':
-        delete_folder_flag = 'delete_folder_flag' in request.POST
+        delete_folder_flag = request.POST.get('delete_folder_flag', '0') == '1'
 
         files = request.FILES.getlist('pdffiles')
         # Handle the PDF data source
