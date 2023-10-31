@@ -57,7 +57,8 @@ def logout_view(request):
 
 @check_authentication
 def index(request):
-    chatbots = Chatbot.objects.all()
+    #chatbots = Chatbot.objects.all()
+    chatbots = Chatbot.objects.filter(status=1)
     return render(request, 'index.html', {'chatbots': chatbots})
 
 @check_authentication
@@ -72,7 +73,8 @@ def create_via_website_flow(request):
         name=name,
         token=str(uuid4())[:20],
         website=website,
-        prompt_message=prompt_message
+        prompt_message=prompt_message,
+        status=1
     )
 
     # Trigger the ChatbotWasCreated event (if using Django signals or channels)
@@ -81,7 +83,8 @@ def create_via_website_flow(request):
         id=chatbot.id,
         name=chatbot.name,
         website=chatbot.website,
-        prompt_message=chatbot.prompt_message
+        prompt_message=chatbot.prompt_message,
+        status=1
     )
     
     return HttpResponseRedirect(reverse('onboarding.config', args=[str(chatbot.id)]))
@@ -97,7 +100,8 @@ def create_via_pdf_flow(request):
         id=uuid4(),
         name=name,
         token=str(uuid4())[:20],
-        prompt_message=prompt_message
+        prompt_message=prompt_message,
+        status=1
     )
 
     files = request.FILES.getlist('pdffiles')
