@@ -181,7 +181,11 @@ def send_message(request, token):
 
 def get_chat_view(request, token):
     # Find the chatbot by token
-    bot = get_object_or_404(Chatbot, token=token)
+    bot = Chatbot.objects.filter(token=token).first()
+
+    # If bot is None, redirect to APP_URL
+    if bot is None:
+        return redirect(os.getenv('APP_URL'))
 
     # Initiate a cookie if it doesn't exist
     cookie_name = 'chatbot_' + str(bot.id)
