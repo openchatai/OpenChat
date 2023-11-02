@@ -1,6 +1,6 @@
 from django.db import models
 from web.models.chatbot import Chatbot
-import uuid
+import uuid, os, html
 
 class PdfDataSource(models.Model):
     id = models.AutoField(primary_key=True)
@@ -51,10 +51,21 @@ class PdfDataSource(models.Model):
     def get_files_info(self):
         return self.files_info
 
+    def delete_files(self):
+        deleted_files = []
+        for file_path in self.files:
+            if os.path.exists(file_path):
+                os.remove(file_path)
+                deleted_files.append(html.escape(file_path))
+        if not deleted_files:
+            return "No files were deleted."
+        else:
+            # Delete the folder after deleting the files
+            if os.path.exists(self.folder_name):
+                os.rmdir(self.folder_name)
+            #delete_from_vectordb(self.chatbot_id)    
+            return "\n\r" + ''.join([f'{file}' for file in deleted_files])
+
     class Meta:
         db_table = 'pdf_data_sources'  # Replace 'pdf_data_source' with the actual table name in the database
 
-# class PdfDataSourceErrorLog(models.Model):
-#      pdf_data_source = models.ForeignKey(PdfDataSource, related_name='error_logs', on_delete=models.CASCADE)
-#      error_message = models.TextField()
-#      created_at = models.DateTimeField(auto_now_add=True)

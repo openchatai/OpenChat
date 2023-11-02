@@ -46,8 +46,12 @@ def general_settings_update(request, id):
         name = request.POST.get('name')
         if not name:
             raise ValidationError("Name field is required.")
+        website = request.POST.get('website')
+        if not website:
+            raise ValidationError("Website field is required.")
         
         bot.name = name
+        bot.website = website
         bot.prompt_message = request.POST.get('prompt_message', ChatBotInitialPromptEnum.AI_ASSISTANT_INITIAL_PROMPT.value)
         bot.save()
         return redirect('chatbot.settings', id=id)

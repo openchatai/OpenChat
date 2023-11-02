@@ -3,7 +3,7 @@ import os
 from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-
+from django.contrib import messages
 from web.models.chatbot import Chatbot
 from web.models.chatbot_settings import ChatbotSetting
 from web.models.chat_histories import ChatHistory
@@ -23,6 +23,7 @@ from web.utils.common import get_session_id
 from web.utils.common import generate_chatbot_name
 from api.utils.get_prompts import get_qa_prompt_by_mode
 from django.utils import timezone
+from web.models.pdf_data_sources import PdfDataSource
 
 import requests
 from uuid import uuid4
@@ -56,7 +57,8 @@ def logout_view(request):
 
 @check_authentication
 def index(request):
-    chatbots = Chatbot.objects.all()
+    #chatbots = Chatbot.objects.all()
+    chatbots = Chatbot.objects.filter(status=1)
     return render(request, 'index.html', {'chatbots': chatbots})
 
 @check_authentication
@@ -71,7 +73,8 @@ def create_via_website_flow(request):
         name=name,
         token=str(uuid4())[:20],
         website=website,
-        prompt_message=prompt_message
+        prompt_message=prompt_message,
+        status=1
     )
 
     # Trigger the ChatbotWasCreated event (if using Django signals or channels)
@@ -80,7 +83,8 @@ def create_via_website_flow(request):
         id=chatbot.id,
         name=chatbot.name,
         website=chatbot.website,
-        prompt_message=chatbot.prompt_message
+        prompt_message=chatbot.prompt_message,
+        status=1
     )
     
     return HttpResponseRedirect(reverse('onboarding.config', args=[str(chatbot.id)]))
@@ -96,7 +100,8 @@ def create_via_pdf_flow(request):
         id=uuid4(),
         name=name,
         token=str(uuid4())[:20],
-        prompt_message=prompt_message
+        prompt_message=prompt_message,
+        status=1
     )
 
     files = request.FILES.getlist('pdffiles')
@@ -181,7 +186,11 @@ def send_message(request, token):
 
 def get_chat_view(request, token):
     # Find the chatbot by token
-    bot = get_object_or_404(Chatbot, token=token)
+    bot = Chatbot.objects.filter(token=token).first()
+
+    # If bot is None, redirect to APP_URL
+    if bot is None:
+        return redirect(os.getenv('APP_URL'))
 
     # Initiate a cookie if it doesn't exist
     cookie_name = 'chatbot_' + str(bot.id)
@@ -224,3 +233,21 @@ def create_via_codebase_flow(request):
         )
 
         return HttpResponseRedirect(reverse('onboarding.config', args=[str(chatbot.id)]))
+
+@check_authentication
+def delete_file(request, id):
+    # Get the PdfDataSource object
+    pdf_data_source = get_object_or_404(PdfDataSource, id=id)
+
+    # Delete the files associated with the PdfDataSource
+    deleted_files = pdf_data_source.delete_files()
+    print(f"Deleted files {deleted_files}")
+    # Delete the record from the database
+    pdf_data_source.delete()
+    # Add success message
+    messages.success(request, deleted_files)
+    # Remove the record from the vector database
+    # You need to implement this part based on your vector database
+
+    return HttpResponseRedirect(reverse('chatbot.settings-data', args=[str(pdf_data_source.chatbot_id)]))
+
