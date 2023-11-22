@@ -16,13 +16,13 @@ Here are the bullet points for the Docker Compose instructions:
 - Build on Mac:
 
   ```
-  docker-compose -f docker-compose.yml build
+  docker-compose -f docker-compose.yaml build
   ```
 
 - Build on Linux:
 
   ```
-  docker-compose -f docker-compose.linux.yml build
+  docker-compose -f docker-compose.linux.yaml build
   ```
 
 - This uses separate Docker Compose files to build the PostgreSQL service with the appropriate image for each architecture, while sharing the application service. The `-f` flag is used to specify the alternate Compose file on Linux.
