@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 from web.enums.chatbot_initial_prompt_enum import ChatBotInitialPromptEnum
 
 import uuid
@@ -10,6 +11,7 @@ class Chatbot(models.Model):
     status = models.CharField(max_length=255)  # Assuming ChatbotStatusType is a string-based enum in Laravel
     prompt_message = models.TextField(blank=True, default=ChatBotInitialPromptEnum.AI_ASSISTANT_INITIAL_PROMPT.value)
     token = models.CharField(max_length=255)  # Assuming token is a CharField
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='chatbots')
     
     enhanced_privacy = models.BooleanField(default=False)
     smart_sync = models.BooleanField(default=False)

@@ -58,7 +58,10 @@ def logout_view(request):
 @check_authentication
 def index(request):
     #chatbots = Chatbot.objects.all()
-    chatbots = Chatbot.objects.filter(status=1)
+    if request.user.is_superuser:
+        chatbots = Chatbot.objects.filter(status=1)
+    else:
+        chatbots = Chatbot.objects.filter(status=1, user=request.user)    
     return render(request, 'index.html', {'chatbots': chatbots})
 
 @check_authentication
@@ -69,6 +72,7 @@ def create_via_website_flow(request):
     prompt_message = request.POST.get('prompt_message') or ChatBotInitialPromptEnum.AI_ASSISTANT_INITIAL_PROMPT.value
 
     chatbot = Chatbot.objects.create(
+        user=request.user,
         id=uuid4(),
         name=name,
         token=str(uuid4())[:20],
