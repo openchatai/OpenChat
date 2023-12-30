@@ -124,4 +124,4 @@ def get_completion_response(vector_store, mode, initial_prompt, sanitized_questi
         # Remove markdown code block formatting if present
         response_text = response_text.replace('```', '').replace('markdown\n', '').strip()
 
-    return response_text
+    return response_text 
