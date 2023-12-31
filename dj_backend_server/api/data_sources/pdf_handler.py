@@ -109,10 +109,11 @@ def process_pdf(FilePath,directory_path):
             # Define the mode and initial_prompt variables
             language= os.environ.get("OCR_LANGUAGE", "english")
             mode = 'assistant'
-            initial_prompt = f'You are a {language} language teacher who is helping a student correct the text for grammar and spelling. ' \
-            f'\nPlease correct the text for grammar and spelling in the original text, {language}. ' \
-            f'\nDo not translate! Also, if there are any unreadable or nonsensical sentences in the text, please remove them.' \
-            f'\nThe text: {{text}}. ' 
+            initial_prompt = f'You are a {language} language teacher. I will provide you with a text scanned using OCR techniques. ' \
+            f'\nIt may contain errors caused by missing letters or the presence of incorrect letters. ' \
+            f'\nAdditionally, there might be parts of the text that do not make sense. I would like you to correct the text to ensure its grammatical accuracy.  ' \
+            f'\nPlease improve it if possible, but without changing the original meaning of the words.' \
+            f'\nAlways respond in {language} language.  The text: {{text}}. ' 
             print (f"Debug: initial_prompt: {initial_prompt}")
             # Call LLM and write the result into a new text file
             process_text_with_llm(txt_file, mode, initial_prompt)
