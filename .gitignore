@@ -7,4 +7,4 @@ dj_backend_server/nginx/ssl/cert.pem
 .aider.chat.history.md
 dj_backend_server/nginx/nginx.conf
 .aider.tags.cache.v3/
-vscode
+.vscode
