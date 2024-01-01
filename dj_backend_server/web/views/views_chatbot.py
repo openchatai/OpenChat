@@ -24,7 +24,7 @@ from web.utils.common import generate_chatbot_name
 from api.utils.get_prompts import get_qa_prompt_by_mode
 from django.utils import timezone
 from web.models.pdf_data_sources import PdfDataSource
-
+from api.utils.init_vector_store import delete_from_vector_store
 import requests
 from uuid import uuid4
 import re
@@ -58,7 +58,10 @@ def logout_view(request):
 @check_authentication
 def index(request):
     #chatbots = Chatbot.objects.all()
-    chatbots = Chatbot.objects.filter(status=1)
+    if request.user.is_superuser:
+        chatbots = Chatbot.objects.filter(status=1)
+    else:
+        chatbots = Chatbot.objects.filter(status=1, user=request.user)    
     return render(request, 'index.html', {'chatbots': chatbots})
 
 @check_authentication
@@ -69,6 +72,7 @@ def create_via_website_flow(request):
     prompt_message = request.POST.get('prompt_message') or ChatBotInitialPromptEnum.AI_ASSISTANT_INITIAL_PROMPT.value
 
     chatbot = Chatbot.objects.create(
+        user=request.user,
         id=uuid4(),
         name=name,
         token=str(uuid4())[:20],
@@ -238,16 +242,25 @@ def create_via_codebase_flow(request):
 def delete_file(request, id):
     # Get the PdfDataSource object
     pdf_data_source = get_object_or_404(PdfDataSource, id=id)
-
+    # pdf_data_source.set_folder_name(f"/website_data_sources/{pdf_data_source.folder_name}")
     # Delete the files associated with the PdfDataSource
     deleted_files = pdf_data_source.delete_files()
-    print(f"Deleted files {deleted_files}")
+    # print(f"Deleted files {deleted_files}")
+    # print(f"Files entered {pdf_data_source.get_files()}")
+    # Delete the record from the vectordatabase
+    for file_path in pdf_data_source.get_files():
+        # Assuming file_path is a string that contains the path to the file
+        # Extract the filename from the file_path
+        file_name = os.path.basename(file_path)
+        # Use the filename to delete the corresponding record from the vector store
+        delete_from_vector_store(namespace=str(pdf_data_source.chatbot_id), filter_criteria={"source": pdf_data_source.get_files()})
+        print(f"Deleted vector store records for file {file_name}")
+
+
     # Delete the record from the database
-    pdf_data_source.delete()
+    # pdf_data_source.delete()
     # Add success message
     messages.success(request, deleted_files)
-    # Remove the record from the vector database
-    # You need to implement this part based on your vector database
 
     return HttpResponseRedirect(reverse('chatbot.settings-data', args=[str(pdf_data_source.chatbot_id)]))
 
