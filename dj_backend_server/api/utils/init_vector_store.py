@@ -10,7 +10,7 @@ import pinecone
 from langchain.vectorstores.pinecone import Pinecone
 from dotenv import load_dotenv
 import os
-import threading, np
+import threading
 from urllib.parse import urlparse
 init_lock = threading.Lock()
 
@@ -55,7 +55,7 @@ def delete_from_vector_store(namespace: str, filter_criteria: dict) -> None:
         # Extract host and port from QDRANT_URL
         qdrant_url = os.environ['QDRANT_URL']
         url_parts = qdrant_url.split(':')
-        host = "//qdrant"
+        host = "qdrant"
         port = "6333"
         # Initialize the Qdrant client
         qdrant_client = QdrantClient(host=host, port=port)
@@ -63,36 +63,60 @@ def delete_from_vector_store(namespace: str, filter_criteria: dict) -> None:
 
         # Initialize the Qdrant vector store with the client and dummy embeddings
         dummy_embeddings = DummyEmbeddings()
-
         qdrant_store = Qdrant(qdrant_client, namespace, dummy_embeddings)
-        # qdrant_store = Qdrant(client=qdrant_client, namespace=namespace, embeddings=dummy_embeddings)
-        file_paths = filter_criteria["source"]
-        if isinstance(file_paths, list):
-            for file_path in file_paths:
-                file_path_without_extension, _ = os.path.splitext(file_path)
-                file_paths_to_search = [file_path_without_extension + '.pdf', file_path_without_extension + '.txt']
-                for file_path_with_extension in file_paths_to_search:
-                    # Constructing the filter for Qdrant search
-                    search_filter = models.Filter(
-                        must=[models.FieldCondition(
-                            key="source",
-                            match=models.Match(keyword=file_path_with_extension)
-                        )]
-                    )
-                    # Perform the search
-                    search_results = qdrant_store.search(query=dummy_embeddings.embed(),
-                                                         collection_name=namespace,
-                                                         search_filter=search_filter,
-                                                         search_type="similarity",
-                                                         top=1, limit=1) # Adjust the number based on expected results
-                    if search_results:
-                        for result in search_results:
-                            point_id_to_delete = result.id
-                            qdrant_store.delete_point(point_id_to_delete)
-                            print(f"Deleted point with ID {point_id_to_delete} from collection '{namespace}'.")
-                            break  # Stop searching if we found and deleted the point
-                    else:
-                        print(f"No points found for the file path {file_path_with_extension}.")
+
+        source_value = str(filter_criteria.get("source", ""))
+        if source_value:
+            scroll_response, _ = qdrant_client.scroll(
+                collection_name=namespace,
+                scroll_filter=models.Filter(
+                    must=[
+                        models.FieldCondition(key="source", match=models.MatchValue(value=source_value)),
+                    ]
+                ),
+                limit=1,
+                with_payload=True,
+                with_vectors=False,
+            )
+            if scroll_response and scroll_response.points:
+                for point in scroll_response.points:
+                    qdrant_store.delete_point(point.id)
+                    print(f"Deleted point with ID {point.id} and source '{source_value}'")
+            else:
+                print(f"No points found for the source '{source_value}' in collection '{namespace}'.")
+        else:
+              print(f"No source value provided for deletion in collection '{namespace}'.")
+
+
+
+        # # qdrant_store = Qdrant(client=qdrant_client, namespace=namespace, embeddings=dummy_embeddings)
+        # file_paths = filter_criteria["source"]
+        # if isinstance(file_paths, list):
+        #     for file_path in file_paths:
+        #         file_path_without_extension, _ = os.path.splitext(file_path)
+        #         file_paths_to_search = [file_path_without_extension '.pdf', file_path_without_extension '.txt']
+        #         for file_path_with_extension in file_paths_to_search:
+        #             # Constructing the filter for Qdrant search
+        #             search_filter = models.Filter(
+        #                 must=[models.FieldCondition(
+        #                     key="source",
+        #                     match=models.Match(keyword=file_path_with_extension)
+        #                 )]
+        #             )
+        #             # Perform the search
+        #             search_results = qdrant_store.search(query=dummy_embeddings.embed(),
+        #                                                  collection_name=namespace,
+        #                                                  search_filter=search_filter,
+        #                                                  search_type="similarity",
+        #                                                  top=1, limit=1) # Adjust the number based on expected results
+        #             if search_results:
+        #                 for result in search_results:
+        #                     point_id_to_delete = result.id
+        #                     qdrant_store.delete_point(point_id_to_delete)
+        #                     print(f"Deleted point with ID {point_id_to_delete} from collection '{namespace}'.")
+        #                     break  # Stop searching if we found and deleted the point
+        #             else:
+        #                 print(f"No points found for the file path {file_path_with_extension}.")
 
     else:
         raise NotImplementedError(f"Delete operation is not implemented for the store type: {store_type}")
