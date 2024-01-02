@@ -14,6 +14,7 @@ from web.models.crawled_pages import CrawledPages
 import os
 from django.http import HttpResponseNotFound, FileResponse
 from django.conf import settings
+from django.core.files.storage import default_storage
 
 def image_view(request, app_id, image_name):
     image_path = os.path.join('website_data_sources/icons', image_name)
@@ -94,7 +95,14 @@ def data_settings(request, id):
                     'name': file_info.get('original_name', ''),
                     'url': full_file_url,
                     'message': '<span class="material-symbols-outlined">download</span>',
+                    'txt_exists': False,
+                    'txt_content': '',
                 }
+                txt_file_path = file_url.replace('.pdf', '.txt')
+                if default_storage.exists(txt_file_path):
+                    merged_file['txt_exists'] = True
+                    with default_storage.open(txt_file_path, 'r') as txt_file:
+                        merged_file['txt_content'] = txt_file.read()
             else:
                 merged_file = {
                     'name': file_info.get('original_name', ''),
