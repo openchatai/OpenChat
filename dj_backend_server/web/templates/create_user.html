@@ -1,0 +1,114 @@
+{% extends 'layout/app.html' %}
+{% load static %}
+
+{% block content %}
+<div class="min-h-screen h-full flex flex-col after:flex-1">
+    {% if not success_message %}
+    <!-- Header -->
+    <div class="px-4 py-8">
+        <div class="max-w-md mx-auto">
+
+            <h1 class="text-3xl text-slate-800 font-bold mb-6">Create a new user</h1>
+            <p style="margin-bottom: 2rem">Please note down the username and password to send to the user. 
+                They will be required to change these credentials upon their first login.</p>
+
+            {% if error_message %}
+            <div class="alert alert-danger" role="alert" style="background-color: #f8d7da; color: #721c24; border-color: #f5c6cb; padding: 10px; margin-bottom: 20px;">
+                {{ error_message }}
+            </div>
+            {% endif %}
+
+            <!-- Form -->
+            <form action="{% url 'createuser' %}" method="post">
+                {% csrf_token %}
+
+                <div class="space-y-3 mb-8">
+                    <ul class="-my-2">
+                        <!-- List item -->
+                        <li class="relative py-2">
+                            <div class="flex items-center mb-1">
+                                <div>
+                                    <label class="block text-sm font-medium mb-1" for="Username">Username
+                                        <span class="text-rose-500">*</span></label>
+                                    <input id="username" class="form-input w-full" type="text" name="username">
+                                </div>
+                            </div>
+                        </li>
+                        <!-- List item -->
+                        <li class="relative py-2">
+                            <div class="flex items-center mb-1">
+                                <div>
+                                    <label class="block text-sm font-medium mb-1" for="first_name">First name
+                                        <span class="text-rose-500">*</span></label>
+                                    <input id="first_name" class="form-input w-full" type="text" name="first_name">
+                                </div>
+                            </div>
+                        </li>
+                        <!-- List item -->
+                        <li class="relative py-2">
+                            <div class="flex items-center mb-1">
+                                <div>
+                                    <label class="block text-sm font-medium mb-1" for="last_name">Last name
+                                        <span class="text-rose-500">*</span></label>
+                                    <input id="last_name" class="form-input w-full" type="text" name="last_name">
+                                </div>
+                            </div>
+                        </li>
+                        <!-- List item -->
+                        <li class="relative py-2">
+                            <div class="flex items-center mb-1">
+                                <div>
+                                    <label class="block text-sm font-medium mb-1" for="email">Email
+                                        <span class="text-rose-500">*</span></label>
+                                    <input id="email" class="form-input w-full" type="text" name="email">
+                                </div>
+                            </div>
+                        </li>
+                        <!-- List item -->
+                        <li class="relative py-2">
+                            <div class="flex items-center mb-1">
+                                <div>
+                                    <label class="block text-sm font-medium mb-1" for="password">Password
+                                        <span class="text-rose-500">*</span></label>
+                                    <input id="password" class="form-input w-full" type="password" name="password">
+                                    <p>Suggested password (user will change) <strong>{{ SUGGESTEDPASS }}</strong></p>
+                                </div>
+                            </div>
+                        </li>
+                        <!-- List item -->
+                        <li class="relative py-2">
+                            <div class="flex items-center mb-1">
+                                <div>
+                                    <label class="block text-sm font-medium mb-1" for="check_password">Check password
+                                        <span class="text-rose-500">*</span></label>
+                                    <input id="check_password" class="form-input w-full" type="password" name="check_password">
+                                </div>
+                            </div>
+                        </li>
+                        <!-- List item -->
+                    </ul>
+                </div>
+                <div class="flex items-center justify-between">
+                    <button type="submit" class="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-auto">Create user -&gt;</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+    {% endif %}
+
+
+{% if success_message %}
+<div class="px-4 py-8">
+    <div class="max-w-md mx-auto">
+        <h1 class="text-3xl text-slate-800 font-bold mb-6">New user created.</h1>
+        <p style="margin-bottom: 2rem">{{ success_message }} User: <strong>{{ created_username }}</strong></p>  
+        <div class="flex items-center justify-between">
+            <a class="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-auto" href="{% url 'index' %}">Back to home</a>
+        </div>
+    </div>
+</div>
+{% endif %}
+</div>
+
+{% endblock %}

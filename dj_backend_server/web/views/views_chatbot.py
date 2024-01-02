@@ -28,6 +28,7 @@ from api.utils.init_vector_store import delete_from_vector_store
 import requests
 from uuid import uuid4
 import re
+from django.urls import reverse
 
 from django.shortcuts import get_object_or_404, redirect
 
@@ -44,6 +45,10 @@ def login_view(request):
         password = request.POST['password']
         user = authenticate(request, username=username, password=password)
         if user is not None:
+            if user.last_login is None:
+                # Redirect to modify user page if the user has never logged in
+                login(request, user)  # Log in the user to start the session
+                return HttpResponseRedirect(reverse('modify_user'))
             login(request, user)
             return HttpResponseRedirect(reverse('index'))
         else:

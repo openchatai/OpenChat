@@ -54,12 +54,19 @@
                         <div class="pt-0.5 pb-2 px-3 mb-1 border-b border-slate-200">
                             <div class="text-xs text-slate-500 italic">{{ user.is_superuser|yesno:"Super Admin,Account Holder" }}</div>
                             <ul>
+                                {% if user.is_superuser %}
+                                <li>
+                                    <a class="font-medium text-sm text-indigo-500 hover:text-indigo-600 flex items-center py-1 px-3" href="{% url 'createuser' %}">Create user</a>
+                                </li>
+                                {% endif %}
+                                <li>
+                                    <a class="font-medium text-sm text-indigo-500 hover:text-indigo-600 flex items-center py-1 px-3" href="{% url 'modify_user' %}">Modify user details</a>
+                                </li>
                                 <li>
                                     <a class="font-medium text-sm text-indigo-500 hover:text-indigo-600 flex items-center py-1 px-3" href="{% url 'logout' %}">Sign Out</a>
                                 </li>
                             </ul>
                         </div>
-
                     </div>
                 </div>
 
