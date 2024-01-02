@@ -187,14 +187,22 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # You can choose other e
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '0.0.0.0').split(',')
 APP_URL = os.environ.get('APP_URL', 'http://0.0.0.0:8000')
 
+# CSRF_COOKIE_SECURE = True
+# CSRF_COOKIE_HTTPONLY = True
+# SESSION_COOKIE_SECURE = True
+# SESSION_COOKIE_HTTPONLY = True
+# CORS_ALLOW_CREDENTIALS = True
+# CORS_ORIGIN_ALLOW_ALL = True
+# CSRF_COOKIE_DOMAIN = 'APP_URL'
+
 CORS_ALLOWED_ORIGINS = [
-    APP_URL,
+    APP_URL
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    APP_URL,
+    'https://' + APP_URL.replace('http://', '').replace('https://', '')
 ] 
 
-CSRF_COOKIE_DOMAIN = [
-    APP_URL,
+CORS_ORIGIN_WHITELIST = [
+    APP_URL
 ]
