@@ -48,7 +48,7 @@ def init_vector_store(docs: list[Document], embeddings: OpenAIEmbeddings, option
         valid_stores = ", ".join(StoreType._member_names())
         raise ValueError(f"Invalid STORE environment variable value: {os.environ['STORE']}. Valid values are: {valid_stores}")
     
-def delete_from_vector_store(namespace: str, filter_criteria: dict) -> None:
+def delete_from_vector_store(namespace: str, filter_criteria: dict) -> None: # @TODO - not finished, need to find out some way to delete from qdrant
     store_type = StoreType[os.environ['STORE']]
 
     if store_type == StoreType.QDRANT:
@@ -65,7 +65,8 @@ def delete_from_vector_store(namespace: str, filter_criteria: dict) -> None:
         dummy_embeddings = DummyEmbeddings()
         qdrant_store = Qdrant(qdrant_client, namespace, dummy_embeddings)
 
-        source_value = str(filter_criteria.get("source", ""))
+        full_source_path = str(filter_criteria.get("source", ""))
+        source_value = os.path.basename(full_source_path).replace('.pdf', '.txt')   
         if source_value:
             scroll_response, _ = qdrant_client.scroll(
                 collection_name=namespace,
@@ -74,16 +75,16 @@ def delete_from_vector_store(namespace: str, filter_criteria: dict) -> None:
                         models.FieldCondition(key="source", match=models.MatchValue(value=source_value)),
                     ]
                 ),
-                limit=1,
+                limit=100,
                 with_payload=True,
-                with_vectors=False,
+                with_vectors=True,
             )
             if scroll_response and scroll_response.points:
                 for point in scroll_response.points:
                     qdrant_store.delete_point(point.id)
                     print(f"Deleted point with ID {point.id} and source '{source_value}'")
             else:
-                print(f"No points found for the source '{source_value}' in collection '{namespace}'.")
+                print(f"No points found for the source '{source_value}'")
         else:
               print(f"No source value provided for deletion in collection '{namespace}'.")
 

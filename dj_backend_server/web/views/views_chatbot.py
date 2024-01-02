@@ -101,6 +101,7 @@ def create_via_pdf_flow(request):
     delete_folder_flag = 'delete_folder_flag' in request.POST
     
     chatbot = Chatbot.objects.create(
+        user=request.user,
         id=uuid4(),
         name=name,
         token=str(uuid4())[:20],
@@ -242,23 +243,25 @@ def create_via_codebase_flow(request):
 def delete_file(request, id):
     # Get the PdfDataSource object
     pdf_data_source = get_object_or_404(PdfDataSource, id=id)
-    # pdf_data_source.set_folder_name(f"/website_data_sources/{pdf_data_source.folder_name}")
+
     # Delete the files associated with the PdfDataSource
     deleted_files = pdf_data_source.delete_files()
-    # print(f"Deleted files {deleted_files}")
-    # print(f"Files entered {pdf_data_source.get_files()}")
+    
     # Delete the record from the vectordatabase
-    for file_path in pdf_data_source.get_files():
-        # Assuming file_path is a string that contains the path to the file
-        # Extract the filename from the file_path
-        file_name = os.path.basename(file_path)
-        # Use the filename to delete the corresponding record from the vector store
-        delete_from_vector_store(namespace=str(pdf_data_source.chatbot_id), filter_criteria={"source": pdf_data_source.get_files()})
-        print(f"Deleted vector store records for file {file_name}")
-
+    file_paths = pdf_data_source.get_files()
+    if file_paths:
+        for file_path in file_paths:
+            # Assuming file_path is a string that contains the path to the file
+            # Extract the filename from the file_path
+                file_name = os.path.basename(file_path)
+                # Use the filename to delete the corresponding record from the vector store
+                delete_from_vector_store(namespace=str(pdf_data_source.chatbot_id), filter_criteria={"source": file_path})
+                print(f"Deleted vector store records for file {file_name}")
 
     # Delete the record from the database
-    # pdf_data_source.delete()
+    pdf_data_source.delete()            
+
+    # Deleted vector store records for file.delete()
     # Add success message
     messages.success(request, deleted_files)
 

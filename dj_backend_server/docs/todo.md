@@ -10,6 +10,7 @@ TODO list of tasks to be completed.
 - Retrieve and possibly modify data from the Vector Database for review.
 - If the file exists but the hash differs when uploading a new PDF, delete the old data from the Vector Database (VD) and restart the job with the new file.
 - Localize
+- Edit TXT in editor (from file), then update it in Vector Database.
 
 - (done 31.10.2023) If doc need OCR -> Send to LLM to correct the text, drop garbage text and return clean data to ingest into vector database.
 - (done 31.10.2023) When uploading a new PDF, check if the filename already exists and whether the hash is identical; if so, skip the upload.

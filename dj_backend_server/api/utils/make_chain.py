@@ -62,7 +62,7 @@ def process_text_with_llm(txt_file_path: str, mode, initial_prompt: str):
     # Send the formatted prompt to LLM and get the result
     llm = get_llm()
     print(f"Sending to LLM: {text}")
-    result = llm(text)
+    result = llm(text, temperature=0.1)
     print(f"Results  LLM: {result}")
 
     # Check if result is a string

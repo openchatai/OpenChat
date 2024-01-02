@@ -105,16 +105,18 @@ def process_pdf(FilePath,directory_path):
         if os.environ.get("OCR_LLM", "0") == "1":
             # Write the OCR text into an in-memory text stream
             txt_file = io.StringIO(ocrText)
-            # print (f"Debug: txt_file: {txt_file}")
-            # Define the mode and initial_prompt variables
-            language= os.environ.get("OCR_LANGUAGE", "english")
             mode = 'assistant'
-            initial_prompt = f'You are a {language} language teacher. I will provide you with a text scanned using OCR techniques. ' \
-            f'\nIt may contain errors caused by missing letters or the presence of incorrect letters. ' \
-            f'\nAdditionally, there might be parts of the text that do not make sense. I would like you to correct the text to ensure its grammatical accuracy.  ' \
-            f'\nPlease improve it if possible, but without changing the original meaning of the words.' \
-            f'\nAlways respond in {language} language.  The text: {{text}}. ' 
+            initial_prompt = f'Objective: To enhance official documents written. ' \
+            f'\nInput Data: The text of a document which may contain grammatical errors, typos, formatting issues, and stylistic inconsistencies from OCR result. ' \
+            f'\nFunctional Requirements: Detection and Correction of Grammatical and Typographical Errors: Identify and correct spelling and punctuation errors. Check grammatical agreements within sentences.' \
+            f'\nStandardization of Style: Adjust the text to ensure coherence and stylistic uniformity in accordance with official writing standards.' \
+            f'\nClarification of Text Structure: Restructure sentences to improve clarity and readability, without altering the original meaning. Keep and answer the detected language from the document.' \
+            f'\nDocument Formatting: Implement a formatting system that adjusts the alignment of text, lists, and other structural elements for a professional presentation.' \
+            f'\nOutput Data: The corrected and enhanced document. Never translate the document, always keep and answer the detected language from the document..' \
+            f'\nThe text: {{text}}. ' 
+            
             print (f"Debug: initial_prompt: {initial_prompt}")
+            
             # Call LLM and write the result into a new text file
             process_text_with_llm(txt_file, mode, initial_prompt)
             final_text = txt_file.getvalue()
