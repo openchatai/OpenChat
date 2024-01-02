@@ -65,59 +65,40 @@ def delete_from_vector_store(namespace: str, filter_criteria: dict) -> None: # @
         dummy_embeddings = DummyEmbeddings()
         qdrant_store = Qdrant(qdrant_client, namespace, dummy_embeddings)
 
-        full_source_path = str(filter_criteria.get("source", ""))
-        source_value = os.path.basename(full_source_path).replace('.pdf', '.txt')   
+        source_value = str(filter_criteria.get("source", "")).replace('.pdf', '.txt')  
+
         if source_value:
-            scroll_response, _ = qdrant_client.scroll(
+            # scroll_response = qdrant_client.scroll(
+            records, point_ids = qdrant_client.scroll(
                 collection_name=namespace,
                 scroll_filter=models.Filter(
                     must=[
-                        models.FieldCondition(key="source", match=models.MatchValue(value=source_value)),
+                        models.FieldCondition(
+                            key="metadata.source",
+                            match=models.MatchValue(value=str(source_value)),
+                        ),
                     ]
                 ),
-                limit=100,
+                limit=int(100),
+                offset=int(0),
                 with_payload=True,
-                with_vectors=True,
+                with_vectors=False,
             )
-            if scroll_response and scroll_response.points:
-                for point in scroll_response.points:
-                    qdrant_store.delete_point(point.id)
-                    print(f"Deleted point with ID {point.id} and source '{source_value}'")
+
+            if records:
+                point_ids = [record.id for record in records]
+                qdrant_client.delete(
+                    collection_name=namespace,
+                    points_selector=models.PointIdsList(
+                        points=point_ids,
+                    ),
+                )
+                print(f"Deleted points with IDs {point_ids} from collection '{namespace}'.")
             else:
                 print(f"No points found for the source '{source_value}'")
+
         else:
               print(f"No source value provided for deletion in collection '{namespace}'.")
-
-
-
-        # # qdrant_store = Qdrant(client=qdrant_client, namespace=namespace, embeddings=dummy_embeddings)
-        # file_paths = filter_criteria["source"]
-        # if isinstance(file_paths, list):
-        #     for file_path in file_paths:
-        #         file_path_without_extension, _ = os.path.splitext(file_path)
-        #         file_paths_to_search = [file_path_without_extension '.pdf', file_path_without_extension '.txt']
-        #         for file_path_with_extension in file_paths_to_search:
-        #             # Constructing the filter for Qdrant search
-        #             search_filter = models.Filter(
-        #                 must=[models.FieldCondition(
-        #                     key="source",
-        #                     match=models.Match(keyword=file_path_with_extension)
-        #                 )]
-        #             )
-        #             # Perform the search
-        #             search_results = qdrant_store.search(query=dummy_embeddings.embed(),
-        #                                                  collection_name=namespace,
-        #                                                  search_filter=search_filter,
-        #                                                  search_type="similarity",
-        #                                                  top=1, limit=1) # Adjust the number based on expected results
-        #             if search_results:
-        #                 for result in search_results:
-        #                     point_id_to_delete = result.id
-        #                     qdrant_store.delete_point(point_id_to_delete)
-        #                     print(f"Deleted point with ID {point_id_to_delete} from collection '{namespace}'.")
-        #                     break  # Stop searching if we found and deleted the point
-        #             else:
-        #                 print(f"No points found for the file path {file_path_with_extension}.")
 
     else:
         raise NotImplementedError(f"Delete operation is not implemented for the store type: {store_type}")

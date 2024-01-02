@@ -169,6 +169,7 @@ def send_message(request, token):
     if session_id is not None:
         # Save chat history
         ChatHistory.objects.create(
+            user=request.user,
             id=uuid4(),
             chatbot=bot,
             from_user=True,
@@ -176,6 +177,7 @@ def send_message(request, token):
             session_id=session_id
         )
         ChatHistory.objects.create(
+            user=request.user,
             id=uuid4(),
             chatbot=bot,
             from_user=False,
@@ -217,6 +219,7 @@ def create_via_codebase_flow(request):
         name = request.POST.get('name')
         name = generate_chatbot_name(repo_url=repo_url, name=name)
         chatbot = Chatbot.objects.create(
+            user=request.user,
             id=uuid4(),
             name=name,
             token=str(uuid4())[:20],
