@@ -390,8 +390,7 @@
                                                             </thead>
 
                                                             <!-- Table body -->
-                                                            <tbody
-                                                                class="text-sm divide-y divide-slate-200 border-b border-slate-200">
+                                                            <tbody class="text-sm divide-y divide-slate-200 border-b border-slate-200">
 
                                                                 {% for file in source.merged_files %}
                                                                 <tr>
@@ -425,7 +424,16 @@
                                                                         </div>
                                                                     </td>
                                                                 </tr>
-
+                                                                {% if file.txt_exists %}
+                                                                <tr>
+                                                                    <td colspan="3">
+                                                                        <div style="max-height: 200px; overflow-y: scroll; white-space: pre-wrap; border: 1px solid #ddd; padding: 10px;">
+                                                                            {{ file.txt_content }}
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                {% endif %}
+                                                           
                                                                 {% endfor %}
 
                                                             </tbody>

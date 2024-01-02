@@ -32,6 +32,7 @@ def chat(request):
         initial_prompt = body.get('initial_prompt')
         token = body.get('token')
         session_id = body.get('session_id')
+        history = body.get('history') # @TODO not needed to pass and extract?
 
         bot = get_object_or_404(Chatbot, token=token)
 
@@ -43,27 +44,48 @@ def chat(request):
         vector_store = get_vector_store(StoreOptions(namespace=namespace))
         
         response_text = get_completion_response(vector_store=vector_store, initial_prompt=initial_prompt,mode=mode, sanitized_question=sanitized_question, session_id=session_id)
-
-        if 'text' in response_text:
+        # print(f"Response before creating ChatHistory: {response_text}")
+        if isinstance(response_text, dict) and 'text' in response_text:
             ChatHistory.objects.bulk_create([
                 ChatHistory(
                     id=uuid4(),
                     chatbot_id=bot.id,
                     from_user=True,
                     message=sanitized_question,
-                    session_id=session_id
+                    session_id=session_id,
+                ),
+                ChatHistory(
+                    id=uuid4(),
+                    chatbot_id=bot.id,
+                    from_user=False,
+                    message=response_text['text'],
+                    session_id=session_id,
+                )
+            ])
+            # print(f"ChatHistory created with response with TEXT: {response_text}")
+            return JsonResponse({'text': response_text['text']})
+        elif isinstance(response_text, str):
+            ChatHistory.objects.bulk_create([
+                ChatHistory(
+                    id=uuid4(),
+                    chatbot_id=bot.id,
+                    from_user=True,
+                    message=sanitized_question,
+                    session_id=session_id,
                 ),
                 ChatHistory(
                     id=uuid4(),
                     chatbot_id=bot.id,
                     from_user=False,
                     message=response_text,
-                    session_id=session_id
+                    session_id=session_id,
                 )
             ])
-
-            return JsonResponse({'text': response_text})
+            # print(f"ChatHistory created with response: {response_text}")
+            return JsonResponse({'text': response_text})        
+        
         else:
+            print(f"Response does not contain 'text' key: {response_text}")
             return JsonResponse({'error': 'Unexpected response from API'}, status=500)
         
     except json.JSONDecodeError:
@@ -88,4 +110,18 @@ def get_completion_response(vector_store, mode, initial_prompt, sanitized_questi
         chat_history = get_chat_history_for_retrieval_chain(session_id, limit=40)
         response = chain({"question": sanitized_question, "chat_history": chat_history}, return_only_outputs=True)
         response_text = response['answer']
-    return response_text
+    try:
+        # Attempt to parse the response_text as JSON
+        response_text = json.loads(response_text)
+    except json.JSONDecodeError:
+        # If response_text is not a JSON string, leave it as is
+        pass
+    #Trim markdown code block formatting if present
+    if isinstance(response_text, dict) and 'text' in response_text:
+        # Remove markdown code block formatting if present
+        response_text['text'] = response_text['text'].replace('```', '').replace('markdown\n', '').strip()
+    elif isinstance(response_text, str):
+        # Remove markdown code block formatting if present
+        response_text = response_text.replace('```', '').replace('markdown\n', '').strip()
+
+    return response_text 
