@@ -112,10 +112,10 @@ def process_pdf(FilePath,directory_path):
             f'\nStandardization of Style: Adjust the text to ensure coherence and stylistic uniformity in accordance with official writing standards.' \
             f'\nClarification of Text Structure: Restructure sentences to improve clarity and readability, without altering the original meaning. Keep and answer the detected language from the document.' \
             f'\nDocument Formatting: Implement a formatting system that adjusts the alignment of text, lists, and other structural elements for a professional presentation.' \
-            f'\nOutput Data: The corrected and enhanced document. Never translate the document, always keep and answer the detected language from the document..' \
+            f'\nOutput Data: This is the corrected and enhanced document. Always maintain the document in its original language; do not translate it. Respond only in the language detected from the document. Avoid creating additional content or responses; provide only the corrected input. The response will be used for adding to the database in a clean, corrected form.' \
             f'\nThe text: {{text}}. ' 
             
-            print (f"Debug: initial_prompt: {initial_prompt}")
+            # print (f"Debug: initial_prompt: {initial_prompt}")
             
             # Call LLM and write the result into a new text file
             process_text_with_llm(txt_file, mode, initial_prompt)
@@ -152,7 +152,7 @@ def txt_to_vectordb(shared_folder: str, namespace: str, delete_folder_flag: bool
 
         raw_docs = directory_loader.load()
 
-        text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200, length_function=len)
+        text_splitter = RecursiveCharacterTextSplitter(chunk_size=4000, chunk_overlap=200, length_function=len)
 
         docs = text_splitter.split_documents(raw_docs)
 
