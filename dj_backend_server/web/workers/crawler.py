@@ -21,6 +21,20 @@ load_dotenv()
 
 
 def start_recursive_crawler(data_source_id, chatbot_id):
+    """
+    This function starts a recursive crawler on a given data source. If the data source's crawling status is already
+    completed, the function will return immediately. Otherwise, it will set the status to "in progress", start the
+    crawling process, and handle the completion of the crawling. If any exception occurs during the process, the
+    crawling status will be set to "failed".
+
+    Args:
+        data_source_id (int): The ID of the data source to be crawled. This should be a primary key of a WebsiteDataSource object.
+        chatbot_id (int): The ID of the chatbot initiating the crawl. This is used when handling the completion of the crawling.
+
+    Raises:
+        Exception: If any error occurs during the crawling process, the function will catch the exception, set the
+        crawling status to "failed", and re-raise the exception.
+    """
     data_source = WebsiteDataSource.objects.get(pk=data_source_id)
     root_url = data_source.root_url
 
@@ -44,11 +58,27 @@ def start_recursive_crawler(data_source_id, chatbot_id):
         data_source.crawling_status = WebsiteDataSourceStatusType.FAILED.value
         data_source.save()
 
-# the file will be stored in the website_data_sources/<data_source_id>/ directory.
 def store_crawled_page_content_to_database(url, response, chatbot_id, data_source_id, html):
+    """
+    This function stores the content of a crawled web page to the database. It first normalizes the HTML content,
+    saves it to a local file in the /website_data_sources directory, extracts the title of the page, and then creates
+    a CrawledPages object and saves it to the database. If any error occurs during the creation of the 
+    CrawledPages object, the function will print the error message.
+
+    Args:
+        url (str): The URL of the web page that has been crawled.
+        response (Response): The response object returned by the request to the URL.
+        chatbot_id (int): The ID of the chatbot that initiated the crawl.
+        data_source_id (int): The ID of the data source from which the web page was crawled.
+        html (str): The HTML content of the web page.
+
+    Raises:
+        Exception: If any error occurs during the creation of the CrawledPages object, the function will catch the
+        exception and print the error message.
+    """
     html = get_normalized_content(html)
     
-    # Save the HTML content to a local file in /tmp directory
+    # Save the HTML content to a local file in /website_data_sources directory
     file_name = str(uuid4()) + ".txt"
     folder_name = os.path.join("website_data_sources", str(data_source_id))
     file_path = os.path.join(folder_name, file_name)
@@ -73,6 +103,19 @@ def store_crawled_page_content_to_database(url, response, chatbot_id, data_sourc
 
 
 def calculate_crawling_progress(crawled_pages, max_pages):
+    """
+    This function calculates the progress of the crawling process. It divides the number of crawled pages by the maximum
+    number of pages that should be crawled, multiplies the result by 100 to get a percentage, and then rounds the result
+    to two decimal places. If the calculated progress exceeds 100, it is capped at 100. If the maximum number of pages
+    is zero or less, the function returns 0 to avoid division by zero.
+
+    Args:
+        crawled_pages (int): The number of pages that have been crawled.
+        max_pages (int): The maximum number of pages that should be crawled.
+
+    Returns:
+        float: The progress of the crawling process, as a percentage rounded to two decimal places.
+    """
     if max_pages <= 0:
         return 0  # Avoid division by zero
 
@@ -81,6 +124,19 @@ def calculate_crawling_progress(crawled_pages, max_pages):
     return min(progress, 100)
 
 def update_crawling_progress(chatbot_id, data_source_id, progress):
+    """
+    This function updates the crawling progress of a specific data source. It retrieves the data source object from
+    the database using the provided ID, sets its crawling progress to the provided value, and then saves the changes
+    to the database. If no data source with the provided ID exists, the function does nothing.
+
+    Args:
+        chatbot_id (int): The ID of the chatbot that initiated the crawl. Currently not used in this function but could be useful for future enhancements.
+        data_source_id (int): The ID of the data source whose crawling progress should be updated.
+        progress (float): The new crawling progress, as a percentage.
+
+    Raises:
+        WebsiteDataSource.DoesNotExist: If no data source with the provided ID exists, the function will catch this exception and do nothing.
+    """
     try:
         data_source = WebsiteDataSource.objects.get(pk=data_source_id)
         data_source.crawling_progress = progress
@@ -89,8 +145,19 @@ def update_crawling_progress(chatbot_id, data_source_id, progress):
         pass
 
 
-# This method needs to be revisited and has to be written in a more sophisticated manner. 
 def get_normalized_content(html):
+    """
+    This function normalizes the HTML content of a web page. It removes unwanted elements (such as 'script' and 'style' tags,
+    and elements with 'skip', 'menu', or 'dropdown' classes), extracts the text content from the cleaned HTML, removes extra
+    whitespace between words, and trims leading and trailing whitespace. The function uses BeautifulSoup to parse and manipulate
+    the HTML, and a recursive function to clean unwanted elements.
+
+    Args:
+        html (str): The HTML content of the web page to be normalized.
+
+    Returns:
+        str: The normalized text content of the web page.
+    """
     # Define a list of tags and classes to exclude
     exclude_elements = ['script', 'style']
     exclude_classes = ['skip', 'menu', 'dropdown']
@@ -99,6 +166,16 @@ def get_normalized_content(html):
 
     # Function to recursively remove unwanted elements
     def clean_elements(element):
+        """
+        This function recursively removes unwanted elements from a BeautifulSoup element. It iterates over the direct children
+        of the provided element. If a child element's tag name is in the 'exclude_elements' list or any of its classes are in the
+        'exclude_classes' list, the child element is replaced with a whitespace. Otherwise, the function is called recursively on
+        the child element.
+
+        Args:
+            element (bs4.element.Tag): The BeautifulSoup element to clean. This should be a tag object that potentially contains
+            other tag objects (children).
+        """
         for child in element.find_all(recursive=False):
             if child.name in exclude_elements or any(cls in child.get('class', []) for cls in exclude_classes):
                 # Replace excluded elements with whitespace
@@ -121,6 +198,17 @@ def get_normalized_content(html):
     
 
 def get_crawled_page_title(html):
+    """
+    This function extracts the title of a web page from its HTML content. It uses BeautifulSoup to parse the HTML and find
+    the 'title' tag. If a 'title' tag is found, the function returns its text content. If no 'title' tag is found, the function
+    returns None. @TODO check why title is not saving into database.
+
+    Args:
+        html (str): The HTML content of the web page from which to extract the title.
+
+    Returns:
+        str or None: The title of the web page, or None if no 'title' tag is found.
+    """
     # Use BeautifulSoup to parse the HTML and extract the title
     soup = BeautifulSoup(html, 'html.parser')
     title_element = soup.find('title')
@@ -130,6 +218,18 @@ def get_crawled_page_title(html):
 
 
 def extract_links(html, root_url):
+    """
+    This function extracts all the URLs from the anchor tags in the HTML content of a web page. It uses BeautifulSoup to parse
+    the HTML and find all 'a' tags. The function then normalizes and filters the URLs to remove query parameters, fragments, and
+    URLs that do not belong to the same root URL host.
+
+    Args:
+        html (str): The HTML content of the web page from which to extract the URLs.
+        root_url (str): The root URL of the web page. This is used to filter out URLs that do not belong to the same host.
+
+    Returns:
+        list: A list of extracted, normalized, and filtered URLs.
+    """
     # Use BeautifulSoup to parse the HTML and extract all anchor tags
     soup = BeautifulSoup(html, 'html.parser')
     anchor_tags = soup.find_all('a')
@@ -157,6 +257,23 @@ def extract_links(html, root_url):
 
 
 def crawl(data_source_id, url, crawled_urls, max_pages, chatbot_id):
+    """
+    This function crawls a web page at a given URL and stores its content in the database. It also extracts all the links from
+    the page and recursively crawls each one. The function keeps track of the URLs that have been crawled to avoid duplicates and
+    stops crawling when the maximum number of pages has been reached. If an error occurs while crawling a URL, the function logs
+    the error and continues with the next URL.
+
+    Args:
+        data_source_id (int): The ID of the data source from which the web page is being crawled.
+        url (str): The URL of the web page to crawl.
+        crawled_urls (list): A list of URLs that have already been crawled. This is used to avoid crawling the same URL multiple times.
+        max_pages (int): The maximum number of pages to crawl.
+        chatbot_id (int): The ID of the chatbot that initiated the crawl.
+
+    Raises:
+        requests.exceptions.RequestException: If an error occurs while sending the HTTP GET request to the URL, the function will catch this exception and do nothing.
+        Exception: If any other error occurs during the crawling process, the function will catch the exception, log the error, and continue with the next URL.
+    """
     # Check if the maximum page limit has been reached
     if len(crawled_urls) >= max_pages:
         return
@@ -168,6 +285,13 @@ def crawl(data_source_id, url, crawled_urls, max_pages, chatbot_id):
     # Check if the URL ends with a binary file extension
     binary_extensions = ['.png', '.jpg', '.jpeg', '.gif', '.bmp', '.ico', '.tif', '.tiff', '.webp']
     if any(url.lower().endswith(ext) for ext in binary_extensions):
+        """
+        This block of code checks if the URL ends with a binary file extension. It has a list of binary file extensions
+        (binary_extensions). The 'any' function is used with a generator expression that checks if the URL (converted to
+        lower case to ensure case-insensitive matching) ends with any of the extensions in the list. If the URL does end
+        with a binary file extension, the function immediately returns, effectively skipping the processing of binary files
+        in the web crawling process.
+        """
         return
 
     # Add the current URL to the crawled URLs list

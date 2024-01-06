@@ -81,8 +81,11 @@ def get_history_by_session_id(request, id, session_id):
 def data_settings(request, id):
     bot = get_object_or_404(Chatbot, id=id)
     website_data_sources = WebsiteDataSource.objects.filter(chatbot_id=id).prefetch_related('crawled_pages').order_by('-id')
+    #website_data_sources = WebsiteDataSource.objects.filter(chatbot_id=id).order_by('-id')
     pdf_data_sources = PdfDataSource.objects.filter(chatbot_id=id).order_by('-id')
     codebase_data_sources = CodebaseDataSource.objects.filter(chatbot_id=id).order_by('-id')
+    crawled_pages_count = CrawledPages.objects.filter(website_data_source__chatbot_id=id).count()
+    print(f"LEHEL  {crawled_pages_count}")
 
     for source in pdf_data_sources:
         merged_files = []
@@ -122,7 +125,7 @@ def data_settings(request, id):
         source.merged_files = merged_files
         source.status_html = status_html
 
-    return render(request, 'settings-data.html', {'bot': bot, 'website_data_sources': website_data_sources, 'pdf_data_sources': pdf_data_sources, 'codebase_data_sources': codebase_data_sources})
+    return render(request, 'settings-data.html', {'bot': bot, 'website_data_sources': website_data_sources, 'pdf_data_sources': pdf_data_sources, 'codebase_data_sources': codebase_data_sources, 'crawled_pages_count': crawled_pages_count,})
 
 
 def analytics_settings(request, id):
