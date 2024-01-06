@@ -4,6 +4,7 @@ from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
 from langchain.memory import ConversationBufferMemory
 from api.utils.get_openai_llm import get_llm
+from langchain.chat_models import ChatOpenAI
 from langchain import PromptTemplate, LLMChain
 from langchain.chains import RetrievalQAWithSourcesChain, ConversationalRetrievalChain
 from api.utils.get_prompts import get_qa_prompt_by_mode
@@ -55,14 +56,15 @@ def process_text_with_llm(txt_file_path: str, mode, initial_prompt: str):
 
     # Create a prompt template with your initial_prompt
     prompt_template = PromptTemplate.from_template(initial_prompt)
-
+    # print(f"Prompt template: {prompt_template}")
     # Format the prompt template with the text to be corrected
     formatted_prompt = prompt_template.format(text=text)
+    # print(f"Formatted prompt: {formatted_prompt}")
 
     # Send the formatted prompt to LLM and get the result
     llm = get_llm()
-    print(f"Sending to LLM: {text}")
-    result = llm(text)
+    # print(f"Sending to LLM: {text}")
+    result = llm(prompt=initial_prompt.format(text=text), temperature=0)
     print(f"Results  LLM: {result}")
 
     # Check if result is a string

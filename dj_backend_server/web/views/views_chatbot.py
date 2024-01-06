@@ -24,10 +24,11 @@ from web.utils.common import generate_chatbot_name
 from api.utils.get_prompts import get_qa_prompt_by_mode
 from django.utils import timezone
 from web.models.pdf_data_sources import PdfDataSource
-
+from api.utils.init_vector_store import delete_from_vector_store
 import requests
 from uuid import uuid4
 import re
+from django.urls import reverse
 
 from django.shortcuts import get_object_or_404, redirect
 
@@ -44,6 +45,10 @@ def login_view(request):
         password = request.POST['password']
         user = authenticate(request, username=username, password=password)
         if user is not None:
+            if user.last_login is None:
+                # Redirect to modify user page if the user has never logged in
+                login(request, user)  # Log in the user to start the session
+                return HttpResponseRedirect(reverse('modify_user'))
             login(request, user)
             return HttpResponseRedirect(reverse('index'))
         else:
@@ -101,6 +106,7 @@ def create_via_pdf_flow(request):
     delete_folder_flag = 'delete_folder_flag' in request.POST
     
     chatbot = Chatbot.objects.create(
+        user=request.user,
         id=uuid4(),
         name=name,
         token=str(uuid4())[:20],
@@ -168,6 +174,7 @@ def send_message(request, token):
     if session_id is not None:
         # Save chat history
         ChatHistory.objects.create(
+            user=request.user,
             id=uuid4(),
             chatbot=bot,
             from_user=True,
@@ -175,6 +182,7 @@ def send_message(request, token):
             session_id=session_id
         )
         ChatHistory.objects.create(
+            user=request.user,
             id=uuid4(),
             chatbot=bot,
             from_user=False,
@@ -216,6 +224,7 @@ def create_via_codebase_flow(request):
         name = request.POST.get('name')
         name = generate_chatbot_name(repo_url=repo_url, name=name)
         chatbot = Chatbot.objects.create(
+            user=request.user,
             id=uuid4(),
             name=name,
             token=str(uuid4())[:20],
@@ -245,13 +254,24 @@ def delete_file(request, id):
 
     # Delete the files associated with the PdfDataSource
     deleted_files = pdf_data_source.delete_files()
-    print(f"Deleted files {deleted_files}")
+    
+    # Delete the record from the vectordatabase
+    file_paths = pdf_data_source.get_files()
+    if file_paths:
+        for file_path in file_paths:
+            # Assuming file_path is a string that contains the path to the file
+            # Extract the filename from the file_path
+                file_name = os.path.basename(file_path)
+                # Use the filename to delete the corresponding record from the vector store
+                delete_from_vector_store(namespace=str(pdf_data_source.chatbot_id), filter_criteria={"source": file_path})
+                print(f"Deleted vector store records for file {file_name}")
+
     # Delete the record from the database
-    pdf_data_source.delete()
+    pdf_data_source.delete()            
+
+    # Deleted vector store records for file.delete()
     # Add success message
     messages.success(request, deleted_files)
-    # Remove the record from the vector database
-    # You need to implement this part based on your vector database
 
     return HttpResponseRedirect(reverse('chatbot.settings-data', args=[str(pdf_data_source.chatbot_id)]))
 

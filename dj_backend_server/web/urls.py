@@ -1,12 +1,13 @@
 # api/urls.py
 from django.urls import path
-from web.views import views_chatbot_settings, views_onboarding, views_chatbot, views_pdf_data_source, views_website_datasource;
+from web.views import views_chatbot_settings, views_onboarding, views_chatbot, views_pdf_data_source, views_website_datasource, views_chatbot_createuser;
 
 urlpatterns = [
     # Dashboard
     path('', views_chatbot.index, name='index'),
     path('login', views_chatbot.login_view, name='login'),
     path('logout', views_chatbot.logout_view, name='logout'),
+    path('modify_user/', views_chatbot_createuser.modify_user, name='modify_user'),
 
     # Chatbot Settings
     path('app/<uuid:id>/', views_chatbot_settings.general_settings, name='chatbot.settings'),
@@ -20,6 +21,9 @@ urlpatterns = [
     path('widget/data-sources-updates/<uuid:id>/', views_chatbot_settings.data_sources_updates, name='widget.data-sources-updates'),
     path('widget/chat-history/<uuid:id>/<str:session_id>/', views_chatbot_settings.get_history_by_session_id, name='widget.chat-history'),
     path('app/<int:id>/delete_file/', views_chatbot.delete_file, name='delete_file'),
+    path('createuser/', views_chatbot_createuser.createuser, name='createuser'),
+    path('createuser/success/', views_chatbot_createuser.createuser_success, name='createuser_success'),
+
 
     # Onboarding Frontend
     path('onboarding/welcome/', views_onboarding.welcome, name='onboarding.welcome'),
