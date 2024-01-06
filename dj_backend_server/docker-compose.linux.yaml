@@ -47,7 +47,7 @@ services:
     networks:
       - openchat_network
     env_file:
-      - .env.docker
+      - .env
     depends_on:
       - qdrant
       - mysql
@@ -73,7 +73,7 @@ services:
       redis:
         condition: service_healthy
     env_file:
-      - .env.docker
+      - .env
     entrypoint: ["/entrypoint.sh"]
     command: >
       sh -c "python manage.py migrate auth && 
