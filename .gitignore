@@ -1,10 +1,8 @@
 .DS_Store
-.aider.ident.cache.v1/
-.aider.tags.cache.v1/
+.aider.*
 .aider.conf.yml
 dj_backend_server/nginx/ssl/privkey.pem
 dj_backend_server/nginx/ssl/cert.pem
-.aider.chat.history.md
 dj_backend_server/nginx/nginx.conf
-.aider.tags.cache.v3/
 .vscode
+dj_backend_server.code-workspace
