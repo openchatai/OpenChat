@@ -51,8 +51,12 @@
                 <div class="p-6 space-y-6">
                     <section>
                         <h3 class="text-xl leading-snug text-slate-800 font-bold mb-1">Data sources</h3>
-                        <div class="text-sm">Currently we only support web based sources, soon we will support Pdf,
-                            Text and even videos!
+                        <div class="text-sm">
+                            <ul><li>Website data sources: {{website_data_sources.count}} with crawled pages: {{ crawled_pages_count }}  </li>
+                                <li>PDF data sources: {{pdf_data_sources.count}}</li>
+                                <li>Codebase data sources: {{codebase_data_sources.count}} </li>
+                    </ul>    
+                        </div>
                         </div>
 
                         {% if messages %}
