@@ -168,15 +168,15 @@ LOCALE_PATHS = [
     path.join(BASE_DIR, 'locale'),
 ]
 
-CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL', 'redis://localhost:6379/0')
-CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND', 'redis://localhost:6379/0')
+CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL', 'redis://redis:6379/0')
+CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND', 'redis://redis:6379/0')
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.environ.get('DATABASE_NAME', 'mydb'),
-        'USER': os.environ.get('DATABASE_USER', 'myuser'),
-        'PASSWORD': os.environ.get('DATABASE_PASSWORD', 'mypassword'),
+        'NAME': os.environ.get('DATABASE_NAME', 'openchat'),
+        'USER': os.environ.get('DATABASE_USER', 'dbuser'),
+        'PASSWORD': os.environ.get('DATABASE_PASSWORD', 'dbpass'),
         'HOST': os.environ.get('DATABASE_HOST', 'mysql'),
         'PORT': os.environ.get('DATABASE_PORT', '3306'),
     }
