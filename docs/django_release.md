@@ -27,11 +27,42 @@ To ensure the application works seamlessly with your environment, you'll need to
 
 1. switch to python directory, `cd dj_backend_server`
 To initiate the app, execute the following command:
+First run "make preinstall" to create .env file and venv environment
+
+```bash
+make preinstall
+```
+
+You will need to edit .env file, it will be created from example.env
+After .env is done, run "make install" to create run the nginx and docker-compose. 
+Doublecheck if the nginx.conf is correct, if not, edit it and run "make install" again
+
 ```bash
 make install
 ```
 
-To stop the server, use:
+If you want to run the app in development mode, run "make dev-start" and to stop the app, run "make dev-stop"
+
+To see the logs, run "make logs"
+
+```bash
+make logs
+```
+
+To enter the python container, run "make exec"
+
+```bash
+make exec
+```
+
+To restart the python and celery containers, run "make restart"
+
+```bash
+make restart
+```
+
+To stop the server run "make down" (in dev mode, run "make dev-stop"), use:
+
 ```bash
 make down
 ```
