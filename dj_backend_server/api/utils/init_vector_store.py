@@ -41,7 +41,7 @@ def init_vector_store(docs: list[Document], embeddings: OpenAIEmbeddings, option
         Pinecone.from_documents(documents=docs, embedding=embeddings, index_name=VECTOR_STORE_INDEX_NAME, namespace=options.namespace)
 
     elif store_type == StoreType.QDRANT:
-        print("called qdrant.from_documents")
+        # print("LEHEL called qdrant.from_documents")
         Qdrant.from_documents(docs, embeddings, collection_name=options.namespace, url=os.environ['QDRANT_URL'])
 
     else:
@@ -55,8 +55,8 @@ def delete_from_vector_store(namespace: str, filter_criteria: dict) -> None: # @
         # Extract host and port from QDRANT_URL
         qdrant_url = os.environ['QDRANT_URL']
         url_parts = qdrant_url.split(':')
-        host = "qdrant"
-        port = "6333"
+        host = url_parts[1].replace('//', '')
+        port = int(url_parts[2])
         # Initialize the Qdrant client
         qdrant_client = QdrantClient(host=host, port=port)
         # qdrant_client = QdrantClient(host, port=port)
