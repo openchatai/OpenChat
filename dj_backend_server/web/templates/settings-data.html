@@ -320,8 +320,18 @@
                                                                 width="40" height="40" alt="User 01">
                                                         </div>
                                                         <div class="font-medium text-slate-800">
-                                                            <strong>Bulk Upload of Pdf files</strong>
-
+                                                            <strong>Bulk PDF Files</strong>
+                                                            
+                                                            {% if source.pdf_exists %} 
+                                                            <span class="material-symbols-outlined" title="PDF file exist">
+                                                                picture_as_pdf
+                                                            </span>
+                                                            {% endif %}
+                                                            {% if source.txt_exists %}
+                                                            <span class="material-symbols-outlined" title="TXT file exist">
+                                                                wysiwyg
+                                                            </span>
+                                                            {% endif %}
                                                         </div>
                                                     </div>
                                                 </td>

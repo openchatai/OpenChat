@@ -198,10 +198,13 @@ def data_settings(request, id):
 
     for source in pdf_data_sources:
         merged_files = []
+        source.pdf_exists =False
+        source.txt_exists = False
 
         for file_info, file_url in zip(source.get_files_info(), source.get_files()):
 
             if os.path.exists(file_url):
+                source.pdf_exists = True
                 full_file_url = os.environ.get('APP_URL') + '/' + file_url
                 merged_file = {
                     'name': file_info.get('original_name', ''),
@@ -212,6 +215,7 @@ def data_settings(request, id):
                 }
                 txt_file_path = file_url.replace('.pdf', '.txt')
                 if default_storage.exists(txt_file_path):
+                    source.txt_exists = True
                     merged_file['txt_exists'] = True
                     with default_storage.open(txt_file_path, 'r') as txt_file:
                         merged_file['txt_content'] = txt_file.read()
