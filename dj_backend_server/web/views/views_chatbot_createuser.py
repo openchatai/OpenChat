@@ -1,10 +1,6 @@
-import os
 from web.views.views_chatbot import check_authentication
-from django.shortcuts import render, redirect, get_object_or_404
-from django.core.exceptions import ValidationError
-from django.http import HttpResponse, Http404
-from django.db.models import Count, Min
-from django.http import HttpResponseNotFound, FileResponse, HttpResponseRedirect
+from django.shortcuts import render, redirect
+from django.http import HttpResponseRedirect
 from django.conf import settings
 from django.core.files.storage import default_storage
 from django.shortcuts import render
@@ -17,10 +13,25 @@ from django.utils.crypto import get_random_string
 from django.urls import reverse
 from django.contrib import messages
 
+
 @login_required(login_url='/login/')
 @check_authentication
 @csrf_exempt
 def createuser(request):
+    """
+    This view function handles the creation of a new user. It checks if the current user is a superuser, and if not, it redirects
+    to the index page. If the request method is POST, it retrieves the user details from the request, validates them, and creates
+    a new user. If the request method is not POST, it renders an empty user creation form.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        HttpResponse: The HTTP response. If the user is not a superuser, it redirects to the index page. If the request method is
+        POST and the user details are valid, it redirects to the user creation success page. If the request method is POST and the
+        user details are not valid, it re-renders the user creation form with error messages. If the request method is not POST,
+        it renders an empty user creation form.
+    """
     if not request.user.is_superuser:
         return HttpResponseRedirect(reverse('index'))
     if request.method == 'POST':
@@ -98,6 +109,16 @@ def createuser(request):
 @login_required(login_url='/login/')
 @check_authentication
 def createuser_success(request):
+    """
+    This view function handles the success case of user creation. It retrieves the username of the newly created user from the
+    session, removes it from the session, and renders a success message along with the username on the user creation page.
+
+    Args:
+        request (HttpRequest): The HTTP request object. The username of the newly created user is stored in the session of this request.
+
+    Returns:
+        HttpResponse: The HTTP response. It renders the user creation page with a success message and the username of the newly created user.
+    """
     username = request.session.get('created_username', '')
     request.session.pop('created_username', None)  # Clear the username from the session after retrieving it
     return render(request, 'create_user.html', {
@@ -108,6 +129,19 @@ def createuser_success(request):
 
 @check_authentication
 def modify_user(request):
+    """
+    This view function handles the modification of the current user's details. It generates a suggested password for the form.
+    If the request method is POST, it retrieves the user details from the request, validates them, and updates the user's details.
+    If the request method is not POST, it renders the user modification form with the current user's details.
+
+    Args:
+        request (HttpRequest): The HTTP request object. The user details are stored in the POST data of this request.
+
+    Returns:
+        HttpResponse: The HTTP response. If the request method is POST and the user details are valid, it redirects to the index
+        page. If the request method is POST and the user details are not valid, it re-renders the user modification form with
+        error messages. If the request method is not POST, it renders the user modification form with the current user's details.
+    """
     # Generate a suggested password for the form
     suggested_password = get_random_string(length=12)
 

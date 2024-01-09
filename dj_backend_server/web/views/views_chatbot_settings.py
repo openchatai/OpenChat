@@ -1,45 +1,118 @@
 # chatbot/views.py
 
+import os
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.exceptions import ValidationError
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, HttpRequest
+from django.db.models import Count, Min
+from django.http import HttpResponseNotFound, FileResponse
+from django.conf import settings
+from django.core.files.storage import default_storage
+from web.models.crawled_pages import CrawledPages
 from web.models.chatbot import Chatbot
 from web.models.chat_histories import ChatHistory
 from web.models.website_data_sources import WebsiteDataSource
 from web.models.pdf_data_sources import PdfDataSource
 from web.models.codebase_data_sources import CodebaseDataSource
 from web.enums.chatbot_initial_prompt_enum import ChatBotInitialPromptEnum
-from django.db.models import Count, Min
-from web.models.crawled_pages import CrawledPages
-import os
-from django.http import HttpResponseNotFound, FileResponse
-from django.conf import settings
-from django.core.files.storage import default_storage
+
 
 def image_view(request, app_id, image_name):
+    """
+    This view function serves an image file from the 'website_data_sources/icons' directory. It constructs the full image path by 
+    joining 'website_data_sources/icons' with the provided image name, checks if the image file exists, and returns a FileResponse with 
+    the image file if it exists. If the image file does not exist, it returns an HttpResponseNotFound.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        app_id (int): The ID of the app whose image is to be served. Currently, this argument is not used.
+        image_name (str): The name of the image file in the 'website_data_sources/icons' directory.
+
+    Returns:
+        FileResponse: If the image file exists. The response includes the image file.
+        HttpResponseNotFound: If the image file does not exist.
+    """
     image_path = os.path.join('website_data_sources/icons', image_name)
     if os.path.exists(image_path):
         return FileResponse(open(image_path, 'rb'))
     else:
         return HttpResponseNotFound()
+
     
 def general_settings(request, id):
+    """
+    This view function retrieves the general settings for a specific chatbot. It fetches the chatbot by its ID and renders a settings 
+    page with the fetched chatbot.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        id (int): The ID of the chatbot whose general settings are to be retrieved.
+
+    Returns:
+        HttpResponse: An HTTP response with a rendered settings page that includes the fetched chatbot.
+    """
     bot = get_object_or_404(Chatbot, id=id)
     return render(request, 'settings.html', {'bot': bot})
 
+
 def delete_bot(request, id):
+    """
+    This view function deletes a specific chatbot. It fetches the chatbot by its ID and deletes it. After the chatbot is deleted, 
+    it redirects to the index page.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        id (int): The ID of the chatbot to be deleted.
+
+    Returns:
+        HttpResponseRedirect: An HTTP response that redirects to the index page.
+    """
     bot = get_object_or_404(Chatbot, id=id)
     bot.delete()
     return redirect('index')
 
+
 def serve_website_data_source_file(request, file_path):
+    """
+    This view function serves a file from the 'website_data_sources' directory. It constructs the full file path by joining 
+    'website_data_sources' with the provided file path, checks if the file exists, and returns a FileResponse with the file 
+    if it exists. If the file does not exist, it returns an HttpResponseNotFound.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        file_path (str): The relative path to the file in the 'website_data_sources' directory.
+
+    Returns:
+        FileResponse: If the file exists. The response includes the file.
+        HttpResponseNotFound: If the file does not exist.
+    """
     file_path = os.path.join('website_data_sources', file_path)
     if os.path.exists(file_path):
         return FileResponse(open(file_path, 'rb'))
     else:
         return HttpResponseNotFound()
 
+
 def general_settings_update(request, id):
+    """
+    This view function updates the general settings for a specific chatbot. It fetches the chatbot by its ID, validates the POST data 
+    from the request, updates the chatbot's name, website, and prompt message with the validated POST data, saves the chatbot, and 
+    redirects to the chatbot's settings page. If the request method is not POST, it returns an HTTP response with a "Method not allowed." 
+    message and a 405 status code.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        id (int): The ID of the chatbot whose general settings are to be updated.
+
+    Raises:
+        ValidationError: If the name field in the POST data is empty.
+        ValidationError: If the website field in the POST data is empty.
+
+    Returns:
+        HttpResponseRedirect: If the request method is POST and the chatbot's general settings are successfully updated. The response 
+        redirects to the chatbot's settings page.
+        HttpResponse: If the request method is not POST. The response includes a "Method not allowed." message and a 405 status code.
+    """
     bot = get_object_or_404(Chatbot, id=id)
 
     if request.method == 'POST':
@@ -60,17 +133,44 @@ def general_settings_update(request, id):
 
 
 def history_settings(request, id):
+    """
+    This view function retrieves the chat history settings for a specific chatbot. It fetches the chatbot by its ID, aggregates the 
+    chat history by the session ID, counts the total messages, finds the date of the first message for each session, filters the 
+    aggregated chat history by the chatbot ID, orders the aggregated chat history by the date of the first message in descending order, 
+    and renders a history settings page with the fetched chatbot and the aggregated chat history.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        id (int): The ID of the chatbot whose chat history settings are to be retrieved.
+
+    Returns:
+        HttpResponse: An HTTP response with a rendered history settings page that includes the fetched chatbot and the aggregated chat history.
+    """
     bot = get_object_or_404(Chatbot, id=id)
     chat_history = ChatHistory.objects.values('session_id').annotate(total_messages=Count('*'), first_message=Min('created_at')).filter(chatbot_id=bot.id).order_by('-first_message')
-    print(chat_history)
     return render(request, 'settings-history.html', {'bot': bot, 'chatHistory': chat_history})
 
 
 def get_history_by_session_id(request, id, session_id):
+    """
+    This view function retrieves the chat history for a specific chatbot and session. It fetches the chatbot by its ID, filters the 
+    chat history by the chatbot ID and the session ID, orders the chat history by the creation date, and renders a chat history page 
+    with the fetched chat history.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        id (int): The ID of the chatbot whose chat history is to be retrieved.
+        session_id (str): The session ID for which the chat history is to be retrieved.
+
+    Raises:
+        Http404: If the chatbot with the given ID does not exist.
+
+    Returns:
+        HttpResponse: An HTTP response with a rendered chat history page that includes the fetched chat history.
+    """
     try:
         bot = Chatbot.objects.get(id=id)
     except Chatbot.DoesNotExist:
-        print(f"Chatbot with id {id} does not exist.")
         raise Http404("Chatbot does not exist.")
     chat_history = ChatHistory.objects.filter(chatbot_id=bot.id, session_id=session_id).order_by('created_at')
     if not chat_history:
@@ -79,20 +179,32 @@ def get_history_by_session_id(request, id, session_id):
 
 
 def data_settings(request, id):
+    """
+    This view function retrieves the data settings for a specific chatbot. It fetches the chatbot and its associated data sources 
+    (websites, PDFs, and codebases), processes the PDF data sources, and renders a settings page with the fetched data.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        id (int): The ID of the chatbot whose data settings are to be retrieved.
+
+    Returns:
+        HttpResponse: An HTTP response with a rendered settings page that includes the chatbot and its associated data sources.
+    """
     bot = get_object_or_404(Chatbot, id=id)
     website_data_sources = WebsiteDataSource.objects.filter(chatbot_id=id).prefetch_related('crawled_pages').order_by('-id')
-    #website_data_sources = WebsiteDataSource.objects.filter(chatbot_id=id).order_by('-id')
     pdf_data_sources = PdfDataSource.objects.filter(chatbot_id=id).order_by('-id')
     codebase_data_sources = CodebaseDataSource.objects.filter(chatbot_id=id).order_by('-id')
     crawled_pages_count = CrawledPages.objects.filter(website_data_source__chatbot_id=id).count()
-    print(f"LEHEL  {crawled_pages_count}")
 
     for source in pdf_data_sources:
         merged_files = []
+        source.pdf_exists =False
+        source.txt_exists = False
 
         for file_info, file_url in zip(source.get_files_info(), source.get_files()):
 
             if os.path.exists(file_url):
+                source.pdf_exists = True
                 full_file_url = os.environ.get('APP_URL') + '/' + file_url
                 merged_file = {
                     'name': file_info.get('original_name', ''),
@@ -103,6 +215,7 @@ def data_settings(request, id):
                 }
                 txt_file_path = file_url.replace('.pdf', '.txt')
                 if default_storage.exists(txt_file_path):
+                    source.txt_exists = True
                     merged_file['txt_exists'] = True
                     with default_storage.open(txt_file_path, 'r') as txt_file:
                         merged_file['txt_content'] = txt_file.read()
@@ -129,23 +242,63 @@ def data_settings(request, id):
 
 
 def analytics_settings(request, id):
+    """
+    Renders the analytics settings page for a specific chatbot.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        id (int): The ID of the chatbot.
+
+    Returns:
+        HttpResponse: The rendered analytics settings page.
+    """
     bot = get_object_or_404(Chatbot, id=id)
     data_sources = bot.website_data_sources.all()
     return render(request, 'settings-analytics.html', {'bot': bot, 'dataSources': data_sources})
 
 
 def integrations_settings(request, id):
+    """
+    This function handles the integrations settings for a chatbot.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        id (int): The ID of the chatbot.
+
+    Returns:
+        HttpResponse: The HTTP response object.
+    """
     bot = get_object_or_404(Chatbot, id=id)
     return render(request, 'settings-integrations.html', {'bot': bot})
 
 
 def data_sources_updates(request, id):
+    """
+    This function retrieves the website and PDF data sources associated with a chatbot and renders a template with the data.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        id (int): The ID of the chatbot.
+
+    Returns:
+        HttpResponse: The rendered template with the website and PDF data sources.
+    """
     # chatbot = get_object_or_404(Chatbot, id=id)
     website_data_sources = WebsiteDataSource.objects.filter(chatbot_id=id)
     pdf_data_sources = PdfDataSource.objects.filter(chatbot_id=id)
     return render(request, 'widgets/data-sources-updates.html', {'website_data_sources': website_data_sources, 'pdf_data_sources': pdf_data_sources})
 
+
 def theme_settings(request, id): 
+    """Renders the theme settings page for a chatbot.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        id (int): The ID of the chatbot.
+
+    Returns:
+        HttpResponse: The HTTP response object containing the rendered theme settings page.
+    """
     bot = get_object_or_404(Chatbot, id=id)
     context = {'APP_URL': settings.APP_URL, 'bot': bot}
     return render(request, 'settings-theme.html', context)
