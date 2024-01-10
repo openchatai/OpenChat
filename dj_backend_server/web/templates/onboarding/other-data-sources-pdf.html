@@ -38,7 +38,7 @@
         <!-- Progress bar -->
         <div class="px-4 py-8">
             <div class="max-w-md mx-auto">
-                <h1 class="text-3xl text-slate-800 font-bold mb-6">Upload PDF files as sources ✨</h1>
+                <h1 class="text-3xl text-slate-800 font-bold mb-6">Upload files as sources ✨</h1>
                 <!-- Form -->
                 {% if errors.pdffiles %}
                     <div x-show="open" x-data="{ open: true }" style="margin-bottom: 1rem;">
@@ -73,9 +73,11 @@
                                     ⬆️
                                 </div>
                                 <p style="font-weight: bold; margin-bottom: 1rem"> Click to upload or drag & drop</p>
-                                <span style="color: #2563eb">you can upload up to 5 pdf files, and we will process the first ±100k words</span>
+                                <span style="color: #2563eb">you can upload up to 5 files, and we will process the first ±100k words</span>
                             </div>
-                            <input type="file" name="pdffiles" id="fileInput" style="display: none" required accept="application/pdf" multiple>
+                            <input type="file" name="pdffiles" id="fileInput" style="display: none" required
+                            accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv,ap
+ ication/json" multiple>
                             <div class="uploaded-images" id="uploadedImages" style="margin-top: 1rem">
                                 <!-- Uploaded images will be displayed here -->
                             </div>
@@ -84,13 +86,14 @@
                             <div>
                                 <input type="checkbox" id="delete_folder_flag" name="delete_folder_flag">
                                 <label for="delete_folder_flag" class="text-xs">
-                                    Delete PDF files after sending them for processing.
+                                    Delete files after sending them for processing.
                                 </label>
                             </div>
                         </div>
                         <div class="flex items-center justify-between space-x-6 mb-8">
                             <div>
-                                <div class="font-medium text-slate-800 text-sm mb-1">Make sure that your files are scannable (text not images) 🫶</div>
+                                <div class="font-medium text-slate-800 text-sm mb-1">We are accepting PDF/DOCX/XLSX/TXT(CSV/JSON). 🫶</div>
+                                <div class="text-xs">PDF files can contain both text and images. We will send to OCR.</div>
                                 <div class="text-xs">You can upload multiple files at once and we will process them in the background.</div>
                             </div>
                         </div>

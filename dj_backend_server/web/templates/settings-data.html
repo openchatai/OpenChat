@@ -53,7 +53,7 @@
                         <h3 class="text-xl leading-snug text-slate-800 font-bold mb-1">Data sources</h3>
                         <div class="text-sm">
                             <ul><li>Website data sources: {{website_data_sources.count}} with crawled pages: {{ crawled_pages_count }}  </li>
-                                <li>PDF data sources: {{pdf_data_sources.count}}</li>
+                                <li>Data sources: {{pdf_data_sources.count}}</li>
                                 <li>Codebase data sources: {{codebase_data_sources.count}} </li>
                     </ul>    
                         </div>
@@ -320,15 +320,15 @@
                                                                 width="40" height="40" alt="User 01">
                                                         </div>
                                                         <div class="font-medium text-slate-800">
-                                                            <strong>Bulk PDF Files</strong>
+                                                            <strong>Bulk Files</strong>
                                                             
                                                             {% if source.pdf_exists %} 
-                                                            <span class="material-symbols-outlined" title="PDF file exist">
-                                                                picture_as_pdf
+                                                            <span class="material-symbols-outlined" title="File exist">
+                                                                upload_file
                                                             </span>
                                                             {% endif %}
                                                             {% if source.txt_exists %}
-                                                            <span class="material-symbols-outlined" title="TXT file exist">
+                                                            <span class="material-symbols-outlined" title="EXTRACTED file exist">
                                                                 wysiwyg
                                                             </span>
                                                             {% endif %}
@@ -441,9 +441,7 @@
                                                                 {% if file.txt_exists %}
                                                                 <tr>
                                                                     <td colspan="3">
-                                                                        <div style="max-height: 200px; overflow-y: scroll; white-space: pre-wrap; border: 1px solid #ddd; padding: 10px;">
-                                                                            {{ file.txt_content }}
-                                                                        </div>
+                                                                        <div style="max-height: 200px; overflow-y: scroll; white-space: pre-wrap; border: 1px solid #ddd; padding: 10px;">{{ file.txt_content }}</div>
                                                                     </td>
                                                                 </tr>
                                                                 {% endif %}
@@ -646,10 +644,10 @@
                                                         <a href='{% url 'onboarding.other-data-sources-pdf' id=request.resolver_match.kwargs.id %}'>
                                                             <div
                                                                 class="flex flex-wrap items-center justify-between mb-0.5">
-                                                                <span class="font-semibold text-slate-800">PDF
+                                                                <span class="font-semibold text-slate-800">PDF/DOCX/TXT/JSON/XLXX
                                                                     files</span>
                                                             </div>
-                                                            <div class="text-sm">We will scan your PDF files and extract
+                                                            <div class="text-sm">We will scan your files and extract
                                                                 knowledge and any information</div>
                                                         </a>
                                                     </li>

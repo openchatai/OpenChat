@@ -213,12 +213,17 @@ def data_settings(request, id):
                     'txt_exists': False,
                     'txt_content': '',
                 }
-                txt_file_path = file_url.replace('.pdf', '.txt')
+                txt_file_path = os.path.splitext(file_url)[0] + '.txt'
                 if default_storage.exists(txt_file_path):
                     source.txt_exists = True
                     merged_file['txt_exists'] = True
-                    with default_storage.open(txt_file_path, 'r') as txt_file:
-                        merged_file['txt_content'] = txt_file.read()
+                    with default_storage.open(txt_file_path, 'rb') as txt_file:
+                        raw_content = txt_file.read()
+                        try:
+                            merged_file['txt_content'] = raw_content.decode('utf-8')
+                        except UnicodeDecodeError:
+                            merged_file['txt_content'] = raw_content.decode('iso-8859-1')
+
             else:
                 merged_file = {
                     'name': file_info.get('original_name', ''),

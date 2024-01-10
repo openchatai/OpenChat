@@ -1,24 +1,28 @@
 # views.py
+from docx import Document
+from openpyxl import load_workbook
+import csv
 import json
 import io
+import os
+import requests
+import traceback
+from uuid import uuid4
 from django.views.decorators.csrf import csrf_exempt
+from django.utils import timezone
+from django.shortcuts import get_object_or_404
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.document_loaders.directory import DirectoryLoader
 from langchain.document_loaders import PyPDFium2Loader
 from langchain.document_loaders import TextLoader
 from api.utils import get_embeddings
 from api.utils import init_vector_store
-import os
-from web.utils.delete_foler import delete_folder
 from api.interfaces import StoreOptions
-import requests
-import traceback
-from web.models.failed_jobs import FailedJob
-from django.utils import timezone
-from uuid import uuid4
-from web.models.pdf_data_sources import PdfDataSource
-from django.shortcuts import get_object_or_404
 from api.utils.make_chain import process_text_with_llm
+from web.utils.delete_foler import delete_folder
+from web.models.failed_jobs import FailedJob
+from web.models.pdf_data_sources import PdfDataSource
+
 
 @csrf_exempt
 def pdf_handler(shared_folder: str, namespace: str, delete_folder_flag: bool):
@@ -37,10 +41,15 @@ def pdf_handler(shared_folder: str, namespace: str, delete_folder_flag: bool):
             else:
                 print(f"Debug: Directory does not exist")
 
+            # Process each file in the directory based on its extension
             for filename in os.listdir(directory_path):
-                    if filename.endswith(".pdf"):
-                        file_path = os.path.join(directory_path, filename)
-                        process_pdf(file_path,directory_path)
+                file_path = os.path.join(directory_path, filename)
+                if filename.endswith(".pdf"):
+                    process_pdf(file_path, directory_path)
+                elif filename.endswith((".txt", ".csv", ".json")):
+                    save_as_txt(file_path)
+                elif filename.endswith((".doc", ".docx", ".xls", ".xlsx")):
+                    convert_to_txt(file_path)
 
         txt_to_vectordb(shared_folder, namespace, delete_folder_flag)
 
@@ -51,6 +60,7 @@ def pdf_handler(shared_folder: str, namespace: str, delete_folder_flag: bool):
         failed_job.save()
         print("Exception occurred:", e)
         traceback.print_exc()
+
 
 @csrf_exempt
 def process_pdf(FilePath,directory_path):
@@ -89,7 +99,7 @@ def process_pdf(FilePath,directory_path):
 
         if ocrError != '':
                 #Error occurs during recognition
-                raise Exception("Recognition Error: " + ocrError)
+                raise Exception(f"Recognition Error:  {ocrError}")
 
         # Extracted text from first or single page
         # print(str(jobj["OCRText"]))
@@ -138,6 +148,7 @@ def process_pdf(FilePath,directory_path):
         failed_job.save()
         traceback.print_exc()
 
+
 @csrf_exempt
 def txt_to_vectordb(shared_folder: str, namespace: str, delete_folder_flag: bool):
     try:
@@ -156,7 +167,11 @@ def txt_to_vectordb(shared_folder: str, namespace: str, delete_folder_flag: bool
 
         docs = text_splitter.split_documents(raw_docs)
 
-        print("docs -->", docs);
+        # print("docs -->", docs);
+        # print("docs -->", [doc.metadata for doc in docs])
+        # for doc in docs:
+        #     print("Document content:", doc.page_content)
+        
         if not docs:
              print("No documents were processed successfully.")
              return
@@ -178,3 +193,42 @@ def txt_to_vectordb(shared_folder: str, namespace: str, delete_folder_flag: bool
         failed_job.save()
         print(e)
         traceback.print_exc()
+
+
+def save_as_txt(file_path):
+    txt_file_path = os.path.splitext(file_path)[0] + '.txt'
+    with open(file_path, 'rb') as file:
+        with open(txt_file_path, 'wb') as txt_file:
+            txt_file.write(file.read())
+
+
+def convert_to_txt(file_path):
+    txt_file_path = os.path.splitext(file_path)[0] + '.txt'
+    if file_path.endswith('.docx'):
+        document = Document(file_path)
+        with open(txt_file_path, 'w', encoding='utf-8') as txt_file:
+            for para in document.paragraphs:
+                txt_file.write(para.text + '\n')
+    elif file_path.endswith('.xls'):
+        # xlrd is used for .xls files, but it is not listed in the installed packages.
+        # If xlrd is installed, the following code can be used:
+        raise NotImplementedError("Conversion from .xls to text not implemented yet.")
+    elif file_path.endswith('.xlsx'):
+        workbook = load_workbook(filename=file_path)
+        with open(txt_file_path, 'w', encoding='utf-8') as txt_file:
+            for sheet in workbook:
+                for row in sheet.iter_rows(values_only=True):
+                    txt_file.write(','.join([str(cell) if cell is not None else '' for cell in row]) + '\n')
+    elif file_path.endswith('.csv'):
+        with open(file_path, 'r', encoding='utf-8') as csv_file:
+            reader = csv.reader(csv_file)
+            with open(txt_file_path, 'w', encoding='utf-8') as txt_file:
+                for row in reader:
+                    txt_file.write(','.join(row) + '\n')
+    elif file_path.endswith('.json'):
+        with open(file_path, 'r', encoding='utf-8') as json_file:
+            data = json.load(json_file)
+            with open(txt_file_path, 'w', encoding='utf-8') as txt_file:
+                json.dump(data, txt_file, ensure_ascii=False, indent=4)
+    else:
+        raise NotImplementedError(f"Conversion for {os.path.splitext(file_path)[1]} files to text not implemented yet.")
