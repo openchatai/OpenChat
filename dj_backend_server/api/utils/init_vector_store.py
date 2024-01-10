@@ -31,6 +31,19 @@ def initialize_pinecone():
             initialized = True
 
 def init_vector_store(docs: list[Document], embeddings: OpenAIEmbeddings, options: StoreOptions) -> None:
+    """
+    This function initializes a vector store based on the 'STORE' environment variable. If the 'STORE' environment variable is 
+    'PINECONE', it initializes Pinecone and uses the Pinecone vector store. If the 'STORE' environment variable is 'QDRANT', it uses 
+    the Qdrant vector store. If the 'STORE' environment variable is neither 'PINECONE' nor 'QDRANT', it raises a ValueError.
+
+    Args:
+        docs (list[Document]): A list of Document objects to be stored in the vector store.
+        embeddings (OpenAIEmbeddings): The OpenAI embeddings to be used for the documents.
+        options (StoreOptions): The options for the vector store, including the namespace.
+
+    Raises:
+        ValueError: If the 'STORE' environment variable is neither 'PINECONE' nor 'QDRANT'.
+    """
     store_type = StoreType[os.environ['STORE']]
 
     if store_type == StoreType.PINECONE:
@@ -48,7 +61,20 @@ def init_vector_store(docs: list[Document], embeddings: OpenAIEmbeddings, option
         valid_stores = ", ".join(StoreType._member_names())
         raise ValueError(f"Invalid STORE environment variable value: {os.environ['STORE']}. Valid values are: {valid_stores}")
     
-def delete_from_vector_store(namespace: str, filter_criteria: dict) -> None: # @TODO - not finished, need to find out some way to delete from qdrant
+def delete_from_vector_store(namespace: str, filter_criteria: dict) -> None: 
+    """
+    This function deletes records from a vector store based on the 'STORE' environment variable and the provided filter criteria. 
+    If the 'STORE' environment variable is 'QDRANT', it deletes records from the Qdrant vector store. If the 'STORE' environment 
+    variable is not 'QDRANT', it raises a NotImplementedError.
+
+    Args:
+        namespace (str): The namespace of the vector store from which records are to be deleted.
+        filter_criteria (dict): The criteria to filter the records to be deleted. The criteria should include a 'source' key with 
+        a string value that ends with '.txt'.
+
+    Raises:
+        NotImplementedError: If the 'STORE' environment variable is not 'QDRANT'.
+    """
     store_type = StoreType[os.environ['STORE']]
 
     if store_type == StoreType.QDRANT:
@@ -59,16 +85,15 @@ def delete_from_vector_store(namespace: str, filter_criteria: dict) -> None: # @
         port = int(url_parts[2])
         # Initialize the Qdrant client
         qdrant_client = QdrantClient(host=host, port=port)
-        # qdrant_client = QdrantClient(host, port=port)
 
-        # Initialize the Qdrant vector store with the client and dummy embeddings
-        dummy_embeddings = DummyEmbeddings()
-        qdrant_store = Qdrant(qdrant_client, namespace, dummy_embeddings)
-
-        source_value = str(filter_criteria.get("source", "")).replace('.pdf', '.txt')  
+        source_value = str(filter_criteria.get("source", "")).lower()
+        if not source_value.endswith('.txt'):
+            for ext in ['.pdf', '.docx', '.doc', '.json', '.xls', '.csv', '.xlsx']:
+                if source_value.endswith(ext):
+                    source_value = source_value[:-len(ext)] + '.txt'
+                    break
 
         if source_value:
-            # scroll_response = qdrant_client.scroll(
             records, point_ids = qdrant_client.scroll(
                 collection_name=namespace,
                 scroll_filter=models.Filter(
@@ -102,10 +127,4 @@ def delete_from_vector_store(namespace: str, filter_criteria: dict) -> None: # @
 
     else:
         raise NotImplementedError(f"Delete operation is not implemented for the store type: {store_type}")
-    
-class DummyEmbeddings:
-    def __init__(self):
-        self.vector_length = 2048  # Adjust as necessary
 
-    def embed(self):
-        return [0.2, 0.1, 0.9, 0.7] * (self.vector_length // 4)  # Return a dummy vector of the correct length
