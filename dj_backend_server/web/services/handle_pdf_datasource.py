@@ -24,9 +24,21 @@ class HandlePdfDataSource:
 
         files_urls = []
         files_info_list = []
-        # for file in self.files:
-        for file_field_name, file in self.files:
-            file_name = file.name
+        # It appears that the HandlePdfDataSource class is being used in two different contexts, 
+        # one where self.files is expected to be a list of tuples (in the API handler) 
+        # and one where it is expected to be a list of file objects (in the web view). 
+        # To resolve this inconsistency, we need to modify the HandlePdfDataSource class to handle both cases.
+
+        # for file_field_name, file in self.files.items():
+        for file_item in self.files:
+            # Check if file_item is a tuple (file_field_name, file) or just a file object
+            if isinstance(file_item, tuple):
+                file_field_name, file = file_item
+                file_name = file_field_name
+            else:
+                file = file_item
+                file_name = file.name
+
             try:
                 # Validate file types or other conditions if necessary
                 # For example: if not file.name.endswith('.pdf'): raise ValidationError('Invalid file type')

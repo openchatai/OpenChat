@@ -102,8 +102,17 @@
                                                                 width="40" height="40" alt="User 01">
                                                         </div>
                                                         <div class="font-medium text-slate-800">
-                                                            <strong>website</strong>:
-                                                            {{source.root_url}}
+                                                            <strong>Website:</strong>:
+                                                            <a href="{{source.root_url}}" target="_blank">
+                                                                {{ source.root_url }} 
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                                                    <div class="flex items-center text-slate-800">
+                                                        <div class="font-medium text-slate-800">  
+                                                            <strong> Last update:</strong>:
+                                                            {{ source.updated_at|date:"d.m.Y" }}
                                                         </div>
                                                     </div>
                                                 </td>
@@ -335,6 +344,13 @@
                                                         </div>
                                                     </div>
                                                 </td>
+                                                <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                                                    <div class="text-left font-medium">
+                                                        <strong> Last update:</strong>:
+                                                            {{ source.updated_at|date:"d.m.Y" }}
+                                                    </div>
+                                                </td>
+                                                
                                                 <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
                                                     <div class="text-left font-medium text-emerald-500">
                                                         {{ source.files|length }} files scanned
