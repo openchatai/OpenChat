@@ -218,7 +218,7 @@ def data_settings(request, id):
                     source.txt_exists = True
                     merged_file['txt_exists'] = True
                     with default_storage.open(txt_file_path, 'rb') as txt_file:
-                        raw_content = txt_file.read()
+                        raw_content = txt_file.read(2000)  # Read only the first 2000 characters
                         try:
                             merged_file['txt_content'] = raw_content.decode('utf-8')
                         except UnicodeDecodeError:
