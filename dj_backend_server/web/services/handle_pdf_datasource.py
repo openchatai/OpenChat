@@ -1,4 +1,3 @@
-# services.py
 import os
 import hashlib
 from django.core.exceptions import ValidationError

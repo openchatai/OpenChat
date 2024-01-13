@@ -281,4 +281,3 @@ def delete_file(request, id):
     messages.success(request, deleted_files)
 
     return HttpResponseRedirect(reverse('chatbot.settings-data', args=[str(pdf_data_source.chatbot_id)]))
-

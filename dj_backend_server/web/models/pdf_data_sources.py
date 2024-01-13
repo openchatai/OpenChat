@@ -62,4 +62,3 @@ class PdfDataSource(models.Model):
 
     class Meta:
         db_table = 'pdf_data_sources'  # Replace 'pdf_data_source' with the actual table name in the database
-
