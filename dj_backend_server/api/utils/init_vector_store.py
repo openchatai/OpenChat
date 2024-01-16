@@ -1,13 +1,13 @@
 from langchain.docstore.document import Document
 from langchain.vectorstores.qdrant import Qdrant
+from langchain.embeddings.openai import OpenAIEmbeddings
+from langchain.vectorstores.pinecone import Pinecone
 from qdrant_client import QdrantClient
 from qdrant_client import models
 from api.enums import StoreType
-from langchain.embeddings.openai import OpenAIEmbeddings
 from api.interfaces import StoreOptions
 from api.configs import PINECONE_TEXT_KEY, VECTOR_STORE_INDEX_NAME
 import pinecone
-from langchain.vectorstores.pinecone import Pinecone
 from dotenv import load_dotenv
 import os
 import threading
@@ -54,7 +54,7 @@ def init_vector_store(docs: list[Document], embeddings: OpenAIEmbeddings, option
         Pinecone.from_documents(documents=docs, embedding=embeddings, index_name=VECTOR_STORE_INDEX_NAME, namespace=options.namespace)
 
     elif store_type == StoreType.QDRANT:
-        # print("LEHEL called qdrant.from_documents")
+        # print("Called qdrant.from_documents")
         Qdrant.from_documents(docs, embeddings, collection_name=options.namespace, url=os.environ['QDRANT_URL'])
 
     else:

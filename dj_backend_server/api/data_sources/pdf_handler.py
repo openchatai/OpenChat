@@ -195,10 +195,7 @@ def txt_to_vectordb(shared_folder: str, namespace: str, delete_folder_flag: bool
 
         docs = text_splitter.split_documents(raw_docs)
 
-        # print("docs -->", docs);
-        # print("docs -->", [doc.metadata for doc in docs])
-        # for doc in docs:
-        #     print("Document content:", doc.page_content)
+        print("external files docs -->", docs);
         
         if not docs:
              print("No documents were processed successfully.")
