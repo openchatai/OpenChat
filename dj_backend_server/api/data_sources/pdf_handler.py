@@ -191,7 +191,7 @@ def txt_to_vectordb(shared_folder: str, namespace: str, delete_folder_flag: bool
 
         raw_docs = directory_loader.load()
 
-        text_splitter = RecursiveCharacterTextSplitter(chunk_size=4000, chunk_overlap=200, length_function=len)
+        text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200, length_function=len)
 
         docs = text_splitter.split_documents(raw_docs)
 

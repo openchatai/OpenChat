@@ -35,7 +35,7 @@ def website_handler(shared_folder, namespace):
 
         raw_docs = directory_loader.load()
 
-        text_splitter = RecursiveCharacterTextSplitter(chunk_size=4000, chunk_overlap=200, length_function=len)
+        text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200, length_function=len)
 
         docs = text_splitter.split_documents(raw_docs)
 
