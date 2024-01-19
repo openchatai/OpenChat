@@ -18,6 +18,12 @@
                 token: "{{ bot.token }}",
                 isFullScreen: true
             });
+            window.addEventListener('BotMessageError', function() {
+                window.setBotErrorMessage("error occured in the process.", 0.05);
+            });
+            window.addEventListener('botLoadingMessageReady', function() {
+                window.setBotLoadingMessage("I do not have any response ... ", 0.05);
+            });             
         };
     </script>
 </body>
