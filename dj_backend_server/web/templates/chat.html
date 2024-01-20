@@ -2,6 +2,8 @@
 <html>
 {% load static %}
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ title }}</title>
     <link rel="apple-touch-icon" sizes="180x180" href="{% static '/apple-touch-icon.png' %}">
     <link rel="icon" type="image/png" sizes="32x32" href="{% static '/favicon-32x32.png' %}">
@@ -10,20 +12,18 @@
     <link rel="icon" href="{% static '/favicon.ico' %}" type="image/x-icon">
 </head>
 <body>
-    
-    <script src="{{ APP_URL }}{% static 'chat.js' %}?v6" type="text/javascript" defer></script>
+    <script>
+        window.CHAT_APP_CONFIG = {
+          BASE_URL: "{{ APP_URL }}"
+        };
+     </script>
+    <script src="{{ APP_URL }}{% static 'chat.js' %}?v7" type="text/javascript" defer></script>
     <script>
         window.onload = function () {
             initializeChatWidget({
                 token: "{{ bot.token }}",
-                isFullScreen: true
+                isFullScreen: true,
             });
-            window.addEventListener('BotMessageError', function() {
-                window.setBotErrorMessage("error occured in the process.", 0.05);
-            });
-            window.addEventListener('botLoadingMessageReady', function() {
-                window.setBotLoadingMessage("I do not have any response ... ", 0.05);
-            });             
         };
     </script>
 </body>
