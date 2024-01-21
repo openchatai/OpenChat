@@ -32,7 +32,7 @@ def upload_pdf_api(request):
     text_data = request.POST.get('text_data', '')
 
     # Handle the PDF data source
-    handle_pdf = HandlePdfDataSource(bot, files, text_data)
+    handle_pdf = HandlePdfDataSource(bot, files)
     data_source = handle_pdf.handle()
     print (f"text_data: {data_source}")
 
