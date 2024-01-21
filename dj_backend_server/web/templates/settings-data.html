@@ -52,9 +52,9 @@
                     <section>
                         <h3 class="text-xl leading-snug text-slate-800 font-bold mb-1">Data sources</h3>
                         <div class="text-sm">
-                            <ul><li>Website data sources: {{website_data_sources.count}} with crawled pages: {{ crawled_pages_count }}  </li>
-                                <li>Data sources: {{pdf_data_sources.count}}</li>
-                                <li>Codebase data sources: {{codebase_data_sources.count}} </li>
+                            <ul><li>Website data sources: {{website_data_sources.paginator.count}} with crawled pages: {{ crawled_pages_count }}  </li>
+                                <li>Documents Data sources: {{pdf_data_sources.paginator.count}}</li>
+                                <li>Codebase data sources: {{codebase_data_sources.paginator.count}} </li>
                     </ul>    
                         </div>
                         </div>
