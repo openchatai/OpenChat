@@ -52,14 +52,13 @@ class PdfDataSource(models.Model):
         return self.files_info
 
     def delete_files(self):
-        folder_path = f"/app/{self.folder_name}"
-        # print (f"FOLDER: {folder_path}")
+        folder_path = f"/app/website_data_sources/{self.folder_name}"
+        print (f"FOLDER: {folder_path}")
         if os.path.exists(folder_path):
             shutil.rmtree(folder_path)
-            return f"All files in folder {folder_path} have been deleted."
+            return f"All files in folder {self.folder_name} have been deleted."
         else:
             return "No files were deleted or folder does not exist."
 
     class Meta:
         db_table = 'pdf_data_sources'  # Replace 'pdf_data_source' with the actual table name in the database
-

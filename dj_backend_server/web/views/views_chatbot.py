@@ -251,10 +251,17 @@ def create_via_codebase_flow(request):
 def delete_file(request, id):
     # Get the PdfDataSource object
     pdf_data_source = get_object_or_404(PdfDataSource, id=id)
+    file_paths = pdf_data_source.get_files()
+    if not file_paths:
+        messages.error(request, "Folders has no value, dangerous to delete everything, exiting!")
+        return HttpResponseRedirect(reverse('chatbot.settings-data', args=[str(pdf_data_source.chatbot_id)]))
 
     # Delete the files associated with the PdfDataSource
     deleted_files = pdf_data_source.delete_files()
-    
+    if not deleted_files:
+        messages.error(request, "No files deleted, exiting!")
+        return HttpResponseRedirect(reverse('chatbot.settings-data', args=[str(pdf_data_source.chatbot_id)]))
+        
     # Delete the record from the vectordatabase
     file_paths = pdf_data_source.get_files()
     if file_paths:
@@ -274,4 +281,3 @@ def delete_file(request, id):
     messages.success(request, deleted_files)
 
     return HttpResponseRedirect(reverse('chatbot.settings-data', args=[str(pdf_data_source.chatbot_id)]))
-

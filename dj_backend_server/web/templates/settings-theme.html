@@ -124,17 +124,60 @@
 
                                             <textarea id="tooltip" class="form-input w-full" style="height: 250px"
                                                 type="text" disabled>
-                                                <script src="{{ APP_URL }}{% static 'chat.js' %}"></script>
-                                                
-                                                <script>
-                                                    document.addEventListener('DOMContentLoaded', function () {
-                                                        var chatConfig = {
-                                                            token: "{{ bot.token }}",
-                                                        };
+<script src="{{ APP_URL }}{% static 'chat.js?v7' %}"></script>
 
-                                                        initializeChatWidget(chatConfig);
-                                                    });
-                                                </script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+var chatConfig = {
+    token: "{{ bot.token }}",
+};
+
+initializeChatWidget(chatConfig);
+
+// YOU CAN CUSTOMIZE THE CHAT WIDGET HERE, text and images for logo.
+// Listen for the 'homeScreenCustomizationReady' event to ensure the functions are ready
+    window.addEventListener('homeScreenCustomizationReady', function() {
+        // Set the background URL, spacer.png is a transparent 1x1 pixel image
+        window.setHomeScreenBackground("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==");
+
+        // Set the first welcome message
+        window.setHomeScreenMessages("Welcome to our chat!", "Talk to us!");
+    });
+
+    // Event listeners to update setBotErrorMessage and setBotLoadingMessage
+    window.addEventListener('BotMessageError', function() {
+        window.setBotErrorMessage("error occured in the process.", 0.05);
+    });
+    window.addEventListener('botLoadingMessageReady', function() {
+        window.setBotLoadingMessage("I do not have any response ... ", 0.05);
+    }); 
+    
+    
+    // Event listeners to update buttonMessage and helpText
+    window.addEventListener('chatHomeButtonMessageReady', function() {
+        window.setChatHomeButtonMessage("Ask our powerful AI bot.", 0.05);
+    });
+    window.addEventListener('chatHomeButtonHelpTextReady', function() {
+        window.setChatHomeButtonHelpText("The help will come in a minute.", 0.05);
+    });
+    
+    // Event listeners to update buttonMessage and helpText Inside of chat.
+    window.addEventListener('chatHomeButtonMessageReadyInHeader', function() {
+        window.setChatHomeButtonMessageInHeader("Please start to ask at the bottom of the screen.", 0.05);
+    });
+    window.addEventListener('chatHomeButtonMessageReadyInHeader', function() {
+        window.setChatHomeButtonHelpTextInHeader("I will search then in my knowledge base and I will give back an answer.", 0.05);
+    });
+    
+        // Event listeners to update  chatInputPlaceholderReady and chatInputPlaceholderReplyReady Inside of chat.
+    window.addEventListener('chatInputPlaceholderReady', function() {
+        window.setChatInputPlaceholder("Ask me anything...", 0.05);
+    });
+    window.addEventListener('chatInputPlaceholderReplyReady', function() {
+        window.setChatInputPlaceholderReply("A reply please....", 0.05);
+    });
+});
+</script>
                                             </textarea>
                                         </div>
                                     </div>

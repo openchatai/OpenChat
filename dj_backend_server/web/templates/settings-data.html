@@ -52,9 +52,9 @@
                     <section>
                         <h3 class="text-xl leading-snug text-slate-800 font-bold mb-1">Data sources</h3>
                         <div class="text-sm">
-                            <ul><li>Website data sources: {{website_data_sources.count}} with crawled pages: {{ crawled_pages_count }}  </li>
-                                <li>Data sources: {{pdf_data_sources.count}}</li>
-                                <li>Codebase data sources: {{codebase_data_sources.count}} </li>
+                            <ul><li>Website data sources: {{website_data_sources.paginator.count}} with crawled pages: {{ crawled_pages_count }}  </li>
+                                <li>Documents Data sources: {{pdf_data_sources.paginator.count}}</li>
+                                <li>Codebase data sources: {{codebase_data_sources.paginator.count}} </li>
                     </ul>    
                         </div>
                         </div>
@@ -102,8 +102,17 @@
                                                                 width="40" height="40" alt="User 01">
                                                         </div>
                                                         <div class="font-medium text-slate-800">
-                                                            <strong>website</strong>:
-                                                            {{source.root_url}}
+                                                            <strong>Website:</strong>:
+                                                            <a href="{{source.root_url}}" target="_blank">
+                                                                {{ source.root_url }} 
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                                                    <div class="flex items-center text-slate-800">
+                                                        <div class="font-medium text-slate-800">  
+                                                            <strong> Last update:</strong>:
+                                                            {{ source.updated_at|date:"d.m.Y" }}
                                                         </div>
                                                     </div>
                                                 </td>
@@ -288,12 +297,33 @@
                                             </tr>
                                         </tbody>
                                     </table>
+
                                 </div>
                             </div>
-                            <!-- End -->
+                            
                         </div>
                         {% endfor %}
+                        <!-- Pagination controls for website data sources -->
+                        {% if website_data_sources.paginator.num_pages > 1 %}
+                        <div class="pagination">
+                            <span class="step-links">
+                                {% if website_data_sources.has_previous %}
+                                    <a href="?website_page=1">&laquo; first</a>
+                                    <a href="?website_page={{ website_data_sources.previous_page_number }}">previous</a>
+                                {% endif %}
 
+                                <span class="current">
+                                    Page {{ website_data_sources.number }} of {{ website_data_sources.paginator.num_pages }}.
+                                </span>
+
+                                {% if website_data_sources.has_next %}
+                                    <a href="?website_page={{ website_data_sources.next_page_number }}">next</a>
+                                    <a href="?website_page={{ website_data_sources.paginator.num_pages }}">last &raquo;</a>
+                                {% endif %}
+                            </span>
+                        </div>
+                        {% endif %}
+                        <!-- End -->
 
                         <hr style="margin-top: 2rem; margin-bottom: 2rem">
                         {% for source in pdf_data_sources %}
@@ -335,6 +365,13 @@
                                                         </div>
                                                     </div>
                                                 </td>
+                                                <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                                                    <div class="text-left font-medium">
+                                                        <strong> Last update:</strong>:
+                                                            {{ source.updated_at|date:"d.m.Y" }}
+                                                    </div>
+                                                </td>
+                                                
                                                 <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
                                                     <div class="text-left font-medium text-emerald-500">
                                                         {{ source.files|length }} files scanned
@@ -464,10 +501,30 @@
 
                             </div>
                             <!-- End -->
-
-                        </div>
+                            
                         {% endfor %}
+                        </div>
+                        <!-- Pagination controls for PDF data sources -->
+                        {% if pdf_data_sources.paginator.num_pages > 1 %}
+                        <div class="pagination" style="padding: 0 25px; ">
+                            <span class="step-links">
+                                {% if pdf_data_sources.has_previous %}
+                                    <a href="?pdf_page=1">&laquo; first</a>
+                                    <a href="?pdf_page={{ pdf_data_sources.previous_page_number }}">previous</a>
+                                {% endif %}
 
+                                <span class="current">
+                                    Page {{ pdf_data_sources.number }} of {{ pdf_data_sources.paginator.num_pages }}.
+                                </span>
+
+                                {% if pdf_data_sources.has_next %}
+                                    <a href="?pdf_page={{ pdf_data_sources.next_page_number }}">next</a>
+                                    <a href="?pdf_page={{ pdf_data_sources.paginator.num_pages }}">last &raquo;</a>
+                                {% endif %}
+                            </span>
+                        </div>
+                        {% endif %}
+                        
 
                         <hr style="margin-top: 2rem; margin-bottom: 2rem">
                         {% for source in codebase_data_sources %}
@@ -565,11 +622,32 @@
 
                         </div>
 
+                       
                         <!-- End -->
 
                 </div>
 
                 {% endfor %}
+                                        <!-- Pagination controls for codebase data sources -->
+                                        {% if codebase_data_sources.paginator.num_pages > 1 %}
+                                        <div class="pagination">
+                                            <span class="step-links">
+                                                {% if codebase_data_sources.has_previous %}
+                                                    <a href="?codebase_page=1">&laquo; first</a>
+                                                    <a href="?codebase_page={{ codebase_data_sources.previous_page_number }}">previous</a>
+                                                {% endif %}
+                                        
+                                                <span class="current">
+                                                    Page {{ codebase_data_sources.number }} of {{ codebase_data_sources.paginator.num_pages }}.
+                                                </span>
+                                        
+                                                {% if codebase_data_sources.has_next %}
+                                                    <a href="?codebase_page={{ codebase_data_sources.next_page_number }}">next</a>
+                                                    <a href="?codebase_page={{ codebase_data_sources.paginator.num_pages }}">last &raquo;</a>
+                                                {% endif %}
+                                            </span>
+                                        </div>
+                                        {% endif %}
                 <section>
                     <div
                         class="px-5 py-3 bg-indigo-50 border border-indigo-100 rounded-sm text-center xl:text-left xl:flex xl:flex-wrap xl:justify-between xl:items-center">

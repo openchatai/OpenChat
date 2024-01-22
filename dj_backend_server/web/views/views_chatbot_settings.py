@@ -8,6 +8,7 @@ from django.db.models import Count, Min
 from django.http import HttpResponseNotFound, FileResponse
 from django.conf import settings
 from django.core.files.storage import default_storage
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from web.models.crawled_pages import CrawledPages
 from web.models.chatbot import Chatbot
 from web.models.chat_histories import ChatHistory
@@ -194,7 +195,36 @@ def data_settings(request, id):
     website_data_sources = WebsiteDataSource.objects.filter(chatbot_id=id).prefetch_related('crawled_pages').order_by('-id')
     pdf_data_sources = PdfDataSource.objects.filter(chatbot_id=id).order_by('-id')
     codebase_data_sources = CodebaseDataSource.objects.filter(chatbot_id=id).order_by('-id')
+    
+    
+    website_page = request.GET.get('website_page', 1)
+    pdf_page = request.GET.get('pdf_page', 1)
+    codebase_page = request.GET.get('codebase_page', 1)
+
+    website_paginator = Paginator(website_data_sources, 25)
+    pdf_paginator = Paginator(PdfDataSource.objects.filter(chatbot_id=id).order_by('-id'), 25)
+    codebase_paginator = Paginator(CodebaseDataSource.objects.filter(chatbot_id=id).order_by('-id'), 25)
     crawled_pages_count = CrawledPages.objects.filter(website_data_source__chatbot_id=id).count()
+    try:
+        website_data_sources = website_paginator.page(website_page)
+    except PageNotAnInteger:
+        website_data_sources = website_paginator.page(1)
+    except EmptyPage:
+        website_data_sources = website_paginator.page(website_paginator.num_pages)
+
+    try:
+        pdf_data_sources = pdf_paginator.page(pdf_page)
+    except PageNotAnInteger:
+        pdf_data_sources = pdf_paginator.page(1)
+    except EmptyPage:
+        pdf_data_sources = pdf_paginator.page(pdf_paginator.num_pages)
+
+    try:
+        codebase_data_sources = codebase_paginator.page(codebase_page)
+    except PageNotAnInteger:
+        codebase_data_sources = codebase_paginator.page(1)
+    except EmptyPage:
+        codebase_data_sources = codebase_paginator.page(codebase_paginator.num_pages)
 
     for source in pdf_data_sources:
         merged_files = []
@@ -218,7 +248,7 @@ def data_settings(request, id):
                     source.txt_exists = True
                     merged_file['txt_exists'] = True
                     with default_storage.open(txt_file_path, 'rb') as txt_file:
-                        raw_content = txt_file.read()
+                        raw_content = txt_file.read(2000)  # Read only the first 2000 characters
                         try:
                             merged_file['txt_content'] = raw_content.decode('utf-8')
                         except UnicodeDecodeError:

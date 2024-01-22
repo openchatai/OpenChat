@@ -8,6 +8,7 @@ import os
 import requests
 import traceback
 from uuid import uuid4
+from typing import Optional
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
 from django.shortcuts import get_object_or_404
@@ -25,21 +26,48 @@ from web.models.pdf_data_sources import PdfDataSource
 
 
 @csrf_exempt
-def pdf_handler(shared_folder: str, namespace: str, delete_folder_flag: bool):
+def pdf_handler(shared_folder: str, namespace: str, delete_folder_flag: Optional[bool] = False, text_data: Optional[str] = None):
+    """
+    This function handles PDF files and other types of files in a shared folder. It processes the text data if provided directly, 
+    otherwise it reads from the files in the shared folder. It processes each file based on its extension, converts .doc, .docx, .xls, 
+    and .xlsx files to .txt, and saves .txt, .csv, and .json files as .txt. It then converts the text data to a vector database.
+
+    Args:
+        shared_folder (str): The name of the shared folder where the files are located.
+        namespace (str): The namespace for the vector database.
+        delete_folder_flag (bool): A flag indicating whether to delete the folder after processing the files.
+        text_data (Optional[str], optional): The text data to be processed. If this is provided, the function will not read from 
+        the files. Defaults to None.
+
+    Raises:
+        Exception: If an error occurs during the processing of the files or the conversion of the text data to a vector database.
+    """
+    print ("Debug: pdf_handler")
+    # If text data is provided directly, process it without reading from files
+    if text_data:
+        process_text_data(text_data, namespace)
+        print ("Debug: text_data is provided directly, process it without reading from files")
+        return
     
     # Convert delete_folder_flag to boolean (send 0 - FALSE or 1 - TRUE)
-    delete_folder_flag = bool(int(delete_folder_flag))
-    
+    delete_folder_flag = bool(delete_folder_flag) if delete_folder_flag is not None else False
+    # Check if the shared_folder is provided, if not, return early as there are no files to process
+    if not shared_folder:
+        print("No shared folder provided for file processing.")
+        return
+
     try:
         #TODO: When will be multiple external library to choose, need to change.
         if os.environ.get("PDF_LIBRARY") == "external":
-            directory_path = os.path.join("website_data_sources", shared_folder)
-            # print(f"Debug: Processing folder {directory_path}")
+            if shared_folder:
+                directory_path = os.path.join("website_data_sources", shared_folder)
+                print(f"Debug: Processing folder {directory_path}")
 
             if os.path.exists(directory_path):
                 print(f"Debug: Directory exists. Files: {os.listdir(directory_path)}")
             else:
-                print(f"Debug: Directory does not exist")
+                print(f"Debug: No shared folder provided for file processing.")
+                return
 
             # Process each file in the directory based on its extension
             for filename in os.listdir(directory_path):
@@ -163,14 +191,11 @@ def txt_to_vectordb(shared_folder: str, namespace: str, delete_folder_flag: bool
 
         raw_docs = directory_loader.load()
 
-        text_splitter = RecursiveCharacterTextSplitter(chunk_size=4000, chunk_overlap=200, length_function=len)
+        text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200, length_function=len)
 
         docs = text_splitter.split_documents(raw_docs)
 
-        # print("docs -->", docs);
-        # print("docs -->", [doc.metadata for doc in docs])
-        # for doc in docs:
-        #     print("Document content:", doc.page_content)
+        print("external files docs -->", docs);
         
         if not docs:
              print("No documents were processed successfully.")
@@ -232,3 +257,15 @@ def convert_to_txt(file_path):
                 json.dump(data, txt_file, ensure_ascii=False, indent=4)
     else:
         raise NotImplementedError(f"Conversion for {os.path.splitext(file_path)[1]} files to text not implemented yet.")
+
+def process_text_data(text_data: str, namespace: str):
+    """
+    Processes the provided text data and ingests it into the vector database.
+
+    Args:
+        text_data (str): The text data to process.
+        namespace (str): The namespace for the vector database.
+    """
+    print ("Debug: process_text_data")
+    txt_to_vectordb(text_data, namespace, False)
+    return    
