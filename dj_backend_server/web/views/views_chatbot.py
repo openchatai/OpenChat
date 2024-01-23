@@ -1,9 +1,19 @@
 from uuid import uuid4
 import os
-from django.http import JsonResponse, HttpResponseRedirect
+import requests
+import re
+import json
+from django.http import JsonResponse, HttpResponseRedirect, HttpResponseServerError
 from django.shortcuts import render
 from django.urls import reverse
 from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.views.decorators.http import require_POST
+from django.core.serializers.json import DjangoJSONEncoder
+from django.utils.safestring import mark_safe
+from django.utils import timezone
+from django.urls import reverse
+from django.shortcuts import get_object_or_404, redirect
 from web.models.chatbot import Chatbot
 from web.models.chatbot_settings import ChatbotSetting
 from web.models.chat_histories import ChatHistory
@@ -11,26 +21,17 @@ from web.models.codebase_data_sources import CodebaseDataSource
 from web.signals.codebase_datasource_was_created import codebase_data_source_added
 from web.signals.pdf_datasource_was_added import pdf_data_source_added
 from web.services.handle_pdf_datasource import HandlePdfDataSource
-from django.contrib.auth import authenticate, login, logout
-from django.views.decorators.http import require_POST
-from django.http import JsonResponse, HttpResponseServerError
+from web.interfaces.dashboard import get_discussion_counts
 from web.signals.codebase_datasource_was_created import codebase_data_source_added
 from web.signals.chatbot_was_created import chatbot_was_created
 from web.enums.chatbot_initial_prompt_enum import ChatBotInitialPromptEnum
 from web.enums.common_enums import ChatBotDefaults
-from uuid import uuid4
 from web.utils.common import get_session_id
 from web.utils.common import generate_chatbot_name
 from api.utils.get_prompts import get_qa_prompt_by_mode
-from django.utils import timezone
 from web.models.pdf_data_sources import PdfDataSource
 from api.utils.init_vector_store import delete_from_vector_store
-import requests
-from uuid import uuid4
-import re
-from django.urls import reverse
 
-from django.shortcuts import get_object_or_404, redirect
 
 def check_authentication(view_func):
     def wrapper(request, *args, **kwargs):
@@ -62,12 +63,21 @@ def logout_view(request):
 
 @check_authentication
 def index(request):
-    #chatbots = Chatbot.objects.all()
-    if request.user.is_superuser:
-        chatbots = Chatbot.objects.filter(status=1)
-    else:
-        chatbots = Chatbot.objects.filter(status=1, user=request.user)    
-    return render(request, 'index.html', {'chatbots': chatbots})
+    chatbots = Chatbot.objects.filter(status=1)
+    if not request.user.is_superuser:
+        chatbots = chatbots.filter(user=request.user)
+
+    # Get discussion counts from the new dashboard interface
+    discussion_counts = get_discussion_counts()
+    discussion_counts_json = mark_safe(json.dumps(list(discussion_counts), cls=DjangoJSONEncoder))
+    print (discussion_counts_json)
+
+    # Pass the discussion counts to the template
+    return render(request, 'index.html', {
+        'chatbots': chatbots,
+        'discussion_counts_json': discussion_counts_json
+    })
+
 
 @check_authentication
 @require_POST

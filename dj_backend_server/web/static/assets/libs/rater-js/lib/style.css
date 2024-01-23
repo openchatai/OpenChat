@@ -1,0 +1,36 @@
+.star-rating {
+    width: 0;
+    position: relative;
+    display:inline-block;
+    background-image: url(star_0.svg);
+    background-position: 0 0;
+    background-repeat: repeat-x;
+    cursor: pointer;
+}
+
+.star-rating .star-value {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background: url('./star_1.svg') ;
+    background-repeat: repeat-x;
+}
+
+.star-rating.disabled {
+    cursor: default;
+}
+
+.star-rating.is-busy {
+    cursor: wait;
+}
+
+.star-rating .star-value.rtl {
+    -moz-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: FlipH;
+    -ms-filter: "FlipH";
+    right: 0;
+    left: auto;
+}
