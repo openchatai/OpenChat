@@ -1,0 +1,117 @@
+@font-face {
+  font-family: 'unicons-solid';
+  src: url('../fonts/solid/unicons-0.eot');
+  src: url('../fonts/solid/unicons-0.eot#iefix') format('embedded-opentype'),
+        url('../fonts/solid/unicons-0.woff2') format('woff2'),
+        url('../fonts/solid/unicons-0.woff') format('woff'),
+        url('../fonts/solid/unicons-0.ttf') format('truetype'),
+        url('../fonts/solid/unicons-0.svg#unicons') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  unicode-range: U+E800-E83B;
+}
+@font-face {
+  font-family: 'unicons-solid';
+  src: url('../fonts/solid/unicons-1.eot');
+  src: url('../fonts/solid/unicons-1.eot#iefix') format('embedded-opentype'),
+        url('../fonts/solid/unicons-1.woff2') format('woff2'),
+        url('../fonts/solid/unicons-1.woff') format('woff'),
+        url('../fonts/solid/unicons-1.ttf') format('truetype'),
+        url('../fonts/solid/unicons-1.svg#unicons') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  unicode-range: U+E83C-E877;
+}
+@font-face {
+  font-family: 'unicons-solid';
+  src: url('../fonts/solid/unicons-2.eot');
+  src: url('../fonts/solid/unicons-2.eot#iefix') format('embedded-opentype'),
+        url('../fonts/solid/unicons-2.woff2') format('woff2'),
+        url('../fonts/solid/unicons-2.woff') format('woff'),
+        url('../fonts/solid/unicons-2.ttf') format('truetype'),
+        url('../fonts/solid/unicons-2.svg#unicons') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  unicode-range: U+E878-E8B3;
+}
+@font-face {
+  font-family: 'unicons-solid';
+  src: url('../fonts/solid/unicons-3.eot');
+  src: url('../fonts/solid/unicons-3.eot#iefix') format('embedded-opentype'),
+        url('../fonts/solid/unicons-3.woff2') format('woff2'),
+        url('../fonts/solid/unicons-3.woff') format('woff'),
+        url('../fonts/solid/unicons-3.ttf') format('truetype'),
+        url('../fonts/solid/unicons-3.svg#unicons') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  unicode-range: U+E8B4-E8BC;
+}[class^="uis-"]:before,
+[class*=" uis-"]:before {
+  font-family: "unicons-solid";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+
+  display: inline-block;
+  text-decoration: inherit;
+
+  /* For safety - reset parent styles, that can break glyph codes */
+  font-variant: normal;
+  text-transform: none;
+
+  /* fix buttons height, for twitter bootstrap */
+  line-height: 1;
+
+  /* Font smoothing. That was taken from TWBS */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Flip and Rotate */
+
+[class*="uis-"].flip-horizontal:before {
+  transform: scaleX(-1);
+}
+[class*="uis-"].flip-horizontal.rotate-90:before {
+  transform: rotate(90deg) scaleX(-1);
+}
+[class*="uis-"].flip-horizontal.rotate-180:before {
+  transform: rotate(180deg) scaleX(-1);
+}
+[class*="uis-"].flip-horizontal.rotate-270:before {
+  transform: rotate(270deg) scaleX(-1);
+}
+[class*="uis-"].flip-horizontal.flip-vertical:before {
+  transform: scale(-1);
+}
+[class*="uis-"].flip-horizontal.flip-vertical.rotate-90:before {
+  transform: rotate(90deg) scale(-1);
+}
+[class*="uis-"].flip-horizontal.flip-vertical.rotate-180:before {
+  transform: rotate(180deg) scale(-1);
+}
+[class*="uis-"].flip-horizontal.flip-vertical.rotate-270:before {
+  transform: rotate(270deg) scale(-1);
+}
+[class*="uis-"].flip-vertical:before {
+  transform: scaleY(-1);
+}
+[class*="uis-"].flip-vertical.rotate-90:before {
+  transform: rotate(90deg) scaleY(-1);
+}
+[class*="uis-"].flip-vertical.rotate-180:before {
+  transform: rotate(180deg) scaleY(-1);
+}
+[class*="uis-"].flip-vertical.rotate-270:before {
+  transform: rotate(270deg) scaleY(-1);
+}
+[class*="uis-"].rotate-90:before {
+  transform: rotate(90deg);
+}
+[class*="uis-"].rotate-180:before {
+  transform: rotate(180deg);
+}
+[class*="uis-"].rotate-270:before {
+  transform: rotate(270deg);
+}
+.uis-web-section-alt:before { content: '\e800'; }.uis-corner-up-right:before { content: '\e801'; }.uis-corner-right-down:before { content: '\e802'; }.uis-download-alt:before { content: '\e803'; }.uis-arrow-circle-down:before { content: '\e804'; }.uis-corner-left-down:before { content: '\e805'; }.uis-angle-double-down:before { content: '\e806'; }.uis-corner-down-right:before { content: '\e807'; }.uis-bag:before { content: '\e808'; }.uis-web-grid:before { content: '\e809'; }.uis-briefcase:before { content: '\e80a'; }.uis-direction:before { content: '\e80b'; }.uis-upload-alt:before { content: '\e80c'; }.uis-arrow-circle-up:before { content: '\e80d'; }.uis-signal-alt-3:before { content: '\e80e'; }.uis-sorting:before { content: '\e80f'; }.uis-window-section:before { content: '\e810'; }.uis-corner-down-left:before { content: '\e811'; }.uis-align-center-justify:before { content: '\e812'; }.uis-dialpad:before { content: '\e813'; }.uis-window-grid:before { content: '\e814'; }.uis-angle-double-up:before { content: '\e815'; }.uis-corner-up-left:before { content: '\e816'; }.uis-angle-right:before { content: '\e817'; }.uis-schedule:before { content: '\e818'; }.uis-comment-dots:before { content: '\e819'; }.uis-graph-bar:before { content: '\e81a'; }.uis-angle-down:before { content: '\e81b'; }.uis-arrow-circle-left:before { content: '\e81c'; }.uis-arrow-circle-right:before { content: '\e81d'; }.uis-chart-pie:before { content: '\e81e'; }.uis-arrow-down-left:before { content: '\e81f'; }.uis-arrow-up-right:before { content: '\e820'; }.uis-columns:before { content: '\e821'; }.uis-web-section:before { content: '\e822'; }.uis-analytics:before { content: '\e823'; }.uis-grid:before { content: '\e824'; }.uis-angle-right-b:before { content: '\e825'; }.uis-chart:before { content: '\e826'; }.uis-window-maximize:before { content: '\e827'; }.uis-list-ul:before { content: '\e828'; }.uis-angle-double-right:before { content: '\e829'; }.uis-analysis:before { content: '\e82a'; }.uis-arrow-up-left:before { content: '\e82b'; }.uis-web-grid-alt:before { content: '\e82c'; }.uis-angle-up:before { content: '\e82d'; }.uis-arrow-down-right:before { content: '\e82e'; }.uis-angle-left:before { content: '\e82f'; }.uis-document-layout-left:before { content: '\e830'; }.uis-angle-double-left:before { content: '\e831'; }.uis-border-top:before { content: '\e832'; }.uis-align-justify:before { content: '\e833'; }.uis-right-indent:before { content: '\e834'; }.uis-left-indent-alt:before { content: '\e835'; }.uis-subject:before { content: '\e836'; }.uis-align-right:before { content: '\e837'; }.uis-wrap-text:before { content: '\e838'; }.uis-list-ui-alt:before { content: '\e839'; }.uis-paragraph:before { content: '\e83a'; }.uis-border-right:before { content: '\e83b'; }.uis-align-right-justify:before { content: '\e83c'; }.uis-bars:before { content: '\e83d'; }.uis-border-left:before { content: '\e83e'; }.uis-border-inner:before { content: '\e83f'; }.uis-align-left-justify:before { content: '\e840'; }.uis-border-clear:before { content: '\e841'; }.uis-border-vertical:before { content: '\e842'; }.uis-right-indent-alt:before { content: '\e843'; }.uis-border-horizontal:before { content: '\e844'; }.uis-ruler-combined:before { content: '\e845'; }.uis-repeat:before { content: '\e846'; }.uis-ruler:before { content: '\e847'; }.uis-square-full:before { content: '\e848'; }.uis-border-bottom:before { content: '\e849'; }.uis-horizontal-align-left:before { content: '\e84a'; }.uis-flip-h-alt:before { content: '\e84b'; }.uis-grip-horizontal-line:before { content: '\e84c'; }.uis-vector-square-alt:before { content: '\e84d'; }.uis-flip-h:before { content: '\e84e'; }.uis-flip-v-alt:before { content: '\e84f'; }.uis-align-letter-right:before { content: '\e850'; }.uis-align-alt:before { content: '\e851'; }.uis-align-center:before { content: '\e852'; }.uis-layers-alt:before { content: '\e853'; }.uis-flip-v:before { content: '\e854'; }.uis-compress:before { content: '\e855'; }.uis-vector-square:before { content: '\e856'; }.uis-line-spacing:before { content: '\e857'; }.uis-border-alt:before { content: '\e858'; }.uis-object-group:before { content: '\e859'; }.uis-document-layout-center:before { content: '\e85a'; }.uis-border-out:before { content: '\e85b'; }.uis-object-ungroup:before { content: '\e85c'; }.uis-table:before { content: '\e85d'; }.uis-circle-layer:before { content: '\e85e'; }.uis-apps:before { content: '\e85f'; }.uis-document-layout-right:before { content: '\e860'; }.uis-grids:before { content: '\e861'; }.uis-align-left:before { content: '\e862'; }.uis-left-indent:before { content: '\e863'; }.uis-store-slash:before { content: '\e864'; }.uis-user-arrows:before { content: '\e865'; }.uis-stethoscope-alt:before { content: '\e866'; }.uis-head-side:before { content: '\e867'; }.uis-social-distancing:before { content: '\e868'; }.uis-toilet-paper:before { content: '\e869'; }.uis-virus-slash:before { content: '\e86a'; }.uis-house-user:before { content: '\e86b'; }.uis-clinic-medical:before { content: '\e86c'; }.uis-hospital-square-sign:before { content: '\e86d'; }.uis-image-v:before { content: '\e86e'; }.uis-hospital:before { content: '\e86f'; }.uis-sanitizer-alt:before { content: '\e870'; }.uis-user-nurse:before { content: '\e871'; }.uis-head-side-mask:before { content: '\e872'; }.uis-microscope:before { content: '\e873'; }.uis-head-side-cough:before { content: '\e874'; }.uis-hospital-symbol:before { content: '\e875'; }.uis-user-md:before { content: '\e876'; }.uis-stethoscope:before { content: '\e877'; }.uis-record-audio:before { content: '\e878'; }.uis-lock-access:before { content: '\e879'; }.uis-previous:before { content: '\e87a'; }.uis-lock-alt:before { content: '\e87b'; }.uis-coronavirus:before { content: '\e87c'; }.uis-sanitizer:before { content: '\e87d'; }.uis-airplay:before { content: '\e87e'; }.uis-clock-seven:before { content: '\e87f'; }.uis-keyhole-square-full:before { content: '\e880'; }.uis-padlock:before { content: '\e881'; }.uis-scenery:before { content: '\e882'; }.uis-keyhole-circle:before { content: '\e883'; }.uis-pentagon:before { content: '\e884'; }.uis-triangle:before { content: '\e885'; }.uis-unlock:before { content: '\e886'; }.uis-clock-ten:before { content: '\e887'; }.uis-lock:before { content: '\e888'; }.uis-unlock-alt:before { content: '\e889'; }.uis-keyhole-square:before { content: '\e88a'; }.uis-clock-three:before { content: '\e88b'; }.uis-shield-plus:before { content: '\e88c'; }.uis-clock-five:before { content: '\e88d'; }.uis-star:before { content: '\e88e'; }.uis-polygon:before { content: '\e88f'; }.uis-th-large:before { content: '\e890'; }.uis-clock-nine:before { content: '\e891'; }.uis-step-forward:before { content: '\e892'; }.uis-clock:before { content: '\e893'; }.uis-clock-eight:before { content: '\e894'; }.uis-sync-slash:before { content: '\e895'; }.uis-star-half-alt:before { content: '\e896'; }.uis-ellipsis-h:before { content: '\e897'; }.uis-sync-exclamation:before { content: '\e898'; }.uis-exclamation-triangle:before { content: '\e899'; }.uis-key-skeleton:before { content: '\e89a'; }.uis-favorite:before { content: '\e89b'; }.uis-check-square:before { content: '\e89c'; }.uis-signout:before { content: '\e89d'; }.uis-process:before { content: '\e89e'; }.uis-exclamation-circle:before { content: '\e89f'; }.uis-key-skeleton-alt:before { content: '\e8a0'; }.uis-minus-square-full:before { content: '\e8a1'; }.uis-link-h:before { content: '\e8a2'; }.uis-multiply:before { content: '\e8a3'; }.uis-history-alt:before { content: '\e8a4'; }.uis-layer-group:before { content: '\e8a5'; }.uis-battery-empty:before { content: '\e8a6'; }.uis-clock-two:before { content: '\e8a7'; }.uis-battery-bolt:before { content: '\e8a8'; }.uis-redo:before { content: '\e8a9'; }.uis-calender:before { content: '\e8aa'; }.uis-times-circle:before { content: '\e8ab'; }.uis-toggle-on:before { content: '\e8ac'; }.uis-exclamation-octagon:before { content: '\e8ad'; }.uis-signal-alt:before { content: '\e8ae'; }.uis-history:before { content: '\e8af'; }.uis-stopwatch:before { content: '\e8b0'; }.uis-lock-open-alt:before { content: '\e8b1'; }.uis-toggle-off:before { content: '\e8b2'; }.uis-space-key:before { content: '\e8b3'; }.uis-bookmark:before { content: '\e8b4'; }.uis-anchor:before { content: '\e8b5'; }.uis-refresh:before { content: '\e8b6'; }.uis-rocket:before { content: '\e8b7'; }.uis-ellipsis-v:before { content: '\e8b8'; }.uis-at:before { content: '\e8b9'; }.uis-paperclip:before { content: '\e8ba'; }.uis-check:before { content: '\e8bb'; }.uis-check-circle:before { content: '\e8bc'; }

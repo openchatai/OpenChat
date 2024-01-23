@@ -1,63 +1,92 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" data-sidebar-color="light" data-topbar-color="light" data-sidebar-view="default">
 <head>
     <meta charset="utf-8">
-    <title>OpenChat - Dashboard</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Dashboard | OpenChat</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- App favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="{% static '/apple-touch-icon.png' %}">
     <link rel="icon" type="image/png" sizes="32x32" href="{% static '/favicon-32x32.png' %}">
     <link rel="icon" type="image/png" sizes="16x16" href="{% static '/favicon-16x16.png' %}">
     <link rel="manifest" href="{% static '/site.webmanifest' %}">
-    <link rel="icon" href="{% static '/favicon.ico' %}" type="image/x-icon">
+    <link rel="icon" href="{% static '/assets/images/favicon.ico' %}" type="image/x-icon">
+    
     <link href="{% static 'dashboard/css/vendors/flatpickr.min.css' %}" rel="stylesheet" />
     <link href="{% static 'dashboard/style.css' %}" rel="stylesheet" />
+    <!-- App css -->
+    <link href="{% static 'assets/css/theme.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'assets/css/icons.min.cs' %}s" rel="stylesheet" type="text/css">
+    <link href="{% static 'assets/libs/@iconscout/unicons/css/line.css' %}" type="text/css" rel="stylesheet">
+
+    <!-- Head Js -->
+    <script src="{% static 'assets/js/head.js' %}"></script>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"  />
 </head>
 
-<body class="font-inter antialiased bg-slate-100 text-slate-600" {% if sidebarExpanded %} class="sidebar-expanded" {% endif %} x-data="{ sidebarOpen: false, sidebarExpanded: localStorage.getItem('sidebar-expanded') == 'true' }"
-    x-init="$watch('sidebarExpanded', value => localStorage.setItem('sidebar-expanded', value))">
+<body>
 
-    <script>
-        if (localStorage.getItem('sidebar-expanded') == 'true') {
-            document.querySelector('body').classList.add('sidebar-expanded');
-        } else {
-            document.querySelector('body').classList.remove('sidebar-expanded');
-        }
-    </script>
-
+<div class="app-wrapper">
     <!-- Page wrapper -->
-    <div class="flex h-screen overflow-hidden">
-
         <!-- Sidebar -->
-
+            {% include 'layout/sidebar-bot-page.html' %}
         <!-- Sidebar ends -->
-        
-        <!-- Content area -->
-        <div class="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
-
-            <!-- Site header -->
+        <!-- Start Page Content here -->
+        <div class="app-content">
             {% if not doNotShowTopHeader %}
             {% include 'layout/header.html' %}
             {% endif %}
+        
+            {% block content %}{% endblock %}
+        </div>     
+        <div class="profile-menu">
+            <div class="flex flex-col items-center h-full gap-4 py-10 px-3">
 
-            <main>
-                {% block content %}{% endblock %}
-            </main>
-
-        </div>
-
+                <a href="#" type="button" class="flex flex-col items-center gap-1">
+            <span class="uil uil-chat-bubble-user"></span>
+            <span class="font-medium text-base">{{ user.first_name }} {{ user.last_name }}</span>
+            <span class="text-sm">{{ user.is_superuser|yesno:"Super Admin,Account Holder" }}</span>
+                </a>
+                <div>
+                    <a class="menu-link" href="{% url 'logout' %}">
+                        <span class="menu-icon"><i class="uil uil-sign-out-alt"></i></span>
+                        <span class="menu-text">  Sign Out </span>
+                        </a>
+                    </div>
     </div>
+       </div>
+</div>
 
-    <script src="{% static 'dashboard/js/vendors/alpinejs.min.js' %}" defer></script>
-    <script src="{% static 'dashboard/js/vendors/chart.js' %}"></script>
-    <script src="{% static 'dashboard/js/vendors/moment.js' %}"></script>
-    <script src="{% static 'dashboard/js/vendors/chartjs-adapter-moment.js' %}"></script>
-    <script src="{% static 'dashboard/js/dashboard-charts.js' %}"></script>
-    <script src="{% static 'dashboard/js/vendors/flatpickr.js' %}"></script>
-    <script src="{% static 'dashboard/js/flatpickr-init.js' %}"></script>
+<script src="{% static 'dashboard/js/vendors/alpinejs.min.js' %}" defer></script>
+<script src="{% static 'dashboard/js/vendors/chart.js' %}"></script>
+<script src="{% static 'dashboard/js/vendors/moment.js' %}"></script>
+<script src="{% static 'dashboard/js/vendors/chartjs-adapter-moment.js' %}"></script>
+<script src="{% static 'dashboard/js/dashboard-charts.js' %}"></script>
+<script src="{% static 'dashboard/js/vendors/flatpickr.js' %}"></script>
+<script src="{% static 'dashboard/js/flatpickr-init.js' %}"></script>
+
+    <!-- Plugin Js -->
+    <script src="{% static 'assets/libs/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'assets/libs/simplebar/simplebar.min.js' %}"></script>
+    <script src="{% static 'assets/libs/node-waves/waves.min.js' %}"></script>
+    <script src="{% static 'assets/libs/preline/preline.js' %}"></script>
+
+    <!-- App Js -->
+    <script src="{% static 'assets/js/app.js' %}"></script>
+
+    <!-- Apexcharts js -->
+    <script src="{% static 'assets/libs/apexcharts/apexcharts.min.js' %}"></script>
+
+    <!-- Knob charts js -->
+    <script src="{% static 'assets/libs/jquery-knob/jquery.knob.min.js' %}"></script>
+
+    <!-- Morris Js-->
+    <script src="{% static 'assets/libs/morris.js/morris.min.js' %}"></script>
+
+    <!-- Raphael Js-->
+    <script src="{% static 'assets/libs/raphael/raphael.min.js' %}"></script>
 
     {% block scripts %}{% endblock %}
 </body>

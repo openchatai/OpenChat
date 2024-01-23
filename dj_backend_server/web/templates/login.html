@@ -1,31 +1,40 @@
 {% extends 'layout/noapp.html' %}
 {% load static %}
 {% block content %}
-<div class="bg-white inline-flex shadow-lg rounded-sm mb-8" style="width: 100%;">
-    <div class="flex flex-col md:flex-row md:-mr-px" style="width: 100%">
-        <div class="grow">
 
-            <div class="p-6 space-y-6"><h1>Login</h1>
-                <section>
-     
-     <form method="post">
-         {% csrf_token %}
-         <label for="username">Username:</label><br>
-         <input type="text" id="username" name="username"><br>
-         <label for="password">Password:</label><br>
-         <input type="password" id="password" name="password">
-         <footer>
-            <div class="flex flex-col px-6 py-5 border-t border-slate-200">
-                <div class="flex self-end">
-                <input type="submit" class="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-3" value="Login">
-                </div>
-            </div>
-        </footer>
-     </form>
-     {% if error %}
-         <p class="error">{{ error }}</p>
-     {% endif %}
-    </section></div> </div></div> </div>
- </body>
- </html>
- {% endblock content %}
+
+<a href="{{ APP_URL }}" class="flex justify-center mb-8">
+    <img class="h-6" src="{% static 'assets/images/logo-dark.png' %}" alt="">
+</a>
+<form method="post">
+    {% csrf_token %}
+<div class="mb-4">
+    <label class="mb-2" for="LoggingEmailAddress">Username</label>
+    <input id="username" name="username" class="form-input" type="text" placeholder="Enter your username">
+</div>
+
+<div class="mb-4">
+    <div class="flex items-center justify-between mb-2">
+        <label for="loggingPassword">Password</label>
+        <a href="#" class="text-sm text-primary">Forget Password ?</a>
+    </div>
+    <input id="password" name="password" class="form-input" type="password" placeholder="Enter your password">
+</div>
+
+<!-- <div class="flex items-center mb-4">
+    <input type="checkbox" class="form-checkbox rounded" id="checkbox-signin">
+    <label class="ms-2" for="checkbox-signin">Remember me</label>
+</div> -->
+
+<div class="flex justify-center mb-3">
+    <input type="submit" class="btn w-full text-white bg-primary" value="Login">
+</div>
+</form>
+{% if error %}
+<div class="bg-danger/25 text-danger text-sm p-3" role="alert">
+<span class="font-bold">Error:</span> {{ error }}
+</div>
+{% endif %}
+{% endblock content %}
+
+

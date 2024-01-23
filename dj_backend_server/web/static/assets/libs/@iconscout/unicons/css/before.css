@@ -1,0 +1,69 @@
+[class^="{CSS_PREFIX}-"]:before,
+[class*=" {CSS_PREFIX}-"]:before {
+  font-family: "unicons-{STYLE}";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+
+  display: inline-block;
+  text-decoration: inherit;
+
+  /* For safety - reset parent styles, that can break glyph codes */
+  font-variant: normal;
+  text-transform: none;
+
+  /* fix buttons height, for twitter bootstrap */
+  line-height: 1;
+
+  /* Font smoothing. That was taken from TWBS */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Flip and Rotate */
+
+[class*="{CSS_PREFIX}-"].flip-horizontal:before {
+  transform: scaleX(-1);
+}
+[class*="{CSS_PREFIX}-"].flip-horizontal.rotate-90:before {
+  transform: rotate(90deg) scaleX(-1);
+}
+[class*="{CSS_PREFIX}-"].flip-horizontal.rotate-180:before {
+  transform: rotate(180deg) scaleX(-1);
+}
+[class*="{CSS_PREFIX}-"].flip-horizontal.rotate-270:before {
+  transform: rotate(270deg) scaleX(-1);
+}
+[class*="{CSS_PREFIX}-"].flip-horizontal.flip-vertical:before {
+  transform: scale(-1);
+}
+[class*="{CSS_PREFIX}-"].flip-horizontal.flip-vertical.rotate-90:before {
+  transform: rotate(90deg) scale(-1);
+}
+[class*="{CSS_PREFIX}-"].flip-horizontal.flip-vertical.rotate-180:before {
+  transform: rotate(180deg) scale(-1);
+}
+[class*="{CSS_PREFIX}-"].flip-horizontal.flip-vertical.rotate-270:before {
+  transform: rotate(270deg) scale(-1);
+}
+[class*="{CSS_PREFIX}-"].flip-vertical:before {
+  transform: scaleY(-1);
+}
+[class*="{CSS_PREFIX}-"].flip-vertical.rotate-90:before {
+  transform: rotate(90deg) scaleY(-1);
+}
+[class*="{CSS_PREFIX}-"].flip-vertical.rotate-180:before {
+  transform: rotate(180deg) scaleY(-1);
+}
+[class*="{CSS_PREFIX}-"].flip-vertical.rotate-270:before {
+  transform: rotate(270deg) scaleY(-1);
+}
+[class*="{CSS_PREFIX}-"].rotate-90:before {
+  transform: rotate(90deg);
+}
+[class*="{CSS_PREFIX}-"].rotate-180:before {
+  transform: rotate(180deg);
+}
+[class*="{CSS_PREFIX}-"].rotate-270:before {
+  transform: rotate(270deg);
+}

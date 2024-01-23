@@ -1,0 +1,2 @@
+import{k as getSlideTransformEl,c as createElement}from"./utils.min.mjs";function createShadow(e,t,r){const s=`swiper-slide-shadow${r?`-${r}`:""}${e?` swiper-slide-shadow-${e}`:""}`,a=getSlideTransformEl(t);let i=a.querySelector(`.${s.split(" ").join(".")}`);return i||(i=createElement("div",s.split(" ")),a.append(i)),i}export{createShadow as c};
+//# sourceMappingURL=create-shadow.min.mjs.map
