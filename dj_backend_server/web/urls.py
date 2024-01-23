@@ -1,6 +1,6 @@
 # api/urls.py
 from django.urls import path
-from web.views import views_chatbot_settings, views_onboarding, views_chatbot, views_pdf_data_source, views_website_datasource, views_chatbot_createuser;
+from web.views import views_chatbot_settings, views_onboarding, views_chatbot, views_pdf_data_source, views_website_datasource, views_chatbot_createuser, views_errors;
 
 urlpatterns = [
     # Dashboard
@@ -8,6 +8,8 @@ urlpatterns = [
     path('login', views_chatbot.login_view, name='login'),
     path('logout', views_chatbot.logout_view, name='logout'),
     path('modify_user/', views_chatbot_createuser.modify_user, name='modify_user'),
+    path('errors/', views_errors.errors_check, name='checkerrors'),
+
 
     # Chatbot Settings
     path('app/<uuid:id>/', views_chatbot_settings.general_settings, name='chatbot.settings'),

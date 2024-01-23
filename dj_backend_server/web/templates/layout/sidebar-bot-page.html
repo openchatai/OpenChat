@@ -48,6 +48,11 @@
                     {% endif %}
                         {% if user.is_superuser %}
                         <li class="menu-item">
+                            <a class="menu-link" href="{% url 'checkerrors' %}">
+                                <span class="menu-icon"><i class="uil uil-exclamation-triangle"></i></span>
+                                <span class="menu-text">  Errors check </span></a>
+                        </li>
+                        <li class="menu-item">
                             <a class="menu-link" href="{% url 'createuser' %}">
                                 <span class="menu-icon"><i class="uil uil-user-plus"></i></span>
                                 <span class="menu-text">  Create user </span></a>
@@ -59,6 +64,7 @@
                                 <span class="menu-text">  Modify user details </span>
                                 </a>
                         </li>
+
 
 
 

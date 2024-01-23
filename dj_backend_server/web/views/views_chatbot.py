@@ -1,7 +1,6 @@
 from uuid import uuid4
 import os
 import requests
-import re
 import json
 from django.http import JsonResponse, HttpResponseRedirect, HttpResponseServerError
 from django.shortcuts import render
@@ -10,6 +9,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.http import require_POST
 from django.core.serializers.json import DjangoJSONEncoder
+from django.core.cache import cache
 from django.utils.safestring import mark_safe
 from django.utils import timezone
 from django.urls import reverse
@@ -21,7 +21,7 @@ from web.models.codebase_data_sources import CodebaseDataSource
 from web.signals.codebase_datasource_was_created import codebase_data_source_added
 from web.signals.pdf_datasource_was_added import pdf_data_source_added
 from web.services.handle_pdf_datasource import HandlePdfDataSource
-from web.interfaces.dashboard import get_discussion_counts
+from web.interfaces.dashboard import get_discussion_counts, get_data_source_counts
 from web.signals.codebase_datasource_was_created import codebase_data_source_added
 from web.signals.chatbot_was_created import chatbot_was_created
 from web.enums.chatbot_initial_prompt_enum import ChatBotInitialPromptEnum
@@ -64,18 +64,33 @@ def logout_view(request):
 @check_authentication
 def index(request):
     chatbots = Chatbot.objects.filter(status=1)
+    # Cache keys
+    discussion_counts_cache_key = 'discussion_counts'
+    data_source_counts_cache_key = 'data_source_counts'
+
+    # Try to get cached data
+    discussion_counts = cache.get(discussion_counts_cache_key)
+    data_source_counts = cache.get(data_source_counts_cache_key)
+
+    # If cache is empty, compute the data and set it in the cache
     if not request.user.is_superuser:
         chatbots = chatbots.filter(user=request.user)
 
-    # Get discussion counts from the new dashboard interface
-    discussion_counts = get_discussion_counts()
-    discussion_counts_json = mark_safe(json.dumps(list(discussion_counts), cls=DjangoJSONEncoder))
-    print (discussion_counts_json)
+    # If cache is empty, compute the data and set it in the cache
+    if not discussion_counts:
+        discussion_counts = get_discussion_counts()
+        cache.set(discussion_counts_cache_key, discussion_counts, 3600)  # Cache for 1 hour
+
+    if not data_source_counts:
+        data_source_counts = get_data_source_counts()
+        cache.set(data_source_counts_cache_key, data_source_counts, 3600)  # Cache for 1 hour
+
 
     # Pass the discussion counts to the template
     return render(request, 'index.html', {
         'chatbots': chatbots,
-        'discussion_counts_json': discussion_counts_json
+        'discussion_counts_json': mark_safe(json.dumps(list(discussion_counts), cls=DjangoJSONEncoder)),
+        'data_sources_counts_json': mark_safe(json.dumps(list(data_source_counts), cls=DjangoJSONEncoder)),
     })
 
 
