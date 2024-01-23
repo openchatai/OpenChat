@@ -12,6 +12,8 @@ from django.utils.timezone import now
 from django.utils.crypto import get_random_string
 from django.urls import reverse
 from django.contrib import messages
+import logging
+logger = logging.getLogger(__name__)
 
 
 @login_required(login_url='/login/')
@@ -35,6 +37,7 @@ def createuser(request):
     if not request.user.is_superuser:
         return HttpResponseRedirect(reverse('index'))
     if request.method == 'POST':
+        logger.debug("Processing POST request for user creation.")
         username = request.POST.get('username')
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
@@ -95,6 +98,7 @@ def createuser(request):
             is_active=True,
             date_joined=now()
         )
+        logger.info(f"User created successfully: {user.username} (ID: {user.id})")
 
         # Redirect to a new URL:
         request.session['created_username'] = username  # Store the username in the session
