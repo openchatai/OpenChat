@@ -9,7 +9,7 @@
                 <div class="grid xl:grid-cols-4 md:grid-cols-2 gap-6 mb-6" style="padding-top: 20px;">
                     <div class="px-5 py-3 bg-indigo-50 border border-indigo-100 rounded-sm text-center xl:text-left xl:flex xl:flex-wrap xl:justify-between xl:items-center">
                         <div class="bg-primary/25 text-primary text-sm p-3" role="alert">
-                            <span class="font-bold">Numer of bots</span> 5
+                            <span class="font-bold">Numer of bots</span> {{ chatbots.count }}
                         </div>
                         <div class="text-slate-800 font-semibold mb-2 xl:mb-0">
                             <button type="button" class="btn bg-primary text-white text-lg w-full"><a href="{% url 'onboarding.welcome' %}">Create new chatbot <span class="uil uil-chat-bubble-user"></span></a></button>

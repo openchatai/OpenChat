@@ -91,9 +91,9 @@
             {% endif %}
             <form action="{% url 'onboarding.pdf.create' %}" method="POST" enctype="multipart/form-data" id="pdfCreate">
                 {% csrf_token %}
-              
+
                 <div class="space-y-4 mb-8">
-              
+
                   <!-- Company Name -->
                   <div>
                     <div class="image-uploader" id="imageUploader">
@@ -104,9 +104,10 @@
                       <span style="color: #2563eb">
                         you can upload up to 5 pdf files, and we will process the first ±100k words</span>
                     </div>
-              
-                    <input type="file" name="pdffiles" id="fileInput" style="display: none" required accept="application/pdf" multiple>
-                    
+
+                    <input type="file" name="pdffiles" id="fileInput" style="display: none" required accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv,ap
+                    ication/json" multiple>
+
                     <div class="uploaded-images" id="uploadedImages" style="margin-top: 1rem">
                     </div>
                   </div>
@@ -120,19 +121,20 @@
                 </div>
                   <div class="flex items-center justify-between mb-8">
                     <div>
-                      <div class="font-medium text-slate-800 text-sm mb-1">Make sure that your files are scannable (text not images) 🫶</div>
-                      <div class="text-xs">You can upload multiple files at once and we will process them in the background.</div>
+                        <div class="font-medium text-slate-800 text-sm mb-1">We are accepting PDF/DOCX/XLSX/TXT(CSV/JSON). 🫶</div>
+                        <div class="text-xs">PDF files can contain both text and images. We will send to OCR.</div>
+                        <div class="text-xs">You can upload multiple files at once and we will process them in the background.</div>
                     </div>
                   </div>
-              
+
                 </div>
-              
+
                 <div class="flex items-center justify-between">
                   <a class="text-sm underline hover:no-underline" href="{% url 'onboarding.data-source' %}">&lt;- Back</a>
-                  
-                  <button type="submit" form="pdfCreate" class="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-auto">Next Step -&gt;</button>
+                  <button type="button" id="skipButton" class="btn bg-primary text-white py-2 px-3">Skip and add later</button>
+                  <button type="submit" form="pdfCreate" class="btn bg-primary text-white py-2 px-3">Next Step -&gt;</button>
                 </div>
-              
+
               </form>
         </div>
     </div>
@@ -142,6 +144,28 @@
 
 {% block scripts %}
 <script>
+    document.getElementById('skipButton').addEventListener('click', function() {
+        var form = document.createElement('form');
+        form.method = 'POST';
+        form.action = "{% url 'onboarding.pdf.create' %}";
+
+        var csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        var inputCsrf = document.createElement('input');
+        inputCsrf.type = 'hidden';
+        inputCsrf.name = 'csrfmiddlewaretoken';
+        inputCsrf.value = csrfToken;
+        form.appendChild(inputCsrf);
+
+        var inputSkip = document.createElement('input');
+        inputSkip.type = 'hidden';
+        inputSkip.name = 'skip_pdf_upload';
+        inputSkip.value = 'true';
+        form.appendChild(inputSkip);
+
+        document.body.appendChild(form);
+        form.submit();
+    });
+
     const imageUploader = document.getElementById('imageUploader');
     const fileInput = document.getElementById('fileInput');
     const uploadedImages = document.getElementById('uploadedImages');

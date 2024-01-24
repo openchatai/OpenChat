@@ -6,3 +6,5 @@ dj_backend_server/nginx/ssl/cert.pem
 dj_backend_server/nginx/nginx.conf
 .vscode
 dj_backend_server.code-workspace
+.aider*
+.aiderignore

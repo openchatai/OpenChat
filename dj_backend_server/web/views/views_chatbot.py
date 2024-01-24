@@ -126,10 +126,11 @@ def create_via_website_flow(request):
 @check_authentication
 @require_POST
 def create_via_pdf_flow(request):
-    name = request.POST.get('name') or ChatBotDefaults.NAME.value
+    skip_pdf_upload = 'skip_pdf_upload' in request.POST
+    name = request.POST.get('name') or ChatBotDefaults.NAME()
     prompt_message = request.POST.get('prompt_message') or ChatBotInitialPromptEnum.AI_ASSISTANT_INITIAL_PROMPT.value
-    delete_folder_flag = 'delete_folder_flag' in request.POST
     
+
     chatbot = Chatbot.objects.create(
         user=request.user,
         id=uuid4(),
@@ -139,6 +140,10 @@ def create_via_pdf_flow(request):
         status=1
     )
 
+    if skip_pdf_upload == True:
+        return HttpResponseRedirect(reverse('onboarding.config', args=[str(chatbot.id)]))
+    # ... rest of the function remains unchanged ...
+    delete_folder_flag = 'delete_folder_flag' in request.POST
     files = request.FILES.getlist('pdffiles')
     # Handle the PDF data source
     handle_pdf = HandlePdfDataSource(chatbot, files)
