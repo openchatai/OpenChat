@@ -11,15 +11,15 @@
             <!--- Menu -->
             <div data-simplebar>
                 <ul class="menu">
-                    <li class="menu-title">Menu</li>
-
                     <li class="menu-item">
                         <a href="{{ APP_URL }}" class="menu-link">
                             <span class="menu-icon"><i class="uil uil-estate"></i></span>
                             <span class="menu-text"> Dashboard </span>
                         </a>
                     </li>
+                    
                     {% if request.resolver_match.kwargs.id %}
+                    <li class="menu-title">Chatbot</li>
                     <li class="menu-item">
                         <a href="{% url 'chatbot.settings-theme' id=request.resolver_match.kwargs.id %}" class="menu-link">
                             <span class="menu-icon"><i class="uil uil-comment-alt-share"></i></span>
@@ -47,18 +47,26 @@
                     </li>
                     {% endif %}
                         {% if user.is_superuser %}
+                        <li class="menu-title">Super Admin</li>
+                        <li class="menu-item">
+                            <a class="menu-link" href="{% url 'checkerrors' %}">
+                                <span class="menu-icon"><i class="uil uil-exclamation-triangle"></i></span>
+                                <span class="menu-text">  Errors check </span></a>
+                        </li>
                         <li class="menu-item">
                             <a class="menu-link" href="{% url 'createuser' %}">
                                 <span class="menu-icon"><i class="uil uil-user-plus"></i></span>
                                 <span class="menu-text">  Create user </span></a>
                         </li>
                         {% endif %}
+                        <li class="menu-title">User</li>
                         <li class="menu-item">
                             <a class="menu-link" href="{% url 'modify_user' %}">
                                 <span class="menu-icon"><i class="uil uil-user-arrows"></i></span>
                                 <span class="menu-text">  Modify user details </span>
                                 </a>
                         </li>
+
 
 
 

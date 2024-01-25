@@ -29,7 +29,7 @@
                             
                                 <div>
                                     <label class="block text-sm font-medium mb-1" for="first_name">First name
-                                        <span class="text-rose-500">*</span></label>
+                                        </label>
                                     <input id="first_name" class="form-input w-full" type="text" name="first_name"  value="{{ user.first_name }}">
                                 </div>
                           
@@ -39,7 +39,7 @@
                             
                                 <div>
                                     <label class="block text-sm font-medium mb-1" for="last_name">Last name
-                                        <span class="text-rose-500">*</span></label>
+                                        </label>
                                     <input id="last_name" class="form-input w-full" type="text" name="last_name" value="{{ user.last_name }}">
                                 </div>
                             
@@ -77,6 +77,9 @@
                         </li>
                         <!-- List item -->
                     </ul>
+                    <div class="bg-secondary/25 text-secondary text-sm p-3" role="alert">
+                        <span class="font-bold">Password and Check password</span> do not need to be sent if they are not changing.
+                    </div>
                 </div>
                 <div class="flex items-center justify-between">
                     <button type="submit" class="btn bg-primary text-white py-2 px-3">Update user -&gt;</button>

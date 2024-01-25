@@ -1,8 +1,9 @@
 # onboarding/views.py
 from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404
 from django.contrib import messages
+from web.models.chatbot import Chatbot
 import re
-
 
 def is_valid_website_url(url):
     # Basic URL validation using a regular expression
@@ -11,6 +12,7 @@ def is_valid_website_url(url):
     )
     return bool(url_pattern.match(url))
 
+# ... rest of the file remains unchanged ...
 def welcome(request):
     return render(request, 'onboarding/step-0.html')
 
@@ -51,12 +53,16 @@ def data_sources_pdf(request):
     return render(request, 'onboarding/step-2-pdf.html', context)
 
 def config(request, id):
-    print(id)
+    print(f"id LEHEL {id}")
     return render(request, 'onboarding/step-3.html')
 
 def done(request, id):
+    chatbot = get_object_or_404(Chatbot, id=id)
     context = {
-        "id": id
+        "id": id,
+        "chatbot_name": chatbot.name
     }
     return render(request, 'onboarding/step-4.html', context)
 
+def skip_pdf_upload(request):
+    return redirect('onboarding.pdf.create')

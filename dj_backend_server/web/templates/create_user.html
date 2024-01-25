@@ -12,11 +12,15 @@
             <p style="margin-bottom: 2rem">Please note down the username and password to send to the user. 
                 They will be required to change these credentials upon their first login.</p>
 
-            {% if error_message %}
-            <div class="bg-danger text-sm text-white p-3" role="alert">
-                <span class="font-bold">Error:</span> {{ error_message }}
-            </div>
-            {% endif %}
+
+                {% if error_messages %}
+                <div class="bg-danger text-sm text-white p-3" role="alert">
+                    {% for message in error_messages %}
+                    <div><span class="font-bold">Error:</span> {{ message }}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+               
 
 
             <!-- Form -->
@@ -31,7 +35,7 @@
                                 <div>
                                     <label class="block text-sm font-medium mb-1" for="Username">Username
                                         <span class="text-rose-500">*</span></label>
-                                    <input type="text" id="simpleinput" class="form-input">
+                                        <input type="text" id="username" name="username" class="form-input">
                                 </div>
                             
                         </li>
@@ -40,7 +44,7 @@
                             
                                 <div>
                                     <label class="block text-sm font-medium mb-1" for="first_name">First name
-                                        <span class="text-rose-500">*</span></label>
+                                        </label>
                                     <input id="first_name" class="form-input w-full" type="text" name="first_name">
                                 </div>
                             
@@ -50,7 +54,7 @@
                             
                                 <div>
                                     <label class="block text-sm font-medium mb-1" for="last_name">Last name
-                                        <span class="text-rose-500">*</span></label>
+                                        </label>
                                     <input id="last_name" class="form-input w-full" type="text" name="last_name">
                               
                             </div>
@@ -71,7 +75,7 @@
                                 <div>
                                     <label class="block text-sm font-medium mb-1" for="password">Password
                                         <span class="text-rose-500">*</span></label>
-                                    <input id="password" class="form-input w-full" type="password" name="password">
+                                        <input id="password" class="form-input w-full" type="password" name="password" required>
                                     <p>Suggested password (user will change) <strong>{{ SUGGESTEDPASS }}</strong></p>
                                 </div>
                             
@@ -82,7 +86,7 @@
                                 <div>
                                     <label class="block text-sm font-medium mb-1" for="check_password">Check password
                                         <span class="text-rose-500">*</span></label>
-                                    <input id="check_password" class="form-input w-full" type="password" name="check_password">
+                                        <input id="check_password" class="form-input w-full" type="password" name="check_password" required>
                                 </div>
                          
                         </li>
