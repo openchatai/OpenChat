@@ -44,13 +44,15 @@
                                         <input type="text" class="form-input w-full" style="cursor: pointer!important;" id="shareable-link" value="{{ APP_URL }}{% url 'chat' token=bot.token %}" readonly />
 
                                         <!-- Trigger -->
+                                        <span id="copy-success-message-link" class="text-sm text-green-500 ml-2"></span>
+                                        <button class="btn" data-clipboard-target="#shareable-link" data-success-target="#copy-success-message-link">
                                         <button class="btn" data-clipboard-target="#shareable-link">
                                             <svg class="w-6 h-6 fill-current text-slate-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                                 <path d="M0 0h24v24H0z" fill="none"/>
                                                 <path d="M16 1H4c-1.1 0-1.99.9-1.99 2L2 17h2V5h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
                                             </svg>
                                         </button>
-                                        <span id="copy-success-message" class="text-sm text-green-500 ml-2"></span>
+                                        
                                     </div>
                             </div>
                             <!-- END Share Link -->
@@ -80,13 +82,16 @@
                                             <strong>1.  Copy the following code into your website head
                                                 script</strong> 
                                                 	<!-- Trigger -->
+                                                    <span id="copy-success-message" class="text-sm text-green-500 ml-2"></span>
+                                                   <span id="copy-success-message-search" class="text-sm text-green-500 ml-2"></span>
+                                                   <span id="copy-success-message-bubble" class="text-sm text-green-500 ml-2"></span>
                                             <button class="btn" data-clipboard-target="#embedChatBubble">
                                                 <svg class="w-6 h-6 fill-current text-slate-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                                     <path d="M0 0h24v24H0z" fill="none"/>
                                                     <path d="M16 1H4c-1.1 0-1.99.9-1.99 2L2 17h2V5h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
                                                 </svg>
                                             </button>
-                                            <span id="copy-success-message" class="text-sm text-green-500 ml-2"></span>
+                                            
                                         </div>
                                         
                                         <textarea id="embedChatBubble" class="form-input w-full" style="height: 250px"
@@ -178,13 +183,14 @@
                                             script. Please read the documentation to see all the options for the
                                             search widget.</strong> 
                                             	<!-- Trigger -->
+                                                <span id="copy-success-message" class="text-sm text-green-500 ml-2"></span>
                                             <button class="btn" data-clipboard-target="#embedSearch">
                                                 <svg class="w-6 h-6 fill-current text-slate-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                                     <path d="M0 0h24v24H0z" fill="none"/>
                                                     <path d="M16 1H4c-1.1 0-1.99.9-1.99 2L2 17h2V5h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
                                                 </svg>
                                             </button>
-                                            <span id="copy-success-message" class="text-sm text-green-500 ml-2"></span>
+                                            
                                     </div>
                                     
                                     <textarea id="embedSearch" class="form-input w-full" style="height: 250px"
@@ -220,11 +226,11 @@
     var clipboard = new ClipboardJS('.btn');
 
     clipboard.on('success', function(e) {
-        var copySuccessMessage = document.getElementById('copy-success-message');
+        var copySuccessMessage = document.querySelector(e.trigger.getAttribute('data-success-target'));
         copySuccessMessage.textContent = 'Copied';
         setTimeout(function() {
             copySuccessMessage.textContent = '';
-        }, 1000);
+        }, 1500);
 
         e.clearSelection();
     });

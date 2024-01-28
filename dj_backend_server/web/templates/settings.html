@@ -51,14 +51,16 @@
                             <div>
                                 <label for="token" class="text-gray-800 text-sm font-medium inline-block mb-2">API Token</label>
                                     <!-- Trigger -->
+                                    <div class="flex items-center">
                                     <input type="text" class="form-input w-full" style="cursor: pointer!important;" id="token" value="{{ bot.token }}" readonly />
+                                    <span id="copy-success-message" class="input-group-button"></span>
                                     <button class="btn" data-clipboard-target="#token">
                                         <svg class="w-6 h-6 fill-current text-slate-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                             <path d="M0 0h24v24H0z" fill="none"/>
                                             <path d="M16 1H4c-1.1 0-1.99.9-1.99 2L2 17h2V5h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
                                         </svg>
                                     </button>
-                                    <span id="copy-success-message" class="text-sm text-green-500 ml-2"></span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -233,7 +235,7 @@ Ghost writing in markdown:
         copySuccessMessage.textContent = 'Copied';
         setTimeout(function() {
             copySuccessMessage.textContent = '';
-        }, 1000);
+        }, 1500);
 
         e.clearSelection();
     });
