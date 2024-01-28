@@ -5,8 +5,8 @@ from api.data_sources.pdf_handler import pdf_handler
 from web.workers.crawler import start_recursive_crawler
 
 @shared_task
-def pdf_handler_task(shared_folder, namespace, delete_folder_flag):
-    return pdf_handler(shared_folder=shared_folder, namespace=namespace, delete_folder_flag=delete_folder_flag)
+def pdf_handler_task(shared_folder, namespace, delete_folder_flag, ocr_pdf_file):
+    return pdf_handler(shared_folder=shared_folder, namespace=namespace, delete_folder_flag=delete_folder_flag, ocr_pdf_file=ocr_pdf_file)
 
 @shared_task 
 def website_handler_task(shared_folder, namespace):

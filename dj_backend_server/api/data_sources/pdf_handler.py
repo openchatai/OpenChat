@@ -23,10 +23,12 @@ from api.utils.make_chain import process_text_with_llm
 from web.utils.delete_foler import delete_folder
 from web.models.failed_jobs import FailedJob
 from web.models.pdf_data_sources import PdfDataSource
+from pypdfium2 import PdfDocument
+
 
 
 @csrf_exempt
-def pdf_handler(shared_folder: str, namespace: str, delete_folder_flag: Optional[bool] = False, text_data: Optional[str] = None):
+def pdf_handler(shared_folder: str, namespace: str, delete_folder_flag: Optional[bool] = False, ocr_pdf_file: Optional[bool] = False, text_data: Optional[str] = None):
     """
     This function handles PDF files and other types of files in a shared folder. It processes the text data if provided directly, 
     otherwise it reads from the files in the shared folder. It processes each file based on its extension, converts .doc, .docx, .xls, 
@@ -36,21 +38,25 @@ def pdf_handler(shared_folder: str, namespace: str, delete_folder_flag: Optional
         shared_folder (str): The name of the shared folder where the files are located.
         namespace (str): The namespace for the vector database.
         delete_folder_flag (bool): A flag indicating whether to delete the folder after processing the files.
+        ocr_pdf_file (bool): A flag indicating whether to send or not PDF to OCR API services.
         text_data (Optional[str], optional): The text data to be processed. If this is provided, the function will not read from 
         the files. Defaults to None.
 
     Raises:
         Exception: If an error occurs during the processing of the files or the conversion of the text data to a vector database.
     """
-    print ("Debug: pdf_handler")
+
     # If text data is provided directly, process it without reading from files
     if text_data:
         process_text_data(text_data, namespace)
         print ("Debug: text_data is provided directly, process it without reading from files")
         return
     
-    # Convert delete_folder_flag to boolean (send 0 - FALSE or 1 - TRUE)
+    # Convert delete_folder_flag and ocr_pdf_file to boolean (send 0 - FALSE or 1 - TRUE)
     delete_folder_flag = bool(delete_folder_flag) if delete_folder_flag is not None else False
+    ocr_pdf_file = bool(ocr_pdf_file) if ocr_pdf_file is not None else False
+    print (f"Debug: delete_folder_flag: {delete_folder_flag}, ocr_pdf_file: {ocr_pdf_file}")
+    
     # Check if the shared_folder is provided, if not, return early as there are no files to process
     if not shared_folder:
         print("No shared folder provided for file processing.")
@@ -58,26 +64,29 @@ def pdf_handler(shared_folder: str, namespace: str, delete_folder_flag: Optional
 
     try:
         #TODO: When will be multiple external library to choose, need to change.
-        if os.environ.get("PDF_LIBRARY") == "external":
-            if shared_folder:
-                directory_path = os.path.join("website_data_sources", shared_folder)
-                print(f"Debug: Processing folder {directory_path}")
+        directory_path = os.path.join("website_data_sources", shared_folder)
+        print(f"Debug: Processing folder {directory_path}")
 
-            if os.path.exists(directory_path):
-                print(f"Debug: Directory exists. Files: {os.listdir(directory_path)}")
-            else:
-                print(f"Debug: No shared folder provided for file processing.")
-                return
+        if not os.path.exists(directory_path):
+            print(f"Debug: Directory {directory_path} does not exist.")
+            return
 
-            # Process each file in the directory based on its extension
-            for filename in os.listdir(directory_path):
-                file_path = os.path.join(directory_path, filename)
-                if filename.endswith(".pdf"):
+        print(f"Debug: Directory exists. Files: {os.listdir(directory_path)}")
+
+        # Process each file in the directory based on its extension
+        for filename in os.listdir(directory_path):
+            file_path = os.path.join(directory_path, filename)
+            if filename.endswith(".pdf"):
+                if ocr_pdf_file == True:
                     process_pdf(file_path, directory_path)
-                elif filename.endswith((".txt", ".csv", ".json")):
-                    save_as_txt(file_path)
-                elif filename.endswith((".doc", ".docx", ".xls", ".xlsx")):
-                    convert_to_txt(file_path)
+                    print(f"Debug: OCR PDF file {ocr_pdf_file}")
+                else:
+                    process_pdf_with_pypdfium(file_path, directory_path)
+                    print(f"Debug: Not need to send to OCR API {ocr_pdf_file}")
+            elif filename.endswith((".txt", ".csv", ".json")):
+                save_as_txt(file_path)
+            elif filename.endswith((".doc", ".docx", ".xls", ".xlsx")):
+                convert_to_txt(file_path)
 
         txt_to_vectordb(shared_folder, namespace, delete_folder_flag)
 
@@ -89,11 +98,29 @@ def pdf_handler(shared_folder: str, namespace: str, delete_folder_flag: Optional
         print("Exception occurred:", e)
         traceback.print_exc()
 
+@csrf_exempt
+def process_pdf_with_pypdfium(file_path, directory_path):
+    pdf = PdfDocument(file_path)
+    text_pages = []
+    
+    for page_index in range(len(pdf)):
+        page = pdf.get_page(page_index)
+        text_page = page.get_textpage()  # get a text page handle for this page
+        text = text_page.get_text_range()  # extract text from the text page
+        text_pages.append(text)
+        text_page.close()  # close the text page handle
+
+    text = ''.join(text_pages)
+    txt_file_path = os.path.splitext(file_path)[0] + '.txt'
+    print(f"Debug: Writing text to {txt_file_path}, AAA: {directory_path}, BBB: {text}")
+
+    with open(txt_file_path, 'w') as f:
+        f.write(text)
+    
+    pdf.close()
 
 @csrf_exempt
 def process_pdf(FilePath,directory_path):
-    #pdf_data_source = PdfDataSource.objects.get(folder_name=FilePath)
-    #pdf_data_source = PdfDataSource.objects.get(folder_name=directory_path)
     UserName = os.environ.get("OCR_USERNAME")
     LicenseCode = os.environ.get("OCR_LICCODE")
     gettext = True
