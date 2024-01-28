@@ -9,6 +9,7 @@ import hashlib
 @require_POST
 def create(request, id):
     delete_folder_flag = 'delete_folder_flag' in request.POST
+    ocr_pdf_file = 'ocr_pdf_file' in request.POST
     if request.FILES.getlist('pdffiles'):
         # Get the Chatbot object
         bot = get_object_or_404(Chatbot, id=id)
@@ -31,7 +32,7 @@ def create(request, id):
                 # If no such file exists, proceed with the upload as usual
                 handle_pdf_data_source = HandlePdfDataSource(bot, [upload_file])
                 data_source = handle_pdf_data_source.handle()
-                pdf_data_source_added.send(sender=None, bot_id=bot.id, data_source_id=data_source.id, delete_folder_flag=delete_folder_flag)
+                pdf_data_source_added.send(sender=None, bot_id=bot.id, data_source_id=data_source.id, delete_folder_flag=delete_folder_flag, ocr_pdf_file=ocr_pdf_file)
 
         # Redirect to the chatbot settings page with a success message
         return redirect('chatbot.settings-data', id=bot.id)

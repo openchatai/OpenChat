@@ -18,6 +18,7 @@ def upload_pdf_api(request):
     API endpoint for uploading PDF files. It expects a POST request with the following parameters:
     - 'X-Bot-Token' header: A token to authenticate the chatbot.
     - 'delete_folder_flag': A flag indicating whether to delete the folder after processing (0 or 1).
+    - 'ocr_pdf_file': A flag indicating that the file need to be send to OCR API. (0 or 1).
     - 'pdffiles': The PDF file(s) to be uploaded. Can be a single file or multiple files.
     """
     
@@ -28,6 +29,7 @@ def upload_pdf_api(request):
         return JsonResponse({'error': 'Invalid token'}, status=403)
 
     delete_folder_flag = request.POST.get('delete_folder_flag', '0') == '1'
+    ocr_pdf_file = request.POST.get('ocr_pdf_file', '0') == '1'
     files = request.FILES.getlist('pdffiles')
     text_data = request.POST.get('text_data', '')
 
@@ -37,6 +39,6 @@ def upload_pdf_api(request):
     print (f"text_data: {data_source}")
 
     # Trigger the PdfDataSourceWasAdded event
-    pdf_data_source_added.send(sender='create_via_pdf_flow', bot_id=bot.id, data_source_id=data_source.id, delete_folder_flag=delete_folder_flag)
+    pdf_data_source_added.send(sender='create_via_pdf_flow', bot_id=bot.id, data_source_id=data_source.id, delete_folder_flag=delete_folder_flag, ocr_pdf_file=ocr_pdf_file, text_data=text_data)
     return JsonResponse({'message': 'PDF uploaded and chatbot created successfully', 'data_source_id': data_source.id, 'bot_id': bot.id})
     
