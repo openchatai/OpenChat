@@ -5,10 +5,10 @@
 
 {% block content %}
 
-
 <div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
 <!-- Page header -->
     <div class="mb-8">
+        
         <!-- Title -->
         <h1 class="text-2xl md:text-3xl text-slate-800 font-bold">{{ bot.name }}: try & share ✨</h1>
         <ul class="inline-flex flex-wrap text-sm font-medium">
@@ -31,6 +31,8 @@
                     <div class="text-sm">Here you can try and play with your bot, also you can share it or embed
                         it in your web apps. Anyone with this link will be able to interact
                         with your chatbot</div>
+                        <!-- Target -->
+
                         <div class="grid lg:grid-cols-1 gap-6">
                             <!-- Share Link -->
                             <div>
@@ -38,19 +40,18 @@
                                     <label class="block text-sm font-medium mb-1" for="tooltip"> 🔗 Share with
                                         others!</label>
                                 </div>
-
                                     <div class="flex items-center">
-    <input style="cursor: pointer!important;" id="shareable-link" class="form-input w-full" type="text"
-        value="{{ APP_URL }}{% url 'chat' token=bot.token %}" readonly>
-    <button class="ml-2" onclick="copyToClipboard('shareable-link', 'copy-success-message')">
-        <svg class="w-6 h-6 fill-current text-slate-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path d="M0 0h24v24H0z" fill="none"/>
-            <path d="M16 1H4c-1.1 0-1.99.9-1.99 2L2 17h2V5h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
-        </svg>
-    </button>
-    <span id="copy-success-message" class="text-sm text-green-500 ml-2"></span>
-</div>
+                                        <input type="text" class="form-input w-full" style="cursor: pointer!important;" id="shareable-link" value="{{ APP_URL }}{% url 'chat' token=bot.token %}" readonly />
 
+                                        <!-- Trigger -->
+                                        <button class="btn" data-clipboard-target="#shareable-link">
+                                            <svg class="w-6 h-6 fill-current text-slate-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                                <path d="M0 0h24v24H0z" fill="none"/>
+                                                <path d="M16 1H4c-1.1 0-1.99.9-1.99 2L2 17h2V5h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                                            </svg>
+                                        </button>
+                                        <span id="copy-success-message" class="text-sm text-green-500 ml-2"></span>
+                                    </div>
                             </div>
                             <!-- END Share Link -->
                             <!-- Chat Bubble Embed -->
@@ -77,69 +78,72 @@
                                         <div class="flex items-center justify-between"
                                             style="margin-top: 1rem; margin-bottom: 1rem;">
                                             <strong>1.  Copy the following code into your website head
-                                                script</strong> <button class="ml-2" onclick="copyToClipboard('embedChatBubble', 'copy-chatbubble-success')">
-                                                    <svg class="w-6 h-6 fill-current text-slate-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                                        <path d="M0 0h24v24H0z" fill="none"/>
-                                                        <path d="M16 1H4c-1.1 0-1.99.9-1.99 2L2 17h2V5h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
-                                                    </svg>
-                                                </button>
+                                                script</strong> 
+                                                	<!-- Trigger -->
+                                            <button class="btn" data-clipboard-target="#embedChatBubble">
+                                                <svg class="w-6 h-6 fill-current text-slate-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                                    <path d="M0 0h24v24H0z" fill="none"/>
+                                                    <path d="M16 1H4c-1.1 0-1.99.9-1.99 2L2 17h2V5h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                                                </svg>
+                                            </button>
+                                            <span id="copy-success-message" class="text-sm text-green-500 ml-2"></span>
                                         </div>
                                         
                                         <textarea id="embedChatBubble" class="form-input w-full" style="height: 250px"
-                                            type="text" disabled>
+                                            type="text" readonly>
 <script src="{{ APP_URL }}{% static 'chat.js?v7' %}"></script>
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-var chatConfig = {
-token: "{{ bot.token }}",
-};
+    document.addEventListener('DOMContentLoaded', function () {
+        var chatConfig = {
+            token: "{{ bot.token }}",
+        };
 
-initializeChatWidget(chatConfig);
+        initializeChatWidget(chatConfig);
 
-// YOU CAN CUSTOMIZE THE CHAT WIDGET HERE, text and images for logo.
-// Listen for the 'homeScreenCustomizationReady' event to ensure the functions are ready
-window.addEventListener('homeScreenCustomizationReady', function() {
-// Set the background URL, spacer.png is a transparent 1x1 pixel image
-window.setHomeScreenBackground("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==");
+        // YOU CAN CUSTOMIZE THE CHAT WIDGET HERE, text and images for logo.
+        // Listen for the 'homeScreenCustomizationReady' event to ensure the functions are ready
+        window.addEventListener('homeScreenCustomizationReady', function () {
+            // Set the background URL, spacer.png is a transparent 1x1 pixel image
+            window.setHomeScreenBackground("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==");
 
-// Set the first welcome message
-window.setHomeScreenMessages("Welcome to our chat!", "Talk to us!");
-});
+            // Set the first welcome message
+            window.setHomeScreenMessages("Welcome to our chat!", "Talk to us!");
+        });
 
-// Event listeners to update setBotErrorMessage and setBotLoadingMessage
-window.addEventListener('BotMessageError', function() {
-window.setBotErrorMessage("error occured in the process.", 0.05);
-});
-window.addEventListener('botLoadingMessageReady', function() {
-window.setBotLoadingMessage("I do not have any response ... ", 0.05);
-}); 
+        // Event listeners to update setBotErrorMessage and setBotLoadingMessage
+        window.addEventListener('BotMessageError', function () {
+            window.setBotErrorMessage("error occured in the process.", 0.05);
+        });
+        window.addEventListener('botLoadingMessageReady', function () {
+            window.setBotLoadingMessage("I do not have any response ... ", 0.05);
+        });
 
 
-// Event listeners to update buttonMessage and helpText
-window.addEventListener('chatHomeButtonMessageReady', function() {
-window.setChatHomeButtonMessage("Ask our powerful AI bot.", 0.05);
-});
-window.addEventListener('chatHomeButtonHelpTextReady', function() {
-window.setChatHomeButtonHelpText("The help will come in a minute.", 0.05);
-});
+        // Event listeners to update buttonMessage and helpText
+        window.addEventListener('chatHomeButtonMessageReady', function () {
+            window.setChatHomeButtonMessage("Ask our powerful AI bot.", 0.05);
+        });
+        window.addEventListener('chatHomeButtonHelpTextReady', function () {
+            window.setChatHomeButtonHelpText("The help will come in a minute.", 0.05);
+        });
 
-// Event listeners to update buttonMessage and helpText Inside of chat.
-window.addEventListener('chatHomeButtonMessageReadyInHeader', function() {
-window.setChatHomeButtonMessageInHeader("Please start to ask at the bottom of the screen.", 0.05);
-});
-window.addEventListener('chatHomeButtonMessageReadyInHeader', function() {
-window.setChatHomeButtonHelpTextInHeader("I will search then in my knowledge base and I will give back an answer.", 0.05);
-});
+        // Event listeners to update buttonMessage and helpText Inside of chat.
+        window.addEventListener('chatHomeButtonMessageReadyInHeader', function () {
+            window.setChatHomeButtonMessageInHeader("Please start to ask at the bottom of the screen.", 0.05);
+        });
+        window.addEventListener('chatHomeButtonMessageReadyInHeader', function () {
+            window.setChatHomeButtonHelpTextInHeader("I will search then in my knowledge base and I will give back an answer.", 0.05);
+        });
 
-// Event listeners to update  chatInputPlaceholderReady and chatInputPlaceholderReplyReady Inside of chat.
-window.addEventListener('chatInputPlaceholderReady', function() {
-window.setChatInputPlaceholder("Ask me anything...", 0.05);
-});
-window.addEventListener('chatInputPlaceholderReplyReady', function() {
-window.setChatInputPlaceholderReply("A reply please....", 0.05);
-});
-});
+        // Event listeners to update  chatInputPlaceholderReady and chatInputPlaceholderReplyReady Inside of chat.
+        window.addEventListener('chatInputPlaceholderReady', function () {
+            window.setChatInputPlaceholder("Ask me anything...", 0.05);
+        });
+        window.addEventListener('chatInputPlaceholderReplyReady', function () {
+            window.setChatInputPlaceholderReply("A reply please....", 0.05);
+        });
+    });
 </script>
                                         </textarea>
                                         
@@ -171,35 +175,32 @@ window.setChatInputPlaceholderReply("A reply please....", 0.05);
                                     <div class="flex items-center justify-between"
                                         style="margin-top: 1rem; margin-bottom: 1rem;">
                                         <strong>1. Copy the following code into your website head
-                                            script</strong> <button class="ml-2" onclick="copyToClipboard('embedSearch', 'copy-search-success')">
+                                            script. Please read the documentation to see all the options for the
+                                            search widget.</strong> 
+                                            	<!-- Trigger -->
+                                            <button class="btn" data-clipboard-target="#embedSearch">
                                                 <svg class="w-6 h-6 fill-current text-slate-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                                     <path d="M0 0h24v24H0z" fill="none"/>
                                                     <path d="M16 1H4c-1.1 0-1.99.9-1.99 2L2 17h2V5h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
                                                 </svg>
                                             </button>
+                                            <span id="copy-success-message" class="text-sm text-green-500 ml-2"></span>
                                     </div>
                                     
                                     <textarea id="embedSearch" class="form-input w-full" style="height: 250px"
-                                        type="text" disabled>
-                                        <script src="{{ APP_URL }}{% static 'search.js' %}"></script>
+                                        type="text" readonly>
+<script src="{{ APP_URL }}{% static 'search.js' %}"></script>
 
-                                        <script>
-                                            window.onload = () => {
-                                                initilizeChatBot({
-                                                    initialFirstMessage: "Hello, Search OpenChat resources here.",
-                                                    token: "{{ bot.token }}",
-                                                    //initiatorId: "search-openchat" // provide a unique id for the search widget if you want to have custom button    
-                                                });
-                                            };
-                                        </script>
+<script>
+    window.onload = () => {
+        initilizeChatBot({
+            initialFirstMessage: "Hello, Search OpenChat resources here.",
+            token: "{{ bot.token }}",
+            //initiatorId: "search-openchat" // provide a unique id for the search widget if you want to have custom button    
+        });
+    };
+</script>
                                     </textarea>
-                                    
-
-                                    <div class="flex items-center justify-between"
-                                        style="margin-top: 1rem; margin-bottom: 1rem;">
-                                        <strong>2. Please read this documentation to see all the options for the
-                                            search widget</strong>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -215,55 +216,8 @@ window.setChatInputPlaceholderReply("A reply please....", 0.05);
 {% block scripts %}
 
 <script>
+    new ClipboardJS('.btn');
 
-    function copyToClipboard(elementId, messageElementId) {
-        var copyElement = document.getElementById(elementId);
-        var messageElement = messageElementId ? document.getElementById(messageElementId) : null;
-        var range, selection, successful, msg;
-    
-
-        if (copyElement.tagName === 'INPUT' || copyElement.tagName === 'TEXTAREA') {
-            copyElement.focus();
-            copyElement.select();
-        } else {
-            range = document.createRange();
-            range.selectNodeContents(copyElement);
-            selection = window.getSelection();
-            selection.removeAllRanges();
-            selection.addRange(range);
-        }
-
-    
-        try {
-            successful = document.execCommand('copy');
-            msg = successful ? 'Copied!' : 'Unable to copy';
-        } catch (err) {
-            console.log('Oops, unable to copy', err);
-            msg = 'Oops, unable to copy';
-        }
-
-        if (messageElement) {
-            messageElement.textContent = msg;
-        } else {
-            console.error('Message element not found:', messageElementId);
-        }
-
-    
-        document.getElementById(messageElementId).textContent = msg;
-    
-        // Clear selection if it was created
-        if (selection) {
-            selection.removeAllRanges();
-        }
-
-    
-        // Clear message after 2 seconds
-        setTimeout(() => {
-            if (messageElement) {
-                messageElement.textContent = '';
-            }
-        }, 2000);
-    }
 </script>
 
 {% endblock scripts %}
