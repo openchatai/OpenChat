@@ -226,5 +226,22 @@ Ghost writing in markdown:
 
     new ClipboardJS('.btn');
 
+    var clipboard = new ClipboardJS('.btn');
+
+    clipboard.on('success', function(e) {
+        var copySuccessMessage = document.getElementById('copy-success-message');
+        copySuccessMessage.textContent = 'Copied';
+        setTimeout(function() {
+            copySuccessMessage.textContent = '';
+        }, 1000);
+
+        e.clearSelection();
+    });
+
+    clipboard.on('error', function(e) {
+        console.error('Action:', e.action);
+        console.error('Trigger:', e.trigger);
+    });
+
 </script>
 {% endblock %}
