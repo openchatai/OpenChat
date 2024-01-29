@@ -56,7 +56,10 @@ INSTALLED_APPS = [
     'web',
     'api',
     'management',
-    'corsheaders'
+    'corsheaders',
+    'rest_framework_swagger',
+    'rest_framework',
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -188,22 +191,43 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # You can choose other e
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '0.0.0.0').split(',')
 APP_URL = os.environ.get('APP_URL', 'http://0.0.0.0:8000')
 
-# CSRF_COOKIE_SECURE = True
-# CSRF_COOKIE_HTTPONLY = True
-# SESSION_COOKIE_SECURE = True
-# SESSION_COOKIE_HTTPONLY = True
-# CORS_ALLOW_CREDENTIALS = True
-# CORS_ORIGIN_ALLOW_ALL = True
-# CSRF_COOKIE_DOMAIN = 'APP_URL'
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_HTTPONLY = True
+SECURE_SSL_REDIRECT = True
+SECURE_HSTS_SECONDS = 3600
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+CORS_ALLOW_CREDENTIALS = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 CORS_ALLOWED_ORIGINS = [
     APP_URL
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://' + APP_URL.replace('http://', '').replace('https://', '')
-] 
-
-CORS_ORIGIN_WHITELIST = [
     APP_URL
 ]
+
+CORS_ORIGIN_WHITELIST = [
+     APP_URL
+ ]
+
+REST_FRAMEWORK = {
+     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+     'TITLE': 'Opechat API Documentation',
+     'DESCRIPTION': 'API documentation for Openchat',
+     'VERSION': '1.0.0',
+     "SWAGGER_UI_SETTINGS": {
+        "deepLinking": True,
+        "persistAuthorization": True,
+        "displayOperationId": True,
+    },
+    "SWAGGER_UI_FAVICON_HREF": STATIC_URL + "assets/images/favicon.ico",
+}
+
+LOGIN_URL = APP_URL + '/login'
