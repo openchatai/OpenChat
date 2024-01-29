@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-29 19:04+0000\n"
+"POT-Creation-Date: 2024-01-29 19:05+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,136 +16,136 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
+"Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?"
+"2:1));\n"
 #: management/management/commands/inspire.py:8
 msgid "Displays an inspiring quote"
-msgstr ""
+msgstr "Afișează un citat inspirațional"
 
 #: management/management/commands/inspire.py:12
 msgid "Don't forget to set INSPIRING_QUOTES in settings.py!"
-msgstr ""
+msgstr "Nu uitați să setați INSPIRING_QUOTES în settings.py!"
 
 #: web/templates/layout/app.html:7
 msgid "Dashboard | OpenChat"
-msgstr ""
+msgstr "Tablou de bord | OpenChat"
 
 #: web/templates/layout/app.html:55
 msgid "Sign Out"
-msgstr ""
+msgstr "Deconectare"
 
 #: web/templates/layout/header.html:7
 msgid "Menu Toggle Button"
-msgstr ""
+msgstr "Buton de comutare a meniului"
 
 #: web/templates/layout/header.html:13
 #: web/templates/layout/sidebar-bot-page.html:17
 #: web/templates/onboarding/other-data-sources-website.html:6
 #: web/templates/settings-analytics.html:4
 msgid "Dashboard"
-msgstr ""
+msgstr "Tablou de bord"
 
 #: web/templates/layout/header.html:15
 msgid "Profile Menu Offcanvas Button"
-msgstr ""
+msgstr "Butonul Offcanvas al Meniului de Profil"
 
 #: web/templates/layout/noapp.html:6
 msgid "Login | OpenChat"
-msgstr ""
+msgstr "Autentificare | OpenChat"
 
 #: web/templates/layout/noapp.html:30
 msgid "Create an Account ?"
-msgstr ""
+msgstr "Creează un cont ?"
 
 #: web/templates/layout/noapp.html:30
 msgid "Register"
-msgstr ""
+msgstr "Înregistrare"
 
 #: web/templates/layout/sidebar-bot-page.html:22
 msgid "Chatbot"
-msgstr ""
+msgstr "Chatbot"
 
 #: web/templates/layout/sidebar-bot-page.html:26
 msgid "Try & Share"
-msgstr ""
+msgstr "Încearcă și Distribuie"
 
 #: web/templates/layout/sidebar-bot-page.html:33
 msgid "General settings"
-msgstr ""
+msgstr "Setări generale"
 
 #: web/templates/layout/sidebar-bot-page.html:39
 msgid "Data & Knowledge"
-msgstr ""
+msgstr "Date și Cunoștințe"
 
 #: web/templates/layout/sidebar-bot-page.html:45
 msgid "History"
-msgstr ""
+msgstr "Istoric"
 
 #: web/templates/layout/sidebar-bot-page.html:50
 msgid "Super Admin"
-msgstr ""
+msgstr "Super Admin"
 
 #: web/templates/layout/sidebar-bot-page.html:54
 msgid "Errors check"
-msgstr ""
+msgstr "Verificare erori"
 
 #: web/templates/layout/sidebar-bot-page.html:59
 msgid "Create user"
-msgstr ""
+msgstr "Creează utilizator"
 
 #: web/templates/layout/sidebar-bot-page.html:62
 msgid "User"
-msgstr ""
+msgstr "Utilizator"
 
 #: web/templates/layout/sidebar-bot-page.html:66
 msgid "ChatModify user detailsbot"
-msgstr ""
+msgstr "ChatModifică detaliile utilizatorului"
 
 #: web/templates/onboarding/other-data-sources-website.html:44
 msgid "Website information ✨"
-msgstr ""
+msgstr "Informații website ✨"
 
 #: web/templates/onboarding/other-data-sources-website.html:56
 msgid "Please enter a valid website URL, it\\"
-msgstr ""
+msgstr "Vă rugăm să introduceți un URL valid de website, acesta\\"
 
 #: web/templates/onboarding/other-data-sources-website.html:59
 msgid "Close"
-msgstr ""
+msgstr "Închide"
 
 #: web/templates/onboarding/other-data-sources-website.html:76
 msgid "Website url"
-msgstr ""
+msgstr "URL website"
 
 #: web/templates/settings-analytics.html:64
 msgid "Try it out! ->"
-msgstr ""
+msgstr "Încearcă acum! ->"
 
 #: web/templates/settings-analytics.html:80
 #: web/templates/settings-analytics.html:94
 msgid "Analytics"
-msgstr ""
+msgstr "Analitice"
 
 #: web/templates/settings-analytics.html:81
 msgid "This is your general bot settings such as name and id"
-msgstr ""
+msgstr "Acestea sunt setările generale ale botului tău, precum numele și ID-ul"
 
 #: web/templates/settings-analytics.html:91
 msgid "Analytics is coming soon!"
-msgstr ""
+msgstr "Analiticele vor fi disponibile în curând!"
 
 #: web/templates/settings-analytics.html:105
 msgid "Unique Visitors"
-msgstr ""
+msgstr "Vizitatori Unici"
 
 #: web/templates/settings-analytics.html:117
 msgid "Total Pageviews"
-msgstr ""
+msgstr "Vizualizări Totale de Pagină"
 
 #: web/templates/settings-analytics.html:129
 msgid "Bounce Rate"
-msgstr ""
+msgstr "Rata de Respingere"
 
 #: web/templates/settings-analytics.html:141
 msgid "Visit Duration"
-msgstr ""
+msgstr "Durata Vizitei"

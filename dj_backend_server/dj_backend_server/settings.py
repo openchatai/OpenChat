@@ -131,7 +131,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Set the list of languages you want to support
 LANGUAGES = [
-    ('en', 'English'),  # Add more languages as needed.
+    ('en', 'English'),
+    ('ro', 'Romanian'),  # Adding Romanian to the list of supported languages
 ]
 
 # Internationalization

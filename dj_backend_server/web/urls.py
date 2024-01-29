@@ -1,8 +1,10 @@
 # api/urls.py
-from django.urls import path
+from django.urls import path, include
+from django.conf.urls.i18n import i18n_patterns
 from web.views import views_chatbot_settings, views_onboarding, views_chatbot, views_pdf_data_source, views_website_datasource, views_chatbot_createuser, views_errors;
 
 urlpatterns = [
+    path('i18n/', include('django.conf.urls.i18n')),
     # Dashboard
     path('', views_chatbot.index, name='index'),
     path('login', views_chatbot.login_view, name='login'),

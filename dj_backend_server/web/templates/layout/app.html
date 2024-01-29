@@ -1,10 +1,10 @@
 {% load static %}
-
+{% load i18n %}
 <!DOCTYPE html>
 <html lang="en" data-sidebar-color="light" data-topbar-color="light" data-sidebar-view="default">
 <head>
     <meta charset="utf-8">
-    <title>Dashboard | OpenChat</title>
+    <title>{% trans "Dashboard | OpenChat" %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- App favicon -->
@@ -52,9 +52,25 @@
                 <div>
                     <a class="menu-link" href="{% url 'logout' %}">
                         <span class="menu-icon"><i class="uil uil-sign-out-alt"></i></span>
-                        <span class="menu-text">  Sign Out </span>
-                        </a>
-                    </div>
+                        <span class="menu-text">  {% trans "Sign Out" %} </span>
+                    </a>
+                </div>
+                <div>
+                <form action="{% url 'set_language' %}" method="post">
+                    {% csrf_token %}
+                    <input name="next" type="hidden" value="{{ redirect_to }}" />
+                    <select name="language" onchange="this.form.submit()">
+                        {% get_current_language as LANGUAGE_CODE %}
+                        {% get_available_languages as LANGUAGES %}
+                        {% for lang in LANGUAGES %}
+                            <option value="{{ lang.0 }}" {% if lang.0 == LANGUAGE_CODE %}selected{% endif %}>
+                                {{ lang.1 }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </form>
+            </div>
+               
     </div>
        </div>
 </div>
