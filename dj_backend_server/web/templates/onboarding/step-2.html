@@ -1,6 +1,7 @@
 {% extends "layout/app.html" %}
 {% load static %}
-
+{% load i18n %}
+{% block title %}{{ _('Dashboard') }}{% endblock %}
 {% block content %}
 <div class="min-h-screen h-full flex flex-col after:flex-1">
 
@@ -36,7 +37,7 @@
     <div class="px-4 py-8">
         <div class="max-w-md mx-auto">
 
-            <h1 class="text-3xl text-slate-800 font-bold mb-6">Website information ✨</h1>
+            <h1 class="text-3xl text-slate-800 font-bold mb-6">{% trans "Website information" %} ✨</h1>
             <!-- Form -->
             {% if website_error %}
             <div x-show="open" x-data="{ open: true }" style="margin-bottom: 1rem;">
@@ -48,12 +49,12 @@
                                     d="M8 0C3.6 0 0 3.6 0 8s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8zm0 12c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1zm1-3H7V4h2v5z">
                                 </path>
                             </svg>
-                            <div>Please enter a valid website URL, it's important that your website is live and
-                                accessible
+                            <div>{% trans "Please enter a valid website URL, it's important that your website is live and
+                                accessible" %}
                             </div>
                         </div>
                         <button class="opacity-70 hover:opacity-80 ml-3 mt-[3px]" @click="open = false">
-                            <div class="sr-only">Close</div>
+                            <div class="sr-only">{% trans "Close" %}</div>
                             <svg class="w-4 h-4 fill-current">
                                 <path
                                     d="M7.95 6.536l4.242-4.243a1 1 0 111.415 1.414L9.364 7.95l4.243 4.242a1 1 0 11-1.415 1.415L7.95 9.364l-4.243 4.243a1 1 0 01-1.414-1.415L6.536 7.95 2.293 3.707a1 1 0 011.414-1.414L7.95 6.536z">
@@ -69,7 +70,7 @@
                 <div class="space-y-4 mb-8">
                     <!-- Company Name -->
                     <div>
-                        <label class="block text-sm font-medium mb-1" for="website-name">Website url <span
+                        <label class="block text-sm font-medium mb-1" for="website-name">{% trans "Website url" %} <span
                                 class="text-rose-500">*</span></label>
                         <input id="website-name" class="form-input w-full" type="text" name="website" required
                             autocomplete="off">
@@ -77,21 +78,18 @@
 
                     <div class="flex items-center justify-between space-x-6 mb-8">
                         <div>
-                            <div class="font-medium text-slate-800 text-sm mb-1">Just to make sure we are on the
-                                same page 🫶
+                            <div class="font-medium text-slate-800 text-sm mb-1">{% trans "Just to make sure we are on the same page" %} 🫶
                             </div>
                             <div class="text-xs">
-                                We might not be able to crawl some websites, especially websites that are built
-                                using JS (SPA), we are working on adding headless browsing to support all
-                                sorts of websites.
+                                {% trans "We might not be able to crawl some websites, especially websites that are built using JS (SPA), we are working on adding headless browsing to support all sorts of websites." %}
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="flex items-center justify-between">
                     <a class="text-sm underline hover:no-underline" href="{% url 'onboarding.data-source' %}">&lt;-
-                        Back</a>
-                    <button type="submit" class="btn bg-primary text-white py-2 px-3">Next Step
+                        {% trans "Back" %}</a>
+                    <button type="submit" class="btn bg-primary text-white py-2 px-3">{% trans "Next Step" %}
                         -&gt;
                     </button>
                 </div>

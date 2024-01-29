@@ -1,6 +1,8 @@
 {% extends 'layout/app.html' %}
 {% load static %}
+{% load i18n %}
 
+{% block title %}{{ _('Dashboard') }}{% endblock %}
 {% block content %}
 <div class="min-h-screen h-full flex flex-col after:flex-1">
 
@@ -36,8 +38,8 @@
     <div class="px-4 py-8">
         <div class="max-w-md mx-auto">
 
-            <h1 class="text-3xl text-slate-800 font-bold mb-6">Let's set up your first chatbot, for free 🔥</h1>
-            <p style="margin-bottom: 2rem">And here how we are going to do it:</p>
+            <h1 class="text-3xl text-slate-800 font-bold mb-6">{% trans "Let's set up your first chatbot, for free" %} 🔥</h1>
+            <p style="margin-bottom: 2rem">{% trans "And here how we are going to do it:" %}</p>
             <!-- Form -->
             <form>
                 <div class="space-y-3 mb-8">
@@ -52,10 +54,10 @@
                                         <path d="M14.4 8.4L13 7l-4 4-2-2-1.4 1.4L9 13.8z"></path>
                                     </svg>
                                 </div>
-                                <h3 class="text-lg font-bold text-slate-800 pl-9">You provide the system with data</h3>
+                                <h3 class="text-lg font-bold text-slate-800 pl-9">{% trans "You provide the system with data" %}</h3>
                             </div>
-                            <div class="pl-9">It could be a website, pdf files, and soon you will have the option to
-                                integrate with many more</div>
+                            <div class="pl-9">{% trans "It could be a website, pdf files, and soon you will have the option to
+                                integrate with many more" %}</div>
                         </li>
                         <!-- List item -->
                         <li class="relative py-2">
@@ -67,9 +69,9 @@
                                         <path d="M14.4 8.4L13 7l-4 4-2-2-1.4 1.4L9 13.8z"></path>
                                     </svg>
                                 </div>
-                                <h3 class="text-lg font-bold text-slate-800 pl-9">We train our AI on this knowledge</h3>
+                                <h3 class="text-lg font-bold text-slate-800 pl-9">{% trans "We train our AI on this knowledge" %}</h3>
                             </div>
-                            <div class="pl-9">It might take minutes or hours, depend on how large is your data.</div>
+                            <div class="pl-9">{% trans "It might take minutes or hours, depend on how large is your data." %}</div>
                         </li>
                         <!-- List item -->
                         <li class="relative py-2">
@@ -81,18 +83,16 @@
                                         <path d="M14.4 8.4L13 7l-4 4-2-2-1.4 1.4L9 13.8z"></path>
                                     </svg>
                                 </div>
-                                <h3 class="text-lg font-bold text-slate-800 pl-9">You integrate the chatbot on your
-                                    website</h3>
+                                <h3 class="text-lg font-bold text-slate-800 pl-9">{% trans "You integrate the chatbot on your website" %}</h3>
                             </div>
-                            <div class="pl-9">That is it! we will provide you with a Javascript code to put it on your
-                                website.</div>
+                            <div class="pl-9">{% trans "That is it! we will provide you with a Javascript code to put it on your website." %}</div>
                         </li>
                         <!-- List item -->
                     </ul>
                 </div>
                 <div class="flex items-center justify-between">
                     <a class="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-auto"
-                        href="{% url 'onboarding.data-source' %}">Let's do it! -&gt;</a>
+                        href="{% url 'onboarding.data-source' %}">{% trans "Let's do it!" %} -&gt;</a>
                 </div>
             </form>
 

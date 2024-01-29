@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-29 19:04+0000\n"
+"POT-Creation-Date: 2024-01-29 20:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -39,8 +39,13 @@ msgid "Menu Toggle Button"
 msgstr ""
 
 #: web/templates/layout/header.html:13
-#: web/templates/layout/sidebar-bot-page.html:17
-#: web/templates/onboarding/other-data-sources-website.html:6
+#: web/templates/layout/sidebar-bot-page.html:18
+#: web/templates/onboarding/other-data-sources-website.html:5
+#: web/templates/onboarding/step-0.html:5
+#: web/templates/onboarding/step-1.html:4
+#: web/templates/onboarding/step-2-pdf.html:5
+#: web/templates/onboarding/step-2.html:4
+#: web/templates/onboarding/step-4.html:4
 #: web/templates/settings-analytics.html:4
 msgid "Dashboard"
 msgstr ""
@@ -49,72 +54,344 @@ msgstr ""
 msgid "Profile Menu Offcanvas Button"
 msgstr ""
 
-#: web/templates/layout/noapp.html:6
+#: web/templates/layout/noapp.html:7
 msgid "Login | OpenChat"
 msgstr ""
 
-#: web/templates/layout/noapp.html:30
+#: web/templates/layout/noapp.html:31
 msgid "Create an Account ?"
 msgstr ""
 
-#: web/templates/layout/noapp.html:30
+#: web/templates/layout/noapp.html:31
 msgid "Register"
 msgstr ""
 
-#: web/templates/layout/sidebar-bot-page.html:22
+#: web/templates/layout/sidebar-bot-page.html:23
 msgid "Chatbot"
 msgstr ""
 
-#: web/templates/layout/sidebar-bot-page.html:26
+#: web/templates/layout/sidebar-bot-page.html:27
 msgid "Try & Share"
 msgstr ""
 
-#: web/templates/layout/sidebar-bot-page.html:33
+#: web/templates/layout/sidebar-bot-page.html:34
 msgid "General settings"
 msgstr ""
 
-#: web/templates/layout/sidebar-bot-page.html:39
+#: web/templates/layout/sidebar-bot-page.html:40
 msgid "Data & Knowledge"
 msgstr ""
 
-#: web/templates/layout/sidebar-bot-page.html:45
+#: web/templates/layout/sidebar-bot-page.html:46
 msgid "History"
 msgstr ""
 
-#: web/templates/layout/sidebar-bot-page.html:50
+#: web/templates/layout/sidebar-bot-page.html:51
 msgid "Super Admin"
 msgstr ""
 
-#: web/templates/layout/sidebar-bot-page.html:54
+#: web/templates/layout/sidebar-bot-page.html:55
 msgid "Errors check"
 msgstr ""
 
-#: web/templates/layout/sidebar-bot-page.html:59
+#: web/templates/layout/sidebar-bot-page.html:60
 msgid "Create user"
 msgstr ""
 
-#: web/templates/layout/sidebar-bot-page.html:62
+#: web/templates/layout/sidebar-bot-page.html:63
 msgid "User"
 msgstr ""
 
-#: web/templates/layout/sidebar-bot-page.html:66
+#: web/templates/layout/sidebar-bot-page.html:67
 msgid "ChatModify user detailsbot"
 msgstr ""
 
-#: web/templates/onboarding/other-data-sources-website.html:44
-msgid "Website information ✨"
+#: web/templates/onboarding/other-data-sources-pdf.html:41
+msgid "Upload files as sources"
 msgstr ""
 
-#: web/templates/onboarding/other-data-sources-website.html:56
-msgid "Please enter a valid website URL, it\\"
-msgstr ""
-
-#: web/templates/onboarding/other-data-sources-website.html:59
+#: web/templates/onboarding/other-data-sources-pdf.html:56
+#: web/templates/onboarding/other-data-sources-website.html:58
+#: web/templates/onboarding/step-1.html:55
+#: web/templates/onboarding/step-2-codebase.html:57
+#: web/templates/onboarding/step-2-pdf.html:83
+#: web/templates/onboarding/step-2.html:57
 msgid "Close"
 msgstr ""
 
-#: web/templates/onboarding/other-data-sources-website.html:76
+#: web/templates/onboarding/other-data-sources-pdf.html:75
+#: web/templates/onboarding/step-2-pdf.html:105
+msgid "Click to upload or drag & drop"
+msgstr ""
+
+#: web/templates/onboarding/other-data-sources-pdf.html:76
+msgid "you can upload up to 5 files, and we will process the first ±100k words"
+msgstr ""
+
+#: web/templates/onboarding/other-data-sources-pdf.html:89
+msgid "Delete files after sending them for processing."
+msgstr ""
+
+#: web/templates/onboarding/other-data-sources-pdf.html:100
+#: web/templates/onboarding/step-2-pdf.html:130
+msgid ""
+"Check this only if you have scanned pages in the PDF document and want them "
+"to be sent to OCR services."
+msgstr ""
+
+#: web/templates/onboarding/other-data-sources-pdf.html:107
+#: web/templates/onboarding/step-2-pdf.html:136
+msgid "We are accepting PDF/DOCX/XLSX/TXT(CSV/JSON)."
+msgstr ""
+
+#: web/templates/onboarding/other-data-sources-pdf.html:108
+#: web/templates/onboarding/step-2-pdf.html:137
+msgid "PDF files can contain both text and images. We will send to OCR."
+msgstr ""
+
+#: web/templates/onboarding/other-data-sources-pdf.html:109
+#: web/templates/onboarding/step-2-pdf.html:138
+msgid ""
+"You can upload multiple files at once and we will process them in the "
+"background."
+msgstr ""
+
+#: web/templates/onboarding/other-data-sources-pdf.html:114
+#: web/templates/onboarding/other-data-sources-website.html:94
+#: web/templates/onboarding/step-1.html:150
+#: web/templates/onboarding/step-2-codebase.html:99
+#: web/templates/onboarding/step-2-pdf.html:145
+#: web/templates/onboarding/step-2.html:91
+#: web/templates/onboarding/step-3.html:92
+msgid "Back"
+msgstr ""
+
+#: web/templates/onboarding/other-data-sources-pdf.html:115
+#: web/templates/onboarding/other-data-sources-website.html:95
+#: web/templates/onboarding/step-2-codebase.html:100
+#: web/templates/onboarding/step-2-pdf.html:147
+#: web/templates/onboarding/step-2.html:92
+#: web/templates/onboarding/step-3.html:93
+msgid "Next Step"
+msgstr ""
+
+#: web/templates/onboarding/other-data-sources-website.html:43
+#: web/templates/onboarding/step-2.html:40
+msgid "Website information"
+msgstr ""
+
+#: web/templates/onboarding/other-data-sources-website.html:55
+msgid "Please enter a valid website URL, it\\"
+msgstr ""
+
+#: web/templates/onboarding/other-data-sources-website.html:75
+#: web/templates/onboarding/step-2.html:73
 msgid "Website url"
+msgstr ""
+
+#: web/templates/onboarding/step-0.html:41
+msgid "Let's set up your first chatbot, for free"
+msgstr ""
+
+#: web/templates/onboarding/step-0.html:42
+msgid "And here how we are going to do it:"
+msgstr ""
+
+#: web/templates/onboarding/step-0.html:57
+msgid "You provide the system with data"
+msgstr ""
+
+#: web/templates/onboarding/step-0.html:72
+msgid "We train our AI on this knowledge"
+msgstr ""
+
+#: web/templates/onboarding/step-0.html:74
+msgid "It might take minutes or hours, depend on how large is your data."
+msgstr ""
+
+#: web/templates/onboarding/step-0.html:86
+msgid "You integrate the chatbot on your website"
+msgstr ""
+
+#: web/templates/onboarding/step-0.html:88
+msgid ""
+"That is it! we will provide you with a Javascript code to put it on your "
+"website."
+msgstr ""
+
+#: web/templates/onboarding/step-0.html:95
+msgid "Let's do it!"
+msgstr ""
+
+#: web/templates/onboarding/step-1.html:39
+msgid "Select your data source"
+msgstr ""
+
+#: web/templates/onboarding/step-1.html:40
+msgid "Select the source of your data to train your new chatbot"
+msgstr ""
+
+#: web/templates/onboarding/step-1.html:40
+msgid "you can always add new sources later"
+msgstr ""
+
+#: web/templates/onboarding/step-1.html:52
+msgid ""
+"Please enter a valid website URL, it's important that your website is live "
+"and accessible"
+msgstr ""
+
+#: web/templates/onboarding/step-1.html:73
+msgid "Website"
+msgstr ""
+
+#: web/templates/onboarding/step-1.html:75
+msgid "We will crawl your website and extract the knowledge automatically."
+msgstr ""
+
+#: web/templates/onboarding/step-1.html:83
+msgid "PDF/DOCX/TXT/JSON/XLSX files"
+msgstr ""
+
+#: web/templates/onboarding/step-1.html:85
+msgid "We will scan your files and extract knowledge and any information"
+msgstr ""
+
+#: web/templates/onboarding/step-1.html:93
+msgid "Codebase"
+msgstr ""
+
+#: web/templates/onboarding/step-1.html:95
+msgid ""
+"Provide a link to your codebase and we will extract the knowledge and any "
+"information"
+msgstr ""
+
+#: web/templates/onboarding/step-1.html:103
+msgid "Confluence"
+msgstr ""
+
+#: web/templates/onboarding/step-1.html:112
+#: web/templates/onboarding/step-1.html:135
+msgid "soon"
+msgstr ""
+
+#: web/templates/onboarding/step-1.html:116
+msgid "Automatically extract data from your Confluence from your workspace"
+msgstr ""
+
+#: web/templates/onboarding/step-1.html:126
+msgid "Notion"
+msgstr ""
+
+#: web/templates/onboarding/step-1.html:140
+msgid "Automatically extract data from your Notion from your workspace"
+msgstr ""
+
+#: web/templates/onboarding/step-2-codebase.html:40
+msgid "GitHub Repo information"
+msgstr ""
+
+#: web/templates/onboarding/step-2-codebase.html:53
+msgid "Please provide a valid GitHub repository url."
+msgstr ""
+
+#: web/templates/onboarding/step-2-codebase.html:73
+msgid "Repository url"
+msgstr ""
+
+#: web/templates/onboarding/step-2-codebase.html:74
+msgid "must have"
+msgstr ""
+
+#: web/templates/onboarding/step-2-codebase.html:75
+msgid "main"
+msgstr ""
+
+#: web/templates/onboarding/step-2-codebase.html:75
+msgid "branch"
+msgstr ""
+
+#: web/templates/onboarding/step-2-codebase.html:92
+msgid "Your repo is private?"
+msgstr ""
+
+#: web/templates/onboarding/step-2-pdf.html:66
+msgid "Upload PDF files as sources"
+msgstr ""
+
+#: web/templates/onboarding/step-2-pdf.html:107
+msgid ""
+"you can upload up to 5 pdf files, and we will process the first ±100k words"
+msgstr ""
+
+#: web/templates/onboarding/step-2-pdf.html:120
+msgid "Delete PDF files after sending them for processing."
+msgstr ""
+
+#: web/templates/onboarding/step-2-pdf.html:146
+msgid "Skip and add later"
+msgstr ""
+
+#: web/templates/onboarding/step-2.html:81
+msgid "Just to make sure we are on the same page"
+msgstr ""
+
+#: web/templates/onboarding/step-2.html:84
+msgid ""
+"We might not be able to crawl some websites, especially websites that are "
+"built using JS (SPA), we are working on adding headless browsing to support "
+"all sorts of websites."
+msgstr ""
+
+#: web/templates/onboarding/step-3.html:40
+msgid "In the meanwhile, Let's do some configurations"
+msgstr ""
+
+#: web/templates/onboarding/step-3.html:42
+msgid ""
+"While we are crawling your website, you can do some configurations on your "
+"chatbot"
+msgstr ""
+
+#: web/templates/onboarding/step-3.html:52
+msgid "What type of character that chatbot must be?"
+msgstr ""
+
+#: web/templates/onboarding/step-3.html:54
+msgid ""
+"Choose the preferred bot character, wise & strict character will force the "
+"bot to only answer questions that have been seen before, while the "
+"Knowledgeable makes the bot a bit more flexible and tries to be creative "
+"with answers"
+msgstr ""
+
+#: web/templates/onboarding/step-3.html:67
+msgid "Wise & Strict"
+msgstr ""
+
+#: web/templates/onboarding/step-3.html:68
+msgid "Only answers questions within the given knowledge."
+msgstr ""
+
+#: web/templates/onboarding/step-3.html:80
+msgid "Knowledgeable"
+msgstr ""
+
+#: web/templates/onboarding/step-3.html:81
+msgid "Answers questions within the given knowledge and beyond."
+msgstr ""
+
+#: web/templates/onboarding/step-4.html:45
+msgid "That is it!"
+msgstr ""
+
+#: web/templates/onboarding/step-4.html:46
+msgid "Your chatbot name:"
+msgstr ""
+
+#: web/templates/onboarding/step-4.html:49
+msgid "Open your bot"
 msgstr ""
 
 #: web/templates/settings-analytics.html:64

@@ -1,4 +1,6 @@
 {% extends 'layout/app.html' %}
+{% load static %}
+{% load i18n %}
 {% with title='Dashboard' %}
 {% block content %}
 <div class="min-h-screen h-full flex flex-col after:flex-1">
@@ -35,10 +37,9 @@
     <div class="px-4 py-8">
         <div class="max-w-md mx-auto">
 
-            <h1 class="text-3xl text-slate-800 font-bold mb-6">In the meanwhile, Let's do some configurations ✨</h1>
+            <h1 class="text-3xl text-slate-800 font-bold mb-6">{% trans "In the meanwhile, Let's do some configurations" %} ✨</h1>
 
-            <div class="font-medium text-slate-800 text-sm mb-6">While we are crawling your website, you can do some
-                configurations on your chatbot
+            <div class="font-medium text-slate-800 text-sm mb-6">{% trans "While we are crawling your website, you can do some configurations on your chatbot" %}
             </div>
             <hr>
             <!-- Form -->
@@ -48,11 +49,9 @@
                 <div class="space-y-4 mb-8 mt-4">
                     <!-- Company Name -->
 
-                    <h3 class="text-lg font-bold text-slate-800">What type of character that chatbot must be?</h3>
+                    <h3 class="text-lg font-bold text-slate-800">{% trans "What type of character that chatbot must be?" %}</h3>
 
-                    <div class="font-medium text-slate-800 text-sm mb-6">Choose the preferred bot character, wise &
-                        strict character will force the bot to only answer questions that have been seen before,
-                        while the Knowledgeable makes the bot a bit more flexible and tries to be creative with answers
+                    <div class="font-medium text-slate-800 text-sm mb-6">{% trans "Choose the preferred bot character, wise & strict character will force the bot to only answer questions that have been seen before, while the Knowledgeable makes the bot a bit more flexible and tries to be creative with answers" %}
                     </div>
 
 
@@ -65,8 +64,8 @@
                                     <div class="emoji" style="font-size: 50px">
                                         🦉
                                     </div>
-                                    <div class="font-medium text-slate-800 mb-1">Wise & Strict</div>
-                                    <div class="text-sm">Only answers questions within the given knowledge.</div>
+                                    <div class="font-medium text-slate-800 mb-1">{% trans "Wise & Strict" %}</div>
+                                    <div class="text-sm">{% trans "Only answers questions within the given knowledge." %}</div>
                                 </div>
                                 <div class="absolute inset-0 border-2 border-transparent peer-checked:border-indigo-400 rounded pointer-events-none"
                                     aria-hidden="true"></div>
@@ -78,8 +77,8 @@
                                     <div class="emoji" style="font-size: 50px">
                                         🙆‍
                                     </div>
-                                    <div class="font-medium text-slate-800 mb-1">Knowledgeable</div>
-                                    <div class="text-sm">Answers questions within the given knowledge and beyond.
+                                    <div class="font-medium text-slate-800 mb-1">{% trans "Knowledgeable" %}</div>
+                                    <div class="text-sm">{% trans "Answers questions within the given knowledge and beyond." %}
                                     </div>
                                 </div>
                                 <div class="absolute inset-0 border-2 border-transparent peer-checked:border-indigo-400 rounded pointer-events-none"
@@ -90,9 +89,8 @@
                 </div>
                 <div class="flex items-center justify-between">
                     <a class="text-sm underline hover:no-underline" href="{% url 'onboarding.welcome' %}">&lt;-
-                        Back</a>
-                    <button class="btn bg-primary text-white py-2 px-3" type="submit"
-                        form="character">Next Step -&gt;
+                        {% trans "Back" %}</a>
+                    <button class="btn bg-primary text-white py-2 px-3" type="submit" form="character">{% trans "Next Step" %} -&gt;
                     </button>
                 </div>
             </form>

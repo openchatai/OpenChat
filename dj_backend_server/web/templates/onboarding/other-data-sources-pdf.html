@@ -1,6 +1,6 @@
 {% extends 'layout/app.html' %}
 {% load static %}
-
+{% load i18n %}
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
@@ -38,7 +38,7 @@
         <!-- Progress bar -->
         <div class="px-4 py-8">
             <div class="max-w-md mx-auto">
-                <h1 class="text-3xl text-slate-800 font-bold mb-6">Upload files as sources ✨</h1>
+                <h1 class="text-3xl text-slate-800 font-bold mb-6">{% trans "Upload files as sources" %} ✨</h1>
                 <!-- Form -->
                 {% if errors.pdffiles %}
                     <div x-show="open" x-data="{ open: true }" style="margin-bottom: 1rem;">
@@ -53,7 +53,7 @@
                                     </div>
                                 </div>
                                 <button class="opacity-70 hover:opacity-80 ml-3 mt-[3px]" @click="open = false">
-                                    <div class="sr-only">Close</div>
+                                    <div class="sr-only">{% trans "Close" %}</div>
                                     <svg class="w-4 h-4 fill-current">
                                         <path d="M7.95 6.536l4.242-4.243a1 1 0 111.415 1.414L9.364 7.95l4.243 4.242a1 1 0 11-1.415 1.415L7.95 9.364l-4.243 4.243a1 1 0 01-1.414-1.415L6.536 7.95 2.293 3.707a1 1 0 011.414-1.414L7.95 6.536z"></path>
                                     </svg>
@@ -72,8 +72,8 @@
                                 <div class="emoji" style="font-size: 30px">
                                     ⬆️
                                 </div>
-                                <p style="font-weight: bold; margin-bottom: 1rem"> Click to upload or drag & drop</p>
-                                <span style="color: #2563eb">you can upload up to 5 files, and we will process the first ±100k words</span>
+                                <p style="font-weight: bold; margin-bottom: 1rem"> {% trans "Click to upload or drag & drop" %}</p>
+                                <span style="color: #2563eb">{% trans "you can upload up to 5 files, and we will process the first ±100k words" %}</span>
                             </div>
                             <input type="file" name="pdffiles" id="fileInput" style="display: none" required
                             accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv,ap
@@ -86,7 +86,7 @@
                             <div>
                                 <input type="checkbox" id="delete_folder_flag" name="delete_folder_flag">
                                 <label for="delete_folder_flag" class="text-xs">
-                                    Delete files after sending them for processing.
+                                    {% trans "Delete files after sending them for processing." %}
                                 </label>
                             </div>
                         </div>
@@ -97,22 +97,22 @@
                             </div>
                             <div>    
                                 <label for="ocr_pdf_file" class="text-xs">
-                                    Check this only if you have scanned pages in the PDF document and want them to be sent to OCR services.
+                                    {% trans "Check this only if you have scanned pages in the PDF document and want them to be sent to OCR services." %}
                                 </label>
                             </div>
                         </div>
 
                         <div class="flex items-center justify-between space-x-6 mb-8">
                             <div>
-                                <div class="font-medium text-slate-800 text-sm mb-1">We are accepting PDF/DOCX/XLSX/TXT(CSV/JSON). 🫶</div>
-                                <div class="text-xs">PDF files can contain both text and images. We will send to OCR.</div>
-                                <div class="text-xs">You can upload multiple files at once and we will process them in the background.</div>
+                                <div class="font-medium text-slate-800 text-sm mb-1">{% trans "We are accepting PDF/DOCX/XLSX/TXT(CSV/JSON)." %} 🫶</div>
+                                <div class="text-xs">{% trans "PDF files can contain both text and images. We will send to OCR." %}</div>
+                                <div class="text-xs">{% trans "You can upload multiple files at once and we will process them in the background." %}</div>
                             </div>
                         </div>
                     </div>
                     <div class="flex items-center justify-between">
-                        <a class="text-sm underline hover:no-underline" href="{% url 'onboarding.welcome' %}">&lt;- Back</a>
-                        <button form="pdfCreate"  type="submit" class="btn bg-primary text-white py-2 px-3">Next Step -&gt;</button>
+                        <a class="text-sm underline hover:no-underline" href="{% url 'onboarding.welcome' %}">&lt;- {% trans "Back" %}</a>
+                        <button form="pdfCreate"  type="submit" class="btn bg-primary text-white py-2 px-3">{% trans "Next Step" %} -&gt;</button>
                     </div>
                 </form>
             </div>
