@@ -5,25 +5,25 @@
         <div class="card">
 
             <div class="container mx-auto p-4">
-                <h1 class="text-xl font-bold mb-4">Error Check</h1>
+                <h1 class="text-xl font-bold mb-4">{% trans "Error Check" %}</h1>
                 <table class="min-w-full leading-normal">
                     <thead>
                         <tr>
                             <th
                                 class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                Payload
+                                {% trans "Payload" %}
                             </th>
                             <th
                                 class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                UUID
+                                {% trans "UUID" %}
                             </th>
                             <th
                                 class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                Exception
+                                {% trans "Exception" %}
                             </th>
                             <th
                                 class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                Failed At
+                                {% trans "Failed At" %}
                             </th>
                         </tr>
                     </thead>
@@ -46,7 +46,7 @@
                         {% empty %}
                         <tr>
                             <td colspan="4" class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
-                                No errors found.
+                                {% trans "No errors found." %}
                             </td>
                         </tr>
                         {% endfor %}
@@ -55,15 +55,15 @@
                 <div class="pagination">
                     <span class="step-links">
                         {% if errors.has_previous %}
-                        <a href="?page=1">&laquo; first</a>
-                        <a href="?page={{ errors.previous_page_number }}">previous</a>
+                        <a href="?page=1">&laquo; {% trans "first" %}</a>
+                        <a href="?page={{ errors.previous_page_number }}">{% trans "previous" %}</a>
                         {% endif %}
                         <span class="current">
-                            Page {{ errors.number }} of {{ errors.paginator.num_pages }}.
+                            {% trans "Page" %} {{ errors.number }} {% trans "of" %} {{ errors.paginator.num_pages }}.
                         </span>
                         {% if errors.has_next %}
-                        <a href="?page={{ errors.next_page_number }}">next</a>
-                        <a href="?page={{ errors.paginator.num_pages }}">last &raquo;</a>
+                        <a href="?page={{ errors.next_page_number }}">{% trans "next" %}</a>
+                        <a href="?page={{ errors.paginator.num_pages }}">{% trans "last" %} &raquo;</a>
                         {% endif %}
                     </span>
                 </div>

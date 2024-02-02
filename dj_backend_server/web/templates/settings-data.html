@@ -25,16 +25,16 @@
 <!-- Page header -->
 <div class="mb-8">
     <!-- Title -->
-    <h1 class="text-2xl md:text-3xl text-slate-800 font-bold">{{ bot.name }}: data sources✨</h1>
+    <h1 class="text-2xl md:text-3xl text-slate-800 font-bold">{{ bot.name }}: {% trans "data sources" %}✨</h1>
     <ul class="inline-flex flex-wrap text-sm font-medium">
         <li class="flex items-center">
-            <a class="text-slate-500 hover:text-indigo-500" href="{% url 'index' %}">Home</a>
+            <a class="text-slate-500 hover:text-indigo-500" href="{% url 'index' %}">{% trans "Home" %}</a>
             <svg class="h-4 w-4 fill-current text-slate-400 mx-3" viewBox="0 0 16 16">
                 <path d="M6.6 13.4L5.2 12l4-4-4-4 1.4-1.4L12 8z"></path>
             </svg>
         </li>
         <li class="flex items-center">
-            <a class="text-slate-500 hover:text-indigo-500">Data Sources</a>
+            <a class="text-slate-500 hover:text-indigo-500">{% trans "Data Sources" %}</a>
         </li>
     </ul>
 </div>
@@ -42,11 +42,11 @@
     <div class="flex flex-col gap-6">
         <div class="card">
             <div class="p-6">
-                <h4 class="card-title mb-4">Data sources</h4>
+                <h4 class="card-title mb-4">{% trans "Data sources" %}</h4>
                 <div class="text-sm">
-                    <ul><li>Website data sources: {{website_data_sources.paginator.count}} with crawled pages: {{ crawled_pages_count }}  </li>
-                        <li>Documents Data sources: {{pdf_data_sources.paginator.count}}</li>
-                        <li>Codebase data sources: {{codebase_data_sources.paginator.count}} </li>
+                    <ul><li>{% trans "Website data sources" %}: {{website_data_sources.paginator.count}} {% trans "with crawled pages" %}: {{ crawled_pages_count }}  </li>
+                        <li>{% trans "Documents Data sources" %}: {{pdf_data_sources.paginator.count}}</li>
+                        <li>{% trans "Codebase data sources" %}: {{codebase_data_sources.paginator.count}} </li>
                     </ul>
                 </div>
 

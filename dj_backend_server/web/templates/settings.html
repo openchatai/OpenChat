@@ -6,16 +6,16 @@
     <!-- Page header -->
     <div class="mb-8">
         <!-- Title -->
-        <h1 class="text-2xl md:text-3xl text-slate-800 font-bold">{{ bot.name }}: general settings✨</h1>
+        <h1 class="text-2xl md:text-3xl text-slate-800 font-bold">{{ bot.name }}: {% trans "general settings" %}✨</h1>
         <ul class="inline-flex flex-wrap text-sm font-medium">
             <li class="flex items-center">
-                <a class="text-slate-500 hover:text-indigo-500" href="{% url 'index' %}">Home</a>
+                <a class="text-slate-500 hover:text-indigo-500" href="{% url 'index' %}">{% trans "Home" %}</a>
                 <svg class="h-4 w-4 fill-current text-slate-400 mx-3" viewBox="0 0 16 16">
                     <path d="M6.6 13.4L5.2 12l4-4-4-4 1.4-1.4L12 8z"></path>
                 </svg>
             </li>
             <li class="flex items-center">
-                <a class="text-slate-500 hover:text-indigo-500">General Settings</a>
+                <a class="text-slate-500 hover:text-indigo-500">{% trans "General Settings" %}</a>
             </li>
         </ul>
     </div>
@@ -25,18 +25,18 @@
             <div class="flex flex-col gap-6">
                 <div class="card">
                     <div class="p-6">
-                        <h4 class="card-title mb-4">General Settings</h4>
-                        <div class="text-sm">This is your general bot settings such as name and id</div>
+                        <h4 class="card-title mb-4">{% trans "General Settings" %}</h4>
+                        <div class="text-sm">{% trans "This is your general bot settings such as name and id" %}</div>
                         <div class="grid lg:grid-cols-2 gap-6">
                             <div>
                                 <label for="name"
-                                    class="text-gray-800 text-sm font-medium inline-block mb-2">Name</label>
+                                    class="text-gray-800 text-sm font-medium inline-block mb-2">{% trans "Name" %}</label>
                                 <input type="text" id="name" name="name" class="form-input" value="{{ bot.name }}">
                             </div>
 
                             <div>
                                 <label for="email"
-                                    class="text-gray-800 text-sm font-medium inline-block mb-2">Bot ID</label>
+                                    class="text-gray-800 text-sm font-medium inline-block mb-2">{% trans "Bot ID" %}</label>
                                 <input type="email" id="business-id" name="business-id" class="form-input disabled" value="{{ bot.id }}" readonly>
                                 	
                             </div>
@@ -44,12 +44,12 @@
                         <div class="grid lg:grid-cols-2 gap-6">
                             <div>
                                 <label for="website"
-                                    class="text-gray-800 text-sm font-medium inline-block mb-2">Website</label>
+                                    class="text-gray-800 text-sm font-medium inline-block mb-2">{% trans "Website" %}</label>
                                 <input type="text" id="website" name="website" class="form-input" value="{{ bot.website }}">
                             </div>
 
                             <div>
-                                <label for="token" class="text-gray-800 text-sm font-medium inline-block mb-2">API Token</label>
+                                <label for="token" class="text-gray-800 text-sm font-medium inline-block mb-2">{% trans "API Token" %}</label>
                                     <!-- Trigger -->
                                     <div class="flex items-center">
                                     <input type="text" class="form-input w-full" style="cursor: pointer!important;" id="token" value="{{ bot.token }}" readonly />
@@ -67,45 +67,44 @@
                 </div> <!-- end card -->
                 <div class="card">
                     <div class="p-6">
-                        <h4 class="card-title mb-4">Custom Context</h4>
-                        <div class="text-sm">You can change your bot initial context / prompt from here. also you can change the bot response language.</div>
+                        <h4 class="card-title mb-4">{% trans "Custom Context" %}</h4>
+                        <div class="text-sm">{% trans "You can change your bot initial context / prompt from here. also you can change the bot response language." %}</div>
                         <div class="grid lg:grid-cols-2 gap-6">
                             <div>
                                 <div class="flex">
                                     <div
                                         class="flex items-center justify-center whitespace-nowrap border border-[#e0e6ed] bg-[#eee] px-3 font-semibold ltr:rounded-l-md ltr:border-r-0 rtl:rounded-r-md">
-                                        Manual context
+                                        {% trans "Manual context" %}
                                     </div>
                                     <textarea name="prompt_message" id="promptMessage" rows="15"
                                         class="form-textarea ltr:rounded-l-none rtl:rounded-r-none">{{ bot.prompt_message }}</textarea>
                                 </div>
                             </div>
                             <div>
-                                <span>✨or choose one of the below✨</span>
+                                <span>✨{% trans "or choose one of the below" %}✨</span>
 
                                             <div class="m-1.5">
                                                 <!-- Start -->
                                                 <button class="btn border-slate-200 hover:border-slate-300 text-indigo-500"
-                                                    onclick="fillPrompt('customer_support')">💁 Customer Support</button>
+                                                    onclick="fillPrompt('customer_support')">💁 {% trans "Customer Support" %}</button>
                                                 <button class="btn border-slate-200 hover:border-slate-300 text-indigo-500"
-                                                    onclick="fillPrompt('search_engine')">🔍 Search Engine</button>
+                                                    onclick="fillPrompt('search_engine')">🔍{% trans " Search Engine" %}</button>
                                                 <!-- End -->
                                             </div>
                                             <div class="m-1.5">
                                                 <!-- Start -->
                                                 <button class="btn border-slate-200 hover:border-slate-300 text-indigo-500"
-                                                    onclick="fillPrompt('teacher')">🧑‍🏫 Teacher</button>
+                                                    onclick="fillPrompt('teacher')">🧑‍🏫 {% trans "Teacher" %}</button>
                                                 <button class="btn border-slate-200 hover:border-slate-300 text-indigo-500"
-                                                    onclick="fillPrompt('critical_thinker')">🤔 Critical thinker</button>
+                                                    onclick="fillPrompt('critical_thinker')">🤔 {% trans "Critical thinker" %}</button>
                                                 <!-- End -->
                                             </div>
                                             <div class="m-1.5">
                                                 <!-- Start -->
                                                 <button class="btn border-slate-200 hover:border-slate-300 text-indigo-500"
-                                                    onclick="fillPrompt('software_engineer')">👨‍💻 Software
-                                                    Engineer</button>
+                                                    onclick="fillPrompt('software_engineer')">👨‍💻 {% trans "Software Engineer" %}</button>
                                                 <button class="btn border-slate-200 hover:border-slate-300 text-indigo-500"
-                                                    onclick="fillPrompt('ghost_writer')">📚Ghost Writer</button>
+                                                    onclick="fillPrompt('ghost_writer')">📚 {% trans "Ghost Writer" %}</button>
                                                 <!-- End -->
                                             </div>
 
@@ -114,14 +113,14 @@
                         <div class="grid lg:grid-cols-2 gap-6">
                             <div class="flex flex-col px-6 py-5 border-t border-slate-200">
                                 <div class="flex self-end">
-                                    <button class="btn bg-primary text-white py-2 px-3" type="submit">Save Changes</button>
+                                    <button class="btn bg-primary text-white py-2 px-3" type="submit">{% trans "Save Changes" %}</button>
                                 </div>
                             </div>
                         </div>
                         {% if errors %}
                         {% for error in errors %}
                         <div class="bg-danger text-sm text-white p-3" role="alert">
-                            <span class="font-bold">Error:</span> {{ error }}
+                            <span class="font-bold">{% trans "Error" %}:</span> {{ error }}
                         </div>
                         {% endfor %}
                         {% endif %}
@@ -129,10 +128,10 @@
                 </div> <!-- end card -->
                 <div class="card">
                     <div class="p-6">
-                        <h4 class="card-title mb-4">Delete the bot</h4>
+                        <h4 class="card-title mb-4">{% trans "Delete the bot" %}</h4>
                         <div class="grid lg:grid-cols-2 gap-6">
                             <div class="mb-5">
-                                <div class="text-sm">Deleting the bot will delete all the data associated with it.</div>
+                                <div class="text-sm">{% trans "Deleting the bot will delete all the data associated with it." %}</div>
                                 <div class="mt-5">
                                     <a class="btn bg-danger text-white py-2 px-3" 
                                         href="{% url 'chatbot.settings.delete' bot.id %}" onclick="return confirm('Please be aware that proceeding with this action will permanently delete your chatbot. Once deleted, this action cannot be undone, and all data associated with your chatbot will be irretrievably lost.')">Delete</a>

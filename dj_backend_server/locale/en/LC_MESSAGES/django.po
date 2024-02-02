@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-29 20:36+0000\n"
+"POT-Creation-Date: 2024-01-29 20:49+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -103,7 +103,7 @@ msgid "User"
 msgstr ""
 
 #: web/templates/layout/sidebar-bot-page.html:67
-msgid "ChatModify user detailsbot"
+msgid "Modify user details"
 msgstr ""
 
 #: web/templates/onboarding/other-data-sources-pdf.html:41

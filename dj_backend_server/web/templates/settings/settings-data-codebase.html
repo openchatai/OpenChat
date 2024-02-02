@@ -3,8 +3,8 @@
     <div class="flex flex-col gap-6">
         <div class="card">
             <div class="p-6">
-                <h4 class="card-title mb-4">Codebase data sources</h4>
-                <div class="text-sm">This part will show your codebase data</div>
+                <h4 class="card-title mb-4">{% trans "Codebase data sources" %}</h4>
+                <div class="text-sm">{% trans "This part will show your codebase data" %}</div>
                 {% for source in codebase_data_sources %}
 
                 <!-- Start -->
@@ -35,12 +35,12 @@
                                 {% if time_diff < 3 %} <div class="inline-flex rounded-full text-center px-3 py-1"
                                     style="background: #E0F2FE; color: #10B981;">
                                     {% with time_diff=source.created_at|time_difference %}
-                                    In progress (eta: {{ time_diff|timeuntil:"%d %H:%M:%S" }})
+                                    {% trans "In progress" %} ({% trans "eta" %}: {{ time_diff|timeuntil:"%d %H:%M:%S" }})
                                     {% endwith %}
             </div>
             {% else %}
             <div class="inline-flex rounded-full text-center px-3 py-1" style="background: #ECFDF5; color:#0EA5E9;">
-                Completed
+                {% trans "Completed" %}
             </div>
             {% endif %}
             {% endwith %}
@@ -53,7 +53,7 @@
                             d="M4.3 4.5c1.9-1.9 5.1-1.9 7 0 .7.7 1.2 1.7 1.4 2.7l2-.3c-.2-1.5-.9-2.8-1.9-3.8C10.1.4 5.7.4 2.9 3.1L.7.9 0 7.3l6.4-.7-2.1-2.1zM15.6 8.7l-6.4.7 2.1 2.1c-1.9 1.9-5.1 1.9-7 0-.7-.7-1.2-1.7-1.4-2.7l-2 .3c.2 1.5.9 2.8 1.9 3.8 1.4 1.4 3.1 2 4.9 2 1.8 0 3.6-.7 4.9-2l2.2 2.2.8-6.4z">
                         </path>
                     </svg>
-                    <div class="cursor-not-allowed">Re-sync
+                    <div class="cursor-not-allowed">{% trans "Re-sync" %}
                         <div class="inline-flex items-center text-xs font-medium text-slate-100 bg-slate-700 rounded-full text-center px-2 py-0.5"
                             style="margin-left: 0.3rem">
                             <svg class="w-3 h-3 shrink-0 fill-current text-amber-500 mr-1" viewBox="0 0 12 12">
@@ -61,14 +61,14 @@
                                     d="M11.953 4.29a.5.5 0 00-.454-.292H6.14L6.984.62A.5.5 0 006.12.173l-6 7a.5.5 0 00.379.825h5.359l-.844 3.38a.5.5 0 00.864.445l6-7a.5.5 0 00.075-.534z">
                                 </path>
                             </svg>
-                            <span>soon</span>
+                            <span>{% trans "soon" %}</span>
                         </div>
                     </div>
                 </div>
             </td>
             <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
                 <button class="text-rose-500 hover:text-rose-600 rounded-full cursor-not-allowed" disabled>
-                    <span class="sr-only">Delete</span>
+                    <span class="sr-only">{% trans "Delete" %}</span>
                     <svg class="w-8 h-8 fill-current" viewBox="0 0 32 32">
                         <path d="M13 15h2v6h-2zM17 15h2v6h-2z"></path>
                         <path
@@ -90,8 +90,8 @@
             <div class="pagination">
                 <span class="step-links">
                     {% if codebase_data_sources.has_previous %}
-                    <a href="?codebase_page=1">&laquo; first</a>
-                    <a href="?codebase_page={{ codebase_data_sources.previous_page_number }}">previous</a>
+                    <a href="?codebase_page=1">&laquo; {% trans "first" %}</a>
+                    <a href="?codebase_page={{ codebase_data_sources.previous_page_number }}">{% trans "previous" %}</a>
                     {% endif %}
 
                     <span class="current">
@@ -99,8 +99,8 @@
                     </span>
 
                     {% if codebase_data_sources.has_next %}
-                    <a href="?codebase_page={{ codebase_data_sources.next_page_number }}">next</a>
-                    <a href="?codebase_page={{ codebase_data_sources.paginator.num_pages }}">last &raquo;</a>
+                    <a href="?codebase_page={{ codebase_data_sources.next_page_number }}">{% trans "next" %}</a>
+                    <a href="?codebase_page={{ codebase_data_sources.paginator.num_pages }}">{% trans "last" %} &raquo;</a>
                     {% endif %}
                 </span>
             </div>

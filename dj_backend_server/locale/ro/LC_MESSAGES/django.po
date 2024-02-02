@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-29 20:38+0000\n"
+"POT-Creation-Date: 2024-01-29 20:45+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -104,12 +104,14 @@ msgid "User"
 msgstr "Utilizator"
 
 #: web/templates/layout/sidebar-bot-page.html:67
-msgid "ChatModify user detailsbot"
-msgstr "ChatModifică detaliile utilizatorului"
+#, fuzzy
+#| msgid "ChatModify user detailsbot"
+msgid "Modify user details"
+msgstr "Modifică datele utilizatorului"
 
 #: web/templates/onboarding/other-data-sources-pdf.html:41
 msgid "Upload files as sources"
-msgstr ""
+msgstr "Încarcă fișiere ca surse"
 
 #: web/templates/onboarding/other-data-sources-pdf.html:56
 #: web/templates/onboarding/other-data-sources-website.html:58
@@ -247,7 +249,9 @@ msgstr "întotdeauna poți adăuga noi surse mai târziu"
 msgid ""
 "Please enter a valid website URL, it's important that your website is live "
 "and accessible"
-msgstr "Te rog să introduci un URL valid al site-ului web, este important ca site-ul tău să fie activ și accesibil"
+msgstr ""
+"Te rog să introduci un URL valid al site-ului web, este important ca site-ul "
+"tău să fie activ și accesibil"
 
 #: web/templates/onboarding/step-1.html:73
 #, fuzzy
@@ -375,7 +379,8 @@ msgid ""
 "While we are crawling your website, you can do some configurations on your "
 "chatbot"
 msgstr ""
-"În timp ce răsfoim site-ul tău web, poți face câteva configurări pe chatbot-ul tău"
+"În timp ce răsfoim site-ul tău web, poți face câteva configurări pe chatbot-"
+"ul tău"
 
 #: web/templates/onboarding/step-3.html:52
 msgid "What type of character that chatbot must be?"
@@ -389,9 +394,9 @@ msgid ""
 "with answers"
 msgstr ""
 "Alege caracterul preferat al botului. Un caracter înțelept și strict va "
-"forța botul să răspundă doar la întrebările care au fost văzute înainte, "
-"în timp ce unul Informat îl face pe bot puțin mai flexibil și încearcă să "
-"fie creativ cu răspunsurile"
+"forța botul să răspundă doar la întrebările care au fost văzute înainte, în "
+"timp ce unul Informat îl face pe bot puțin mai flexibil și încearcă să fie "
+"creativ cu răspunsurile"
 
 #: web/templates/onboarding/step-3.html:67
 msgid "Wise & Strict"

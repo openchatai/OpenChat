@@ -5,14 +5,14 @@
 {% block content %}
         <!-- Start Page Content here -->
             <main class="p-6">
-                <h1 class="text-2xl md:text-3xl text-slate-800 font-bold">My chatbots ✨</h1>
+                <h1 class="text-2xl md:text-3xl text-slate-800 font-bold">{% trans "My chatbots" %} ✨</h1>
                 <div class="grid xl:grid-cols-4 md:grid-cols-2 gap-6 mb-6" style="padding-top: 20px;">
                     <div class="px-5 py-3 bg-indigo-50 border border-indigo-100 rounded-sm text-center xl:text-left xl:flex xl:flex-wrap xl:justify-between xl:items-center">
                         <div class="bg-primary/25 text-primary text-sm p-3" role="alert">
-                            <span class="font-bold">Numer of bots</span> {{ chatbots.count }}
+                            <span class="font-bold">{% trans "Numer of bots" %}</span> {{ chatbots.count }}
                         </div>
                         <div class="text-slate-800 font-semibold mb-2 xl:mb-0">
-                            <button type="button" class="btn bg-primary text-white text-lg w-full"><a href="{% url 'onboarding.welcome' %}">Create new chatbot <span class="uil uil-chat-bubble-user"></span></a></button>
+                            <button type="button" class="btn bg-primary text-white text-lg w-full"><a href="{% url 'onboarding.welcome' %}">{% trans "Create new chatbot" %} <span class="uil uil-chat-bubble-user"></span></a></button>
                         </div>
                     </div>
                     {% for bot in chatbots %}
@@ -54,7 +54,7 @@
                                 <div class="grid lg:grid-cols-3 gap-5">
                                     <div class="lg:col-span-3">
                                         <div class="flex justify-between items-center">
-                                            <h4 class="card-title mb-4">Statistics of discussions in the last days</h4>
+                                            <h4 class="card-title mb-4">{% trans "Statistics of discussions in the last days" %}</h4>
                                         </div>
 
                                         <div id="morris_discussion_counts" class="morris-chart"></div>
@@ -72,7 +72,7 @@
                                           <div class="grid lg:grid-cols-3 gap-5">
                                               <div class="lg:col-span-3">
                                                   <div class="flex justify-between items-center">
-                                                      <h4 class="card-title mb-4">Data Sources Added Over Time</h4>
+                                                      <h4 class="card-title mb-4">{% trans "Data Sources Added Over Time" %}</h4>
                                                   </div>
                                                   <div id="morris_data_sources_counts" class="morris-chart"></div>
                                               </div>
