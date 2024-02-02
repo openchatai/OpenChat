@@ -1,3 +1,4 @@
+{% load i18n %}
 <div class="grow px-4 sm:px-6 md:px-5 py-6">
     {% for message in chatHistory %}
     {% if message.from_user|lower == 'true' %}

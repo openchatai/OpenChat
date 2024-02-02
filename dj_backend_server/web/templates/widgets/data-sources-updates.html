@@ -1,3 +1,4 @@
+{% load i18n %}
 {% for source in website_data_sources %}
     {% if not source.crawling_status == 'completed' %}
         <div class="flex flex-col col-span-full bg-white shadow-lg rounded-sm border border-slate-200">
