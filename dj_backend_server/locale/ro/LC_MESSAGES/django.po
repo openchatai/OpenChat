@@ -10,8 +10,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-02-02 17:32+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Last-Translator: Valics Lehel <lvalics@gmail.com>\n"
+"Language-Team: Romanian <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -28,7 +28,6 @@ msgid "Don't forget to set INSPIRING_QUOTES in settings.py!"
 msgstr "Nu uitați să setați INSPIRING_QUOTES în settings.py!"
 
 #: web/templates/create_user.html:11
-#, fuzzy
 #| msgid "Create user"
 msgid "Create a new user"
 msgstr "Creează utilizator"
@@ -50,7 +49,6 @@ msgstr "Eroare"
 
 #: web/templates/create_user.html:36 web/templates/login.html:12
 #: web/templates/modify_user.html:21
-#, fuzzy
 #| msgid "User"
 msgid "Username"
 msgstr "Utilizator"
@@ -99,7 +97,7 @@ msgid "Back to home"
 msgstr "Înapoi la pagina principală"
 
 #: web/templates/errors_check.html:9
-#, fuzzy
+
 #| msgid "Errors check"
 msgid "Error Check"
 msgstr "Verificare erori"
@@ -161,7 +159,7 @@ msgid "last"
 msgstr "ultima"
 
 #: web/templates/index.html:8
-#, fuzzy
+
 #| msgid "Chatbot"
 msgid "My chatbots"
 msgstr "Chatbot-ul meu"
@@ -171,7 +169,7 @@ msgid "Number of bots"
 msgstr "Număr de boturi"
 
 #: web/templates/index.html:15
-#, fuzzy
+
 #| msgid "Create an Account ?"
 msgid "Create new chatbot"
 msgstr "Creează un chatbot nou"
@@ -254,7 +252,7 @@ msgid "Errors check"
 msgstr "Verificare erori"
 
 #: web/templates/layout/sidebar-bot-page.html:67
-#, fuzzy
+
 #| msgid "ChatModify user detailsbot"
 msgid "Modify user details"
 msgstr "Modifică datele utilizatorului"
@@ -264,7 +262,6 @@ msgid "Forget Password"
 msgstr "Ai uitat parola"
 
 #: web/templates/modify_user.html:10
-#, fuzzy
 #| msgid "ChatModify user detailsbot"
 msgid "Modify your user data"
 msgstr "Modifică datele utilizatorului"
@@ -278,7 +275,7 @@ msgid "do not need to be sent if they are not changing."
 msgstr "nu trebuie trimise dacă nu se schimbă."
 
 #: web/templates/modify_user.html:85
-#, fuzzy
+
 #| msgid "Create user"
 msgid "Update user"
 msgstr "Creează utilizator"
@@ -358,7 +355,7 @@ msgstr "Pasul Următor"
 
 #: web/templates/onboarding/other-data-sources-website.html:43
 #: web/templates/onboarding/step-2.html:40
-#, fuzzy
+
 #| msgid "Website information ✨"
 msgid "Website information"
 msgstr "Informații website ✨"
@@ -430,7 +427,7 @@ msgstr ""
 
 #: web/templates/onboarding/step-1.html:73 web/templates/settings.html:47
 #: web/templates/settings/settings-data-addmore.html:54
-#, fuzzy
+
 #| msgid "Website url"
 msgid "Website"
 msgstr "URL website"
@@ -447,7 +444,7 @@ msgstr "Fișiere PDF/DOCX/TXT/JSON/XLSX"
 
 #: web/templates/onboarding/step-1.html:85
 #: web/templates/settings/settings-data-addmore.html:67
-#, fuzzy
+
 #| msgid "We will crawl your website and extract the knowledge automatically."
 msgid "We will scan your files and extract knowledge and any information"
 msgstr "Vom răsfoi site-ul tău web și vom extrage cunoștințele automat."
@@ -457,7 +454,7 @@ msgid "Codebase"
 msgstr "Codebase"
 
 #: web/templates/onboarding/step-1.html:95
-#, fuzzy
+
 #| msgid "We will crawl your website and extract the knowledge automatically."
 msgid ""
 "Provide a link to your codebase and we will extract the knowledge and any "
@@ -490,7 +487,7 @@ msgid "Automatically extract data from your Notion from your workspace"
 msgstr "Extrage automat datele din Notion-ul tău din spațiul tău de lucru"
 
 #: web/templates/onboarding/step-2-codebase.html:40
-#, fuzzy
+
 #| msgid "Website information ✨"
 msgid "GitHub Repo information"
 msgstr "Informații website ✨"
@@ -500,7 +497,7 @@ msgid "Please provide a valid GitHub repository url."
 msgstr "Vă rugăm să furnizați un URL valid pentru un repository GitHub."
 
 #: web/templates/onboarding/step-2-codebase.html:73
-#, fuzzy
+
 #| msgid "Website url"
 msgid "Repository url"
 msgstr "URL website"
@@ -590,7 +587,7 @@ msgid "Only answers questions within the given knowledge."
 msgstr "Răspunde doar la întrebări în cadrul cunoștințelor date."
 
 #: web/templates/onboarding/step-3.html:80
-#, fuzzy
+
 #| msgid "Data & Knowledge"
 msgid "Knowledgeable"
 msgstr "Date și Cunoștințe"
@@ -613,7 +610,7 @@ msgid "Open your bot"
 msgstr "Deschide-ți botul"
 
 #: web/templates/settings-analytics.html:59
-#, fuzzy
+
 #| msgid "Analytics"
 msgid "analytics"
 msgstr "Analitice"
@@ -654,7 +651,7 @@ msgstr "Durata Vizitei"
 
 #: web/templates/settings-data.html:28
 #: web/templates/settings-integrations.html:61
-#, fuzzy
+
 #| msgid "Select your data source"
 msgid "data sources"
 msgstr "Selectează sursa datelor tale"
@@ -676,7 +673,7 @@ msgstr "Surse de date"
 
 #: web/templates/settings-data.html:47
 #: web/templates/settings/settings-data-website.html:7
-#, fuzzy
+
 #| msgid "Select your data source"
 msgid "Website data sources"
 msgstr "Selectează sursa datelor tale"
@@ -691,19 +688,19 @@ msgstr "Sursa de date a documentelor"
 
 #: web/templates/settings-data.html:49
 #: web/templates/settings/settings-data-codebase.html:7
-#, fuzzy
+
 #| msgid "Select your data source"
 msgid "Codebase data sources"
 msgstr "Selectează sursa datelor tale"
 
 #: web/templates/settings-history.html:10
-#, fuzzy
+
 #| msgid "History"
 msgid "chat history"
 msgstr "Istoric"
 
 #: web/templates/settings-history.html:27
-#, fuzzy
+
 #| msgid "History"
 msgid "Chat History"
 msgstr "Istoric"
@@ -717,7 +714,7 @@ msgid "Session ID"
 msgstr "Session ID"
 
 #: web/templates/settings-history.html:46
-#, fuzzy
+
 #| msgid "Total Pageviews"
 msgid "Total Messages"
 msgstr "Vizualizări Totale de Pagină"
@@ -751,13 +748,13 @@ msgid "Development"
 msgstr "Dezvoltare"
 
 #: web/templates/settings-theme.html:13
-#, fuzzy
+
 #| msgid "Try & Share"
 msgid "try & share"
 msgstr "Încearcă și Distribuie"
 
 #: web/templates/settings-theme.html:30
-#, fuzzy
+
 #| msgid "Try & Share"
 msgid "Try & Share!"
 msgstr "Încearcă și Distribuie"
@@ -792,13 +789,13 @@ msgid ""
 msgstr "Copiază următorul cod în scriptul de head al site-ului tău. Te rog să citești documentația pentru a vedea toate opțiunile pentru widget-ul de căutare."
 
 #: web/templates/settings.html:9
-#, fuzzy
+
 #| msgid "General settings"
 msgid "general settings"
 msgstr "Setări generale"
 
 #: web/templates/settings.html:18 web/templates/settings.html:28
-#, fuzzy
+
 #| msgid "General settings"
 msgid "General Settings"
 msgstr "Setări generale"
@@ -871,14 +868,14 @@ msgid "Deleting the bot will delete all the data associated with it."
 msgstr "Ștergerea botului va șterge toate datele asociate cu acesta."
 
 #: web/templates/settings/settings-data-addmore.html:3
-#, fuzzy
+
 #| msgid "you can always add new sources later"
 msgid "Want to add new sources?"
 msgstr "întotdeauna poți adăuga noi surse mai târziu"
 
 #: web/templates/settings/settings-data-addmore.html:10
 #: web/templates/settings/settings-data-addmore.html:32
-#, fuzzy
+
 #| msgid "Select your data source"
 msgid "Add new data source"
 msgstr "Selectează sursa datelor tale"
@@ -924,7 +921,7 @@ msgid "Delete"
 msgstr "Șterge"
 
 #: web/templates/settings/settings-data-documents.html:6
-#, fuzzy
+
 #| msgid "Select your data source"
 msgid "Document data sources"
 msgstr "Selectează sursa datelor tale"
@@ -1025,7 +1022,7 @@ msgid "Please double-check that your website is up and running."
 msgstr "Te rog verifică că site-ul tău web este activ și funcționează."
 
 #: web/templates/widgets/data-sources-updates.html:46
-#, fuzzy
+
 #| msgid ""
 #| "While we are crawling your website, you can do some configurations on "
 #| "your chatbot"
@@ -1035,7 +1032,7 @@ msgstr ""
 "ul tău"
 
 #: web/templates/widgets/data-sources-updates.html:46
-#, fuzzy
+
 #| msgid "Data & Knowledge"
 msgid "knowledge"
 msgstr "Date și Cunoștințe"
