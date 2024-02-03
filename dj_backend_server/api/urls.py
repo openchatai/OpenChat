@@ -7,7 +7,7 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, Spec
 
 
 urlpatterns = [
-    path('send_search_request/', views_message.send_search_request, name='send_search_request'),
+    path('chat/search/', views_message.send_search_request, name='send_search_request'),
     path('chat/init/', views_message.init_chat, name='init_chat'),
     path('chat/send/', views_message.send_chat, name='send_chat'),
     # website/codebase/pdf ingestion endpoint

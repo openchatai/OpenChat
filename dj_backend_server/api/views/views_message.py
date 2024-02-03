@@ -90,11 +90,12 @@ def send_search_request(request):
         'text' key, an error message and a 400 status code if the message was not provided, an error message and a 500 status code
         if the API response did not include a 'text' key, or an error message and a 500 status code if an exception was raised.
     """
+def send_search_request(request):
     try:
         # Validate the request data
-        message = request.POST.get('message')
-        history = request.POST.getlist('history[]')
-
+        data = json.loads(request.body)
+        message = data.get('message')
+        history = data.get('history', [])
         # Implement the equivalent logic for validation
         if not message:
             return JsonResponse({
@@ -106,7 +107,6 @@ def send_search_request(request):
         bot = get_object_or_404(Chatbot, token=bot_token)
 
         # Implement the equivalent logic to send the HTTP request to the external API
-        # print(os.getenv('APP_URL'))
         response = requests.post(
             os.getenv('APP_URL') + '/api/chat/',
             json={
