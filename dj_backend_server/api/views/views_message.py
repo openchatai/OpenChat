@@ -4,7 +4,7 @@ import os
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.views.decorators.http import require_POST, require_GET
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from web.models.chatbot import Chatbot
 from web.utils.common import get_session_id
 from web.models.chat_histories import ChatHistory
@@ -73,7 +73,7 @@ def init_chat(request):
     })
 
 
-@csrf_exempt
+@csrf_exempt 
 @require_POST
 def send_search_request(request):
     """
@@ -90,7 +90,6 @@ def send_search_request(request):
         'text' key, an error message and a 400 status code if the message was not provided, an error message and a 500 status code
         if the API response did not include a 'text' key, or an error message and a 500 status code if an exception was raised.
     """
-def send_search_request(request):
     try:
         # Validate the request data
         data = json.loads(request.body)
@@ -105,16 +104,21 @@ def send_search_request(request):
 
         bot_token = request.headers.get('X-Bot-Token')
         bot = get_object_or_404(Chatbot, token=bot_token)
-
+        session_id = get_session_id(request=request, bot_id=bot.id)
+        history = ChatHistory.objects.filter(session_id=session_id)
+        history_entries = [{"message": entry.message, "from_user": entry.from_user} for entry in history]
+        
         # Implement the equivalent logic to send the HTTP request to the external API
         response = requests.post(
             os.getenv('APP_URL') + '/api/chat/',
             json={
                 'question': message,
-                'namespace': str(bot.id),  # Assuming getId returns a UUID object
+                'namespace': str(bot.id), 
                 'mode': "assistant",
                 'initial_prompt': bot.prompt_message,
-                'history': history  # Assuming the API expects the chat history
+                'history': history_entries,  
+                'token': bot_token,
+                "session_id": session_id
             },
             timeout=200
         )
@@ -179,7 +183,7 @@ def send_chat(request):
             }, status=400)
 
         # Implement the equivalent logic to send the HTTP request to the external API
-        # print(os.getenv('APP_URL'))
+
         response = requests.post(
             os.getenv('APP_URL') + '/api/chat/',
             json={
