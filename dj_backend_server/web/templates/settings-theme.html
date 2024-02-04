@@ -188,7 +188,7 @@
                                     <textarea id="embedSearch" class="form-input w-full" style="height: 250px"
                                         type="text" readonly>
 <script src="{{ APP_URL }}{% static 'search.js' %}"></script>
-
+<script>window.CHAT_APP_CONFIG={BASE_URL:"{{ APP_URL }}/api"};</script>
 <script>
     window.onload = () => {
         initilizeChatBot({
