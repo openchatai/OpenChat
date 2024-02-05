@@ -1,10 +1,10 @@
 {% load static %}
-
+{% load i18n %}
 <!DOCTYPE html>
 <html lang="en" data-sidebar-color="light" data-topbar-color="light" data-sidebar-view="default">
 <head>
     <meta charset="utf-8">
-    <title>Dashboard | OpenChat</title>
+    <title>{% trans "Dashboard | OpenChat" %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- App favicon -->
@@ -20,6 +20,7 @@
     <link href="{% static 'assets/css/theme.min.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'assets/css/icons.min.cs' %}s" rel="stylesheet" type="text/css">
     <link href="{% static 'assets/libs/@iconscout/unicons/css/line.css' %}" type="text/css" rel="stylesheet">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
 
     <!-- Head Js -->
     <script src="{% static 'assets/js/head.js' %}"></script>
@@ -52,9 +53,25 @@
                 <div>
                     <a class="menu-link" href="{% url 'logout' %}">
                         <span class="menu-icon"><i class="uil uil-sign-out-alt"></i></span>
-                        <span class="menu-text">  Sign Out </span>
-                        </a>
-                    </div>
+                        <span class="menu-text">  {% trans "Sign Out" %} </span>
+                    </a>
+                </div>
+                <div>
+                <form action="{% url 'set_language' %}" method="post">
+                    {% csrf_token %}
+                    <input name="next" type="hidden" value="{{ redirect_to }}" />
+                    <select name="language" onchange="this.form.submit()">
+                        {% get_current_language as LANGUAGE_CODE %}
+                        {% get_available_languages as LANGUAGES %}
+                        {% for lang in LANGUAGES %}
+                            <option value="{{ lang.0 }}" {% if lang.0 == LANGUAGE_CODE %}selected{% endif %}>
+                                {{ lang.1 }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </form>
+            </div>
+               
     </div>
        </div>
 </div>
@@ -84,10 +101,10 @@
     <script src="{% static 'assets/libs/jquery-knob/jquery.knob.min.js' %}"></script>
 
     <!-- Morris Js-->
-    <script src="{% static 'assets/libs/morris.js/morris.min.js' %}"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
 
     <!-- Raphael Js-->
-    <script src="{% static 'assets/libs/raphael/raphael.min.js' %}"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
 
     {% block scripts %}{% endblock %}
 </body>

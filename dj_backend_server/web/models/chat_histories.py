@@ -23,6 +23,7 @@ class ChatHistory(models.Model):
     message = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    feedback = models.BooleanField(null=True, blank=True, help_text="Feedback indicating if the response was helpful")
 
 
     def __str__(self):

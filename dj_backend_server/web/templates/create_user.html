@@ -1,6 +1,6 @@
 {% extends 'layout/app.html' %}
 {% load static %}
-
+{% load i18n %}
 {% block content %}
 <div class="min-h-screen h-full flex flex-col after:flex-1">
     {% if not success_message %}
@@ -8,15 +8,15 @@
     <div class="px-4 py-8">
         <div class="max-w-md mx-auto">
 
-            <h1 class="text-3xl text-slate-800 font-bold mb-6">Create a new user</h1>
-            <p style="margin-bottom: 2rem">Please note down the username and password to send to the user. 
-                They will be required to change these credentials upon their first login.</p>
+            <h1 class="text-3xl text-slate-800 font-bold mb-6">{% trans "Create a new user" %}</h1>
+            <p style="margin-bottom: 2rem">{% trans "Please note down the username and password to send to the user." %} 
+                {% trans "They will be required to change these credentials upon their first login." %}</p>
 
 
                 {% if error_messages %}
                 <div class="bg-danger text-sm text-white p-3" role="alert">
                     {% for message in error_messages %}
-                    <div><span class="font-bold">Error:</span> {{ message }}</div>
+                    <div><span class="font-bold">{% trans "Error" %}:</span> {{ message }}</div>
                     {% endfor %}
                 </div>
                 {% endif %}
@@ -33,7 +33,7 @@
                         <li class="relative py-2">
                             
                                 <div>
-                                    <label class="block text-sm font-medium mb-1" for="Username">Username
+                                    <label class="block text-sm font-medium mb-1" for="Username">{% trans "Username" %}
                                         <span class="text-rose-500">*</span></label>
                                         <input type="text" id="username" name="username" class="form-input">
                                 </div>
@@ -43,7 +43,7 @@
                         <li class="relative py-2">
                             
                                 <div>
-                                    <label class="block text-sm font-medium mb-1" for="first_name">First name
+                                    <label class="block text-sm font-medium mb-1" for="first_name">{% trans "First name" %}
                                         </label>
                                     <input id="first_name" class="form-input w-full" type="text" name="first_name">
                                 </div>
@@ -53,7 +53,7 @@
                         <li class="relative py-2">
                             
                                 <div>
-                                    <label class="block text-sm font-medium mb-1" for="last_name">Last name
+                                    <label class="block text-sm font-medium mb-1" for="last_name">{% trans "Last name" %}
                                         </label>
                                     <input id="last_name" class="form-input w-full" type="text" name="last_name">
                               
@@ -63,7 +63,7 @@
                         <li class="relative py-2">
                             
                                 <div>
-                                    <label class="block text-sm font-medium mb-1" for="email">Email
+                                    <label class="block text-sm font-medium mb-1" for="email">{% trans "Email" %}
                                         <span class="text-rose-500">*</span></label>
                                     <input id="email" class="form-input w-full" type="text" name="email">
                                 </div>
@@ -73,10 +73,10 @@
                         <li class="relative py-2">
                             
                                 <div>
-                                    <label class="block text-sm font-medium mb-1" for="password">Password
+                                    <label class="block text-sm font-medium mb-1" for="password">{% trans "Password" %}
                                         <span class="text-rose-500">*</span></label>
                                         <input id="password" class="form-input w-full" type="password" name="password" required>
-                                    <p>Suggested password (user will change) <strong>{{ SUGGESTEDPASS }}</strong></p>
+                                    <p>{% trans "Suggested password (user will change)" %} <strong>{{ SUGGESTEDPASS }}</strong></p>
                                 </div>
                             
                         </li>
@@ -84,7 +84,7 @@
                         <li class="relative py-2">
                             
                                 <div>
-                                    <label class="block text-sm font-medium mb-1" for="check_password">Check password
+                                    <label class="block text-sm font-medium mb-1" for="check_password">{% trans "Check password" %}
                                         <span class="text-rose-500">*</span></label>
                                         <input id="check_password" class="form-input w-full" type="password" name="check_password" required>
                                 </div>
@@ -94,7 +94,7 @@
                     </ul>
                 </div>
                 <div class="flex items-center justify-between">
-                    <button type="submit" class="btn bg-primary text-white py-2 px-3">Create user -&gt;</button>
+                    <button type="submit" class="btn bg-primary text-white py-2 px-3">{% trans "Create user" %} -&gt;</button>
                 </div>
             </form>
 
@@ -106,10 +106,10 @@
 {% if success_message %}
 <div class="px-4 py-8">
     <div class="max-w-md mx-auto">
-        <h1 class="text-3xl text-slate-800 font-bold mb-6">New user created.</h1>
-        <p style="margin-bottom: 2rem">{{ success_message }} User: <strong>{{ created_username }}</strong></p>  
+        <h1 class="text-3xl text-slate-800 font-bold mb-6">{% trans "New user created." %}</h1>
+        <p style="margin-bottom: 2rem">{{ success_message }} {% trans "User" %}: <strong>{{ created_username }}</strong></p>  
         <div class="flex items-center justify-between">
-            <a class="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-auto" href="{% url 'index' %}">Back to home</a>
+            <a class="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-auto" href="{% url 'index' %}">{% trans "Back to home" %}</a>
         </div>
     </div>
 </div>

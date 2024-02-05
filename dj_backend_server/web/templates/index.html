@@ -1,60 +1,61 @@
 <!-- Assuming this template is named "dashboard.html" -->
 {% extends 'layout/app.html' %}
 {% load static %}
-
+{% load i18n %}
 {% block content %}
         <!-- Start Page Content here -->
             <main class="p-6">
-                <h1 class="text-2xl md:text-3xl text-slate-800 font-bold">My chatbots ✨</h1>
+                <h1 class="text-2xl md:text-3xl text-slate-800 font-bold">{% trans "My chatbots" %} ✨</h1>
                 <div class="grid xl:grid-cols-4 md:grid-cols-2 gap-6 mb-6" style="padding-top: 20px;">
                     <div class="px-5 py-3 bg-indigo-50 border border-indigo-100 rounded-sm text-center xl:text-left xl:flex xl:flex-wrap xl:justify-between xl:items-center">
                         <div class="bg-primary/25 text-primary text-sm p-3" role="alert">
-                            <span class="font-bold">Numer of bots</span> {{ chatbots.count }}
+                            <span class="font-bold">{% trans "Number of bots" %}</span> {{ chatbots.count }}
                         </div>
                         <div class="text-slate-800 font-semibold mb-2 xl:mb-0">
-                            <button type="button" class="btn bg-primary text-white text-lg w-full"><a href="{% url 'onboarding.welcome' %}">Create new chatbot <span class="uil uil-chat-bubble-user"></span></a></button>
+                            <button type="button" class="btn bg-primary text-white text-lg w-full"><a href="{% url 'onboarding.welcome' %}">{% trans "Create new chatbot" %} <span class="uil uil-chat-bubble-user"></span></a></button>
                         </div>
                     </div>
                     {% for bot in chatbots %}
-                    <div class="card">
-                        <div class="p-5 flex items-center justify-between">
-                            <span>
-                            <a href="{% url 'chatbot.settings-theme' id=bot.id %}">
-                                <span class="text-xl font-semibold block">{{ bot.name }}</span>
-                            </a>
-                                <span class="text-slate-400 font-semibold"><span>{{ bot.created_at }}</span></span>
-                            </span>
-                            <span
-                                class="flex justify-center items-center h-14 w-14 bg-blue-600/5 shadow shadow-blue-600/5 text-blue-600">
-                                <i class="uil uil-user text-xl"></i>
-                            </span>
-                        </div>
-
-                        <div class="px-5 py-4 bg-slate-50">
-                            <a href="{% url 'chatbot.settings-theme' id=bot.id %}"
-                                class="relative inline-block font-semibold tracking-wide align-middle 
-                                text-base text-center border-none after:content-[''] after:absolute after:h-px 
-                                fter:w-0 hover:after:w-full after:end-0 hover:after:end-auto after:bottom-0 
-                                after:start-0 after:transition-all after:duration-500 text-blue-600 
-                                hover:text-blue-600 after:bg-blue-600">Open 
-                                 <i class="uil uil-arrow-right"></i></a>
-                        </div>
-                    </div><!--end-->
-                        {% endfor %}
+                    <div class="grid xl:grid-cols-6 md:grid-cols-6 gap-6 mb-6">
+                       
+                          <div class="flex flex-col">
+                            <div style="background-color: #829DAA;" class="card text-white p-1 flex flex-col h-full">
+                              <div class="p-5 flex items-center justify-between">
+                                <span>
+                                  <a href="{% url 'chatbot.settings-theme' id=bot.id %}">
+                                    <span class="text-xl font-semibold block">{{ bot.name }}</span>
+                                  </a>
+                                  <span class="font-semibold"><span>{{ bot.created_at }}</span></span>
+                                </span>
+                                <span class="flex justify-center items-center h-14 w-14 bg-blue-600/5 shadow shadow-blue-600/5 text-blue-600">
+                                  <i class="uil uil-user text-xl"></i>
+                                </span>
+                              </div>
+                      
+                              <!-- This pushes the action button to the bottom -->
+                              <div class="mt-auto px-5 py-4 bg-slate-50">
+                                <a href="{% url 'chatbot.settings-theme' id=bot.id %}"
+                                   class="relative inline-block font-semibold tracking-wide align-middle text-base text-center border-none after:content-[''] after:absolute after:h-px after:w-0 hover:after:w-full after:end-0 hover:after:end-auto after:bottom-0 after:start-0 after:transition-all after:duration-500 text-blue-600 hover:text-blue-600">
+                                  Open <i class="uil uil-arrow-right"></i>
+                                </a>
+                              </div>
+                            </div>
+                          </div>
+                        
+                      </div><!--end grid-->
+                      {% endfor %}
                 </div>
             
             
             
-                <div class="grid lg:grid-cols-3 gap-6 mb-6">
-
-                    <div class="lg:col-span-2">
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-blue-500 text-white p-1">
                         <div class="card">
                             <div class="p-5">
-
                                 <div class="grid lg:grid-cols-3 gap-5">
                                     <div class="lg:col-span-3">
                                         <div class="flex justify-between items-center">
-                                            <h4 class="card-title mb-4">Statistics of discussions in the last days</h4>
+                                            <h4 class="card-title mb-4">{% trans "Statistics of discussions in the last days" %}</h4>
                                         </div>
 
                                         <div id="morris_discussion_counts" class="morris-chart"></div>
@@ -65,23 +66,23 @@
                             </div>
                         </div>
                     </div>
-                      <div class="grid lg:grid-cols-3 gap-6 mb-6">
-                              <div class="lg:col-span-2">
-                                  <div class="card">
-                                      <div class="p-5">
-                                          <div class="grid lg:grid-cols-3 gap-5">
-                                              <div class="lg:col-span-3">
-                                                  <div class="flex justify-between items-center">
-                                                      <h4 class="card-title mb-4">Data Sources Added Over Time</h4>
-                                                  </div>
-                                                  <div id="morris_data_sources_counts" class="morris-chart"></div>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
-                       
+                    <div class="bg-blue-500 text-white p-1">
+                        <div class="col-span-3 lg:col-span-2">
+                            <div class="card">
+                                <div class="p-5">
+                                    <div class="grid lg:grid-cols-3 gap-5">
+                                        <div class="lg:col-span-3">
+                                            <div class="flex justify-between items-center">
+                                                <h4 class="card-title mb-4">{% trans "Data Sources Added Over Time" %}</h4>
+                                            </div>
+                                            <div id="morris_data_sources_counts" class="morris-chart"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             
             
             
@@ -113,12 +114,12 @@
     if ($("#morris_discussion_counts").length) {
         Morris.Bar({
             element: 'morris_discussion_counts',
-            barColors: ['#ebeef1', '#20b799'],
+            barColors: ['#f20d1d', '#0df2e2'],
             data: discussionCountsData,
             xkey: 'year',
             ykeys: ['value'],
             hideHover: 'auto',
-            gridLineColor: '#eef0f2',
+            gridLineColor: '#175ca1',
             resize: true,
             barSizeRatio: 0.4,
             labels: ['Discussions']
@@ -130,14 +131,14 @@
     if ($("#morris_data_sources_counts").length) {
         Morris.Bar({
             element: 'morris_data_sources_counts',
-            barColors: ['#ffad46', '#00b19d', '#ff5b5b'],
+            barColors: ['#f20d1d', '#00b19d', '#175ca1'],
             data: dataSourcesCountsData,
             xkey: 'date',
             ykeys: ['crawled_pages', 'pdf_data_sources', 'website_data_sources'],
             hideHover: 'auto',
-            gridLineColor: '#eef0f2',
+            gridLineColor: '#175ca1',
             resize: true,
-            barSizeRatio: 0.4,
+            barSizeRatio: 1,
             labels: ['Crawled Pages', 'PDF Data Sources', 'Website Data Sources']
         });
     }

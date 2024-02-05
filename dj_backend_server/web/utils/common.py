@@ -1,14 +1,16 @@
-def get_session_id(request, bot_id):
-    cookie_name = 'chatbot_' + str(bot_id)
-
-    session_id = request.COOKIES.get(cookie_name)
-    return session_id
-
-
-
 import re
 import random
 import string
+import uuid
+
+def get_session_id(request, bot_id):
+    cookie_name = 'chatbot_' + str(bot_id)
+
+    session_id = request.COOKIES.get(cookie_name, None)
+    if session_id is None:
+        session_id = str(uuid.uuid4())
+    return session_id
+
 
 def generate_chatbot_name(repo_url, name=None):
     """

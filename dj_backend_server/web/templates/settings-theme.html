@@ -1,6 +1,6 @@
 {% extends 'layout/app.html' %}
 {% with title="Dashboard" %}
-
+{% load i18n %}
 {% load static %}
 
 {% block content %}
@@ -10,16 +10,16 @@
     <div class="mb-8">
         
         <!-- Title -->
-        <h1 class="text-2xl md:text-3xl text-slate-800 font-bold">{{ bot.name }}: try & share ✨</h1>
+        <h1 class="text-2xl md:text-3xl text-slate-800 font-bold">{{ bot.name }}: {% trans "try & share" %} ✨</h1>
         <ul class="inline-flex flex-wrap text-sm font-medium">
             <li class="flex items-center">
-                <a class="text-slate-500 hover:text-indigo-500" href="{% url 'index' %}">Home</a>
+                <a class="text-slate-500 hover:text-indigo-500" href="{% url 'index' %}">{% trans "Home" %}</a>
                 <svg class="h-4 w-4 fill-current text-slate-400 mx-3" viewBox="0 0 16 16">
                     <path d="M6.6 13.4L5.2 12l4-4-4-4 1.4-1.4L12 8z"></path>
                 </svg>
             </li>
             <li class="flex items-center">
-                <a class="text-slate-500 hover:text-indigo-500">Try & Share</a>
+                <a class="text-slate-500 hover:text-indigo-500">{% trans "Try & Share" %}</a>
             </li>
         </ul>
     </div>
@@ -27,18 +27,15 @@
         <div class="flex flex-col gap-6">
             <div class="card">
                 <div class="p-6">
-                    <h4 class="card-title mb-4">Try & Share!</h4>
-                    <div class="text-sm">Here you can try and play with your bot, also you can share it or embed
-                        it in your web apps. Anyone with this link will be able to interact
-                        with your chatbot</div>
+                    <h4 class="card-title mb-4">{% trans "Try & Share!" %}</h4>
+                    <div class="text-sm">{% trans "Here you can try and play with your bot, also you can share it or embed it in your web apps. Anyone with this link will be able to interact with your chatbot" %}</div>
                         <!-- Target -->
 
                         <div class="grid lg:grid-cols-1 gap-6">
                             <!-- Share Link -->
                             <div>
                                 <div class="flex items-center justify-between">
-                                    <label class="block text-sm font-medium mb-1" for="tooltip"> 🔗 Share with
-                                        others!</label>
+                                    <label class="block text-sm font-medium mb-1" for="tooltip"> 🔗 {% trans "Share with others!" %}</label>
                                 </div>
                                     <div class="flex items-center">
                                         <input type="text" class="form-input w-full" style="cursor: pointer!important;" id="shareable-link" value="{{ APP_URL }}{% url 'chat' token=bot.token %}" readonly />
@@ -62,8 +59,7 @@
                                 <button class="flex items-center justify-between w-full group mb-1"
                                     @click.prevent="open = !open" :aria-expanded="open" aria-expanded="false">
 
-                                    <div class="text-sm text-slate-800 font-medium">🌎 Embed on your web app as a
-                                        chat bubble</div>
+                                    <div class="text-sm text-slate-800 font-medium">🌎 {% trans "Embed on your web app as a chat bubble" %}</div>
 
                                     <svg class="w-8 h-8 shrink-0 fill-current text-slate-400 group-hover:text-slate-500 ml-3"
                                         :class="{ 'rotate-180': open }" viewBox="0 0 32 32">
@@ -79,8 +75,7 @@
                                     <div>
                                         <div class="flex items-center justify-between"
                                             style="margin-top: 1rem; margin-bottom: 1rem;">
-                                            <strong>1.  Copy the following code into your website head
-                                                script</strong> 
+                                            <strong>1.  {% trans "Copy the following code into your website head script" %}</strong> 
                                                 	<!-- Trigger -->
                                                     <span id="copy-success-message" class="text-sm text-green-500 ml-2"></span>
                                                    <span id="copy-success-message-search" class="text-sm text-green-500 ml-2"></span>
@@ -162,8 +157,7 @@
                             <button class="flex items-center justify-between w-full group mb-1"
                                 @click.prevent="open = !open" :aria-expanded="open" aria-expanded="false">
 
-                                <div class="text-sm text-slate-800 font-medium">🔍 Embed on your web app as a
-                                    search box</div>
+                                <div class="text-sm text-slate-800 font-medium">🔍 {% trans "Embed on your web app as a search box" %}</div>
 
                                 <svg class="w-8 h-8 shrink-0 fill-current text-slate-400 group-hover:text-slate-500 ml-3"
                                     :class="{ 'rotate-180': open }" viewBox="0 0 32 32">
@@ -179,9 +173,7 @@
                                 <div>
                                     <div class="flex items-center justify-between"
                                         style="margin-top: 1rem; margin-bottom: 1rem;">
-                                        <strong>1. Copy the following code into your website head
-                                            script. Please read the documentation to see all the options for the
-                                            search widget.</strong> 
+                                        <strong>1. {% trans "Copy the following code into your website head script. Please read the documentation to see all the options for the search widget." %}</strong> 
                                             	<!-- Trigger -->
                                                 <span id="copy-success-message" class="text-sm text-green-500 ml-2"></span>
                                             <button class="btn" data-clipboard-target="#embedSearch">
@@ -196,7 +188,7 @@
                                     <textarea id="embedSearch" class="form-input w-full" style="height: 250px"
                                         type="text" readonly>
 <script src="{{ APP_URL }}{% static 'search.js' %}"></script>
-
+<script>window.CHAT_APP_CONFIG={BASE_URL:"{{ APP_URL }}/api"};</script>
 <script>
     window.onload = () => {
         initilizeChatBot({

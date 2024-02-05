@@ -1,3 +1,4 @@
+{% load i18n %}
 {% for source in website_data_sources %}
     {% if not source.crawling_status == 'completed' %}
         <div class="flex flex-col col-span-full bg-white shadow-lg rounded-sm border border-slate-200">
@@ -17,13 +18,13 @@
                         {% if source.crawling_status == 'pending' or source.crawling_status == 'in_progress' %}
                             <div>
                                 <div class="text-3xl font-bold text-emerald-500">{{ source.crawling_progress }} % ⌛</div>
-                                <div class="mb-2">We are currently in the process of crawling your website to prepare your chatbot. Once the crawling is complete, your chatbot will be ready. To access all data sources, please <a class="underline" href="{% url 'chatbot.settings-data' id=request.resolver_match.kwargs.id %}">click here</a>.</div>
+                                <div class="mb-2">{% trans "We are currently in the process of crawling your website to prepare your chatbot. Once the crawling is complete, your chatbot will be ready. To access all data sources, please" %} <a class="underline" href="{% url 'chatbot.settings-data' id=request.resolver_match.kwargs.id %}">{% trans "click here" %}</a>.</div>
                             </div>
                         {% endif %}
                         {% if source.crawling_status == 'failed' %}
                             <div>
                                 <div class="text-3xl font-bold text-red-500">❌</div>
-                                <div class="mb-2">We're sorry, <strong>but we're having trouble crawling your website ({{ source.root_url }}). </strong> Please double-check that your website is up and running.</div>
+                                <div class="mb-2">{% trans "We're sorry," %} <strong>{% trans "but we're having trouble crawling your website" %} ({{ source.root_url }}). </strong> {% trans "Please double-check that your website is up and running." %}</div>
                             </div>
                         {% endif %}
                     </div>
@@ -42,7 +43,7 @@
                                     <svg class="w-4 h-4 shrink-0 fill-current opacity-80 mt-[3px] mr-3" viewBox="0 0 16 16">
                                         <path d="M8 0C3.6 0 0 3.6 0 8s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8zM7 11.4L3.6 8 5 6.6l2 2 4-4L12.4 6 7 11.4z"></path>
                                     </svg>
-                                    <div class="font-medium">🥳 We are done crawling your website! Your chatbot is ready to go with {{ source.getRootUrl }} knowledge.</div>
+                                    <div class="font-medium">🥳 {% trans "We are done crawling your website! Your chatbot is ready to go with" %} {{ source.getRootUrl }} {% trans "knowledge" %}.</div>
                                 </div>
                             </a>
                         </div>
@@ -72,13 +73,13 @@
                         {% if source.ingest_status == 'pending' %}
                             <div>
                                 <div class="text-3xl font-bold text-emerald-500"> ⌛</div>
-                                <div class="mb-2">We are currently in the process of processing your PDF files. It may take some time for the bot to ingest all the data. You can <a class="underline" href="{% url 'chatbot.settings-data' id=request.resolver_match.kwargs.id %}">click here</a> to open all data sources.</div>
+                                <div class="mb-2">{% trans "We are currently in the process of processing your PDF files. It may take some time for the bot to ingest all the data. You can" %} <a class="underline" href="{% url 'chatbot.settings-data' id=request.resolver_match.kwargs.id %}">{% trans "click here" %}</a> {% trans "to open all data sources." %}</div>
                             </div>
                         {% endif %}
                         {% if source.ingest_status == 'failed' %}
                             <div>
                                 <div class="text-3xl font-bold text-red-500">❌</div>
-                                <div class="mb-2">We encountered a problem while training the bot on your PDF files. Our team has been alerted, and we will investigate the issue.</div>
+                                <div class="mb-2">{% trans "We encountered a problem while training the bot on your PDF files. Our team has been alerted, and we will investigate the issue." %}</div>
                             </div>
                         {% endif %}
                     </div>

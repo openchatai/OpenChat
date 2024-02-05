@@ -1,22 +1,22 @@
 {% extends 'layout/app.html' %}
 {% with title="Dashboard" %}
-
+{% load i18n %}
 {% block content %}
 <div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
 
     <!-- Page header -->
     <div class="mb-8">
         <!-- Title -->
-        <h1 class="text-2xl md:text-3xl text-slate-800 font-bold">{{ bot.name }}: chat history✨</h1>
+        <h1 class="text-2xl md:text-3xl text-slate-800 font-bold">{{ bot.name }}: {% trans "chat history" %} ✨</h1>
         <ul class="inline-flex flex-wrap text-sm font-medium">
             <li class="flex items-center">
-                <a class="text-slate-500 hover:text-indigo-500" href="{% url 'index' %}">Home</a>
+                <a class="text-slate-500 hover:text-indigo-500" href="{% url 'index' %}">{% trans "Home" %}</a>
                 <svg class="h-4 w-4 fill-current text-slate-400 mx-3" viewBox="0 0 16 16">
                     <path d="M6.6 13.4L5.2 12l4-4-4-4 1.4-1.4L12 8z"></path>
                 </svg>
             </li>
             <li class="flex items-center">
-                <a class="text-slate-500 hover:text-indigo-500">Data Sources</a>
+                <a class="text-slate-500 hover:text-indigo-500">{% trans "Data Sources" %}</a>
             </li>
         </ul>
     </div>
@@ -24,8 +24,8 @@
         <div class="flex flex-col gap-6">
             <div class="card">
                 <div class="p-6">
-                    <h4 class="card-title mb-4">Chat History</h4>
-                    <div class="text-sm">Select a conversation to get started.</div>
+                    <h4 class="card-title mb-4">{% trans "Chat History" %}</h4>
+                    <div class="text-sm">{% trans "Select a conversation to get started." %}</div>
                             <!-- FAQ -->
                             <div class="w-full p-5 pt-0 mx-auto">
                                 <!-- Grid -->
@@ -42,9 +42,9 @@
                                                     aria-controls="hs-accordion-collapse-{{ history.session_id }}" id="button-{{ history.session_id }}" onclick="fetchChatHistory('{{ history.session_id }}', this)">
 
                                                     <span class="text-sm font-small">
-                                                        Session ID: {{ history.session_id }}<br>
-                                                        Total Messages: {{ history.total_messages }}<br>
-                                                        First Message: {{ history.first_message|date:"F j, Y, P" }}
+                                                        {% trans "Session ID" %}: {{ history.session_id }}<br>
+                                                        {% trans "Total Messages" %}: {{ history.total_messages }}<br>
+                                                        {% trans "First Message" %}: {{ history.first_message|date:"F j, Y, P" }}
                                                     </span>
                                                     <i class="uil uil-angle-up ms-auto transition-all text-xl"></i>
                                                 </button>
@@ -60,7 +60,7 @@
                                         </div>
                                         {% endfor %}
                                         {% else %}
-                                        <span>No chat history available.</span>
+                                        <span>{% trans "No chat history available." %}</span>
                                         {% endif %}
                                     </div>
                                     <!-- End Accordion -->

@@ -97,7 +97,7 @@ def index(request):
 @check_authentication
 @require_POST
 def create_via_website_flow(request):
-    name = request.POST.get('name') or ChatBotDefaults.NAME.value
+    name = request.POST.get('name') or ChatBotDefaults.NAME()
     website = request.POST.get('website')
     prompt_message = request.POST.get('prompt_message') or ChatBotInitialPromptEnum.AI_ASSISTANT_INITIAL_PROMPT.value
 
@@ -251,7 +251,8 @@ def create_via_codebase_flow(request):
         prompt_message = request.POST.get('prompt_message') or get_qa_prompt_by_mode(mode="pair_programmer", initial_prompt=None)
         repo_url = request.POST.get('repo')
 
-        name = request.POST.get('name')
+        # name = request.POST.get('name')
+        name = request.POST.get('name') or ChatBotDefaults.NAME()
         name = generate_chatbot_name(repo_url=repo_url, name=name)
         chatbot = Chatbot.objects.create(
             user=request.user,

@@ -19,7 +19,11 @@ click-repl==0.3.0
 cryptography==41.0.3
 dataclasses-json==0.5.14
 Django==4.2.3
+django-rest-swagger
+djangorestframework
 dnspython==2.4.1
+drf-spectacular==0.27.1
+drf_spectacular.extensions==0.0.2
 exceptiongroup==1.1.2
 frozenlist==1.4.0
 grpcio==1.56.2
@@ -80,3 +84,4 @@ wcwidth==0.2.6
 yarl==1.9.2
 django-cors-headers==4.3.1
 ollama==0.1.4
+

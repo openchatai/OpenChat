@@ -1,10 +1,11 @@
+{% load i18n %}
 {% for source in website_data_sources %}
 <main class="p-6">
     <div class="flex flex-col gap-6">
         <div class="card">
             <div class="p-6">
-                <h4 class="card-title mb-4">Website data sources</h4>
-                <div class="text-sm">This is your general bot settings such as name and id</div>
+                <h4 class="card-title mb-4">{% trans "Website data sources" %}</h4>
+                <div class="text-sm">{% trans "This is your general bot settings such as name and id" %}</div>
                         {% if messages %}
                         {% for message in messages %}
                         <div class="bg-danger text-sm text-white p-3" role="alert">
@@ -29,7 +30,7 @@
                                                                 width="40" height="40" alt="User 01">
                                                         </div>
                                                         <div class="font-medium text-slate-800">
-                                                            <strong>Website:</strong>:
+                                                            <strong>{% trans "Website:" %}</strong>:
                                                             <a href="{{source.root_url}}" target="_blank">
                                                                 {{ source.root_url }} 
                                                         </div>
@@ -38,14 +39,14 @@
                                                 <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
                                                     <div class="flex items-center text-slate-800">
                                                         <div class="font-medium text-slate-800">  
-                                                            <strong> Last update:</strong>:
+                                                            <strong> {% trans "Last update:" %}</strong>:
                                                             {{ source.updated_at|date:"d.m.Y" }}
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
                                                     <div class="text-left font-medium text-emerald-500">
-                                                        {{ source.crawled_pages.count }} pages scanned
+                                                        {{ source.crawled_pages.count }} {% trans "pages scanned" %}
                                                     </div>
                                                 </td>
                                                 <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
@@ -80,7 +81,7 @@
                                                                 d="M4.3 4.5c1.9-1.9 5.1-1.9 7 0 .7.7 1.2 1.7 1.4 2.7l2-.3c-.2-1.5-.9-2.8-1.9-3.8C10.1.4 5.7.4 2.9 3.1L.7.9 0 7.3l6.4-.7-2.1-2.1zM15.6 8.7l-6.4.7 2.1 2.1c-1.9 1.9-5.1 1.9-7 0-.7-.7-1.2-1.7-1.4-2.7l-2 .3c.2 1.5.9 2.8 1.9 3.8 1.4 1.4 3.1 2 4.9 2 1.8 0 3.6-.7 4.9-2l2.2 2.2.8-6.4z">
                                                             </path>
                                                         </svg>
-                                                        <div class="cursor-not-allowed">Re-sync
+                                                        <div class="cursor-not-allowed">{% trans "Re-sync" %}
                                                             <div class="inline-flex items-center text-xs font-medium text-slate-100 bg-slate-700 rounded-full text-center px-2 py-0.5"
                                                                 style="margin-left: 0.3rem">
                                                                 <svg class="w-3 h-3 shrink-0 fill-current text-amber-500 mr-1"
@@ -89,7 +90,7 @@
                                                                         d="M11.953 4.29a.5.5 0 00-.454-.292H6.14L6.984.62A.5.5 0 006.12.173l-6 7a.5.5 0 00.379.825h5.359l-.844 3.38a.5.5 0 00.864.445l6-7a.5.5 0 00.075-.534z">
                                                                     </path>
                                                                 </svg>
-                                                                <span>soon </span>
+                                                                <span>{% trans "soon" %} </span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -98,7 +99,7 @@
                                                     <button
                                                         class="text-rose-500 hover:text-rose-600 rounded-full cursor-not-allowed"
                                                         disabled>
-                                                        <span class="sr-only">Delete</span>
+                                                        <span class="sr-only">{% trans "Delete" %}</span>
                                                         <svg class="w-8 h-8 fill-current" viewBox="0 0 32 32">
                                                             <path d="M13 15h2v6h-2zM17 15h2v6h-2z"></path>
                                                             <path
@@ -113,7 +114,7 @@
                                                             :class="{ 'rotate-180': open }" id="toggleTable"
                                                             :aria-expanded="open" aria-controls="description-01"
                                                             aria-expanded="false">
-                                                            <span class="sr-only">Menu</span>
+                                                            <span class="sr-only">{% trans "Menu" %}</span>
                                                             <svg class="w-8 h-8 fill-current" viewBox="0 0 32 32">
                                                                 <path d="M16 20l-5.4-5.4 1.4-1.4 4 4 4-4 1.4 1.4z">
                                                                 </path>
@@ -138,22 +139,22 @@
 
                                                                     <th
                                                                         class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-                                                                        <div class="font-semibold text-left">Url
+                                                                        <div class="font-semibold text-left">{% trans "Url" %}
                                                                         </div>
                                                                     </th>
                                                                     <th
                                                                         class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-                                                                        <div class="font-semibold text-left">Title
+                                                                        <div class="font-semibold text-left">{% trans "Title" %}
                                                                         </div>
                                                                     </th>
                                                                     <th
                                                                         class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-                                                                        <div class="font-semibold text-left">Status
+                                                                        <div class="font-semibold text-left">{% trans "Status" %}
                                                                         </div>
                                                                     </th>
                                                                     <th
                                                                         class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-                                                                        <div class="font-semibold text-right">On</div>
+                                                                        <div class="font-semibold text-right">{% trans "On" %}</div>
                                                                     </th>
                                                                 </tr>
                                                             </thead>
@@ -194,12 +195,12 @@
                                                                             {% if page.status_code == '200' %}
                                                                             <div
                                                                                 class="text-xs inline-flex font-medium bg-slate-100 text-slate-500 rounded-full text-center px-2.5 py-1">
-                                                                                Done
+                                                                                {% trans "Done" %}
                                                                             </div>
                                                                             {% else %}
                                                                             <div
                                                                                 class="text-xs inline-flex font-medium bg-red-100 text-red-500 rounded-full text-center px-2.5 py-1">
-                                                                                Error
+                                                                                {% trans "Error" %}
                                                                             </div>
                                                                             {% endif %}
                                                                         </div>
@@ -234,8 +235,8 @@
                         <div class="pagination">
                             <span class="step-links">
                                 {% if website_data_sources.has_previous %}
-                                    <a href="?website_page=1">&laquo; first</a>
-                                    <a href="?website_page={{ website_data_sources.previous_page_number }}">previous</a>
+                                    <a href="?website_page=1">&laquo; {% trans "first" %}</a>
+                                    <a href="?website_page={{ website_data_sources.previous_page_number }}">{% trans "previous" %}</a>
                                 {% endif %}
 
                                 <span class="current">
@@ -243,8 +244,8 @@
                                 </span>
 
                                 {% if website_data_sources.has_next %}
-                                    <a href="?website_page={{ website_data_sources.next_page_number }}">next</a>
-                                    <a href="?website_page={{ website_data_sources.paginator.num_pages }}">last &raquo;</a>
+                                    <a href="?website_page={{ website_data_sources.next_page_number }}">{% trans "next" %}</a>
+                                    <a href="?website_page={{ website_data_sources.paginator.num_pages }}">{% trans "last" %} &raquo;</a>
                                 {% endif %}
                             </span>
                         </div>

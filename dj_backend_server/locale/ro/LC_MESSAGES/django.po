@@ -8,182 +8,191 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-02 17:31+0000\n"
+"POT-Creation-Date: 2024-02-02 17:32+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Last-Translator: Valics Lehel <lvalics@gmail.com>\n"
+"Language-Team: Romanian <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?"
+"2:1));\n"
 
 #: management/management/commands/inspire.py:8
 msgid "Displays an inspiring quote"
-msgstr ""
+msgstr "Afișează un citat inspirațional"
 
 #: management/management/commands/inspire.py:12
 msgid "Don't forget to set INSPIRING_QUOTES in settings.py!"
-msgstr ""
+msgstr "Nu uitați să setați INSPIRING_QUOTES în settings.py!"
 
 #: web/templates/create_user.html:11
+#| msgid "Create user"
 msgid "Create a new user"
-msgstr ""
+msgstr "Creează utilizator"
 
 #: web/templates/create_user.html:12
 msgid "Please note down the username and password to send to the user."
-msgstr ""
+msgstr "Notează-ți numele de utilizator și parola pentru a le trimite utilizatorului."
 
 #: web/templates/create_user.html:13
 msgid ""
 "They will be required to change these credentials upon their first login."
-msgstr ""
+msgstr "Vor fi obligați să schimbe aceste date de conectare la prima lor autentificare."
 
 #: web/templates/create_user.html:19 web/templates/login.html:35
 #: web/templates/settings.html:123
 #: web/templates/settings/settings-data-website.html:203
 msgid "Error"
-msgstr ""
+msgstr "Eroare"
 
 #: web/templates/create_user.html:36 web/templates/login.html:12
 #: web/templates/modify_user.html:21
+#| msgid "User"
 msgid "Username"
-msgstr ""
+msgstr "Utilizator"
 
 #: web/templates/create_user.html:46 web/templates/modify_user.html:31
 msgid "First name"
-msgstr ""
+msgstr "Nume"
 
 #: web/templates/create_user.html:56 web/templates/modify_user.html:41
 msgid "Last name"
-msgstr ""
+msgstr "Prenume"
 
 #: web/templates/create_user.html:66 web/templates/modify_user.html:51
 msgid "Email"
-msgstr ""
+msgstr "Email"
 
 #: web/templates/create_user.html:76 web/templates/login.html:18
 #: web/templates/modify_user.html:61
 msgid "Password"
-msgstr ""
+msgstr "Parola"
 
 #: web/templates/create_user.html:79 web/templates/modify_user.html:64
 msgid "Suggested password (user will change)"
-msgstr ""
+msgstr "Parolă sugerată (utilizatorul o va schimba)"
 
 #: web/templates/create_user.html:87 web/templates/modify_user.html:72
 msgid "Check password"
-msgstr ""
+msgstr "Verifică parola"
 
 #: web/templates/create_user.html:97
 #: web/templates/layout/sidebar-bot-page.html:60
 msgid "Create user"
-msgstr ""
+msgstr "Creează utilizator"
 
 #: web/templates/create_user.html:109
 msgid "New user created."
-msgstr ""
+msgstr "Utilizator nou creat."
 
 #: web/templates/create_user.html:110
 #: web/templates/layout/sidebar-bot-page.html:63
 msgid "User"
-msgstr ""
+msgstr "Utilizator"
 
 #: web/templates/create_user.html:112
 msgid "Back to home"
-msgstr ""
+msgstr "Înapoi la pagina principală"
 
 #: web/templates/errors_check.html:9
+
+#| msgid "Errors check"
 msgid "Error Check"
-msgstr ""
+msgstr "Verificare erori"
 
 #: web/templates/errors_check.html:15
 msgid "Payload"
-msgstr ""
+msgstr "Payload"
 
 #: web/templates/errors_check.html:19
 msgid "UUID"
-msgstr ""
+msgstr "UUID"
 
 #: web/templates/errors_check.html:23
 msgid "Exception"
-msgstr ""
+msgstr "Excepție"
 
 #: web/templates/errors_check.html:27
 msgid "Failed At"
-msgstr ""
+msgstr "Eșuat la"
 
 #: web/templates/errors_check.html:50
 msgid "No errors found."
-msgstr ""
+msgstr "Nu s-au găsit erori."
 
 #: web/templates/errors_check.html:59
 #: web/templates/settings/settings-data-codebase.html:94
 #: web/templates/settings/settings-data-documents.html:162
 #: web/templates/settings/settings-data-website.html:238
 msgid "first"
-msgstr ""
+msgstr "prima"
 
 #: web/templates/errors_check.html:60
 #: web/templates/settings/settings-data-codebase.html:95
 #: web/templates/settings/settings-data-documents.html:163
 #: web/templates/settings/settings-data-website.html:239
 msgid "previous"
-msgstr ""
+msgstr "precedenta"
 
 #: web/templates/errors_check.html:63
 msgid "Page"
-msgstr ""
+msgstr "Pagină"
 
 #: web/templates/errors_check.html:63
 msgid "of"
-msgstr ""
+msgstr "din"
 
 #: web/templates/errors_check.html:66
 #: web/templates/settings/settings-data-codebase.html:103
 #: web/templates/settings/settings-data-documents.html:171
 #: web/templates/settings/settings-data-website.html:247
 msgid "next"
-msgstr ""
+msgstr "următoarea"
 
 #: web/templates/errors_check.html:67
 #: web/templates/settings/settings-data-codebase.html:104
 #: web/templates/settings/settings-data-documents.html:172
 #: web/templates/settings/settings-data-website.html:248
 msgid "last"
-msgstr ""
+msgstr "ultima"
 
 #: web/templates/index.html:8
+
+#| msgid "Chatbot"
 msgid "My chatbots"
-msgstr ""
+msgstr "Chatbot-ul meu"
 
 #: web/templates/index.html:12
 msgid "Number of bots"
-msgstr ""
+msgstr "Număr de boturi"
 
 #: web/templates/index.html:15
+
+#| msgid "Create an Account ?"
 msgid "Create new chatbot"
-msgstr ""
+msgstr "Creează un chatbot nou"
 
 #: web/templates/index.html:57
 msgid "Statistics of discussions in the last days"
-msgstr ""
+msgstr "Statistici ale discuțiilor din ultimele zile"
 
 #: web/templates/index.html:75
 msgid "Data Sources Added Over Time"
-msgstr ""
+msgstr "Surse de Date Adăugate de-a Lungul Timpului"
 
 #: web/templates/layout/app.html:7
 msgid "Dashboard | OpenChat"
-msgstr ""
+msgstr "Tablou de bord | OpenChat"
 
 #: web/templates/layout/app.html:55
 msgid "Sign Out"
-msgstr ""
+msgstr "Deconectare"
 
 #: web/templates/layout/header.html:7
 msgid "Menu Toggle Button"
-msgstr ""
+msgstr "Buton de comutare a meniului"
 
 #: web/templates/layout/header.html:13
 #: web/templates/layout/sidebar-bot-page.html:18
@@ -195,80 +204,85 @@ msgstr ""
 #: web/templates/onboarding/step-4.html:4
 #: web/templates/settings-analytics.html:4
 msgid "Dashboard"
-msgstr ""
+msgstr "Tablou de bord"
 
 #: web/templates/layout/header.html:15
 msgid "Profile Menu Offcanvas Button"
-msgstr ""
+msgstr "Butonul Offcanvas al Meniului de Profil"
 
 #: web/templates/layout/noapp.html:7
 msgid "Login | OpenChat"
-msgstr ""
+msgstr "Autentificare | OpenChat"
 
 #: web/templates/layout/noapp.html:31
 msgid "Create an Account ?"
-msgstr ""
+msgstr "Creează un cont ?"
 
 #: web/templates/layout/noapp.html:31
 msgid "Register"
-msgstr ""
+msgstr "Înregistrare"
 
 #: web/templates/layout/sidebar-bot-page.html:23
 msgid "Chatbot"
-msgstr ""
+msgstr "Chatbot"
 
 #: web/templates/layout/sidebar-bot-page.html:27
 #: web/templates/settings-theme.html:22
 msgid "Try & Share"
-msgstr ""
+msgstr "Încearcă și Distribuie"
 
 #: web/templates/layout/sidebar-bot-page.html:34
 msgid "General settings"
-msgstr ""
+msgstr "Setări generale"
 
 #: web/templates/layout/sidebar-bot-page.html:40
 msgid "Data & Knowledge"
-msgstr ""
+msgstr "Date și Cunoștințe"
 
 #: web/templates/layout/sidebar-bot-page.html:46
 msgid "History"
-msgstr ""
+msgstr "Istoric"
 
 #: web/templates/layout/sidebar-bot-page.html:51
 msgid "Super Admin"
-msgstr ""
+msgstr "Super Admin"
 
 #: web/templates/layout/sidebar-bot-page.html:55
 msgid "Errors check"
-msgstr ""
+msgstr "Verificare erori"
 
 #: web/templates/layout/sidebar-bot-page.html:67
+
+#| msgid "ChatModify user detailsbot"
 msgid "Modify user details"
-msgstr ""
+msgstr "Modifică datele utilizatorului"
 
 #: web/templates/login.html:19
 msgid "Forget Password"
-msgstr ""
+msgstr "Ai uitat parola"
 
 #: web/templates/modify_user.html:10
+#| msgid "ChatModify user detailsbot"
 msgid "Modify your user data"
-msgstr ""
+msgstr "Modifică datele utilizatorului"
 
 #: web/templates/modify_user.html:81
 msgid "Password and Check password"
-msgstr ""
+msgstr "Parola și Verifică parola"
 
 #: web/templates/modify_user.html:81
 msgid "do not need to be sent if they are not changing."
-msgstr ""
+msgstr "nu trebuie trimise dacă nu se schimbă."
 
 #: web/templates/modify_user.html:85
+
+#| msgid "Create user"
 msgid "Update user"
-msgstr ""
+msgstr "Creează utilizator"
 
 #: web/templates/onboarding/other-data-sources-pdf.html:41
 msgid "Upload files as sources"
-msgstr ""
+msgstr "Încarcă fișiere ca surse"
 
 #: web/templates/onboarding/other-data-sources-pdf.html:56
 #: web/templates/onboarding/other-data-sources-website.html:58
@@ -278,20 +292,20 @@ msgstr ""
 #: web/templates/onboarding/step-2.html:57
 #: web/templates/settings/settings-data-addmore.html:34
 msgid "Close"
-msgstr ""
+msgstr "Închide"
 
 #: web/templates/onboarding/other-data-sources-pdf.html:75
 #: web/templates/onboarding/step-2-pdf.html:105
 msgid "Click to upload or drag & drop"
-msgstr ""
+msgstr "Clic pentru a încărca sau trageți și plasați"
 
 #: web/templates/onboarding/other-data-sources-pdf.html:76
 msgid "you can upload up to 5 files, and we will process the first ±100k words"
-msgstr ""
+msgstr "puteți încărca până la 5 fișiere, și vom procesa primele ±100k cuvinte"
 
 #: web/templates/onboarding/other-data-sources-pdf.html:89
 msgid "Delete files after sending them for processing."
-msgstr ""
+msgstr "Șterge fișierele după trimiterea lor pentru procesare."
 
 #: web/templates/onboarding/other-data-sources-pdf.html:100
 #: web/templates/onboarding/step-2-pdf.html:130
@@ -299,23 +313,26 @@ msgid ""
 "Check this only if you have scanned pages in the PDF document and want them "
 "to be sent to OCR services."
 msgstr ""
+"Bifați aceasta doar dacă aveți pagini scanate în documentul PDF și doriți să "
+"le trimiteți la serviciile OCR."
 
 #: web/templates/onboarding/other-data-sources-pdf.html:107
 #: web/templates/onboarding/step-2-pdf.html:136
 msgid "We are accepting PDF/DOCX/XLSX/TXT(CSV/JSON)."
-msgstr ""
+msgstr "Acceptăm PDF/DOCX/XLSX/TXT(CSV/JSON)."
 
 #: web/templates/onboarding/other-data-sources-pdf.html:108
 #: web/templates/onboarding/step-2-pdf.html:137
 msgid "PDF files can contain both text and images. We will send to OCR."
 msgstr ""
+"Fișierele PDF pot conține atât text cât și imagini. Le vom trimite la OCR."
 
 #: web/templates/onboarding/other-data-sources-pdf.html:109
 #: web/templates/onboarding/step-2-pdf.html:138
 msgid ""
 "You can upload multiple files at once and we will process them in the "
 "background."
-msgstr ""
+msgstr "Puteți încărca mai multe fișiere odată și le vom procesa în fundal."
 
 #: web/templates/onboarding/other-data-sources-pdf.html:114
 #: web/templates/onboarding/other-data-sources-website.html:94
@@ -325,7 +342,7 @@ msgstr ""
 #: web/templates/onboarding/step-2.html:91
 #: web/templates/onboarding/step-3.html:92
 msgid "Back"
-msgstr ""
+msgstr "Înapoi"
 
 #: web/templates/onboarding/other-data-sources-pdf.html:115
 #: web/templates/onboarding/other-data-sources-website.html:95
@@ -334,177 +351,194 @@ msgstr ""
 #: web/templates/onboarding/step-2.html:92
 #: web/templates/onboarding/step-3.html:93
 msgid "Next Step"
-msgstr ""
+msgstr "Pasul Următor"
 
 #: web/templates/onboarding/other-data-sources-website.html:43
 #: web/templates/onboarding/step-2.html:40
+
+#| msgid "Website information ✨"
 msgid "Website information"
-msgstr ""
+msgstr "Informații website ✨"
 
 #: web/templates/onboarding/other-data-sources-website.html:55
 msgid "Please enter a valid website URL, it\\"
-msgstr ""
+msgstr "Vă rugăm să introduceți un URL valid de website, acesta\\"
 
 #: web/templates/onboarding/other-data-sources-website.html:75
 #: web/templates/onboarding/step-2.html:73
 msgid "Website url"
-msgstr ""
+msgstr "URL website"
 
 #: web/templates/onboarding/step-0.html:41
 msgid "Let's set up your first chatbot, for free"
-msgstr ""
+msgstr "Să configurăm primul tău chatbot, gratuit"
 
 #: web/templates/onboarding/step-0.html:42
 msgid "And here how we are going to do it:"
-msgstr ""
+msgstr "Și iată cum o să procedăm:"
 
 #: web/templates/onboarding/step-0.html:57
 msgid "You provide the system with data"
-msgstr ""
+msgstr "Tu furnizezi sistemului datele"
 
 #: web/templates/onboarding/step-0.html:72
 msgid "We train our AI on this knowledge"
-msgstr ""
+msgstr "Antrenăm IA cu aceste cunoștințe"
 
 #: web/templates/onboarding/step-0.html:74
 msgid "It might take minutes or hours, depend on how large is your data."
 msgstr ""
+"Ar putea dura minute sau ore, în funcție de cât de mari sunt datele tale."
 
 #: web/templates/onboarding/step-0.html:86
 msgid "You integrate the chatbot on your website"
-msgstr ""
+msgstr "Integrezi chatbot-ul pe site-ul tău web"
 
 #: web/templates/onboarding/step-0.html:88
 msgid ""
 "That is it! we will provide you with a Javascript code to put it on your "
 "website."
 msgstr ""
+"Asta e tot! Îți vom furniza un cod Javascript pentru a-l pune pe site-ul tău."
 
 #: web/templates/onboarding/step-0.html:95
 msgid "Let's do it!"
-msgstr ""
+msgstr "Hai să o facem!"
 
 #: web/templates/onboarding/step-1.html:39
 msgid "Select your data source"
-msgstr ""
+msgstr "Selectează sursa datelor tale"
 
 #: web/templates/onboarding/step-1.html:40
 msgid "Select the source of your data to train your new chatbot"
-msgstr ""
+msgstr "Selectează sursa datelor tale pentru a antrena noul tău chatbot"
 
 #: web/templates/onboarding/step-1.html:40
 msgid "you can always add new sources later"
-msgstr ""
+msgstr "întotdeauna poți adăuga noi surse mai târziu"
 
 #: web/templates/onboarding/step-1.html:52
 msgid ""
 "Please enter a valid website URL, it's important that your website is live "
 "and accessible"
 msgstr ""
+"Te rog să introduci un URL valid al site-ului web, este important ca site-ul "
+"tău să fie activ și accesibil"
 
 #: web/templates/onboarding/step-1.html:73 web/templates/settings.html:47
 #: web/templates/settings/settings-data-addmore.html:54
+
+#| msgid "Website url"
 msgid "Website"
-msgstr ""
+msgstr "URL website"
 
 #: web/templates/onboarding/step-1.html:75
 #: web/templates/settings/settings-data-addmore.html:56
 msgid "We will crawl your website and extract the knowledge automatically."
-msgstr ""
+msgstr "Vom răsfoi site-ul tău web și vom extrage cunoștințele automat."
 
 #: web/templates/onboarding/step-1.html:83
 #: web/templates/settings/settings-data-addmore.html:65
 msgid "PDF/DOCX/TXT/JSON/XLSX files"
-msgstr ""
+msgstr "Fișiere PDF/DOCX/TXT/JSON/XLSX"
 
 #: web/templates/onboarding/step-1.html:85
 #: web/templates/settings/settings-data-addmore.html:67
+
+#| msgid "We will crawl your website and extract the knowledge automatically."
 msgid "We will scan your files and extract knowledge and any information"
-msgstr ""
+msgstr "Vom răsfoi site-ul tău web și vom extrage cunoștințele automat."
 
 #: web/templates/onboarding/step-1.html:93
 msgid "Codebase"
-msgstr ""
+msgstr "Codebase"
 
 #: web/templates/onboarding/step-1.html:95
+
+#| msgid "We will crawl your website and extract the knowledge automatically."
 msgid ""
 "Provide a link to your codebase and we will extract the knowledge and any "
 "information"
-msgstr ""
+msgstr "Vom răsfoi site-ul tău web și vom extrage cunoștințele automat."
 
 #: web/templates/onboarding/step-1.html:103
 #: web/templates/settings/settings-data-addmore.html:75
 msgid "Confluence"
-msgstr ""
+msgstr "Confluence"
 
 #: web/templates/onboarding/step-1.html:112
 #: web/templates/onboarding/step-1.html:135
 #: web/templates/settings/settings-data-codebase.html:65
 #: web/templates/settings/settings-data-website.html:93
 msgid "soon"
-msgstr ""
+msgstr "în curând"
 
 #: web/templates/onboarding/step-1.html:116
 #: web/templates/settings/settings-data-addmore.html:77
 msgid "Automatically extract data from your Confluence from your workspace"
-msgstr ""
+msgstr "Extrage automat datele din Confluence-ul tău din spațiul tău de lucru"
 
 #: web/templates/onboarding/step-1.html:126
 msgid "Notion"
-msgstr ""
+msgstr "Notion"
 
 #: web/templates/onboarding/step-1.html:140
 msgid "Automatically extract data from your Notion from your workspace"
-msgstr ""
+msgstr "Extrage automat datele din Notion-ul tău din spațiul tău de lucru"
 
 #: web/templates/onboarding/step-2-codebase.html:40
+
+#| msgid "Website information ✨"
 msgid "GitHub Repo information"
-msgstr ""
+msgstr "Informații website ✨"
 
 #: web/templates/onboarding/step-2-codebase.html:53
 msgid "Please provide a valid GitHub repository url."
-msgstr ""
+msgstr "Vă rugăm să furnizați un URL valid pentru un repository GitHub."
 
 #: web/templates/onboarding/step-2-codebase.html:73
+
+#| msgid "Website url"
 msgid "Repository url"
-msgstr ""
+msgstr "URL website"
 
 #: web/templates/onboarding/step-2-codebase.html:74
 msgid "must have"
-msgstr ""
+msgstr "trebuie să aibă"
 
 #: web/templates/onboarding/step-2-codebase.html:75
 msgid "main"
-msgstr ""
+msgstr "principală"
 
 #: web/templates/onboarding/step-2-codebase.html:75
 msgid "branch"
-msgstr ""
+msgstr "ramură"
 
 #: web/templates/onboarding/step-2-codebase.html:92
 msgid "Your repo is private?"
-msgstr ""
+msgstr "Repozitoriul tău este privat?"
 
 #: web/templates/onboarding/step-2-pdf.html:66
 msgid "Upload PDF files as sources"
-msgstr ""
+msgstr "Încarcă fișiere PDF ca surse"
 
 #: web/templates/onboarding/step-2-pdf.html:107
 msgid ""
 "you can upload up to 5 pdf files, and we will process the first ±100k words"
 msgstr ""
+"poți încărca până la 5 fișiere pdf, și vom procesa primele ±100k cuvinte"
 
 #: web/templates/onboarding/step-2-pdf.html:120
 msgid "Delete PDF files after sending them for processing."
-msgstr ""
+msgstr "Șterge fișierele PDF după trimiterea lor pentru procesare."
 
 #: web/templates/onboarding/step-2-pdf.html:146
 msgid "Skip and add later"
-msgstr ""
+msgstr "Omite și adaugă mai târziu"
 
 #: web/templates/onboarding/step-2.html:81
 msgid "Just to make sure we are on the same page"
-msgstr ""
+msgstr "Doar pentru a ne asigura că suntem pe aceeași pagină"
 
 #: web/templates/onboarding/step-2.html:84
 msgid ""
@@ -512,20 +546,25 @@ msgid ""
 "built using JS (SPA), we are working on adding headless browsing to support "
 "all sorts of websites."
 msgstr ""
+"S-ar putea să nu putem răsfoi unele site-uri web, în special cele construite "
+"folosind JS (SPA). Lucrăm la adăugarea navigării fără cap pentru a suporta "
+"toate tipurile de site-uri web."
 
 #: web/templates/onboarding/step-3.html:40
 msgid "In the meanwhile, Let's do some configurations"
-msgstr ""
+msgstr "Între timp, să facem câteva configurări"
 
 #: web/templates/onboarding/step-3.html:42
 msgid ""
 "While we are crawling your website, you can do some configurations on your "
 "chatbot"
 msgstr ""
+"În timp ce răsfoim site-ul tău web, poți face câteva configurări pe chatbot-"
+"ul tău"
 
 #: web/templates/onboarding/step-3.html:52
 msgid "What type of character that chatbot must be?"
-msgstr ""
+msgstr "Ce tip de caracter trebuie să aibă chatbot-ul?"
 
 #: web/templates/onboarding/step-3.html:54
 msgid ""
@@ -534,439 +573,482 @@ msgid ""
 "Knowledgeable makes the bot a bit more flexible and tries to be creative "
 "with answers"
 msgstr ""
+"Alege caracterul preferat al botului. Un caracter înțelept și strict va "
+"forța botul să răspundă doar la întrebările care au fost văzute înainte, în "
+"timp ce unul Informat îl face pe bot puțin mai flexibil și încearcă să fie "
+"creativ cu răspunsurile"
 
 #: web/templates/onboarding/step-3.html:67
 msgid "Wise & Strict"
-msgstr ""
+msgstr "Înțelept și Strict"
 
 #: web/templates/onboarding/step-3.html:68
 msgid "Only answers questions within the given knowledge."
-msgstr ""
+msgstr "Răspunde doar la întrebări în cadrul cunoștințelor date."
 
 #: web/templates/onboarding/step-3.html:80
+
+#| msgid "Data & Knowledge"
 msgid "Knowledgeable"
-msgstr ""
+msgstr "Date și Cunoștințe"
 
 #: web/templates/onboarding/step-3.html:81
 msgid "Answers questions within the given knowledge and beyond."
 msgstr ""
+"Răspunde la întrebări în cadrul cunoștințelor date și dincolo de acestea."
 
 #: web/templates/onboarding/step-4.html:45
 msgid "That is it!"
-msgstr ""
+msgstr "Asta este tot!"
 
 #: web/templates/onboarding/step-4.html:46
 msgid "Your chatbot name:"
-msgstr ""
+msgstr "Numele chatbot-ului tău:"
 
 #: web/templates/onboarding/step-4.html:49
 msgid "Open your bot"
-msgstr ""
+msgstr "Deschide-ți botul"
 
 #: web/templates/settings-analytics.html:59
+
+#| msgid "Analytics"
 msgid "analytics"
-msgstr ""
+msgstr "Analitice"
 
 #: web/templates/settings-analytics.html:64
 msgid "Try it out! ->"
-msgstr ""
+msgstr "Încearcă acum! ->"
 
 #: web/templates/settings-analytics.html:80
 #: web/templates/settings-analytics.html:94
 msgid "Analytics"
-msgstr ""
+msgstr "Analitice"
 
 #: web/templates/settings-analytics.html:81 web/templates/settings.html:29
 #: web/templates/settings/settings-data-website.html:8
 msgid "This is your general bot settings such as name and id"
-msgstr ""
+msgstr "Acestea sunt setările generale ale botului tău, precum numele și ID-ul"
 
 #: web/templates/settings-analytics.html:91
 msgid "Analytics is coming soon!"
-msgstr ""
+msgstr "Analiticele vor fi disponibile în curând!"
 
 #: web/templates/settings-analytics.html:105
 msgid "Unique Visitors"
-msgstr ""
+msgstr "Vizitatori Unici"
 
 #: web/templates/settings-analytics.html:117
 msgid "Total Pageviews"
-msgstr ""
+msgstr "Vizualizări Totale de Pagină"
 
 #: web/templates/settings-analytics.html:129
 msgid "Bounce Rate"
-msgstr ""
+msgstr "Rata de Respingere"
 
 #: web/templates/settings-analytics.html:141
 msgid "Visit Duration"
-msgstr ""
+msgstr "Durata Vizitei"
 
 #: web/templates/settings-data.html:28
 #: web/templates/settings-integrations.html:61
+
+#| msgid "Select your data source"
 msgid "data sources"
-msgstr ""
+msgstr "Selectează sursa datelor tale"
 
 #: web/templates/settings-data.html:31 web/templates/settings-history.html:13
 #: web/templates/settings-integrations.html:65
 #: web/templates/settings-theme.html:16 web/templates/settings.html:12
 msgid "Home"
-msgstr ""
+msgstr "Acasă"
 
 #: web/templates/settings-data.html:37 web/templates/settings-history.html:19
 #: web/templates/settings-integrations.html:71
 msgid "Data Sources"
-msgstr ""
+msgstr "Sursa de date"
 
 #: web/templates/settings-data.html:45
 msgid "Data sources"
-msgstr ""
+msgstr "Surse de date"
 
 #: web/templates/settings-data.html:47
 #: web/templates/settings/settings-data-website.html:7
+
+#| msgid "Select your data source"
 msgid "Website data sources"
-msgstr ""
+msgstr "Selectează sursa datelor tale"
 
 #: web/templates/settings-data.html:47
 msgid "with crawled pages"
-msgstr ""
+msgstr "cu pagini răsfoite"
 
 #: web/templates/settings-data.html:48
 msgid "Documents Data sources"
-msgstr ""
+msgstr "Sursa de date a documentelor"
 
 #: web/templates/settings-data.html:49
 #: web/templates/settings/settings-data-codebase.html:7
+
+#| msgid "Select your data source"
 msgid "Codebase data sources"
-msgstr ""
+msgstr "Selectează sursa datelor tale"
 
 #: web/templates/settings-history.html:10
+
+#| msgid "History"
 msgid "chat history"
-msgstr ""
+msgstr "Istoric"
 
 #: web/templates/settings-history.html:27
+
+#| msgid "History"
 msgid "Chat History"
-msgstr ""
+msgstr "Istoric"
 
 #: web/templates/settings-history.html:28
 msgid "Select a conversation to get started."
-msgstr ""
+msgstr "Selectează o conversație pentru a începe."
 
 #: web/templates/settings-history.html:45
 msgid "Session ID"
-msgstr ""
+msgstr "Session ID"
 
 #: web/templates/settings-history.html:46
+
+#| msgid "Total Pageviews"
 msgid "Total Messages"
-msgstr ""
+msgstr "Vizualizări Totale de Pagină"
 
 #: web/templates/settings-history.html:47
 msgid "First Message"
-msgstr ""
+msgstr "Primul Mesaj"
 
 #: web/templates/settings-history.html:63
 msgid "No chat history available."
-msgstr ""
+msgstr "Nu este disponibil niciun istoric de chat."
 
 #: web/templates/settings-integrations.html:86
 msgid "Integrations"
-msgstr ""
+msgstr "Integrări"
 
 #: web/templates/settings-integrations.html:97
 msgid "View All"
-msgstr ""
+msgstr "Vezi Tot"
 
 #: web/templates/settings-integrations.html:102
 msgid "Utility"
-msgstr ""
+msgstr "Utilitate"
 
 #: web/templates/settings-integrations.html:107
 msgid "Marketing"
-msgstr ""
+msgstr "Marketing"
 
 #: web/templates/settings-integrations.html:112
 msgid "Development"
-msgstr ""
+msgstr "Dezvoltare"
 
 #: web/templates/settings-theme.html:13
+
+#| msgid "Try & Share"
 msgid "try & share"
-msgstr ""
+msgstr "Încearcă și Distribuie"
 
 #: web/templates/settings-theme.html:30
+
+#| msgid "Try & Share"
 msgid "Try & Share!"
-msgstr ""
+msgstr "Încearcă și Distribuie"
 
 #: web/templates/settings-theme.html:31
 msgid ""
 "Here you can try and play with your bot, also you can share it or embed it "
 "in your web apps. Anyone with this link will be able to interact with your "
 "chatbot"
-msgstr ""
+msgstr "Aici poți să testezi și să te joci cu botul tău, de asemenea îl poți partaja sau încorpora în aplicațiile tale web. Oricine are acest link va putea interacționa cu chatbot-ul tău"
 
 #: web/templates/settings-theme.html:38
 msgid "Share with others!"
-msgstr ""
+msgstr "Partajează cu alții!"
 
 #: web/templates/settings-theme.html:62
 msgid "Embed on your web app as a chat bubble"
-msgstr ""
+msgstr "Încorporează în aplicația ta web ca o bulă de chat"
 
 #: web/templates/settings-theme.html:78
 msgid "Copy the following code into your website head script"
-msgstr ""
+msgstr "Copiază următorul cod în scriptul de head al site-ului tău"
 
 #: web/templates/settings-theme.html:160
 msgid "Embed on your web app as a search box"
-msgstr ""
+msgstr "Încorporează în aplicația ta web ca o casetă de căutare"
 
 #: web/templates/settings-theme.html:176
 msgid ""
 "Copy the following code into your website head script. Please read the "
 "documentation to see all the options for the search widget."
-msgstr ""
+msgstr "Copiază următorul cod în scriptul de head al site-ului tău. Te rog să citești documentația pentru a vedea toate opțiunile pentru widget-ul de căutare."
 
 #: web/templates/settings.html:9
+
+#| msgid "General settings"
 msgid "general settings"
-msgstr ""
+msgstr "Setări generale"
 
 #: web/templates/settings.html:18 web/templates/settings.html:28
+
+#| msgid "General settings"
 msgid "General Settings"
-msgstr ""
+msgstr "Setări generale"
 
 #: web/templates/settings.html:33
 #: web/templates/settings/settings-data-documents.html:93
 msgid "Name"
-msgstr ""
+msgstr "Nume"
 
 #: web/templates/settings.html:39
 msgid "Bot ID"
-msgstr ""
+msgstr "Bot ID"
 
 #: web/templates/settings.html:52
 msgid "API Token"
-msgstr ""
+msgstr "Token API"
 
 #: web/templates/settings.html:70
 msgid "Custom Context"
-msgstr ""
+msgstr "Context Personalizat"
 
 #: web/templates/settings.html:71
 msgid ""
 "You can change your bot initial context / prompt from here. also you can "
 "change the bot response language."
-msgstr ""
+msgstr "Puteți schimba contextul / promptul inițial al botului de aici. De asemenea, puteți schimba limba de răspuns a botului."
 
 #: web/templates/settings.html:77
 msgid "Manual context"
-msgstr ""
+msgstr "Context manual"
 
 #: web/templates/settings.html:84
 msgid "or choose one of the below"
-msgstr ""
+msgstr "sau alegeți una dintre opțiunile de mai jos"
 
 #: web/templates/settings.html:89
 msgid "Customer Support"
-msgstr ""
+msgstr "Suport Client"
 
 #: web/templates/settings.html:91
 msgid " Search Engine"
-msgstr ""
+msgstr "Motor de Căutare"
 
 #: web/templates/settings.html:97
 msgid "Teacher"
-msgstr ""
+msgstr "Profesor"
 
 #: web/templates/settings.html:99
 msgid "Critical thinker"
-msgstr ""
+msgstr "Gânditor critic"
 
 #: web/templates/settings.html:105
 msgid "Software Engineer"
-msgstr ""
+msgstr "Inginer Software"
 
 #: web/templates/settings.html:107
 msgid "Ghost Writer"
-msgstr ""
+msgstr "Scriitor Fantomă"
 
 #: web/templates/settings.html:116
 msgid "Save Changes"
-msgstr ""
+msgstr "Salvează Modificările"
 
 #: web/templates/settings.html:131
 msgid "Delete the bot"
-msgstr ""
+msgstr "Șterge botul"
 
 #: web/templates/settings.html:134
 msgid "Deleting the bot will delete all the data associated with it."
-msgstr ""
+msgstr "Ștergerea botului va șterge toate datele asociate cu acesta."
 
 #: web/templates/settings/settings-data-addmore.html:3
+
+#| msgid "you can always add new sources later"
 msgid "Want to add new sources?"
-msgstr ""
+msgstr "întotdeauna poți adăuga noi surse mai târziu"
 
 #: web/templates/settings/settings-data-addmore.html:10
 #: web/templates/settings/settings-data-addmore.html:32
+
+#| msgid "Select your data source"
 msgid "Add new data source"
-msgstr ""
+msgstr "Selectează sursa datelor tale"
 
 #: web/templates/settings/settings-data-addmore.html:46
 msgid ""
 "When you add a new data source, we will train our AI on this data, the "
 "results is that your chatbot should be able to answer questions from this "
 "data & knowldge"
-msgstr ""
+msgstr "Când adaugi o nouă sursă de date, vom antrena IA noastră cu aceste date, rezultatul fiind că chatbot-ul tău ar trebui să poată răspunde la întrebări din aceste date și cunoștințe"
 
 #: web/templates/settings/settings-data-addmore.html:82
 msgid ""
 "We are working on many other data sources, such as Notion, Confluence, Word "
 "Documents and many more."
-msgstr ""
+msgstr "Lucrăm la multe alte surse de date, cum ar fi Notion, Confluence, Documente Word și multe altele."
 
 #: web/templates/settings/settings-data-codebase.html:8
 msgid "This part will show your codebase data"
-msgstr ""
+msgstr "Această parte va afișa datele din baza de cod"
 
 #: web/templates/settings/settings-data-codebase.html:39
 msgid "In progress"
-msgstr ""
+msgstr "În desfășurare"
 
 #: web/templates/settings/settings-data-codebase.html:39
 msgid "eta"
-msgstr ""
+msgstr "ETA"
 
 #: web/templates/settings/settings-data-codebase.html:44
 msgid "Completed"
-msgstr ""
+msgstr "Finalizat"
 
 #: web/templates/settings/settings-data-codebase.html:57
 #: web/templates/settings/settings-data-website.html:84
 msgid "Re-sync"
-msgstr ""
+msgstr "Re-sincronizează"
 
 #: web/templates/settings/settings-data-codebase.html:72
 #: web/templates/settings/settings-data-documents.html:55
 #: web/templates/settings/settings-data-website.html:102
 msgid "Delete"
-msgstr ""
+msgstr "Șterge"
 
 #: web/templates/settings/settings-data-documents.html:6
+
+#| msgid "Select your data source"
 msgid "Document data sources"
-msgstr ""
+msgstr "Selectează sursa datelor tale"
 
 #: web/templates/settings/settings-data-documents.html:7
 msgid "All your PDF/DOC/XLS files are in this list."
-msgstr ""
+msgstr "Toate fișierele tale PDF/DOC/XLS se află în această listă."
 
 #: web/templates/settings/settings-data-documents.html:22
 msgid "Bulk Files"
-msgstr ""
+msgstr "Fișiere în bloc"
 
 #: web/templates/settings/settings-data-documents.html:26
 msgid "upload_file"
-msgstr ""
+msgstr "încarcă_fișier"
 
 #: web/templates/settings/settings-data-documents.html:31
 msgid "wysiwyg"
-msgstr ""
+msgstr "wysiwyg"
 
 #: web/templates/settings/settings-data-documents.html:39
 #: web/templates/settings/settings-data-website.html:42
 msgid "Last update:"
-msgstr ""
+msgstr "Ultima actualizare:"
 
 #: web/templates/settings/settings-data-documents.html:46
 msgid "files scanned"
-msgstr ""
+msgstr "fișiere scanate"
 
 #: web/templates/settings/settings-data-documents.html:71
 #: web/templates/settings/settings-data-website.html:117
 msgid "Menu"
-msgstr ""
+msgstr "Meniu"
 
 #: web/templates/settings/settings-data-documents.html:96
 msgid "Download URL"
-msgstr ""
+msgstr "Descarcă URL"
 
 #: web/templates/settings/settings-data-documents.html:99
 #: web/templates/settings/settings-data-website.html:157
 msgid "On"
-msgstr ""
+msgstr "Activ"
 
 #: web/templates/settings/settings-data-website.html:33
 msgid "Website:"
-msgstr ""
+msgstr "Site web:"
 
 #: web/templates/settings/settings-data-website.html:49
 msgid "pages scanned"
-msgstr ""
+msgstr "pagini scanate"
 
 #: web/templates/settings/settings-data-website.html:142
 msgid "Url"
-msgstr ""
+msgstr "Url"
 
 #: web/templates/settings/settings-data-website.html:147
 msgid "Title"
-msgstr ""
+msgstr "Titlu"
 
 #: web/templates/settings/settings-data-website.html:152
 msgid "Status"
-msgstr ""
+msgstr "Stare"
 
 #: web/templates/settings/settings-data-website.html:198
 msgid "Done"
-msgstr ""
+msgstr "Finalizat"
 
 #: web/templates/widgets/chat-history.html:8
 msgid "person"
-msgstr ""
+msgstr "persoană"
 
 #: web/templates/widgets/chat-history.html:26
 msgid "badge"
-msgstr ""
+msgstr "insignă"
 
 #: web/templates/widgets/data-sources-updates.html:21
 msgid ""
 "We are currently in the process of crawling your website to prepare your "
 "chatbot. Once the crawling is complete, your chatbot will be ready. To "
 "access all data sources, please"
-msgstr ""
+msgstr "În prezent, suntem în procesul de scanare a site-ului tău web pentru a pregăti chatbot-ul tău. Odată ce scanarea este completă, chatbot-ul tău va fi gata. Pentru a accesa toate sursele de date, te rog"
 
 #: web/templates/widgets/data-sources-updates.html:21
 #: web/templates/widgets/data-sources-updates.html:76
 msgid "click here"
-msgstr ""
+msgstr "apasă aici"
 
 #: web/templates/widgets/data-sources-updates.html:27
 msgid "We're sorry,"
-msgstr ""
+msgstr "Ne pare rău,"
 
 #: web/templates/widgets/data-sources-updates.html:27
 msgid "but we're having trouble crawling your website"
-msgstr ""
+msgstr "dar avem probleme în a răsfoi site-ul tău web"
 
 #: web/templates/widgets/data-sources-updates.html:27
 msgid "Please double-check that your website is up and running."
-msgstr ""
+msgstr "Te rog verifică că site-ul tău web este activ și funcționează."
 
 #: web/templates/widgets/data-sources-updates.html:46
+
+#| msgid ""
+#| "While we are crawling your website, you can do some configurations on "
+#| "your chatbot"
 msgid "We are done crawling your website! Your chatbot is ready to go with"
 msgstr ""
+"În timp ce răsfoim site-ul tău web, poți face câteva configurări pe chatbot-"
+"ul tău"
 
 #: web/templates/widgets/data-sources-updates.html:46
+
+#| msgid "Data & Knowledge"
 msgid "knowledge"
-msgstr ""
+msgstr "Date și Cunoștințe"
 
 #: web/templates/widgets/data-sources-updates.html:76
 msgid ""
 "We are currently in the process of processing your PDF files. It may take "
 "some time for the bot to ingest all the data. You can"
-msgstr ""
+msgstr "În prezent, suntem în procesul de procesare a fișierelor tale PDF. S-ar putea să dureze ceva timp pentru ca botul să preia toate datele. Poți"
 
 #: web/templates/widgets/data-sources-updates.html:76
 msgid "to open all data sources."
-msgstr ""
+msgstr "pentru a deschide toate sursele de date."
 
 #: web/templates/widgets/data-sources-updates.html:82
 msgid ""
 "We encountered a problem while training the bot on your PDF files. Our team "
 "has been alerted, and we will investigate the issue."
-msgstr ""
+msgstr "Am întâmpinat o problemă în timpul antrenării botului cu fișierele tale PDF. Echipa noastră a fost alertată, și vom investiga problema."

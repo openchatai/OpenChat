@@ -1,13 +1,13 @@
+{% load i18n %}
 <div class="px-5 py-3 bg-indigo-50 border border-indigo-100 rounded-sm text-center xl:text-left xl:flex xl:flex-wrap xl:justify-between xl:items-center">
-    <div class="text-slate-800 font-semibold mb-2 xl:mb-0">Want to add new sources?
+    <div class="text-slate-800 font-semibold mb-2 xl:mb-0">{% trans "Want to add new sources?" %}
     </div>
 
     <div class="m-1.5">
         <!-- Start -->
         <div x-data="{ modalOpen: false }">
             <button class="btn bg-indigo-500 hover:bg-indigo-600 text-white" @click.prevent="modalOpen = true"
-                aria-controls="plan-modal">Add new
-                data source
+                aria-controls="plan-modal">{% trans "Add new data source" %}
             </button>
             <!-- Modal backdrop -->
             <div class="fixed inset-0 bg-slate-900 bg-opacity-30 z-50 transition-opacity" x-show="modalOpen"
@@ -29,9 +29,9 @@
                     <!-- Modal header -->
                     <div class="px-5 py-3 border-b border-slate-200">
                         <div class="flex justify-between items-center">
-                            <div class="font-semibold text-slate-800">Add new data source</div>
+                            <div class="font-semibold text-slate-800">{% trans "Add new data source" %}</div>
                             <button class="text-slate-400 hover:text-slate-500" @click="modalOpen = false">
-                                <div class="sr-only">Close</div>
+                                <div class="sr-only">{% trans "Close" %}</div>
                                 <svg class="w-4 h-4 fill-current">
                                     <path
                                         d="M7.95 6.536l4.242-4.243a1 1 0 111.415 1.414L9.364 7.95l4.243 4.242a1 1 0 11-1.415 1.415L7.95 9.364l-4.243 4.243a1 1 0 01-1.414-1.415L6.536 7.95 2.293 3.707a1 1 0 011.414-1.414L7.95 6.536z">
@@ -43,9 +43,7 @@
                     <!-- Modal content -->
                     <div class="px-5 pt-4 pb-1">
                         <div class="text-sm">
-                            <div class="mb-4">When you add a new data source, we will train our AI
-                                on this data, the results is that your chatbot should be able to
-                                answer questions from this data & knowldge</div>
+                            <div class="mb-4">{% trans "When you add a new data source, we will train our AI on this data, the results is that your chatbot should be able to answer questions from this data & knowldge" %}</div>
                             <!-- Options -->
                             <ul
                                 class="space-y-2 sm:flex sm:space-y-0 sm:space-x-2 lg:space-y-2 lg:space-x-0 lg:flex-col mb-4">
@@ -53,10 +51,9 @@
                                     class="w-full h-full text-left py-3 px-4 rounded bg-white border border-slate-200 hover:border-slate-300 shadow-sm duration-150 ease-in-out">
                                     <a href="{% url 'onboarding.other-data-sources-web' id=request.resolver_match.kwargs.id %}">
                                         <div class="flex flex-wrap items-center justify-between mb-0.5">
-                                            <span class="font-semibold text-slate-800">Website</span>
+                                            <span class="font-semibold text-slate-800">{% trans "Website" %}</span>
                                         </div>
-                                        <div class="text-sm">We will crawl your website and extract
-                                            the knowledge automatically.</div>
+                                        <div class="text-sm">{% trans "We will crawl your website and extract the knowledge automatically." %}</div>
                                     </a>
 
                                 </li>
@@ -65,11 +62,9 @@
                                     class="w-full h-full text-left py-3 px-4 rounded bg-white border border-slate-200 hover:border-slate-300 shadow-sm duration-150 ease-in-out">
                                     <a href="{% url 'onboarding.other-data-sources-pdf' id=request.resolver_match.kwargs.id %}">
                                         <div class="flex flex-wrap items-center justify-between mb-0.5">
-                                            <span class="font-semibold text-slate-800">PDF/DOCX/TXT/JSON/XLSX
-                                                files</span>
+                                            <span class="font-semibold text-slate-800">{% trans "PDF/DOCX/TXT/JSON/XLSX files" %}</span>
                                         </div>
-                                        <div class="text-sm">We will scan your files and extract
-                                            knowledge and any information</div>
+                                        <div class="text-sm">{% trans "We will scan your files and extract knowledge and any information" %}</div>
                                     </a>
                                 </li>
 
@@ -77,18 +72,14 @@
                                     <button
                                         class="w-full h-full text-left py-3 px-4 rounded bg-white border border-slate-200 hover:border-slate-300 shadow-sm duration-150 ease-in-out">
                                         <div class="flex flex-wrap items-center justify-between mb-0.5">
-                                            <span class="font-semibold text-slate-800">Confluence</span>
+                                            <span class="font-semibold text-slate-800">{% trans "Confluence" %}</span>
                                         </div>
-                                        <div class="text-sm">Automatically extract data from your
-                                            Confluence from your
-                                            workspace
+                                        <div class="text-sm">{% trans "Automatically extract data from your Confluence from your workspace" %}
                                         </div>
                                     </button>
                                 </li>
                             </ul>
-                            <div class="text-xs text-slate-500 mb-6">🔥 We are working on many other
-                                data sources, such as Notion, Confluence, Word Documents and many
-                                more.</div>
+                            <div class="text-xs text-slate-500 mb-6">🔥 {% trans "We are working on many other data sources, such as Notion, Confluence, Word Documents and many more." %}</div>
                         </div>
                     </div>
                 </div>

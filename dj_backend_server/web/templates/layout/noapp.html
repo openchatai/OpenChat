@@ -1,9 +1,10 @@
 {% load static %}
+{% load i18n %}
 <!DOCTYPE html>
 <html lang="en" data-sidebar-color="light" data-topbar-color="light" data-sidebar-view="default">
     <head>
         <meta charset="utf-8">
-        <title>Login | OpenChat</title>
+        <title>{% trans "Login | OpenChat" %}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="apple-touch-icon" sizes="180x180" href="{% static '/apple-touch-icon.png' %}">
         <link rel="icon" type="image/png" sizes="32x32" href="{% static '/favicon-32x32.png' %}">
@@ -27,7 +28,7 @@
                 {% block content %}{% endblock %}
             </div>
         </div>
-        <p class="text-white text-center mt-8">Create an Account ?<a href="#" class="font-medium ms-1">Register</a></p> 
+        <p class="text-white text-center mt-8">{% trans "Create an Account ?" %}<a href="#" class="font-medium ms-1">{% trans "Register" %}</a></p> 
     </div>
     {% block scripts %}{% endblock %}
 </body>
