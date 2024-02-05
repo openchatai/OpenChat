@@ -54,13 +54,6 @@ def chat(request):
         sanitized_question = question.strip().replace('\n', ' ')
 
         vector_store = get_vector_store(StoreOptions(namespace=namespace))
-        # Serialize vector_store information to JSON format for logging
-        # vector_store_info = {
-        #     "type": str(type(vector_store)),            
-        #     "namespace": namespace
-        # }
-        # print (f"Vector_store_info: {json.dumps(vector_store_info)}")
-        # print (f"mode: {mode} + initial_prompt: {initial_prompt} + sanitized_question: {sanitized_question} + session_id: {session_id}")
         
         response_text = get_completion_response(vector_store=vector_store, initial_prompt=initial_prompt,mode=mode, sanitized_question=sanitized_question, session_id=session_id)
         
@@ -82,7 +75,8 @@ def chat(request):
                     session_id=session_id,
                 )
             ])
-            return JsonResponse({'text': response_text['text']})
+
+            return JsonResponse({'text': response_text})   
         
         elif isinstance(response_text, str):
             ChatHistory.objects.bulk_create([
@@ -101,11 +95,10 @@ def chat(request):
                     session_id=session_id,
                 )
             ])
-            # print(f"ChatHistory created with response: {response_text}")
+
             return JsonResponse({'text': response_text})        
         
         else:
-            # print(f"Response does not contain 'text' key: {response_text}")
             return JsonResponse({'error': 'Unexpected response from API'}, status=500)
         
     except json.JSONDecodeError:

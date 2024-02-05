@@ -2,13 +2,15 @@ import requests
 import json
 import os
 from django.http import JsonResponse
+from django.utils.html import escape
 from django.shortcuts import get_object_or_404
+from django.conf import settings
 from django.views.decorators.http import require_POST, require_GET
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from web.models.chatbot import Chatbot
 from web.utils.common import get_session_id
 from web.models.chat_histories import ChatHistory
-
+from django.template.loader import render_to_string
 
 class ChatbotResponse:
     """
@@ -168,7 +170,7 @@ def send_chat(request):
         content = data.get('content')
         history = data.get('history')
         # content_type = data.get('type')
-
+        
         session_id = get_session_id(request=request, bot_id=bot.id)
         history = ChatHistory.objects.filter(session_id=session_id)
         history_entries = [{"message": entry.message, "from_user": entry.from_user} for entry in history]
@@ -197,7 +199,6 @@ def send_chat(request):
             },
             timeout=200
         )
-        # print(f"Response in JSON {response.json()}")
 
         """
         This block will first check if the response content is not empty. If it is empty, 
@@ -223,14 +224,18 @@ def send_chat(request):
                 })
 
         bot_response = ChatbotResponse(response.json())
-
+        # context = {'APP_URL': settings.APP_URL, session_id: session_id}
+        feedback_form_html = render_to_string('widgets/feedback.html', {'APP_URL': settings.APP_URL, 'session_id': session_id})
+        print(f"Response in JSON {session_id}")
         return JsonResponse({
-            "type": "text",
-            "response": {
-                "text": bot_response.get_bot_reply()
-            }
-        })
-
+                "type": "text",
+                "response": {
+                    "text": bot_response.get_bot_reply(),
+                    "html": feedback_form_html,
+                    "session_id": session_id 
+                }
+            })
+            
     except Exception as e:
         # @TODO: Log the exception into database.
         import traceback
@@ -242,3 +247,26 @@ def send_chat(request):
                 "text": "I'm unable to help you at the moment, please try again later.  **code: b404**"
             }
         }, status=500)
+
+
+@csrf_exempt
+@require_POST
+def handle_feedback(request):
+    try:
+        data = json.loads(request.body)
+        # Assuming the session_id is stored in the user's session or a secure cookie
+        session_id = data.get('session_id')
+        helpful = data.get('helpful', None)  # This can be True, False, or None
+
+        # Assuming you have a session_id field in your ChatHistory model
+        # and a new field for storing feedback
+        # Update the latest message for the given session_id with the helpful value
+        chat_history = ChatHistory.objects.filter(session_id=session_id).order_by('-updated_at').first()
+        if chat_history:
+            chat_history.feedback = helpful
+            chat_history.save()
+            return JsonResponse({'status': 'success'}, status=200)
+        else:
+            return JsonResponse({'error': 'Chat history not found'}, status=404)
+    except Exception as e:
+        return JsonResponse({'error': 'An error occurred'}, status=500)

@@ -1,0 +1,27 @@
+{% load i18n %}
+{% load static %}
+
+<div class="my-5">
+    <div class="w-full block h-px bg-gray-200 my-2"></div>
+    <div style="color: #000; background-color: #c3c3c3; transition: all 0.2s; padding: 0.25rem 0.5rem; border-radius: 0.375rem;">
+        {% trans "Was this response helpful?" %}
+    </div>
+    <div class="flex items-center gap-2 mt-1.5">
+        <button onclick="fetch('{{ APP_URL }}/api/rate/', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ helpful: true, session_id: '{{ session_id }}' }) })
+        .then(response => response.ok ? response.json() : Promise.reject(response))
+        .then(data => console.log(data))
+        .catch(error => console.error('API call failed:', error));"
+         style="color: #ffffff; background-color: #0057FF; transition: all 0.2s; padding: 0.25rem 0.5rem; border-radius: 0.375rem;">{% trans "Yes" %}</button>
+        <button onclick="fetch('{{ APP_URL }}/api/rate/', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ helpful: false, session_id: '{{ session_id }}' }) })
+        .then(response => response.ok ? response.json() : Promise.reject(response))
+        .then(data => console.log(data))
+        .catch(error => console.error('API call failed:', error));"
+         style="color: #ffffff; background-color: #cdb81b; transition: all 0.2s; padding: 0.25rem 0.5rem; border-radius: 0.375rem;">{% trans "No" %}</button>
+    </div>
+</div>
