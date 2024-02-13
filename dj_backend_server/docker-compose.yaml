@@ -3,6 +3,7 @@ version: '3.9'
 services:
   mysql:
     restart: unless-stopped
+    container_name: oc_mysql
     image: "mysql:8"
     ports:
       - "3307:3306"
@@ -19,6 +20,7 @@ services:
 
   qdrant:
     image: qdrant/qdrant
+    container_name: oc_qdrant
     ports:
       - 6333:6333
       - 6334:6334
@@ -31,7 +33,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: web
+    container_name: oc_web
     ports:
       - "8001:8000"
     volumes:
@@ -52,6 +54,7 @@ services:
 
   adminer:
     image: adminer
+    container_name: oc_adminer
     ports:
       - "8080:8080"
     environment:
@@ -65,7 +68,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: celery
+    container_name: oc_celery
     volumes:
       - ./website_data_sources:/app/website_data_sources
     # - ./llama-2-7b-chat.ggmlv3.q4_K_M.bin:/app/llama-2-7b-chat.ggmlv3.q4_K_M.bin:ro
@@ -79,7 +82,7 @@ services:
 
   redis:
     image: redis:latest
-    container_name: redis_cache
+    container_name: oc_redis_cache
     ports:
       - "6379:6379"
     volumes:

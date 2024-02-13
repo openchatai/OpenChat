@@ -222,7 +222,7 @@ def txt_to_vectordb(shared_folder: str, namespace: str, delete_folder_flag: bool
 
         docs = text_splitter.split_documents(raw_docs)
 
-        print("external files docs -->", docs);
+        # print("external files docs -->", docs);
         
         if not docs:
              print("No documents were processed successfully.")
@@ -230,7 +230,9 @@ def txt_to_vectordb(shared_folder: str, namespace: str, delete_folder_flag: bool
 
         embeddings = get_embeddings()
 
+        print(f"Initializing vector store for namespace: {namespace} with {len(docs)} documents.")
         init_vector_store(docs, embeddings, StoreOptions(namespace=namespace))
+        print(f"Vector store initialized successfully for namespace: {namespace}.")
 
         print(f'Folder need or not to delete. {delete_folder_flag}')
         # Delete folder if flag is set
@@ -243,7 +245,7 @@ def txt_to_vectordb(shared_folder: str, namespace: str, delete_folder_flag: bool
         # pdf_data_source.save()
         failed_job = FailedJob(uuid=str(uuid4()), connection='default', queue='default', payload='txt_to_vectordb', exception=str(e),failed_at=timezone.now())
         failed_job.save()
-        print(e)
+        print(f"Failed to initialize vector store for namespace: {namespace}. Exception: {e}")
         traceback.print_exc()
 
 
