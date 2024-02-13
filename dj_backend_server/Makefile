@@ -1,7 +1,6 @@
 # Makefile to Run docker-compose for Django App
 
-# first run "make pre-install" to create .env file and venv environment
-# Be sure you are in dj_backend_serrver directory to run the commands
+# first run "make preinstall" to create .env file and venv environment
 # you will need to edit .env file, it will be created from example.env
 # after .env is done, run "make install" to create run the nginx and docker-compose. 
 # doublecheck if the nginx.conf is correct, if not, edit it and run "make install" again
@@ -35,7 +34,7 @@ endif
 			case $$yn in \
 				[Yy]*) cp example.env .env; \
 				       echo "The .env file has been created from example.env."; \
-				       echo "Please edit the .env file and set the values for OPENAI_API_KEY, SECRET_KEY and APP_URL. ALLOWED_HOSTS is not mandatory.";; \
+				       echo "Please edit the .env file and set the values for OPENAI_API_KEY and APP_URL.";; \
 				*) echo "Exiting. Please create a .env file manually."; exit 1;; \
 			esac; \
 		else \
@@ -45,8 +44,6 @@ endif
 	fi
 
 venv:
-	@echo "Checking for Python venv module..."
-	@python3 -c "import venv" 2>/dev/null || (echo "\033[1;31mPython venv module is not installed. Please install it using your package manager.\033[0m" && exit 1)
 	@if [ ! -d "venv" ]; then \
 		echo "\033[1;32mCreating a virtual environment...\033[0m"; \
 		python3 -m venv venv; \
@@ -74,7 +71,7 @@ nginx:
 	fi
 
 down:
-	"$(DOCKER_COMPOSE)" down --remove-orphans
+	$(DOCKER_COMPOSE) down --remove-orphans
 
 ifeq ($(OS), Darwin)  # macOS
 OPEN_COMMAND := open
@@ -93,37 +90,37 @@ else
 endif
 
 install: nginx
-	"$(DOCKER_COMPOSE)" up -d
+	$(DOCKER_COMPOSE) up -d
 
 pre-install: .env venv install-requirements
 
 # celery -A dj_backend_server worker --loglevel=info &
 dev-start:
-	"$(DOCKER_COMPOSE)" -f docker-compose.linux.yaml up -d
+	$(DOCKER_COMPOSE) -f docker-compose.linux.yaml up -d
 	@echo "$(shell tput setaf 3)Waiting for 20 seconds before opening the browser...$(shell tput sgr0)"
 	sleep 20
 	$(OPEN_COMMAND) http://0.0.0.0:8000/	
 
 dev-stop:
-	"$(DOCKER_COMPOSE)" down --remove-orphans
+	$(DOCKER_COMPOSE) down --remove-orphans
 	kill -9 $$(pgrep -f "celery -A dj_backend_server")
 	kill -9 $$(pgrep -f "python3 manage.py runserver")
 	@echo $$(tput setaf 3)"Services stopped."$$(tput sgr0)
 
 force_migrate:
 	@echo $(shell tput setaf 2)"Running migrations inside the Docker container..."
-	"$(DOCKER)" exec -it web python manage.py makemigrations web
-	"$(DOCKER)" exec -it web python manage.py migrate
+	$(DOCKER) exec -it web python manage.py makemigrations web
+	$(DOCKER) exec -it web python manage.py migrate
 	
 logs:
-	"$(DOCKER_COMPOSE)" logs -f
+	$(DOCKER_COMPOSE) logs -f
 
 exec:
-	"$(DOCKER)" exec -u 0 -it oc_web /bin/bash
+	$(DOCKER) exec -u 0 -it oc_web /bin/bash
 
 restart:
-	"$(DOCKER)" restart oc_web
-	"$(DOCKER)" restart oc_celery
+	$(DOCKER) restart oc_web
+	$(DOCKER) restart oc_celery
 	make logs
 
 .PHONY: install .env venv activate-venv install-requirements down dev-start dev-stop nginx

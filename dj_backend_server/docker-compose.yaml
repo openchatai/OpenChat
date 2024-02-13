@@ -3,6 +3,7 @@ version: '3.9'
 services:
   mysql:
     restart: unless-stopped
+    platform: linux/arm64/v8
     image: "mysql:8"
     ports:
       - "3307:3306"
