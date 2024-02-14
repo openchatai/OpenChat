@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 from web.signals.website_data_source_crawling_was_completed import website_data_source_crawling_completed 
 from web.models.crawled_pages import CrawledPages
 from web.models.website_data_sources import WebsiteDataSource
+from api.utils.init_vector_store import ensure_vector_database_exists
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 from django.utils.text import slugify
@@ -35,6 +36,10 @@ def start_recursive_crawler(data_source_id, chatbot_id):
         Exception: If any error occurs during the crawling process, the function will catch the exception, set the
         crawling status to "failed", and re-raise the exception.
     """
+    # Ensure vector database exists before starting the crawl
+
+    ensure_vector_database_exists(str(chatbot_id))
+    # print("Starting recursive crawler")
     data_source = WebsiteDataSource.objects.get(pk=data_source_id)
     root_url = data_source.root_url
 

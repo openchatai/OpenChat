@@ -128,3 +128,31 @@ def delete_from_vector_store(namespace: str, filter_criteria: dict) -> None:
     else:
         raise NotImplementedError(f"Delete operation is not implemented for the store type: {store_type}")
 
+
+def ensure_vector_database_exists(namespace):
+    store_type = StoreType[os.environ['STORE']]
+    try:
+        if store_type == StoreType.QDRANT:
+            client = QdrantClient(url=os.environ['QDRANT_URL'])
+            for attempt in range(3):
+                existing_collections = client.get_collections().collections
+                if namespace not in existing_collections:
+                    print(f"Namespace '{namespace}' does not exist. Attempting to create.")
+                    vectors_config = models.VectorParams(
+                        size=1536,  # Using 1536-dimensional vectors, adjust as necessary
+                        distance=models.Distance.COSINE  # Using cosine distance, adjust as necessary
+                    )
+                    client.create_collection(collection_name=namespace, vectors_config=vectors_config)
+                    # Recheck if the namespace was successfully created
+                    if namespace in client.get_collections().collections:
+                        print(f"Namespace '{namespace}' successfully created.")
+                        return
+                    else:
+                        print(f"Failed to create namespace '{namespace}' on attempt {attempt + 1}.")
+                else:
+                    print(f"Namespace '{namespace}' exists.")
+                    return
+            raise Exception(f"Failed to ensure or create namespace '{namespace}' after 3 attempts.")
+    except Exception as e:
+        print(f"Failed to ensure vector database exists for namespace {namespace}: {e}")
+
