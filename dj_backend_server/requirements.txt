@@ -19,8 +19,7 @@ click-repl==0.3.0
 cryptography==41.0.3
 dataclasses-json==0.5.14
 Django==4.2.3
-django-rest-swagger
-djangorestframework
+django-rest-swagger==2.2.0
 dnspython==2.4.1
 drf-spectacular==0.27.1
 drf_spectacular.extensions==0.0.2
@@ -31,8 +30,8 @@ grpcio-tools==1.56.2
 h11==0.14.0
 h2==4.1.0
 hpack==4.0.0
-httpcore1.0.2
-httpx=0.25.2
+httpcore==1.0.2
+httpx==0.25.2
 hyperframe==6.0.1
 idna==3.6
 kombu==5.3.1
