@@ -1,21 +1,33 @@
-from langchain.llms import AzureOpenAI, OpenAI
 import os
 from dotenv import load_dotenv
-from langchain.llms import LlamaCpp
-load_dotenv()
-from langchain import PromptTemplate, LLMChain
+import logging.config
+import traceback
+from django.utils.timezone import make_aware
+from datetime import datetime, timezone
+from uuid import uuid4
+from ollama import Client
+from openai import OpenAI
+from django.conf import settings
+from langchain_openai.chat_models import ChatOpenAI
+from langchain_community.llms import Ollama
+from langchain_community.llms import AzureOpenAI
+from langchain_community.llms import LlamaCpp
+from langchain.prompts import PromptTemplate
+from langchain.chains import LLMChain
 from langchain.callbacks.manager import CallbackManager
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
-import traceback
 from web.models.failed_jobs import FailedJob
-from datetime import datetime
-from uuid import uuid4
+
+load_dotenv()
+logging.config.dictConfig(settings.LOGGING)
+logger = logging.getLogger(__name__)
+
 
 def get_llama_llm():
     try:
         n_gpu_layers = 1  # Metal set to 1 is enough.
         n_batch = 512  # Should be between 1 and n_ctx, consider the amount of RAM of your Apple Silicon Chip.
-        
+
         # Callbacks support token-wise streaming
         callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])
         llm = LlamaCpp(
@@ -28,24 +40,44 @@ def get_llama_llm():
             verbose=True,
             temperature=0.2,
         )
-        
+
         return llm
     except Exception as e:
-        failed_job = FailedJob(uuid=str(uuid4()), connection='default', queue='default', payload='get_llama_llm', exception=str(e), failed_at=datetime.now())
+
+        logger.debug(f"Exception in get_llama_llm: {e}")
+        failed_job = FailedJob(
+            uuid=str(uuid4()),
+            connection="default",
+            queue="default",
+            payload="get_llama_llm",
+            exception=str(e),
+            failed_at=make_aware(datetime.now(), timezone.utc),
+        )
         failed_job.save()
         print(f"Exception occurred: {e}")
         traceback.print_exc()
+
 
 # Azure OpenAI Language Model client
 def get_azure_openai_llm():
     """Returns AzureOpenAI instance configured from environment variables"""
     try:
-        openai_api_type = os.environ['OPENAI_API_TYPE']
-        openai_api_key = os.environ['AZURE_OPENAI_API_KEY']
-        openai_deployment_name = os.environ['AZURE_OPENAI_DEPLOYMENT_NAME']
-        openai_model_name = os.environ['AZURE_OPENAI_COMPLETION_MODEL']
-        openai_api_version = os.environ['AZURE_OPENAI_API_VERSION']
-        openai_api_base=os.environ['AZURE_OPENAI_API_BASE']
+        if settings.DEBUG:
+            openai_api_type = "openai"  # JUST FOR DEVELOPMENT
+            logging.debug(f"DEVELOPMENT Using API Type: {openai_api_type}")
+        else:
+            openai_api_type = os.environ["AZURE_OPENAI_API_TYPE"]
+
+        openai_api_key = os.environ["AZURE_OPENAI_API_KEY"]
+        openai_deployment_name = os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"]
+        openai_model_name = os.environ["AZURE_OPENAI_COMPLETION_MODEL"]
+        openai_api_version = os.environ["AZURE_OPENAI_API_VERSION"]
+        openai_api_base = os.environ["AZURE_OPENAI_API_BASE"]
+        openai_api_key = os.environ["AZURE_OPENAI_API_KEY"]
+        openai_deployment_name = os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"]
+        openai_model_name = os.environ["AZURE_OPENAI_COMPLETION_MODEL"]
+        openai_api_version = os.environ["AZURE_OPENAI_API_VERSION"]
+        openai_api_base = os.environ["AZURE_OPENAI_API_BASE"]
         return AzureOpenAI(
             openai_api_base=openai_api_base,
             openai_api_key=openai_api_key,
@@ -54,51 +86,127 @@ def get_azure_openai_llm():
             openai_api_type=openai_api_type,
             openai_api_version=openai_api_version,
             temperature=0,
-            batch_size=8
+            batch_size=8,
         )
     except Exception as e:
-        failed_job = FailedJob(uuid=str(uuid4()), connection='default', queue='default', payload='get_azure_openai_llm', exception=str(e), failed_at=datetime.now())
+        logger.debug(f"Exception in get_azure_openai_llm: {e}")
+        failed_job = FailedJob(
+            uuid=str(uuid4()),
+            connection="default",
+            queue="default",
+            payload="get_azure_openai_llm",
+            exception=str(e),
+            failed_at=make_aware(datetime.now(), timezone.utc),
+        )
         failed_job.save()
         print(f"Exception occurred: {e}")
         traceback.print_exc()
 
-# OpenAI Language Model client  
+
+# OpenAI Language Model client
 def get_openai_llm():
     """Returns OpenAI instance configured from environment variables"""
     try:
-        openai_api_key = os.environ['OPENAI_API_KEY']
+        openai_api_key = os.environ.get("OPENAI_API_KEY")
+        temperature = os.environ.get("OPENAI_API_TEMPERATURE")
+        model = os.environ.get("OPENAI_API_MODEL", "gpt-3.5-turbo")
 
-        return OpenAI(
-            temperature=float(os.environ.get('OPENAI_API_TEMPERATURE', '0')),
+        logging.debug(
+            f"We are in get_openai_llm: {openai_api_key} {temperature} {model}"
+        )
+        return ChatOpenAI(
+            temperature=temperature,
             openai_api_key=openai_api_key,
-            model_name=os.environ.get('OPENAI_API_MODEL', 'gpt-3.5-turbo'),
+            model=model,
         )
     except Exception as e:
-        failed_job = FailedJob(uuid=str(uuid4()), connection='default', queue='default', payload='get_openai_llm', exception=str(e), failed_at=datetime.now())
+        logger.debug(f"Exception in get_openai_llm: {e}")
+        failed_job = FailedJob(
+            uuid=str(uuid4()),
+            connection="default",
+            queue="default",
+            payload="get_openai_llm",
+            exception=str(e),
+            failed_at=make_aware(datetime.now(), timezone.utc),
+        )
         failed_job.save()
         print(f"Exception occurred: {e}")
         traceback.print_exc()
 
-        
-# recommend not caching initially, and optimizing only if you observe a clear performance benefit from caching the clients. 
-# The simplest thing that works is often best to start.
+
+def get_ollama_llm(sanitized_question):
+    """Returns an Ollama Server instance configured from environment variables"""
+    llm = Client(host=os.environ.get("OLLAMA_URL"))
+    # Use the client to make a request
+    try:
+        if sanitized_question:
+            response = llm.chat(
+                model=os.environ.get("OLLAMA_MODEL_NAME"),
+                messages=[{"role": "user", "content": sanitized_question}],
+            )
+        else:
+            raise ValueError("Question cannot be None.")
+        if response:
+            return response
+        else:
+            raise ValueError("Invalid response from Ollama.")
+
+    except Exception as e:
+        logger.debug(f"Exception in get_ollama_llm: {e}")
+        failed_job = FailedJob(
+            uuid=str(uuid4()),
+            connection="default",
+            queue="default",
+            payload="get_openai_llm",
+            exception=str(e),
+            failed_at=make_aware(datetime.now(), timezone.utc),
+        )
+        failed_job.save()
+        print(f"Exception occurred: {e}")
+        traceback.print_exc()
+
 
 def get_llm():
     """Returns LLM client instance based on OPENAI_API_TYPE"""
     try:
         clients = {
-            'azure': get_azure_openai_llm,
-            'openai': get_openai_llm,
-            'llama2': get_llama_llm
+            "azure": get_azure_openai_llm,
+            "openai": get_openai_llm,
+            "llama2": get_llama_llm,
+            "ollama": lambda: get_ollama_llm(),
         }
-        
-        api_type = os.environ.get('OPENAI_API_TYPE')
+
+        api_type = os.environ.get("OPENAI_API_TYPE", "openai")
         if api_type not in clients:
             raise ValueError(f"Invalid OPENAI_API_TYPE: {api_type}")
-        
-        return clients[api_type]()
+
+        logging.debug(f"Using LLM: {api_type}")
+
+        if api_type in clients:
+            if api_type == "ollama":
+                return clients[api_type]()
+            elif api_type != "ollama":
+                return clients[api_type]()
+        else:
+            raise ValueError(f"Invalid OPENAI_API_TYPE: {api_type}")
+
     except Exception as e:
-        failed_job = FailedJob(uuid=str(uuid4()), connection='default', queue='default', payload='get_llm', exception=str(e), failed_at=datetime.now())
-        failed_job.save()
-        print(f"Exception occurred: {e}")
+        failed_job = FailedJob(
+            uuid=str(uuid4()),
+            connection="default",
+            queue="default",
+            payload="get_llm",
+            exception=str(e),
+            failed_at=datetime.now(),
+        )
+        failed_job = FailedJob(
+            uuid=str(uuid4()),
+            connection="default",
+            queue="default",
+            payload="get_llm",
+            exception=str(e),
+            failed_at=make_aware(datetime.now(), timezone.utc),
+        )
+        failed_job.save()  # Ensure datetime is timezone-aware
+        print(f"Exception occurred in get_llm: {e}")
         traceback.print_exc()

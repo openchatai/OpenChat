@@ -1,22 +1,30 @@
-from langchain.vectorstores.base import VectorStore
 from dotenv import load_dotenv
+import logging.config
+import json
+import io
+from django.conf import settings
+from langchain.vectorstores.base import VectorStore
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
 from langchain.memory import ConversationBufferMemory
-from api.utils.get_openai_llm import get_llm
-from langchain.chat_models import ChatOpenAI
-from langchain import PromptTemplate, LLMChain
+from langchain_openai.chat_models import ChatOpenAI
+from langchain.chains import LLMChain
 from langchain.chains import RetrievalQAWithSourcesChain, ConversationalRetrievalChain
 from api.utils.get_prompts import get_qa_prompt_by_mode
-import io
+from api.utils.get_openai_llm import get_llm
+
 
 load_dotenv()
+logging.config.dictConfig(settings.LOGGING)
+logger = logging.getLogger(__name__)
 
 
-def get_qa_chain(vector_store: VectorStore, mode: str, initial_prompt: str) -> RetrievalQA:
+def get_qa_chain(
+    vector_store: VectorStore, mode: str, initial_prompt: str
+) -> RetrievalQA:
     """
-    This function creates a RetrievalQA object, which is used for question-answering tasks. It retrieves the language model and the 
-    question-answering prompt based on the mode and the initial prompt, and uses them along with the vector store to create the 
+    This function creates a RetrievalQA object, which is used for question-answering tasks. It retrieves the language model and the
+    question-answering prompt based on the mode and the initial prompt, and uses them along with the vector store to create the
     RetrievalQA object.
 
     Args:
@@ -35,14 +43,16 @@ def get_qa_chain(vector_store: VectorStore, mode: str, initial_prompt: str) -> R
         llm,
         retriever=vector_store.as_retriever(),
         chain_type_kwargs={"prompt": prompt},
-        return_source_documents=True
+        return_source_documents=True,
     )
     return qa_chain
 
 
-def getRetrievalQAWithSourcesChain(vector_store: VectorStore, mode: str, initial_prompt: str) -> RetrievalQAWithSourcesChain:
+def getRetrievalQAWithSourcesChain(
+    vector_store: VectorStore, mode: str, initial_prompt: str
+) -> RetrievalQAWithSourcesChain:
     """
-    This function creates a RetrievalQAWithSourcesChain object, which is used for question-answering tasks. It retrieves the language model 
+    This function creates a RetrievalQAWithSourcesChain object, which is used for question-answering tasks. It retrieves the language model
     and uses it along with the vector store to create the RetrievalQAWithSourcesChain object.
 
     Args:
@@ -54,14 +64,21 @@ def getRetrievalQAWithSourcesChain(vector_store: VectorStore, mode: str, initial
         RetrievalQAWithSourcesChain: The RetrievalQAWithSourcesChain object, which can be used for question-answering tasks.
     """
     llm = get_llm()
-    chain = RetrievalQAWithSourcesChain.from_chain_type(llm, chain_type="stuff", retriever=vector_store.as_retriever())
+    chain = RetrievalQAWithSourcesChain.from_chain_type(
+        llm, chain_type="stuff", retriever=vector_store.as_retriever()
+    )
+    logger.debug(f"ConversationalRetrievalChain created: {chain}")
     return chain
 
 
-def getConversationRetrievalChain(vector_store: VectorStore, mode: str, initial_prompt: str) -> ConversationalRetrievalChain:
+def getConversationRetrievalChain(
+    vector_store: VectorStore,
+    mode: str,
+    initial_prompt: str,
+) -> ConversationalRetrievalChain:
     """
-    This function creates a ConversationalRetrievalChain object, which is used for conversational retrieval tasks. It retrieves the 
-    language model and the question-answering prompt based on the mode and the initial prompt, and uses them along with the vector store 
+    This function creates a ConversationalRetrievalChain object, which is used for conversational retrieval tasks. It retrieves the
+    language model and the question-answering prompt based on the mode and the initial prompt, and uses them along with the vector store
     to create the ConversationalRetrievalChain object.
 
     Args:
@@ -76,18 +93,20 @@ def getConversationRetrievalChain(vector_store: VectorStore, mode: str, initial_
     template = get_qa_prompt_by_mode(mode, initial_prompt=initial_prompt)
     prompt = PromptTemplate.from_template(template)
     chain = ConversationalRetrievalChain.from_llm(
-        llm, 
-        chain_type="stuff", 
-        retriever=vector_store.as_retriever(), 
+        llm,
+        chain_type="stuff",
+        retriever=vector_store.as_retriever(),
         verbose=True,
-        combine_docs_chain_kwargs={"prompt": prompt}
+        combine_docs_chain_kwargs={"prompt": prompt},
     )
+    logger.debug(f"ConversationalRetrievalChain {llm}, created: {chain}")
     return chain
+
 
 def process_text_with_llm(txt_file_path: str, mode, initial_prompt: str):
     """
-    This function processes a text file or an in-memory text stream using a language model. It reads the text, creates a prompt 
-    template with the initial prompt, formats the prompt template with the text, sends the formatted prompt to the language model, 
+    This function processes a text file or an in-memory text stream using a language model. It reads the text, creates a prompt
+    template with the initial prompt, formats the prompt template with the text, sends the formatted prompt to the language model,
     and writes the response back into the text file or the in-memory text stream.
 
     Args:
@@ -103,14 +122,8 @@ def process_text_with_llm(txt_file_path: str, mode, initial_prompt: str):
         text = txt_file_path.getvalue()
     else:
         # Read the text file
-        with open(txt_file_path, 'r') as txt_file:
+        with open(txt_file_path, "r") as txt_file:
             text = txt_file.read()
-
-    # Create a prompt template with your initial_prompt
-    prompt_template = PromptTemplate.from_template(initial_prompt)
-    # Format the prompt template with the text to be corrected
-    # formatted_prompt = prompt_template.format(text=text)
-    # print(f"Formatted prompt: {formatted_prompt}")
 
     # Send the formatted prompt to LLM and get the result
     llm = get_llm()
@@ -121,19 +134,21 @@ def process_text_with_llm(txt_file_path: str, mode, initial_prompt: str):
         response = result
     elif isinstance(result, dict):
         # Extract only the response from the result
-        response = result['choices'][0]['message']['content']
+        response = result["choices"][0]["message"]["content"]
     else:
-        print(f"Error: LLM result is not a dictionary or a string. It is a {type(result)} with value {result}")
+        print(
+            f"Error: LLM result is not a dictionary or a string. It is a {type(result)} with value {result}"
+        )
         return
 
     # Check if txt_file_path is a string or an in-memory text stream
     if isinstance(txt_file_path, io.StringIO):
         # Write the response back into the in-memory text stream
         txt_file_path.write(response)
-        print(f"Write.  with value {txt_file_path}")
+        print(f"Write with value {txt_file_path}")
     else:
         # Write the response into a new text file
-        result_file_path = txt_file_path.replace('.txt', '.txt')
-        with open(result_file_path, 'w') as result_file:
+        result_file_path = txt_file_path.replace(".txt", ".txt")
+        with open(result_file_path, "w") as result_file:
             result_file.write(response)
-            print(f"Write.  with value {result_file_path}")
+            print(f"Write with value {result_file_path}")

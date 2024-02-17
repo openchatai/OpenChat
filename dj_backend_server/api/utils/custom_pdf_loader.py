@@ -1,7 +1,7 @@
 import io
 from langchain.docstore.base import Document
-from langchain.document_loaders.base import BaseLoader
-from langchain.document_loaders import PyPDFLoader
+from langchain_community.document_loaders.base import BaseLoader
+from langchain_community.document_loaders import PyPDFLoader
 
 class BufferLoader(BaseLoader):
     def __init__(self, filePathOrBlob):

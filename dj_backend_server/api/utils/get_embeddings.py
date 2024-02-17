@@ -1,17 +1,17 @@
-from langchain.embeddings.openai import OpenAIEmbeddings
-from api.enums import EmbeddingProvider
 import os
 from dotenv import load_dotenv
 from langchain.embeddings.base import Embeddings
-from langchain.embeddings import LlamaCppEmbeddings
+from langchain_community.embeddings import LlamaCppEmbeddings
+from langchain_openai import OpenAIEmbeddings
+from api.enums import EmbeddingProvider
 
 load_dotenv()
-import os
 
 
 def get_embedding_provider():
     """Gets the chosen embedding provider from environment variables."""
     return os.environ.get("EMBEDDING_PROVIDER")
+
 
 def get_azure_embedding():
     """Gets embeddings using the Azure embedding provider."""
@@ -30,15 +30,17 @@ def get_azure_embedding():
         openai_api_version=openai_api_version
     )
 
+
 def get_openai_embedding():
     """Gets embeddings using the OpenAI embedding provider."""
     openai_api_key = os.environ.get("OPENAI_API_KEY")
+    return OpenAIEmbeddings(openai_api_key=openai_api_key,  chunk_size=1)
 
-    return OpenAIEmbeddings(openai_api_key=openai_api_key, chunk_size=1)
 
 def get_llama2_embedding():
     """Gets embeddings using the llama2 embedding provider."""
     return LlamaCppEmbeddings(model_path="llama-2-7b-chat.ggmlv3.q4_K_M.bin")
+
 
 def choose_embedding_provider():
     """Chooses and returns the appropriate embedding provider instance."""
@@ -52,7 +54,6 @@ def choose_embedding_provider():
     
     elif embedding_provider == EmbeddingProvider.llama2.value:
         return get_llama2_embedding()
-    
 
     else:
         available_providers = ", ".join([service.value for service in EmbeddingProvider])
@@ -60,6 +61,7 @@ def choose_embedding_provider():
             f"Embedding service '{embedding_provider}' is not currently available. "
             f"Available services: {available_providers}"
         )
+
 
 # Main function to get embeddings
 def get_embeddings() -> Embeddings:

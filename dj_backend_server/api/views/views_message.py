@@ -1,6 +1,8 @@
 import requests
 import json
 import os
+import traceback
+import logging
 from django.http import JsonResponse
 from django.utils.html import escape
 from django.shortcuts import get_object_or_404
@@ -11,6 +13,11 @@ from web.models.chatbot import Chatbot
 from web.utils.common import get_session_id
 from web.models.chat_histories import ChatHistory
 from django.template.loader import render_to_string
+from django.utils.translation import gettext as _
+
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
+
 
 class ChatbotResponse:
     """
@@ -21,6 +28,7 @@ class ChatbotResponse:
         response (dict): The chatbot's response. It is expected to be a dictionary with a 'text' key for the bot's reply and an
         optional 'sourceDocuments' key for the source documents.
     """
+
     def __init__(self, response):
         """
         Initializes a new instance of the ChatbotResponse class.
@@ -37,7 +45,7 @@ class ChatbotResponse:
         Returns:
             str: The bot's reply.
         """
-        return self.response['text']
+        return self.response.get("text", "Sorry, I could not process your request.")
 
     def get_source_documents(self):
         """
@@ -47,7 +55,7 @@ class ChatbotResponse:
         Returns:
             list: The source documents, or an empty list if none are included in the response.
         """
-        return self.response.get('sourceDocuments', [])
+        return self.response.get("sourceDocuments", [])
 
 
 @require_GET
@@ -57,25 +65,22 @@ def init_chat(request):
     corresponding chatbot from the database. If no chatbot with the given token is found, it returns a 404 error. The function
     then returns a JSON response with the chatbot's name, a placeholder logo, and empty lists for FAQs and initial questions.
     @TODO: To check what is FAQ should return or we should get out the FAQ part from the initial template.
-    
+
     Args:
         request (HttpRequest): The HTTP request object. The bot token is expected to be in the 'X-Bot-Token' header of this request.
 
     Returns:
         JsonResponse: A JSON response containing the chatbot's name, a placeholder logo, and empty lists for FAQs and initial questions.
     """
-    bot_token = request.headers.get('X-Bot-Token')
+    bot_token = request.headers.get("X-Bot-Token")
     bot = get_object_or_404(Chatbot, token=bot_token)
 
-    return JsonResponse({
-        "bot_name": bot.name,
-        "logo": "logo",
-        "faq": [],
-        "initial_questions": []
-    })
+    return JsonResponse(
+        {"bot_name": bot.name, "logo": "logo", "faq": [], "initial_questions": []}
+    )
 
 
-@csrf_exempt 
+@csrf_exempt
 @require_POST
 def send_search_request(request):
     """
@@ -95,50 +100,54 @@ def send_search_request(request):
     try:
         # Validate the request data
         data = json.loads(request.body)
-        message = data.get('message')
-        history = data.get('history', [])
+        message = data.get("message")
+        history = data.get("history", [])
         # Implement the equivalent logic for validation
         if not message:
-            return JsonResponse({
-                'ai_response': "Message is required."
-            }, status=400)
+            return JsonResponse({"ai_response": "Message is required."}, status=400)
         # You can add additional validation for 'history' if needed.
 
-        bot_token = request.headers.get('X-Bot-Token')
+        bot_token = request.headers.get("X-Bot-Token")
         bot = get_object_or_404(Chatbot, token=bot_token)
         session_id = get_session_id(request=request, bot_id=bot.id)
         history = ChatHistory.objects.filter(session_id=session_id)
-        history_entries = [{"message": entry.message, "from_user": entry.from_user} for entry in history]
-        
+        history_entries = [
+            {"message": entry.message, "from_user": entry.from_user}
+            for entry in history
+        ]
+
         # Implement the equivalent logic to send the HTTP request to the external API
         response = requests.post(
-            os.getenv('APP_URL') + '/api/chat/',
+            os.getenv("APP_URL") + "/api/chat/",
             json={
-                'question': message,
-                'namespace': str(bot.id), 
-                'mode': "assistant",
-                'initial_prompt': bot.prompt_message,
-                'history': history_entries,  
-                'token': bot_token,
-                "session_id": session_id
+                "question": message,
+                "namespace": str(bot.id),
+                "mode": "assistant",
+                "initial_prompt": bot.prompt_message,
+                "history": history_entries,
+                "token": bot_token,
+                "session_id": session_id,
             },
-            timeout=200
+            timeout=200,
         )
 
         response_json = response.json()
-        if 'text' in response_json:
+        if "text" in response_json:
             bot_response = ChatbotResponse(response_json)
-            return JsonResponse({
-                'ai_response': bot_response.get_bot_reply()
-            })
+            return JsonResponse({"ai_response": bot_response.get_bot_reply()})
         else:
-            return JsonResponse({'error': 'Unexpected response from API'}, status=500)
+            return JsonResponse({"error": "Unexpected response from API"}, status=500)
 
     except Exception as e:
         # @TODO: Log the exception into database.
-        return JsonResponse({
-            'ai_response': "Something went wrong, please try again later. If this issue persists, please contact support."
-        }, status=500)
+        return JsonResponse(
+            {
+                "ai_response": _(
+                    "Something went wrong, please try again later. If this issue persists, please contact support."
+                )
+            },
+            status=500,
+        )
 
 
 @csrf_exempt
@@ -160,45 +169,65 @@ def send_chat(request):
         if the API response did not include a 'text' key, or an error message and a 500 status code if an exception was raised.
     """
     try:
+
+        if settings.DEBUG:
+            logger.debug("Entering send_chat function")
         # You can add additional validation for 'history' and 'content_type' if needed.
 
-        bot_token = request.headers.get('X-Bot-Token')
+        bot_token = request.headers.get("X-Bot-Token")
         bot = get_object_or_404(Chatbot, token=bot_token)
 
         data = json.loads(request.body)
+        if settings.DEBUG:
+            logger.debug(
+                f"Request data: {data}"
+            )  # {'from': 'user', 'type': 'text', 'content': 'input text from chat'}
         # Validate the request data
-        content = data.get('content')
-        history = data.get('history')
-        # content_type = data.get('type')
-        
+        content = data.get("content")
+        history = data.get("history")
+        if settings.DEBUG:
+            logger.debug(f"Content: {content}")
+            logger.debug(
+                f"History: {history}"
+            )  # history is a list of chat history - None????
+        content_type = data.get("type")
+
         session_id = get_session_id(request=request, bot_id=bot.id)
         history = ChatHistory.objects.filter(session_id=session_id)
-        history_entries = [{"message": entry.message, "from_user": entry.from_user} for entry in history]
+        history_entries = [
+            {"message": entry.message, "from_user": entry.from_user}
+            for entry in history
+        ]
+        if settings.DEBUG:
+            logger.debug(
+                f"History entries in JSON: {history_entries} - and history in text from DB: {history}"
+            )
 
         # Implement the equivalent logic for validation
         if not content:
-            return JsonResponse({
-                "type": "text",
-                "response": {
-                    "text": "Content is required."
-                }
-            }, status=400)
+            return JsonResponse(
+                {"type": "text", "response": {"text": "Content is required."}},
+                status=400,
+            )
 
         # Implement the equivalent logic to send the HTTP request to the external API
-
+        if settings.DEBUG:
+            logger.debug(f"External API response START")
         response = requests.post(
-            os.getenv('APP_URL') + '/api/chat/',
+            os.getenv("APP_URL") + "/api/chat/",
             json={
-                'question': content,
-                'namespace': str(bot.id),  # Assuming getId returns a UUID object
-                'mode': "assistant",
-                'initial_prompt': bot.prompt_message,
-                'history': history_entries,
-                'token': bot_token,
-                "session_id": session_id
+                "question": content,
+                "namespace": str(bot.id),  # Assuming getId returns a UUID object
+                "mode": "assistant",
+                "initial_prompt": bot.prompt_message,
+                "history": history_entries,
+                "token": bot_token,
+                "session_id": session_id,
             },
-            timeout=200
+            timeout=200,
         )
+        if settings.DEBUG:
+            logger.debug(f"External API response: {response.text} and {response}")
 
         """
         This block will first check if the response content is not empty. If it is empty, 
@@ -206,47 +235,61 @@ def send_chat(request):
         a JSONDecodeError, it will catch the exception and return a JsonResponse with an error message.
         """
         if not response.content:
-            return JsonResponse({
-                "type": "text",
-                "response": {
-                    "text": "The request was received successfully, but the LLM server was unable to handle it, please make sure your env keys are set correctly. **code: llm5XX**"
-                }
-            })
-        else:
-            try:
-                response_json = response.json()
-            except json.JSONDecodeError:
-                return JsonResponse({
+            return JsonResponse(
+                {
                     "type": "text",
                     "response": {
                         "text": "The request was received successfully, but the LLM server was unable to handle it, please make sure your env keys are set correctly. **code: llm5XX**"
+                    },
+                }
+            )
+        else:
+            try:
+                response_json = response.json()
+                logger.debug(f"Response JSON: {response_json}")
+            except json.JSONDecodeError:
+                logger.error("JSONDecodeError occurred")
+                return JsonResponse(
+                    {
+                        "type": "text",
+                        "response": {
+                            "text": "The request was received successfully, but the LLM server was unable to handle it, please make sure your env keys are set correctly. **code: llm5XX**"
+                        },
                     }
-                })
+                )
 
         bot_response = ChatbotResponse(response.json())
         # context = {'APP_URL': settings.APP_URL, session_id: session_id}
-        feedback_form_html = render_to_string('widgets/feedback.html', {'APP_URL': settings.APP_URL, 'session_id': session_id})
+        feedback_form_html = render_to_string(
+            "widgets/feedback.html",
+            {"APP_URL": settings.APP_URL, "session_id": session_id},
+        )
         print(f"Response in JSON {session_id}")
-        return JsonResponse({
+        return JsonResponse(
+            {
                 "type": "text",
                 "response": {
                     "text": bot_response.get_bot_reply(),
                     "html": feedback_form_html,
-                    "session_id": session_id 
-                }
-            })
-            
+                    "session_id": session_id,
+                },
+            }
+        )
+
     except Exception as e:
         # @TODO: Log the exception into database.
-        import traceback
+        logger.error(f"Exception in send_chat: {e}")
         print(e)
         traceback.print_exc()
-        return JsonResponse({
-            "type": "text",
-            "response": {
-                "text": "I'm unable to help you at the moment, please try again later.  **code: b404**"
-            }
-        }, status=500)
+        return JsonResponse(
+            {
+                "type": "text",
+                "response": {
+                    "text": "I'm unable to help you at the moment, please try again later.  **code: b404**"
+                },
+            },
+            status=500,
+        )
 
 
 @csrf_exempt
@@ -255,18 +298,22 @@ def handle_feedback(request):
     try:
         data = json.loads(request.body)
         # Assuming the session_id is stored in the user's session or a secure cookie
-        session_id = data.get('session_id')
-        helpful = data.get('helpful', None)  # This can be True, False, or None
+        session_id = data.get("session_id")
+        helpful = data.get("helpful", None)  # This can be True, False, or None
 
         # Assuming you have a session_id field in your ChatHistory model
         # and a new field for storing feedback
         # Update the latest message for the given session_id with the helpful value
-        chat_history = ChatHistory.objects.filter(session_id=session_id).order_by('-updated_at').first()
+        chat_history = (
+            ChatHistory.objects.filter(session_id=session_id)
+            .order_by("-updated_at")
+            .first()
+        )
         if chat_history:
             chat_history.feedback = helpful
             chat_history.save()
-            return JsonResponse({'status': 'success'}, status=200)
+            return JsonResponse({"status": "success"}, status=200)
         else:
-            return JsonResponse({'error': 'Chat history not found'}, status=404)
+            return JsonResponse({"error": "Chat history not found"}, status=404)
     except Exception as e:
-        return JsonResponse({'error': 'An error occurred'}, status=500)
+        return JsonResponse({"error": "An error occurred"}, status=500)

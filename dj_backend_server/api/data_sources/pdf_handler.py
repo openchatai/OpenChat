@@ -13,9 +13,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
 from django.shortcuts import get_object_or_404
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.document_loaders.directory import DirectoryLoader
-from langchain.document_loaders import PyPDFium2Loader
-from langchain.document_loaders import TextLoader
+from langchain_community.document_loaders.directory import DirectoryLoader
+from langchain_community.document_loaders import PyPDFium2Loader
+from langchain_community.document_loaders import TextLoader
 from api.utils import get_embeddings
 from api.utils import init_vector_store
 from api.interfaces import StoreOptions

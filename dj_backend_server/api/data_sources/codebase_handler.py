@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from api.utils import get_embeddings
-from langchain.document_loaders import GitLoader
+from langchain_community.document_loaders import GitLoader
 from api.utils import init_vector_store
 from api.interfaces import StoreOptions
 
