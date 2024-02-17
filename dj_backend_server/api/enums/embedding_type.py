@@ -6,4 +6,5 @@ class EmbeddingProvider(Enum):
     BARD = "bard"
     azure = "azure"
     llama2 = "llama2"
+    ollama = "ollama"
 

@@ -1,6 +1,6 @@
 from langchain.docstore.document import Document
 from langchain.vectorstores.qdrant import Qdrant
-from langchain.embeddings.openai import OpenAIEmbeddings
+from langchain_openai import OpenAIEmbeddings
 from langchain.vectorstores.pinecone import Pinecone
 from qdrant_client import QdrantClient
 from qdrant_client import models
@@ -130,6 +130,18 @@ def delete_from_vector_store(namespace: str, filter_criteria: dict) -> None:
 
 
 def ensure_vector_database_exists(namespace):
+    """
+    This function ensures that a vector database exists for a given namespace. If the database does not exist, it attempts to 
+    create it. The function uses the 'STORE' environment variable to determine the type of store to use. If the store type is 
+    'QDRANT', it uses a QdrantClient to interact with the Qdrant server.
+
+    Args:
+        namespace (str): The namespace for which to ensure a vector database exists.
+
+    Raises:
+        Exception: If the function fails to ensure or create the vector database after 3 attempts, it raises an exception. 
+        It also raises an exception if any other error occurs during the process.
+    """
     store_type = StoreType[os.environ['STORE']]
     try:
         if store_type == StoreType.QDRANT:

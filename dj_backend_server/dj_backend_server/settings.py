@@ -1,6 +1,6 @@
 import os
 from os import path
-from dotenv import load_dotenv,find_dotenv
+from dotenv import load_dotenv, find_dotenv
 
 # Get the parent directory of the Django project
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -39,6 +39,28 @@ SECRET_KEY = os.environ["SECRET_KEY"]
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# import logging.config
+# logging.config.dictConfig(settings.LOGGING)
+# logger = logging.getLogger(__name__)
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {"class": "logging.StreamHandler", "formatter": "detailed"},
+    },
+    "formatters": {
+        "detailed": {
+            "format": "%(asctime)s | %(levelname)s:%(name)s:%(message)s",
+            "style": "%",
+            "datefmt": "%Y-%m-%d %H:%M:%S",
+        },
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "DEBUG" if DEBUG else "ERROR",
+    },
+}
+
 ALLOWED_HOSTS = []
 
 # Use /tmp as the temporary media directory
@@ -47,66 +69,64 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'web',
-    'api',
-    'management',
-    'corsheaders',
-    'rest_framework_swagger',
-    'rest_framework',
-    'drf_spectacular',
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "web",
+    "api",
+    "management",
+    "corsheaders",
+    "rest_framework_swagger",
+    "rest_framework",
+    "drf_spectacular",
 ]
 
 MIDDLEWARE = [
-    'django.middleware.locale.LocaleMiddleware',
-    'django.middleware.security.SecurityMiddleware',
-    'api.middleware.cors_middleware.CorsMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
+    "django.middleware.locale.LocaleMiddleware",
+    "django.middleware.security.SecurityMiddleware",
+    "api.middleware.cors_middleware.CorsMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
 ]
 
-ROOT_URLCONF = 'dj_backend_server.urls'
+ROOT_URLCONF = "dj_backend_server.urls"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-                'web.utils.context_processors.app_url',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
+                "web.utils.context_processors.app_url",
             ],
-            'libraries':{
-                'time_difference': 'web.template_filters.time_difference'
-            }
+            "libraries": {"time_difference": "web.template_filters.time_difference"},
         },
     },
 ]
 
-WSGI_APPLICATION = 'dj_backend_server.wsgi.application'
+WSGI_APPLICATION = "dj_backend_server.wsgi.application"
 
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
 }
 
@@ -116,31 +136,31 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
 # Set the list of languages you want to support
 LANGUAGES = [
-    ('en', 'English'),
-    ('ro', 'Romanian'),  # Adding Romanian to the list of supported languages
+    ("en", "English"),
+    ("ro", "Romanian"),  # Adding Romanian to the list of supported languages
 ]
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = "UTC"
 
 USE_I18N = True
 
@@ -152,12 +172,13 @@ USE_L10N = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = "static/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 # settings.py
@@ -170,27 +191,29 @@ INSPIRING_QUOTES = [
 
 
 LOCALE_PATHS = [
-    path.join(BASE_DIR, 'locale'),
+    path.join(BASE_DIR, "locale"),
 ]
 
-CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL', 'redis://redis:6379/0')
-CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND', 'redis://redis:6379/0')
+CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL", "redis://redis:6379/0")
+CELERY_RESULT_BACKEND = os.environ.get("CELERY_RESULT_BACKEND", "redis://redis:6379/0")
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.environ.get('DATABASE_NAME', 'openchat'),
-        'USER': os.environ.get('DATABASE_USER', 'dbuser'),
-        'PASSWORD': os.environ.get('DATABASE_PASSWORD', 'dbpass'),
-        'HOST': os.environ.get('DATABASE_HOST', 'mysql'),
-        'PORT': os.environ.get('DATABASE_PORT', '3306'),
+    "default": {
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": os.environ.get("DATABASE_NAME", "openchat"),
+        "USER": os.environ.get("DATABASE_USER", "dbuser"),
+        "PASSWORD": os.environ.get("DATABASE_PASSWORD", "dbpass"),
+        "HOST": os.environ.get("DATABASE_HOST", "mysql"),
+        "PORT": os.environ.get("DATABASE_PORT", "3306"),
     }
 }
 
-SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # You can choose other engines as well
+SESSION_ENGINE = (
+    "django.contrib.sessions.backends.db"  # You can choose other engines as well
+)
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '0.0.0.0').split(',')
-APP_URL = os.environ.get('APP_URL', 'http://0.0.0.0:8000')
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "0.0.0.0").split(",")
+APP_URL = os.environ.get("APP_URL", "http://0.0.0.0:8000")
 
 CSRF_COOKIE_SECURE = True
 CSRF_COOKIE_HTTPONLY = True
@@ -201,29 +224,23 @@ SECURE_HSTS_SECONDS = 3600
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
 CORS_ALLOW_CREDENTIALS = True
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
-CORS_ALLOWED_ORIGINS = [
-    APP_URL
-]
+CORS_ALLOWED_ORIGINS = [APP_URL]
 
-CSRF_TRUSTED_ORIGINS = [
-    APP_URL
-]
+CSRF_TRUSTED_ORIGINS = [APP_URL]
 
-CORS_ORIGIN_WHITELIST = [
-     APP_URL
- ]
+CORS_ORIGIN_WHITELIST = [APP_URL]
 
 REST_FRAMEWORK = {
-     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 SPECTACULAR_SETTINGS = {
-     'TITLE': 'Opechat API Documentation',
-     'DESCRIPTION': 'API documentation for Openchat',
-     'VERSION': '1.0.0',
-     "SWAGGER_UI_SETTINGS": {
+    "TITLE": "Opechat API Documentation",
+    "DESCRIPTION": "API documentation for Openchat",
+    "VERSION": "1.0.0",
+    "SWAGGER_UI_SETTINGS": {
         "deepLinking": True,
         "persistAuthorization": True,
         "displayOperationId": True,
@@ -231,4 +248,4 @@ SPECTACULAR_SETTINGS = {
     "SWAGGER_UI_FAVICON_HREF": STATIC_URL + "assets/images/favicon.ico",
 }
 
-LOGIN_URL = APP_URL + '/login'
+LOGIN_URL = APP_URL + "/login"

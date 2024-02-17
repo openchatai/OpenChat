@@ -1,9 +1,9 @@
 import os
 from django.http import JsonResponse
 import traceback
-from langchain.document_loaders.directory import DirectoryLoader
+from langchain_community.document_loaders.directory import DirectoryLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.document_loaders import TextLoader
+from langchain_community.document_loaders import TextLoader
 from api.utils import init_vector_store
 from api.utils.get_embeddings import get_embeddings
 from api.interfaces import StoreOptions
