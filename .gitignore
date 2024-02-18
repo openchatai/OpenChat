@@ -8,3 +8,5 @@ dj_backend_server/nginx/nginx.conf
 dj_backend_server.code-workspace
 .aider*
 .aiderignore
+dj_backend_server/.vscode/settings.json
+

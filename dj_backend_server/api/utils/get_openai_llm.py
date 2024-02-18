@@ -5,15 +5,11 @@ import traceback
 from django.utils.timezone import make_aware
 from datetime import datetime, timezone
 from uuid import uuid4
-from ollama import Client
-from openai import OpenAI
 from django.conf import settings
 from langchain_openai.chat_models import ChatOpenAI
-from langchain_community.llms import Ollama
+from langchain_community.chat_models import ChatOllama
 from langchain_community.llms import AzureOpenAI
 from langchain_community.llms import LlamaCpp
-from langchain.prompts import PromptTemplate
-from langchain.chains import LLMChain
 from langchain.callbacks.manager import CallbackManager
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from web.models.failed_jobs import FailedJob
@@ -62,12 +58,7 @@ def get_llama_llm():
 def get_azure_openai_llm():
     """Returns AzureOpenAI instance configured from environment variables"""
     try:
-        if settings.DEBUG:
-            openai_api_type = "openai"  # JUST FOR DEVELOPMENT
-            logging.debug(f"DEVELOPMENT Using API Type: {openai_api_type}")
-        else:
-            openai_api_type = os.environ["AZURE_OPENAI_API_TYPE"]
-
+        openai_api_type = os.environ["AZURE_OPENAI_API_TYPE"]
         openai_api_key = os.environ["AZURE_OPENAI_API_KEY"]
         openai_deployment_name = os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"]
         openai_model_name = os.environ["AZURE_OPENAI_COMPLETION_MODEL"]
@@ -134,22 +125,18 @@ def get_openai_llm():
         traceback.print_exc()
 
 
-def get_ollama_llm(sanitized_question):
-    """Returns an Ollama Server instance configured from environment variables"""
-    llm = Client(host=os.environ.get("OLLAMA_URL"))
-    # Use the client to make a request
+def get_ollama_llm():
+    """Returns an Ollama instance configured from environment variables"""
     try:
-        if sanitized_question:
-            response = llm.chat(
-                model=os.environ.get("OLLAMA_MODEL_NAME"),
-                messages=[{"role": "user", "content": sanitized_question}],
-            )
-        else:
-            raise ValueError("Question cannot be None.")
-        if response:
-            return response
-        else:
-            raise ValueError("Invalid response from Ollama.")
+        base_url = os.environ.get("OLLAMA_URL")
+        model = os.environ.get("OLLAMA_MODEL_NAME", "llama2")
+
+        llm = ChatOllama(
+            base_url=base_url,
+            model=model,
+            callback_manager=CallbackManager([StreamingStdOutCallbackHandler()]),
+        )
+        return llm
 
     except Exception as e:
         logger.debug(f"Exception in get_ollama_llm: {e}")
@@ -157,7 +144,7 @@ def get_ollama_llm(sanitized_question):
             uuid=str(uuid4()),
             connection="default",
             queue="default",
-            payload="get_openai_llm",
+            payload="get_ollama_llm",
             exception=str(e),
             failed_at=make_aware(datetime.now(), timezone.utc),
         )
@@ -176,29 +163,26 @@ def get_llm():
             "ollama": lambda: get_ollama_llm(),
         }
 
+        # DEVENV
+        # if settings.DEBUG:
+        #     api_type = "ollama"
         api_type = os.environ.get("OPENAI_API_TYPE", "openai")
+
         if api_type not in clients:
             raise ValueError(f"Invalid OPENAI_API_TYPE: {api_type}")
 
         logging.debug(f"Using LLM: {api_type}")
 
         if api_type in clients:
-            if api_type == "ollama":
-                return clients[api_type]()
-            elif api_type != "ollama":
-                return clients[api_type]()
+            llm_instance = clients[api_type]()
+            if llm_instance is None:
+                logger.error(f"LLM instance for {api_type} could not be created.")
+                return None
+            return llm_instance
         else:
             raise ValueError(f"Invalid OPENAI_API_TYPE: {api_type}")
 
     except Exception as e:
-        failed_job = FailedJob(
-            uuid=str(uuid4()),
-            connection="default",
-            queue="default",
-            payload="get_llm",
-            exception=str(e),
-            failed_at=datetime.now(),
-        )
         failed_job = FailedJob(
             uuid=str(uuid4()),
             connection="default",

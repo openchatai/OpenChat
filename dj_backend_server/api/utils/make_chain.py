@@ -98,6 +98,7 @@ def getConversationRetrievalChain(
         retriever=vector_store.as_retriever(),
         verbose=True,
         combine_docs_chain_kwargs={"prompt": prompt},
+        return_source_documents=True,
     )
     logger.debug(f"ConversationalRetrievalChain {llm}, created: {chain}")
     return chain
