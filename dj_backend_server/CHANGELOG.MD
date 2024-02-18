@@ -1,3 +1,6 @@
+2.20.2024
+- Implemented functionality to delete a chatbot namespace from the vector database, along with all records associated with that chatbot, upon chatbot deletion.
+
 2.18.2024
 - The conversational retrieval functionality is now operating as expected. It successfully sends the conversation history to the language model, allowing the context from previous interactions to be utilized effectively.
 - Added support for Ollama as the Language Model (LLM). Ensure Ollama is specified in the .env configuration and the model is preloaded on the server.

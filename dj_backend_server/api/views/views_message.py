@@ -2,7 +2,7 @@ import requests
 import json
 import os
 import traceback
-import logging
+import logging.config
 from django.http import JsonResponse
 from django.utils.html import escape
 from django.shortcuts import get_object_or_404
@@ -15,7 +15,7 @@ from web.models.chat_histories import ChatHistory
 from django.template.loader import render_to_string
 from django.utils.translation import gettext as _
 
-logging.basicConfig(level=logging.DEBUG)
+logging.config.dictConfig(settings.LOGGING)
 logger = logging.getLogger(__name__)
 
 
@@ -188,6 +188,7 @@ def send_chat(request):
             f"History: {history}"
         )  # history is a list of chat history - None????
         content_type = data.get("type")
+        metadata = data.get("metadata") or {}
 
         session_id = get_session_id(request=request, bot_id=bot.id)
         history = ChatHistory.objects.filter(session_id=session_id)
@@ -218,6 +219,7 @@ def send_chat(request):
                 "history": history_entries,
                 "token": bot_token,
                 "session_id": session_id,
+                "metadata": metadata,
             },
             timeout=200,
         )
