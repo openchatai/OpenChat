@@ -6,9 +6,9 @@ from web.models.failed_jobs import FailedJob  # Assuming the model for the faile
 @login_required
 def errors_check(request):
     if request.user.is_superuser:
-        error_list = FailedJob.objects.all().values('payload', 'uuid', 'exception', 'failed_at')
+        error_list = FailedJob.objects.all().order_by('-failed_at').values('payload', 'uuid', 'exception', 'failed_at')
     else:
-        error_list = FailedJob.objects.filter(user=request.user).values('payload', 'uuid', 'exception', 'failed_at')
+        error_list = FailedJob.objects.filter(user=request.user).order_by('-failed_at').values('payload', 'uuid', 'exception', 'failed_at')
 
     paginator = Paginator(error_list, 25)  # Show 25 errors per page
     page_number = request.GET.get('page')
