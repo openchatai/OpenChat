@@ -165,21 +165,15 @@ def get_completion_response(
     elif chain_type == "conversation_retrieval":
         chain = getConversationRetrievalChain(vector_store, mode, initial_prompt)
         logger.debug("getConversationRetrievalChain")
-        chat_history_json = json.dumps(
-            get_chat_history_for_retrieval_chain(
-                session_id, limit=20, initial_prompt=initial_prompt
-            ),
-            ensure_ascii=False,
+        chat_history = get_chat_history_for_retrieval_chain(
+            session_id, limit=20, initial_prompt=initial_prompt
         )
-        chat_history_json = ""
-        logger.debug(f"Formatted Chat_history {chat_history_json}")
+        logger.debug(f"Formatted Chat_history {chat_history}")
 
         response = chain.invoke(
-            {"question": sanitized_question, "chat_history": chat_history_json}
+            {"question": sanitized_question, "chat_history": chat_history},
         )
-        logger.debug(f"response from chain.invoke: {response}")
         response_text = response.get("answer")
-        logger.debug(f"response_text   : {response_text}")
     try:
         # Attempt to parse the response_text as JSON
         response_text = json.loads(response_text)

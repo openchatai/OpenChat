@@ -1,3 +1,7 @@
+2.18.2024
+- The conversational retrieval functionality is now operating as expected. It successfully sends the conversation history to the language model, allowing the context from previous interactions to be utilized effectively.
+- Added support for Ollama as the Language Model (LLM). Ensure Ollama is specified in the .env configuration and the model is preloaded on the server.
+
 2.17.2024
 - Incorporate 'Ollama' into your example.env configuration and make sure to reflect these changes in your .env file for compatibility.
 - We've expanded the logging capabilities within settings.py by deploying logging.debug for more detailed insights, although it remains inactive when the DEBUG mode is off.

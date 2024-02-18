@@ -170,26 +170,23 @@ def send_chat(request):
     """
     try:
 
-        if settings.DEBUG:
-            logger.debug("Entering send_chat function")
+        logger.debug("Entering send_chat function")
         # You can add additional validation for 'history' and 'content_type' if needed.
 
         bot_token = request.headers.get("X-Bot-Token")
         bot = get_object_or_404(Chatbot, token=bot_token)
 
         data = json.loads(request.body)
-        if settings.DEBUG:
-            logger.debug(
-                f"Request data: {data}"
-            )  # {'from': 'user', 'type': 'text', 'content': 'input text from chat'}
+        logger.debug(
+            f"Request data: {data}"
+        )  # {'from': 'user', 'type': 'text', 'content': 'input text from chat'}
         # Validate the request data
         content = data.get("content")
         history = data.get("history")
-        if settings.DEBUG:
-            logger.debug(f"Content: {content}")
-            logger.debug(
-                f"History: {history}"
-            )  # history is a list of chat history - None????
+        logger.debug(f"Content: {content}")
+        logger.debug(
+            f"History: {history}"
+        )  # history is a list of chat history - None????
         content_type = data.get("type")
 
         session_id = get_session_id(request=request, bot_id=bot.id)
@@ -198,10 +195,9 @@ def send_chat(request):
             {"message": entry.message, "from_user": entry.from_user}
             for entry in history
         ]
-        if settings.DEBUG:
-            logger.debug(
-                f"History entries in JSON: {history_entries} - and history in text from DB: {history}"
-            )
+        logger.debug(
+            f"History entries in JSON: {history_entries} - and history in text from DB: {history}"
+        )
 
         # Implement the equivalent logic for validation
         if not content:
@@ -211,8 +207,7 @@ def send_chat(request):
             )
 
         # Implement the equivalent logic to send the HTTP request to the external API
-        if settings.DEBUG:
-            logger.debug(f"External API response START")
+        logger.debug(f"External API response START")
         response = requests.post(
             os.getenv("APP_URL") + "/api/chat/",
             json={
@@ -226,8 +221,7 @@ def send_chat(request):
             },
             timeout=200,
         )
-        if settings.DEBUG:
-            logger.debug(f"External API response: {response.text} and {response}")
+        logger.debug(f"External API response: {response.text} and {response}")
 
         """
         This block will first check if the response content is not empty. If it is empty, 
