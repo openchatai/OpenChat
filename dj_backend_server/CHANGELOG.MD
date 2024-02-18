@@ -1,5 +1,6 @@
 2.20.2024
 - Implemented functionality to delete a chatbot namespace from the vector database, along with all records associated with that chatbot, upon chatbot deletion.
+- Directory data loader has to be modified to add filename metadata for filtering PR#138
 
 2.18.2024
 - The conversational retrieval functionality is now operating as expected. It successfully sends the conversation history to the language model, allowing the context from previous interactions to be utilized effectively.
