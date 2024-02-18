@@ -40,6 +40,7 @@ SECRET_KEY = os.environ["SECRET_KEY"]
 DEBUG = True
 
 # import logging.config
+# from django.conf import settings
 # logging.config.dictConfig(settings.LOGGING)
 # logger = logging.getLogger(__name__)
 LOGGING = {
