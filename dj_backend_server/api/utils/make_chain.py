@@ -104,25 +104,18 @@ def getConversationRetrievalChain(
             return_source_documents=True
         )
     """
-    filter_config = None
-    if filters:
-        filter_dict = {"filter": filters}
-        filter_config = {"search_kwargs": filter_dict}
 
     llm = get_llm()
     template = get_qa_prompt_by_mode(mode, initial_prompt=initial_prompt)
     prompt = PromptTemplate.from_template(template)
+    search_kwargs = {"filter": filters} if filters else {}
     chain = ConversationalRetrievalChain.from_llm(
         llm,
         chain_type="stuff",
-        retriever=vector_store.as_retriever(),
-        # retriever=vector_store.as_retriever(
-        #    search_kwargs={'filter': {'category': ['c1', 'c2', 'c3']}}
-        # ),
+        retriever=vector_store.as_retriever(search_kwargs=search_kwargs),
         verbose=True,
         combine_docs_chain_kwargs={"prompt": prompt},
         return_source_documents=True,
-        filter=filter_config,  # Apply the filter if it exists
     )
     logger.debug(f"ConversationalRetrievalChain {llm}, created: {chain}")
     return chain
