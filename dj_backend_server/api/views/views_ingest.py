@@ -22,29 +22,34 @@ def ingest(request):
         an error message if the data type is not supported or if an exception was raised.
     """
     try:
-        data = json.loads(request.body.decode('utf-8'))
-        shared_folder = data.get('shared_folder')
-        
+        data = json.loads(request.body.decode("utf-8"))
+        shared_folder = data.get("shared_folder")
+
         # namespace is the same as chatbot id
-        namespace = data.get('namespace')
-        repo_path = data.get('repo')
-        type_ = data['type']
+        namespace = data.get("namespace")
+        repo_path = data.get("repo")
+        metadata = data.get("metadata")
+        type_ = data["type"]
 
-        if type_ not in ('pdf', 'website', 'codebase'):
-            return JsonResponse({'error': 'Type not supported, use one of pdf, website or codebase'})
+        if type_ not in ("pdf", "website", "codebase"):
+            return JsonResponse(
+                {"error": "Type not supported, use one of pdf, website or codebase"}
+            )
 
-        if type_ == 'pdf':
-            delete_folder_flag = data.get('delete_folder_flag', False)
-            ocr_pdf_file = data.get('ocr_pdf_file', False)
-            pdf_handler_task.delay(shared_folder, namespace, delete_folder_flag, ocr_pdf_file)
-        elif type_ == 'website':
+        if type_ == "pdf":
+            delete_folder_flag = data.get("delete_folder_flag", False)
+            ocr_pdf_file = data.get("ocr_pdf_file", False)
+            pdf_handler_task.delay(
+                shared_folder, namespace, delete_folder_flag, ocr_pdf_file, metadata
+            )
+        elif type_ == "website":
             print("Calling website handler task")
-            website_handler_task.delay(shared_folder, namespace)
-        
-        elif type_ == 'codebase':
-            codebase_handler_task.delay(repo_path, namespace)
+            website_handler_task.delay(shared_folder, namespace, metadata)
 
-        return JsonResponse({'message': 'Task dispatched successfully'}, status=200)
-    
+        elif type_ == "codebase":
+            codebase_handler_task.delay(repo_path, namespace, metadata)
+
+        return JsonResponse({"message": "Task dispatched successfully"}, status=200)
+
     except Exception as e:
         print(e)

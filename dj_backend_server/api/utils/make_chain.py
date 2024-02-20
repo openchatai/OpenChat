@@ -2,6 +2,7 @@ from dotenv import load_dotenv
 import logging.config
 import json
 import io
+from typing import Optional, Dict, Any, List
 from django.conf import settings
 from langchain.vectorstores.base import VectorStore
 from langchain.chains import RetrievalQA
@@ -75,8 +76,11 @@ def getConversationRetrievalChain(
     vector_store: VectorStore,
     mode: str,
     initial_prompt: str,
+    filters: Optional[Dict[str, Any]] = None,
 ) -> ConversationalRetrievalChain:
     """
+    Get a conversation retrieval chain with optional dynamic filters.
+
     This function creates a ConversationalRetrievalChain object, which is used for conversational retrieval tasks. It retrieves the
     language model and the question-answering prompt based on the mode and the initial prompt, and uses them along with the vector store
     to create the ConversationalRetrievalChain object.
@@ -85,17 +89,30 @@ def getConversationRetrievalChain(
         vector_store (VectorStore): The vector store, which is used to retrieve documents based on their vector representations.
         mode (str): The mode, which determines the question-answering prompt. The mode can be 'qa', 'qa_with_sources', or 'conversation'.
         initial_prompt (str): The initial prompt, which is used to generate the question-answering prompt.
+        memory_key (str): The memory key.
+        filters (Optional[Dict[str, Any]]): Optional filters as a dictionary of key-value pairs.
 
     Returns:
         ConversationalRetrievalChain: The ConversationalRetrievalChain object, which can be used for conversational retrieval tasks.
+
+    Usage:
+        chain = ConversationalRetrievalChain.from_llm(
+            OpenAI(temperature=0),
+            retriever=vector_store.as_retriever(
+                search_kwargs={'filter': {'category': ['c1', 'c2', 'c3']}}
+            ),
+            return_source_documents=True
+        )
     """
+
     llm = get_llm()
     template = get_qa_prompt_by_mode(mode, initial_prompt=initial_prompt)
     prompt = PromptTemplate.from_template(template)
+    search_kwargs = {"filter": filters} if filters else {}
     chain = ConversationalRetrievalChain.from_llm(
         llm,
         chain_type="stuff",
-        retriever=vector_store.as_retriever(),
+        retriever=vector_store.as_retriever(search_kwargs=search_kwargs),
         verbose=True,
         combine_docs_chain_kwargs={"prompt": prompt},
         return_source_documents=True,
