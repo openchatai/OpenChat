@@ -252,11 +252,14 @@ def txt_to_vectordb(
     shared_folder: str,
     namespace: str,
     delete_folder_flag: bool,
-    metadata: Dict[str, Any],
+    metadata: Optional[Dict[str, Any]] = None,
 ):
     try:
-        # pdf_data_source = PdfDataSource.objects.get(folder_name=shared_folder)
+        pdf_data_source = PdfDataSource.objects.get(folder_name=shared_folder)
         directory_path = os.path.join("website_data_sources", shared_folder)
+
+        if metadata is None:
+            metadata = {}
 
         # TODO: When will be multiple external library to choose, need to change.
         if os.environ.get("PDF_LIBRARY") == "external":
@@ -289,7 +292,7 @@ def txt_to_vectordb(
 
         docs = text_splitter.split_documents(raw_docs)
 
-        # print("external files docs -->", docs);
+        logging.debug("external files docs -->", docs)
 
         if not docs:
             print("No documents were processed successfully.")
@@ -300,7 +303,23 @@ def txt_to_vectordb(
         logging.debug(
             f"Initializing vector store for namespace: {namespace} with {len(docs)} documents."
         )
-        init_vector_store(docs, embeddings, StoreOptions(namespace=namespace))
+        init_vector_store(
+            docs,
+            embeddings,
+            StoreOptions(namespace=namespace),
+            metadata={
+                "bot_id": str(pdf_data_source.chatbot.id),
+                "last_update": pdf_data_source.updated_at.strftime("%Y-%m-%d %H:%M:%S"),
+                "type": "document",
+                "page": "1",  # @TODO to extract the page number.
+                "folder": pdf_data_source.folder_name,
+                "original_filename": (
+                    pdf_data_source.files_info[0]["original_name"]
+                    if pdf_data_source.files_info
+                    else "unknown"
+                ),
+            },
+        )
         logging.debug(
             f"Vector store initialized successfully for namespace: {namespace}."
         )

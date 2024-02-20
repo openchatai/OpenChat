@@ -8,6 +8,7 @@ from api.utils import get_embeddings
 from api.interfaces import StoreOptions
 from langchain_community.document_loaders import GitLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
+from web.models.codebase_data_sources import CodebaseDataSource
 from typing import Optional, Dict, Any, List
 
 logging.config.dictConfig(settings.LOGGING)
@@ -37,7 +38,19 @@ def codebase_handler(repo_path: str, namespace: str, metadata: Dict[str, Any]):
 
         embeddings = get_embeddings()
 
-        init_vector_store(docs, embeddings, options=StoreOptions(namespace))
+        init_vector_store(
+            docs,
+            embeddings,
+            options=StoreOptions(namespace),
+            metadata={
+                "bot_id": str(CodebaseDataSource.chatbot.id),
+                "repository": str(CodebaseDataSource.chatbot.id),
+                "last_update": CodebaseDataSource.ingested_at.strftime(
+                    "%Y-%m-%d %H:%M:%S"
+                ),
+                "type": "codebase",
+            },
+        )
 
         print("Indexed documents. all done!")
     except Exception as e:
