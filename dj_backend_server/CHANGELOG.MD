@@ -3,7 +3,7 @@
 - The Directory Data Loader must be updated to include filename metadata to enable filtering. PR#138
 - Enhanced the history log interface to display whether a message has received positive or negative feedback.
 - Fixed the title when the page is being crawled; it will now be saved to the database.
-- On deleted document, if namespace not exist, do not throw an error, delete the file.
+- On a deleted document, if the namespace does not exist, do not throw an error; instead, delete the file
 
 2.18.2024
 - The conversational retrieval functionality is now operating as expected. It successfully sends the conversation history to the language model, allowing the context from previous interactions to be utilized effectively.
