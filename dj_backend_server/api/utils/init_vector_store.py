@@ -5,6 +5,7 @@ from langchain.vectorstores.pinecone import Pinecone
 from qdrant_client import QdrantClient
 from qdrant_client import models
 from django.conf import settings
+from django.db.models.fields import DeferredAttribute
 from api.enums import StoreType
 from api.interfaces import StoreOptions
 from api.configs import PINECONE_TEXT_KEY, VECTOR_STORE_INDEX_NAME
@@ -40,22 +41,29 @@ def initialize_pinecone():
 
 
 def init_vector_store(
-    docs: list[Document], embeddings: OpenAIEmbeddings, options: StoreOptions
+    docs: list[Document],
+    embeddings: OpenAIEmbeddings,
+    options: StoreOptions,
+    metadata: dict = None,
 ) -> None:
-    """
-    This function initializes a vector store based on the 'STORE' environment variable. If the 'STORE' environment variable is
-    'PINECONE', it initializes Pinecone and uses the Pinecone vector store. If the 'STORE' environment variable is 'QDRANT', it uses
-    the Qdrant vector store. If the 'STORE' environment variable is neither 'PINECONE' nor 'QDRANT', it raises a ValueError.
-
-    Args:
-        docs (list[Document]): A list of Document objects to be stored in the vector store.
-        embeddings (OpenAIEmbeddings): The OpenAI embeddings to be used for the documents.
-        options (StoreOptions): The options for the vector store, including the namespace.
-
-    Raises:
-        ValueError: If the 'STORE' environment variable is neither 'PINECONE' nor 'QDRANT'.
-    """
+    if not docs:
+        logger.warning(
+            "No documents provided for vector store initialization. Skipping."
+        )
+        return
     store_type = StoreType[os.environ["STORE"]]
+
+    # Ensure metadata is serializable
+    if metadata is not None:
+        metadata = {
+            k: (str(v) if isinstance(v, DeferredAttribute) else v)
+            for k, v in metadata.items()
+        }
+
+        for doc in docs:
+            if not hasattr(doc, "metadata") or doc.metadata is None:
+                doc.metadata = {}
+            doc.metadata.update(metadata)
 
     if store_type == StoreType.PINECONE:
         initialize_pinecone()

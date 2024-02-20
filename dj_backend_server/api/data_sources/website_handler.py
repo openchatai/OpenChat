@@ -15,6 +15,7 @@ from api.utils import init_vector_store
 from api.utils.get_embeddings import get_embeddings
 from api.interfaces import StoreOptions
 from web.models.website_data_sources import WebsiteDataSource
+from web.models.crawled_pages import CrawledPages
 from web.enums.website_data_source_status_enum import WebsiteDataSourceStatusType
 from web.models.failed_jobs import FailedJob
 
@@ -37,6 +38,9 @@ def website_handler(shared_folder, namespace, metadata: Dict[str, Any]):
     Raises:
         Exception: If an error occurs during the processing of the text files or the initialization of the vector store.
     """
+
+
+def website_handler(shared_folder, namespace, metadata: Dict[str, Any]):
     website_data_source = WebsiteDataSource.objects.get(id=shared_folder)
     try:
         directory_path = os.path.join("website_data_sources", shared_folder)
@@ -65,16 +69,33 @@ def website_handler(shared_folder, namespace, metadata: Dict[str, Any]):
 
         docs = text_splitter.split_documents(raw_docs)
 
-        logger.debug("website docs --> %s", docs)
+        logging.debug("website docs --> %s", docs)
         embeddings = get_embeddings()
+        crawled_pages = CrawledPages.objects.filter(
+            website_data_source=website_data_source
+        )
+        links_titles = [
+            {"link": page.url, "title": page.title} for page in crawled_pages
+        ]
 
-        init_vector_store(docs, embeddings, StoreOptions(namespace=namespace))
+        init_vector_store(
+            docs,
+            embeddings,
+            StoreOptions(namespace=namespace),
+            metadata={
+                "bot_id": str(website_data_source.chatbot_id),
+                "last_update": website_data_source.updated_at.strftime("%Y-%m-%d %H:%M:%S"),
+                "type": "website",
+                "link": links_titles[0]["link"] if links_titles else None,
+                "title": links_titles[0]["title"] if links_titles else "Untitled Page",
+            },
+        )
 
         website_data_source.crawling_status = (
             WebsiteDataSourceStatusType.COMPLETED.value
         )
         website_data_source.save()
-        logger.debug("Website embeddings, done ...")
+        logging.debug("Website embeddings, done ...")
     except Exception as e:
         website_data_source.crawling_status = WebsiteDataSourceStatusType.FAILED.value
         website_data_source.save()
