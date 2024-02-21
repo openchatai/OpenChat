@@ -182,13 +182,9 @@ def send_chat(request):
         )  # {'from': 'user', 'type': 'text', 'content': 'input text from chat'}
         # Validate the request data
         content = data.get("content")
-        history = data.get("history")
-        logger.debug(f"Content: {content}")
-        logger.debug(
-            f"History: {history}"
-        )  # history is a list of chat history - None????
-        content_type = data.get("type")
-        metadata = data.get("metadata") or {}
+        # history = data.get("history")
+        # logger.debug(f"Content: {content}")
+        # logger.debug(f"History: {history}")
 
         session_id = get_session_id(request=request, bot_id=bot.id)
         history = ChatHistory.objects.filter(session_id=session_id)
@@ -219,11 +215,9 @@ def send_chat(request):
                 "history": history_entries,
                 "token": bot_token,
                 "session_id": session_id,
-                "metadata": metadata,
             },
             timeout=200,
         )
-        logger.debug(f"External API response: {response.text} and {response}")
 
         """
         This block will first check if the response content is not empty. If it is empty, 
@@ -242,7 +236,7 @@ def send_chat(request):
         else:
             try:
                 response_json = response.json()
-                logger.debug(f"Response JSON: {response_json}")
+                logger.debug(f"External API response 2")
             except json.JSONDecodeError:
                 logger.error("JSONDecodeError occurred")
                 return JsonResponse(
@@ -255,18 +249,45 @@ def send_chat(request):
                 )
 
         bot_response = ChatbotResponse(response.json())
-        # context = {'APP_URL': settings.APP_URL, session_id: session_id}
+        for metadata_entry in response_json.get("metadata", []):
+            print(f"Last Update: {metadata_entry.get('last_update')}")
+            print(f"Type: {metadata_entry.get('type')}")
+            print(f"Original Filename: {metadata_entry.get('original_filename')}")
+            print(f"Source: {metadata_entry.get('source')}")
+            print(f"Folder: {metadata_entry.get('folder')}")
+            print(f"Page: {metadata_entry.get('page')}")
+            print(f"Bot ID: {metadata_entry.get('bot_id')}")
+            print(f"ID: {metadata_entry.get('_id')}")
+            print(f"Collection Name: {metadata_entry.get('_collection_name')}")
+
+        metadata_items = [
+            {
+                "source": entry.get("source"),
+                "original_filename": entry.get("original_filename"),
+            }
+            for entry in response_json.get("metadata", [])
+        ]
+        metadata_html = render_to_string(
+            "widgets/metadata.html",
+            {
+                "APP_URL": settings.APP_URL,
+                "session_id": session_id,
+                "metadata_items": metadata_items,
+            },
+        )
         feedback_form_html = render_to_string(
             "widgets/feedback.html",
             {"APP_URL": settings.APP_URL, "session_id": session_id},
         )
+
         print(f"Response in JSON {session_id}")
+        html_compose = metadata_html + feedback_form_html
         return JsonResponse(
             {
                 "type": "text",
                 "response": {
                     "text": bot_response.get_bot_reply(),
-                    "html": feedback_form_html,
+                    "html": html_compose,
                     "session_id": session_id,
                 },
             }
