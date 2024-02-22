@@ -10,3 +10,5 @@ dj_backend_server.code-workspace
 .aiderignore
 dj_backend_server/.vscode/settings.json
 
+dj_backend_server/a.py
+dj_backend_server/1.pdf

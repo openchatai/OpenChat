@@ -126,26 +126,31 @@ def pdf_handler(
 
 @csrf_exempt
 def process_pdf_with_pypdfium(file_path, directory_path):
-    pdf = PdfDocument(file_path)
-    text_pages = []
+    pdf_document = PdfDocument(file_path)
+    text_pages_with_numbers = []
 
-    for page_index in range(len(pdf)):
-        page = pdf.get_page(page_index)
+    for page_index in range(len(pdf_document)):
+        page = pdf_document.get_page(page_index)
         text_page = page.get_textpage()  # get a text page handle for this page
         text = text_page.get_text_range()  # extract text from the text page
-        text_pages.append(text)
+        text_pages_with_numbers.append(
+            (page_index + 1, text)
+        )  # Store page number and text
         text_page.close()  # close the text page handle
 
-    text = "".join(text_pages)
+    # Combine texts from all pages, prepending each with its page number
+    combined_text = "\n".join(
+        [f"Page {num}: {text}" for num, text in text_pages_with_numbers]
+    )
     txt_file_path = os.path.splitext(file_path)[0] + ".txt"
     logging.debug(
-        f"Debug: Writing text to {txt_file_path}, directory_path: {directory_path}, text: {text}"
+        f"Debug: Writing text with page numbers to {txt_file_path}, directory_path: {directory_path}"
     )
 
     with open(txt_file_path, "w") as f:
-        f.write(text)
+        f.write(combined_text)
 
-    pdf.close()
+    pdf_document.close()
 
 
 @csrf_exempt
@@ -159,6 +164,7 @@ def process_pdf(FilePath, directory_path):
     resturl = "http://www.ocrwebservice.com/restservices/processDocument"
 
     RequestUrl = f"{resturl}?pagerange={pagerange}&language={language}&outputformat={outputformat}&gettext={gettext}"
+    logging.debug(f"Debug: RequestUrl: {RequestUrl}")
 
     try:
         with open(FilePath, "rb") as image_file:
@@ -216,7 +222,7 @@ def process_pdf(FilePath, directory_path):
                 f"\nThe text: {{text}}. "
             )
 
-            # print (f"Debug: initial_prompt: {initial_prompt}")
+            logging.debug(f"Debug: initial_prompt: {initial_prompt}")
 
             # Call LLM and write the result into a new text file
             process_text_with_llm(txt_file, mode, initial_prompt)
@@ -291,12 +297,7 @@ def txt_to_vectordb(
         )
 
         docs = text_splitter.split_documents(raw_docs)
-
         logging.debug("external files docs -->", docs)
-
-        if not docs:
-            print("No documents were processed successfully.")
-            return
 
         embeddings = get_embeddings()
 
@@ -311,6 +312,11 @@ def txt_to_vectordb(
                 "bot_id": str(pdf_data_source.chatbot.id),
                 "last_update": pdf_data_source.updated_at.strftime("%Y-%m-%d %H:%M:%S"),
                 "type": "document",
+                "doc_type": (
+                    pdf_data_source.files_info[0]["original_name"].split(".")[-1]
+                    if pdf_data_source.files_info
+                    else "unknown"
+                ),
                 "page": "1",  # @TODO to extract the page number.
                 "folder": pdf_data_source.folder_name,
                 "original_filename": (
@@ -321,7 +327,7 @@ def txt_to_vectordb(
             },
         )
         logging.debug(
-            f"Vector store initialized successfully for namespace: {namespace}."
+            f"Vector store initialized successfully for metadata: {metadata}."
         )
 
         logging.debug(f"Folder need or not to delete. {delete_folder_flag}")
