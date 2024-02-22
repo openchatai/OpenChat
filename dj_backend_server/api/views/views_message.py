@@ -313,26 +313,34 @@ def handle_feedback(request):
 
 
 def metadata_html_append(response_json, session_id):
+    # Example logic to determine type based on response_json
+    # This is a placeholder. Adjust according to your actual logic.
+    type = "document"  # or "website", determined dynamically
+    seen_filenames = set()
+    metadata_items = []
 
     for metadata_entry in response_json.get("metadata", []):
         type = metadata_entry.get("type")
-        print(f"Type: {type}")
-        print(f"Original Filename: {metadata_entry.get('original_filename')}")
-        print(f"Source: {metadata_entry.get('source')}")
-        print(f"Page: {metadata_entry.get('page')}")
-        print(f"Bot ID: {metadata_entry.get('bot_id')}")
-        print(f"ID: {metadata_entry.get('_id')}")
+        if type == "document":
+            # if the original_filename is the same in for, then show it only one time.
+            for entry in response_json.get("metadata", []):
+                original_filename = entry.get("original_filename")
+                if original_filename not in seen_filenames:
+                    metadata_items.append(
+                        {
+                            "source": entry.get("source"),
+                            "original_filename": original_filename,
+                        }
+                    )
+                    seen_filenames.add(original_filename)
 
-    seen_filenames = set()
-    metadata_items = []
-    # if the original_filename is the same in for, then show it only one time.
-    for entry in response_json.get("metadata", []):
-        original_filename = entry.get("original_filename")
-        if original_filename not in seen_filenames:
-            metadata_items.append(
-                {"source": entry.get("source"), "original_filename": original_filename}
-            )
-            seen_filenames.add(original_filename)
+        if type == "website":
+            # if the link is the same in for, then show it only one time.
+            for entry in response_json.get("metadata", []):
+                link = entry.get("link")
+                if link not in seen_filenames:
+                    metadata_items.append({"source": entry.get("source"), "link": link})
+                    seen_filenames.add(link)
 
     return render_to_string(
         "widgets/metadata.html",
@@ -340,5 +348,6 @@ def metadata_html_append(response_json, session_id):
             "APP_URL": settings.APP_URL,
             "session_id": session_id,
             "metadata_items": metadata_items,
+            "type": type,
         },
     )
