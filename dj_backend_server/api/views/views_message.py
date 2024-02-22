@@ -182,13 +182,9 @@ def send_chat(request):
         )  # {'from': 'user', 'type': 'text', 'content': 'input text from chat'}
         # Validate the request data
         content = data.get("content")
-        history = data.get("history")
-        logger.debug(f"Content: {content}")
-        logger.debug(
-            f"History: {history}"
-        )  # history is a list of chat history - None????
-        content_type = data.get("type")
-        metadata = data.get("metadata") or {}
+        # history = data.get("history")
+        # logger.debug(f"Content: {content}")
+        # logger.debug(f"History: {history}")
 
         session_id = get_session_id(request=request, bot_id=bot.id)
         history = ChatHistory.objects.filter(session_id=session_id)
@@ -219,11 +215,9 @@ def send_chat(request):
                 "history": history_entries,
                 "token": bot_token,
                 "session_id": session_id,
-                "metadata": metadata,
             },
             timeout=200,
         )
-        logger.debug(f"External API response: {response.text} and {response}")
 
         """
         This block will first check if the response content is not empty. If it is empty, 
@@ -242,7 +236,7 @@ def send_chat(request):
         else:
             try:
                 response_json = response.json()
-                logger.debug(f"Response JSON: {response_json}")
+                logger.debug(f"External API response 2")
             except json.JSONDecodeError:
                 logger.error("JSONDecodeError occurred")
                 return JsonResponse(
@@ -255,18 +249,21 @@ def send_chat(request):
                 )
 
         bot_response = ChatbotResponse(response.json())
-        # context = {'APP_URL': settings.APP_URL, session_id: session_id}
+
         feedback_form_html = render_to_string(
             "widgets/feedback.html",
             {"APP_URL": settings.APP_URL, "session_id": session_id},
         )
-        print(f"Response in JSON {session_id}")
+
+        html_compose = (
+            metadata_html_append(response_json, session_id) + feedback_form_html
+        )
         return JsonResponse(
             {
                 "type": "text",
                 "response": {
                     "text": bot_response.get_bot_reply(),
-                    "html": feedback_form_html,
+                    "html": html_compose,
                     "session_id": session_id,
                 },
             }
@@ -313,3 +310,44 @@ def handle_feedback(request):
             return JsonResponse({"error": "Chat history not found"}, status=404)
     except Exception as e:
         return JsonResponse({"error": "An error occurred"}, status=500)
+
+
+def metadata_html_append(response_json, session_id):
+    # Example logic to determine type based on response_json
+    # This is a placeholder. Adjust according to your actual logic.
+    type = "document"  # or "website", determined dynamically
+    seen_filenames = set()
+    metadata_items = []
+
+    for metadata_entry in response_json.get("metadata", []):
+        type = metadata_entry.get("type")
+        if type == "document":
+            # if the original_filename is the same in for, then show it only one time.
+            for entry in response_json.get("metadata", []):
+                original_filename = entry.get("original_filename")
+                if original_filename not in seen_filenames:
+                    metadata_items.append(
+                        {
+                            "source": entry.get("source"),
+                            "original_filename": original_filename,
+                        }
+                    )
+                    seen_filenames.add(original_filename)
+
+        if type == "website":
+            # if the link is the same in for, then show it only one time.
+            for entry in response_json.get("metadata", []):
+                link = entry.get("link")
+                if link not in seen_filenames:
+                    metadata_items.append({"source": entry.get("source"), "link": link})
+                    seen_filenames.add(link)
+
+    return render_to_string(
+        "widgets/metadata.html",
+        {
+            "APP_URL": settings.APP_URL,
+            "session_id": session_id,
+            "metadata_items": metadata_items,
+            "type": type,
+        },
+    )

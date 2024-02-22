@@ -43,7 +43,6 @@ def chat(request):
     """
     try:
 
-        logger.debug("Received chat request from view_messages.py - /api/chat/")
         body = json.loads(request.body.decode("utf-8"))
         question = body.get("question")
         namespace = body.get("namespace")
@@ -51,25 +50,24 @@ def chat(request):
         initial_prompt = body.get("initial_prompt")
         token = body.get("token")
         session_id = body.get("session_id")
+        metadata = body.get("metadata", {})
 
         logger.debug(f"Request body parsed: {body}")
-        logger.debug(f"Question: {question}")
         bot = get_object_or_404(Chatbot, token=token)
-        logger.debug(f"Chatbot found: {bot.name}")
         if not question:
             return JsonResponse({"error": "No question in the request"}, status=400)
         sanitized_question = question.strip().replace("\n", " ")
-        logger.debug(f"Sanitized question: {sanitized_question}")
         vector_store = get_vector_store(StoreOptions(namespace=namespace))
-        logger.debug(f"Vector store obtained")
-        response_text = get_completion_response(
+
+        response_text, metadata = get_completion_response(
             vector_store=vector_store,
             initial_prompt=initial_prompt,
             mode=mode,
             sanitized_question=sanitized_question,
             session_id=session_id,
+            metadata=metadata,
         )
-        logger.debug(f"Response text: {response_text}")
+
         if isinstance(response_text, dict) and "text" in response_text:
             ChatHistory.objects.bulk_create(
                 [
@@ -90,9 +88,9 @@ def chat(request):
                 ]
             )
             logger.debug(
-                f"Response after creating ChatHistory: {json.dumps(response_text, indent=2)}"
+                f"Response after creating ChatHistory: {json.dumps(response_text, indent=2)}, metadata: {metadata}"
             )
-            return JsonResponse({"text": response_text})
+            return JsonResponse({"text": response_text, "metadata": metadata})
 
         elif isinstance(response_text, str):
             ChatHistory.objects.bulk_create(
@@ -114,9 +112,9 @@ def chat(request):
                 ]
             )
             logger.debug(
-                f"Response after creating ChatHistory 2: {json.dumps(response_text, indent=2)}"
+                f"Response after creating ChatHistory 2: {json.dumps(response_text, indent=2)}, metadata: {metadata}"
             )
-            return JsonResponse({"text": response_text})
+            return JsonResponse({"text": response_text, "metadata": metadata})
 
         else:
             return JsonResponse({"error": "Unexpected response from API"}, status=500)
@@ -132,7 +130,7 @@ def chat(request):
 
 
 def get_completion_response(
-    vector_store, mode, initial_prompt, sanitized_question, session_id
+    vector_store, mode, initial_prompt, sanitized_question, session_id, metadata
 ):
     """
     This function generates a response based on a given question. It uses either the 'retrieval_qa' or 'conversation_retrieval'
@@ -151,15 +149,18 @@ def get_completion_response(
         is a string, it is returned after removing markdown code block formatting.
     """
 
-    logger.debug(f"Entering get_completion_response function")
-    logger.debug(
-        f"Mode: {mode}, Initial Prompt: {initial_prompt}, Sanitized Question: {sanitized_question}, Session ID: {session_id}"
-    )
+    # logger.debug(f"Entering get_completion_response function")
+    # logger.debug(
+    #     f"Mode: {mode}, Initial Prompt: {initial_prompt}, Sanitized Question: {sanitized_question}, Session ID: {session_id}"
+    # )
     chain_type = os.getenv("CHAIN_TYPE", "conversation_retrieval")
     chain: QAWithSourcesChain
     if chain_type == "retrieval_qa":
         chain = getRetrievalQAWithSourcesChain(vector_store, mode, initial_prompt)
-        response = chain({"question": sanitized_question}, return_only_outputs=True)
+        response = chain.invoke(
+            {"question": sanitized_question, "metadata": metadata},
+            return_only_outputs=True,
+        )
         response_text = response["answer"]
         logger.debug(f"RetrievalQA response: {response_text}")
     elif chain_type == "conversation_retrieval":
@@ -171,13 +172,33 @@ def get_completion_response(
         logger.debug(f"Formatted Chat_history {chat_history}")
 
         response = chain.invoke(
-            {"question": sanitized_question, "chat_history": chat_history},
+            {
+                "question": sanitized_question,
+                "chat_history": chat_history,
+                "metadata": metadata,
+            },
         )
-        response_text = response.get("answer")
+        # Assuming 'response' is the JSON object you've provided
+        source_documents = response["source_documents"]
+
+        # Initialize an empty list to hold metadata from all documents
+        all_metadata = []
+
+        # Iterate through each document in the source documents
+        for document in source_documents:
+            # Correctly access the metadata attribute or method of the Document object
+            # Assuming the Document object has a 'metadata' attribute
+            metadata = document.metadata
+
+            # Add the metadata dictionary to the list
+            all_metadata.append(metadata)
+
+        response_text = response.get("answer", "")
+
     try:
         # Attempt to parse the response_text as JSON
         response_text = json.loads(response_text)
-        logger.debug(f"Response text after JSON parsing: {response_text}")
+
     except json.JSONDecodeError:
         # If response_text is not a JSON string, leave it as is
         pass
@@ -194,4 +215,5 @@ def get_completion_response(
             response_text.replace("```", "").replace("markdown\n", "").strip()
         )
         logger.debug(f"Response text after markdown removal: {response_text}")
-    return response_text
+    # print(f"metadata {metadata}")
+    return response_text, all_metadata

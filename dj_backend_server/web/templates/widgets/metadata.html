@@ -1,0 +1,21 @@
+{% load i18n %}
+{% load static %}
+
+<div class="my-5" style="padding-bottom: 2.5em;">
+    {% if type == "document" %}
+        {% for item in metadata_items %}
+                <div>
+                    <strong>{% trans "Source of data" %}:</strong> <a href = "{{ APP_URL }}/{{ item.source }}" target="_blank" title="{{ item.original_filename }}">{% trans "Download" %}</a>
+                </div>
+        {% endfor %}
+    {% elif type == "website" %}
+        {% for item in metadata_items %}
+                <div>
+                    <strong>{% trans "Webpage to check" %}:</strong> <a href = "{{ item.link }}" target="_blank" title="{{ item.title }}">{% trans "Visit link" %}</a>
+                </div>
+        {% endfor %}
+    {% else %}    
+    <div></div>
+    {% endif %}
+            <div><small>{% trans "Generated content may be inaccurate or false. Always doublecheck the result." %}</small></div>
+</div>

@@ -145,14 +145,11 @@ def process_text_with_llm(txt_file_path: str, mode, initial_prompt: str):
 
     # Send the formatted prompt to LLM and get the result
     llm = get_llm()
-    result = llm(prompt=initial_prompt.format(text=text), temperature=0)
+    result = llm.invoke(input=initial_prompt.format(text=text), temperature=0)
 
-    # Check if result is a string
-    if isinstance(result, str):
-        response = result
-    elif isinstance(result, dict):
-        # Extract only the response from the result
-        response = result["choices"][0]["message"]["content"]
+    # Extract the response from the result
+    if hasattr(result, "content"):
+        response = result.content
     else:
         print(
             f"Error: LLM result is not a dictionary or a string. It is a {type(result)} with value {result}"
@@ -166,6 +163,7 @@ def process_text_with_llm(txt_file_path: str, mode, initial_prompt: str):
         print(f"Write with value {txt_file_path}")
     else:
         # Write the response into a new text file
+        result_file_path = txt_file_path.replace(".txt", "_processed.txt")
         result_file_path = txt_file_path.replace(".txt", ".txt")
         with open(result_file_path, "w") as result_file:
             result_file.write(response)

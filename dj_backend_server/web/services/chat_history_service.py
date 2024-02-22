@@ -54,6 +54,6 @@ def get_chat_history_for_retrieval_chain(
                 memory.save_context({"input": user_query}, {"output": entry.message})
                 user_query = None
 
-    logger.debug(f"Memory PRINT: {memory}")
+    # logger.debug(f"Memory PRINT: {memory}")
     # chat_history = memory.load_memory_variables({})
     return chat_history

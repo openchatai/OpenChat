@@ -1,3 +1,6 @@
+2.22.2024
+- We've recently enhanced our chat interface to display metadata values, such as the data source and web links, from our vector database when available. However, it's important to note that, as of now, there is no option to toggle this feature on or off. This means that whenever this metadata is available for newer database entries, it will be automatically displayed. Please be aware that older database records might not include this information due to the feature's recent implementation.
+
 2.20.2024
 - Implemented functionality to delete a chatbot namespace from the vector database, along with all records associated with that chatbot, upon chatbot deletion.
 - The Directory Data Loader must be updated to include filename metadata to enable filtering. PR#138
